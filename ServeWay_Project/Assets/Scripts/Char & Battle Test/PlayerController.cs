@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Animator anim;
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D rigidBody;
     private Vector3 mousePos;
     private float coolTime;
     private Vector2 moveVel;
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         coolTime = 0;
 
         anim = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
     }
 
     
@@ -75,22 +75,22 @@ public class PlayerController : MonoBehaviour
         {
             if (transform.position.x - mouse.x < 0)
             {
-                anim.SetInteger("direction", 2);
+                //anim.SetInteger("direction", 2);
             }
             else
             {
-                anim.SetInteger("direction", 4);
+                //anim.SetInteger("direction", 4);
             }
         }
         else
         {
             if ((transform.position.y - (transform.localScale.y / 2)) - mouse.y < 0)
             {
-                anim.SetInteger("direction", 1);
+                //anim.SetInteger("direction", 1);
             }
             else
             {
-                anim.SetInteger("direction", 3);
+                //anim.SetInteger("direction", 3);
             }
         }
     }
@@ -101,15 +101,15 @@ public class PlayerController : MonoBehaviour
         float yMove = Input.GetAxisRaw("Vertical");
 
         moveVel = new Vector2(xMove, yMove) * speed;
-        rigidbody.velocity = moveVel;
+        rigidBody.velocity = moveVel;
 
-        if (rigidbody.velocity.magnitude == 0 && controllAble)
+        if (rigidBody.velocity.magnitude == 0 && controllAble)
         {
-            anim.SetBool("isMove", false);
+            //anim.SetBool("isMove", false);
         }
         else
         {
-            anim.SetBool("isMove", true);
+            //anim.SetBool("isMove", true);
         }
     }
 
@@ -123,21 +123,21 @@ public class PlayerController : MonoBehaviour
             chargeVel = new Vector2(1, 0).normalized;
         }*/
 
-        rigidbody.velocity = chargeVel * -2;
+        rigidBody.velocity = chargeVel * -2;
 
         yield return new WaitForSeconds(0.25f); //¼±µô
 
         isCharge = true;
 
         //rigidbody.velocity = chargeVel;
-        rigidbody.AddForce(chargeVel * chargeSpeed * 0.2f, ForceMode2D.Impulse);
+        rigidBody.AddForce(chargeVel * chargeSpeed * 0.2f, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(chargeLength); //µ¹Áø
 
         //GameManager.gameManager.mission.CheckCharge();
         isCharge = false;
 
-        rigidbody.velocity = Vector2.zero;
+        rigidBody.velocity = Vector2.zero;
         yield return new WaitForSeconds(0.25f); //ÈÄµô
 
         controllAble = true;

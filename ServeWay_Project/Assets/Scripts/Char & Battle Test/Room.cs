@@ -18,6 +18,7 @@ public class Room
     public Rect roomRect; //공간 안 방의 사각형 정보
     public int isCreated; //실제로 생성되었는지 + 시작정점까지의 길이 판별용
     public RoomType roomType; //방의 종류
+    public GameObject enemyGenerator; //방의 에너미 제너레이터 정보
 
     public Room()
     {

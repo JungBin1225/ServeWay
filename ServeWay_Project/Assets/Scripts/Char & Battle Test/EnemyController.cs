@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
     private float hp;
     private GameObject target;
     private Vector2 dir;
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D rigidBody;
     private Animator anim;
     private float coolTime;
 
@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
         coolTime = attackCoolTime;
 
         anim = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
         target = GameObject.FindGameObjectWithTag("Player");
 
         StartCoroutine(EnemyMove());
@@ -63,7 +63,7 @@ public class EnemyController : MonoBehaviour
         while(hp != 0)
         {
             dir = target.transform.position - transform.position;
-            anim.SetBool("move", true);
+            //anim.SetBool("move", true);
 
             if(!moveAble)
             {
@@ -73,7 +73,7 @@ public class EnemyController : MonoBehaviour
             if (dir.magnitude > range)
             {
                 //chase target
-                rigidbody.velocity = dir.normalized * speed;
+                rigidBody.velocity = dir.normalized * speed;
                 yield return null;
             }
             else
@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour
                 //move & attack
                 float posX = Random.Range(minPos.x, maxPos.x);
                 float posY = Random.Range(minPos.y, maxPos.y);
-                rigidbody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed;
+                rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed;
                 yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
             }
         }
@@ -126,16 +126,17 @@ public class EnemyController : MonoBehaviour
     {
         Debug.Log("aa");
         moveAble = false;
-        rigidbody.velocity = Vector2.zero;
-        rigidbody.AddForce((transform.position - player.transform.position).normalized * 100 * 100, ForceMode2D.Impulse);
+        rigidBody.velocity = Vector2.zero;
+        rigidBody.AddForce((transform.position - player.transform.position).normalized * 100 * 100, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(0.2f);
 
-        rigidbody.velocity = Vector2.zero;
+        rigidBody.velocity = Vector2.zero;
         yield return new WaitForSeconds(0.1f);
 
         moveAble = true;
     }
+
 
     public void SetVector(Vector2 min, Vector2 max)
     {
@@ -160,7 +161,7 @@ public class EnemyController : MonoBehaviour
         }
         else if(moveAble)
         {
-            rigidbody.velocity *= -1;
+            rigidBody.velocity *= -1;
         }
     }
 }

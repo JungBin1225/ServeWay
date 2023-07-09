@@ -31,6 +31,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tile bossTile; //보스방 타일
 
     [SerializeField] GameObject Player;
+    [SerializeField] GameObject EnemyGenerator;
 
 
     const int NUM_ROOM = 5; 
@@ -58,6 +59,8 @@ public class MapGenerator : MonoBehaviour
         CreateMap(); //방이랑 길 그리기
 
         DisplayRoomType(); //시작방, 주방, 보스방 표시
+        
+
 
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
     }
@@ -113,8 +116,6 @@ public class MapGenerator : MonoBehaviour
         roomCnt = UnityEngine.Random.Range(10, 21);
         tempCnt = roomCnt;
 
-       
-        
         //그래프 생성
         DFS(startX, startY, 1);
 
@@ -267,13 +268,13 @@ public class MapGenerator : MonoBehaviour
         /**여기 좌표는 모두 좌측 상단 기준**/
 
         //노드 생성 
-        LineRenderer nodeRenderer = Instantiate(node).GetComponent<LineRenderer>();
+        //LineRenderer nodeRenderer = Instantiate(node).GetComponent<LineRenderer>();
 
         roomList[ROW, COL].nodeRect = new Rect(horz, vert, (float)mapSize.x / 5, (float)mapSize.y / 5);
         Rect nodeRect = roomList[ROW, COL].nodeRect;
 
         //노드 안의 방 생성
-        LineRenderer roomRenderer = Instantiate(room).GetComponent<LineRenderer>();
+        //LineRenderer roomRenderer = Instantiate(room).GetComponent<LineRenderer>();
 
         float width = UnityEngine.Random.Range(nodeRect.width / 2, nodeRect.width - 1);
         float height = UnityEngine.Random.Range(nodeRect.height/2, nodeRect.height - 1);
@@ -283,6 +284,7 @@ public class MapGenerator : MonoBehaviour
         roomList[ROW, COL].roomRect = new Rect(x, y, width, height);
         Rect roomRect = roomList[ROW, COL].roomRect;
 
+        //룸타일 그리기
         for(float i= roomRect.x; i<roomRect.x + roomRect.width;i++)
         {
             for(float j=roomRect.y;j>roomRect.y-roomRect.height;j--)
@@ -309,6 +311,13 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+
+        //룸 하나당 에너미 제너레이터도 하나씩 생성
+        roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator);
+        roomList[ROW, COL].enemyGenerator.transform.position = new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2));
+        roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3(roomList[ROW, COL].roomRect.width, roomList[ROW, COL].roomRect.height);
+        BoxCollider2D boxCollider = roomList[ROW, COL].enemyGenerator.GetComponent<BoxCollider2D>();
+        //UnityEngine.Debug.LogFormat("boxCollider.size.x : {0} boxCollider.size.y : {1}", boxCollider.size.x, boxCollider.size.y);
     }
 
     void DrawLine(Vector2 from, Vector2 to)
@@ -355,7 +364,6 @@ public class MapGenerator : MonoBehaviour
             {
                 if (roomList[i, j].isCreated > 0)
                 {
-                    
                     //방이 만들어진 경우만 출력하기
                     DrawRoom(horzPoint, vertPoint, i, j);
                 }
