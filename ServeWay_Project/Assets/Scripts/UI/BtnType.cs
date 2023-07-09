@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandler
 {
     public BTNType currentType;
     public Transform buttonScale;
@@ -35,8 +35,8 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 mainGroup.blocksRaycasts = false;
                 break;
             case BTNType.Option:
-                CanvasGroupOn(optionGroup);
                 CanvasGroupOff(mainGroup);
+                CanvasGroupOn(optionGroup);
                 Debug.Log("¼³Á¤");
                 break;
             case BTNType.Sound:
@@ -77,6 +77,15 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void CanvasGroupOn(CanvasGroup cg)
     {
+        switch (currentType)
+        {
+            case BTNType.Start:
+                EventSystem.current.SetSelectedGameObject(cg.transform.Find("CloseBtn").GetChild(0).gameObject);
+                break;
+            case BTNType.Option:
+                EventSystem.current.SetSelectedGameObject(cg.transform.Find("BackBtn").GetChild(0).gameObject);
+                break;
+        }
         cg.alpha = 1;
         cg.interactable = true;
         cg.blocksRaycasts = true;
@@ -86,14 +95,27 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         cg.alpha = 0;
         cg.interactable = false;
         cg.blocksRaycasts = false;
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Canvas").transform.Find("MainMenu").Find("StartBtn").GetChild(0).gameObject);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        buttonScale.localScale = defaultScale * 1.2f;
+        EventSystem.current.SetSelectedGameObject(gameObject);
     }
+    /*
     public void OnPointerExit(PointerEventData eventData)
     {
         buttonScale.localScale = defaultScale;
+    }
+    */
+    private void Update()
+    {
+        if (EventSystem.current.currentSelectedGameObject == gameObject)
+        {
+            buttonScale.localScale = defaultScale * 1.2f;
+        } else
+        {
+            buttonScale.localScale = defaultScale;
+        }
     }
 }
