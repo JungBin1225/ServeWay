@@ -336,15 +336,48 @@ public class MapGenerator : MonoBehaviour
 
         for (float i=Mathf.Min(fromCenter.x,toCenter.x);i<=Mathf.Max(fromCenter.x,toCenter.x);i++)
         {
-            Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i , fromCenter.y , 0));
+            //가로 길
+            //float HorzCenterY = Mathf.Max(fromCenter.y - fromRect.height / 2, toCenter.y - toRect.height / 2);
+
+            Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, fromCenter.y, 0));
             tileMap.SetTile(tilePosition, roomTile);
+
+            //fromCenter.y-1은 toRect 위쪽 모서리보다는 크거나 같아야함
+            if (fromCenter.y - 1 <= toRect.y)
+            {
+                tilePosition = tileMap.WorldToCell(new Vector3(i, fromCenter.y - 1, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+            }
+
+            //fromCenter.y+1은 toRect 아래쪽 모서리 보다는 작거나 같아야함
+            if (fromCenter.y + 1 >= toRect.y-toRect.height)
+            {
+                tilePosition = tileMap.WorldToCell(new Vector3(i, fromCenter.y + 1, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+            }
+           
         }
 
         for (float i = Mathf.Min(fromCenter.y, toCenter.y); i <= Mathf.Max(fromCenter.y, toCenter.y); i++)
         {
+            //세로 길
             Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(toCenter.x , i, 0));
             tileMap.SetTile(tilePosition, roomTile);
-        }
+
+            //toCenter.x-1은 fromRect 왼쪽 끝 모서리 x보다는 크거나 같아야함
+            if (toCenter.x - 1 >=  fromRect.x) 
+            {
+               tilePosition = tileMap.WorldToCell(new Vector3(toCenter.x-1, i, 0));
+               tileMap.SetTile(tilePosition, roomTile);
+            }
+
+            //toCenter.x+1은 fromRect 오른쪽 끝 모서리 x보다는 작거나 같아야함
+            if (toCenter.x + 1 <= fromRect.x+fromRect.width)
+            {
+                tilePosition = tileMap.WorldToCell(new Vector3(toCenter.x + 1, i, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+            }
+         }
 
     }
 
