@@ -84,8 +84,8 @@ public class EnemyGenerator : MonoBehaviour
         UnityEngine.Debug.LogFormat("minX : {0} maxX : {1} posX : {2} posY : {3}", minX, maxX, posX,posY);
 
         GameObject enemy = Instantiate(enemyPrefab, new Vector3(posX, posY, 0), rot);
-        //enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
-        //enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
+        enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
+        enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

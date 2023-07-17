@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public bool controllAble;
     public bool isCharge;
 
+    public WeaponSlot weaponSlot;
+
     void Start()
     {
         controllAble = true;
@@ -31,7 +33,9 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        if(controllAble)
+        if (Time.timeScale == 0) { return; }
+
+        if (controllAble)
         {
             mousePos = UpdateMousePos();
             UpdateDirection(mousePos);

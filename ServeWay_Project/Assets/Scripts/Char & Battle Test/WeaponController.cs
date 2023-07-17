@@ -16,23 +16,26 @@ public class WeaponController : MonoBehaviour
     public float speed;
     public GameObject bulletPrefab;
     public GameObject effectPrefab;
+    public GameObject dropPrefab;
 
     void Start()
     {
-        player = transform.parent.parent.gameObject.GetComponent<PlayerController>();
-        playerSprite = transform.parent.parent.gameObject.GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        playerSprite = player.GetComponent<SpriteRenderer>();
         weaponSprite = GetComponent<SpriteRenderer>();
 
         coolTime = 0;
         shootAble = true;
     }
 
-    
+
     void Update()
     {
+        if (Time.timeScale == 0) { return; }
+
         SetTransform();
 
-        if(coolTime > 0)
+        if (coolTime > 0)
         {
             coolTime -= Time.deltaTime;
             shootAble = false;
@@ -41,15 +44,15 @@ public class WeaponController : MonoBehaviour
         {
             shootAble = true;
         }
-        
-        if(Input.GetMouseButton(0))
+
+        if (Input.GetMouseButton(0))
         {
-            if(shootAble && player.controllAble)
+            if (shootAble && player.controllAble)
             {
                 GenerateBullet(speed, damage, mousePos);
                 coolTime = shootDuration;
             }
-            
+
         }
     }
 

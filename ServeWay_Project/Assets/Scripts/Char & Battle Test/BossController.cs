@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
+    private MissonManager misson;
+
     public BossRoom room;
     public GameObject damageEffect;
     public float hp;
 
-
     void Start()
     {
+        misson = FindObjectOfType<MissonManager>();
         //GameManager.gameManager.mission.boss = this.gameObject;
     }
 
     void Update()
     {
-        if(hp <= 0)
+        if (hp <= 0)
         {
             BossDie();
         }
@@ -27,7 +29,7 @@ public class BossController : MonoBehaviour
         room.isClear = true;
         room.OpenDoor();
         room.ActiveStair();
-        //GameManager.gameManager.isBossStage = false;
+        GameManager.gameManager.isBossStage = false;
         Destroy(this.gameObject);
     }
 
@@ -36,5 +38,6 @@ public class BossController : MonoBehaviour
         GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
 
         hp -= damage;
+        misson.OccurreEvent(1, damage);
     }
 }

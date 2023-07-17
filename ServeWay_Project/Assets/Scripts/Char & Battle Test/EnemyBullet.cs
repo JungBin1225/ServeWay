@@ -10,7 +10,7 @@ public class EnemyBullet : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -42,7 +42,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
         }
