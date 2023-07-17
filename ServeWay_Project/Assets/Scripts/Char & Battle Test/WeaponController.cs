@@ -81,7 +81,7 @@ public class WeaponController : MonoBehaviour
     private void GenerateBullet(float speed, float damage, Vector3 mousePos)
     {
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-        GameObject effect = Instantiate(effectPrefab, transform);
+        //GameObject effect = Instantiate(effectPrefab, transform);
         bullet.GetComponent<BulletController>().SetTarget(-transform.up);
         bullet.GetComponent<BulletController>().SetSpeed(speed);
         bullet.GetComponent<BulletController>().SetDamage(damage);

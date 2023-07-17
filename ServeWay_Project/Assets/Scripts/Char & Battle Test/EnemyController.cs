@@ -53,7 +53,7 @@ public class EnemyController : MonoBehaviour
 
     public void GetDamage(float damage, Vector3 effectPos)
     {
-        GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
+        //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
 
         hp -= damage;
     }

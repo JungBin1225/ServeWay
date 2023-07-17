@@ -47,7 +47,7 @@ public class EnemyBullet : MonoBehaviour
             collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
         }
 
-        if (collision.tag == "Player" || collision.tag == "Wall")
+        if (collision.tag != "Enemy")
         {
             Destroy(this.gameObject);
         }
