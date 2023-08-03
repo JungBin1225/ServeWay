@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 mousePos;
     private float coolTime;
     private Vector2 moveVel;
+    private MissonManager misson;
+    private float missonTime;
 
     public float speed;
     public float chargeSpeed;
@@ -25,9 +27,11 @@ public class PlayerController : MonoBehaviour
         controllAble = true;
         isCharge = false;
         coolTime = 0;
+        missonTime = 0;
 
         anim = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
+        misson = FindObjectOfType<MissonManager>();
     }
 
     
@@ -52,18 +56,35 @@ public class PlayerController : MonoBehaviour
             coolTime = 0;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && controllAble)
         {
             if(coolTime == 0)
             {
                 StartCoroutine(UseCharge());
+                if (GameManager.gameManager.isBossStage)
+                {
+                    if (missonTime <= 0)
+                    {
+                        missonTime = 30;
+                    }
+                    misson.OccurreEvent(1, 1);
+                    misson.OccurreEvent(3, 0);
+                }
             }
             else
             {
-                Debug.Log("Cool Time!");
+                //Debug.Log("Cool Time!");
             }
         }
-        
+
+        if (missonTime > 0)
+        {
+            missonTime -= Time.deltaTime;
+        }
+        else
+        {
+            misson.OccurreEvent(1, 0);
+        }
     }
 
     public Vector3 UpdateMousePos()

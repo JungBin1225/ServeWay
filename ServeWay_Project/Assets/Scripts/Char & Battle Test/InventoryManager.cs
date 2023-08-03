@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public Dictionary<string, int> inventory;
+    public Dictionary<IngredientList.IngredientsName, int> inventory;
     public InventoryUI InventoryUI;
 
     void Start()
     {
-        inventory = new Dictionary<string, int>();
+        inventory = new Dictionary<IngredientList.IngredientsName, int>();
         InventoryUI = FindObjectOfType<InventoryUI>();
     }
 
@@ -19,7 +19,7 @@ public class InventoryManager : MonoBehaviour
         
     }
 
-    public void GetItem(string itemName, int amount)
+    public void GetItem(IngredientList.IngredientsName itemName, int amount)
     {
         if(inventory.ContainsKey(itemName))
         {
@@ -30,13 +30,13 @@ public class InventoryManager : MonoBehaviour
             inventory.Add(itemName, amount);
         }
 
-        foreach(string name in inventory.Keys)
+        foreach(IngredientList.IngredientsName name in inventory.Keys)
         {
             Debug.Log(name + ", " + inventory[name]);
         }
     }
 
-    public void DeleteItem(string itemName, int amount)
+    public void DeleteItem(IngredientList.IngredientsName itemName, int amount)
     {
         if(inventory.ContainsKey(itemName))
         {
@@ -50,7 +50,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        foreach (string name in inventory.Keys)
+        foreach (IngredientList.IngredientsName name in inventory.Keys)
         {
             Debug.Log(name + ", " + inventory[name]);
         }

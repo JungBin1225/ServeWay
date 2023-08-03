@@ -645,7 +645,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4ab4560075fc042a083d26a72ae702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossDamage: 0
+  missonName:
+  - "\uBCF4\uC2A4\uC758 \uB9CC\uC871\uB3C4 {0} \uCC44\uC6B0\uAE30\\n({1} / {0})"
+  - "30\uCD08 \uB0B4\uC5D0 {0}\uBC88 \uB300\uC2DC\uD558\uAE30\\n({1} / {0})"
+  - "{0}\uCD08 \uB3D9\uC548 \uD53C\uACA9 \uB2F9\uD558\uC9C0 \uC54A\uAE30\\n({1} /
+    {0})"
+  - "{0} \uB9CC\uC871\uB3C4\uB97C \uCC44\uC6B8 \uB3D9\uC548 \uB300\uC2DC\uD558\uC9C0
+    \uC54A\uAE30\\n({1} / {0})"
+  missonUI:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &561119124
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,6 +890,52 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!1 &609882560
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 609882562}
+  - component: {fileID: 609882561}
+  m_Layer: 0
+  m_Name: DataController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &609882561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609882560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da136880a7d0bd4cbf39784d8e9fe3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FoodInfoList: {fileID: 11400000, guid: c663e98d585017b4b84651ade6d318b1, type: 2}
+  IngredientList: {fileID: 11400000, guid: e1c6ac973bea5d14b968f425e7d10545, type: 2}
+--- !u!4 &609882562
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609882560}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.34219545, y: -0.20952262, z: -0.06789132}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &676345009
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1513,10 +1568,6 @@ MonoBehaviour:
   - {fileID: 30682471}
   - {fileID: 378167006}
   - {fileID: 1044148965}
-  itemNameList:
-  - Cans
-  itemSpriteList:
-  - {fileID: 21300000, guid: 5206e60aae2b34244af2a47248cfdfc6, type: 3}
   panel: {fileID: 1011498641}
 --- !u!1 &1236409403
 GameObject:
