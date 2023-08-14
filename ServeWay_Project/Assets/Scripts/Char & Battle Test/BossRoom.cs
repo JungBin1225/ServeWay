@@ -24,7 +24,7 @@ public class BossRoom : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private IEnumerator BossIntro()
@@ -55,7 +55,7 @@ public class BossRoom : MonoBehaviour
 
     public void CloseDoor()
     {
-        foreach(GameObject door in doorList)
+        foreach (GameObject door in doorList)
         {
             door.SetActive(true);
         }
@@ -76,9 +76,9 @@ public class BossRoom : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player" && !isClear)
+        if (collision.gameObject.tag == "Player" && !isClear)
         {
-            //GameManager.gameManager.isBossStage = true;
+            GameManager.gameManager.isBossStage = true;
             StartCoroutine(BossIntro());
         }
     }

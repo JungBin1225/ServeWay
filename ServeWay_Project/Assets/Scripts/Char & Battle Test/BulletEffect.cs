@@ -11,10 +11,10 @@ public class BulletEffect : MonoBehaviour
         ani = GetComponent<Animator>();
     }
 
-    
+
     void Update()
     {
-        if(ani.GetCurrentAnimatorStateInfo(0).normalizedTime > ani.GetCurrentAnimatorStateInfo(0).length + 0.5f)
+        if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime > ani.GetCurrentAnimatorStateInfo(0).length + 0.5f)
         {
             Destroy(transform.parent.gameObject);
         }

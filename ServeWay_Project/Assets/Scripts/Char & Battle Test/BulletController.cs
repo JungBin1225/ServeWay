@@ -47,7 +47,7 @@ public class BulletController : MonoBehaviour
         {
             collision.gameObject.GetComponent<EnemyController>().GetDamage(damage, this.transform.position);
         }
-        else if(collision.tag == "Boss")
+        else if (collision.tag == "Boss")
         {
             collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position);
         }

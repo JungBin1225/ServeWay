@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    private Vector3 target;
-    private float damage;
-    private float speed;
+    protected Vector3 target;
+    protected float damage;
+    protected float speed;
 
-    void Start()
+    protected void Start()
     {
-        
+
     }
 
-    void Update()
+    protected void Update()
     {
         Fire();
     }
@@ -42,12 +42,14 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        Debug.Log(collision.gameObject.tag);
+
+        if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
         }
 
-        if (collision.tag == "Player" || collision.tag == "Wall")
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Wall")
         {
             Destroy(this.gameObject);
         }
