@@ -32,6 +32,8 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] GameObject Player;
     [SerializeField] GameObject EnemyGenerator;
+    [SerializeField] GameObject BossGenerator;
+    [SerializeField] GameObject createTablePrefab;
 
 
     const int NUM_ROOM = 5; 
@@ -459,17 +461,27 @@ public class MapGenerator : MonoBehaviour
             {
                 ROW = startY;COL = startX;
                 nowTile = startRoomTile;
-               
-            }else if (k == 1)
+                Destroy(roomList[ROW, COL].enemyGenerator);
+            }
+            else if (k == 1)
             {
                 ROW = kitchenPos.Value; COL = kitchenPos.Key;
                 nowTile = kitchenTile;
 
-            }else if (k == 2)
+                Destroy(roomList[ROW, COL].enemyGenerator);
+                GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2), 0), Quaternion.Euler(0, 0, 0));
+            }
+            else if (k == 2)
             {
                 ROW = bossPos.Value; COL = bossPos.Key;
                 nowTile = bossTile;
+
+                Destroy(roomList[ROW, COL].enemyGenerator);
+                roomList[ROW, COL].enemyGenerator = Instantiate(BossGenerator);
+                roomList[ROW, COL].enemyGenerator.transform.position = new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2));
+                roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3(roomList[ROW, COL].roomRect.width, roomList[ROW, COL].roomRect.height);
             }
+            
 
             Rect roomRect = roomList[ROW, COL].roomRect;
 

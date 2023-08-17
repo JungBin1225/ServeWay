@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BossRoom : MonoBehaviour
 {
@@ -11,14 +12,20 @@ public class BossRoom : MonoBehaviour
     public GameObject intro;
     public GameObject startButton;
     public GameObject bossPrefab;
-    public GameObject stair;
+    public GameObject stairPrefab;
     public List<GameObject> doorList;
 
     void Start()
     {
         isClear = false;
+
+        intro = GameObject.Find("BossIntro");
+        startButton = GameObject.Find("IntroButton");
+
         intro.SetActive(false);
         startButton.SetActive(false);
+
+        startButton.GetComponent<Button>().onClick.AddListener(OnStartClicked);
     }
 
     // Update is called once per frame
@@ -71,7 +78,7 @@ public class BossRoom : MonoBehaviour
 
     public void ActiveStair()
     {
-        stair.SetActive(true);
+        GameObject stair = Instantiate(stairPrefab, transform.position, transform.rotation);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
