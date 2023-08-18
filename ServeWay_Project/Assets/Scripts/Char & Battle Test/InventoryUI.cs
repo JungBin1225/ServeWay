@@ -32,8 +32,11 @@ public class InventoryUI : MonoBehaviour
             panel.SetActive(!panel.activeSelf);
             if(panel.activeSelf)
             {
-                Time.timeScale = 0;
-                UpdateUI();
+                if(Time.timeScale == 1)
+                {
+                    Time.timeScale = 0;
+                    UpdateUI();
+                }
             }
             else
             {
@@ -48,7 +51,7 @@ public class InventoryUI : MonoBehaviour
         foreach(IngredientList.IngredientsName item in inventory.inventory.Keys)
         {
             buttonList[i].transform.GetChild(0).gameObject.SetActive(true);
-            buttonList[i].GetComponent<Image>().sprite = itemList.ingredientInfo[item];
+            buttonList[i].GetComponent<Image>().sprite = itemList.ingredientList[itemList.FindIndex(item)].sprite;
             buttonList[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[item].ToString();
 
             i++;
@@ -68,11 +71,11 @@ public class InventoryUI : MonoBehaviour
     {
         IngredientList.IngredientsName name;
 
-        foreach(IngredientList.IngredientsName itemName in itemList.ingredientInfo.Keys)
+        foreach(Ingredient item in itemList.ingredientList)
         {
-            if(itemList.ingredientInfo[itemName] == buttonList[num].GetComponent<Image>().sprite)
+            if(item.sprite == buttonList[num].GetComponent<Image>().sprite)
             {
-                name = itemName;
+                name = item.name;
                 inventory.DeleteItem(name, 1);
                 UpdateUI();
                 break;

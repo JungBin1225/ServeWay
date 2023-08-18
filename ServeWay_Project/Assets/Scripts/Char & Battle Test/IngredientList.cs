@@ -11,9 +11,19 @@ public class IngredientList : ScriptableObject
     public enum IngredientsName{Pumpkin, Strawberrie};
 
     [SerializeField]
-    public IngredientInfo ingredientInfo;
-}
+    public List<Ingredient> ingredientList;
 
-[System.Serializable]
-public class IngredientInfo : SerializableDictionary<IngredientList.IngredientsName, Sprite> { }
+    public int FindIndex(IngredientsName name)
+    {
+        foreach(Ingredient ingredient in ingredientList)
+        {
+            if(ingredient.name == name)
+            {
+                return ingredient.index;
+            }
+        }
+
+        return 1000;
+    }
+}
 

@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3462c623babeea44eb3448dae3452eac, type: 3}
   m_Name: Ingredient List
   m_EditorClassIdentifier: 
-  ingredientInfo:
-    m_keys: 0000000001000000
-    m_values:
-    - {fileID: 21300000, guid: 5206e60aae2b34244af2a47248cfdfc6, type: 3}
-    - {fileID: 21300000, guid: 0ed29ad20079cf04aa2ee03495b4cd48, type: 3}
+  ingredientList:
+  - index: 0
+    name: 0
+    sprite: {fileID: 21300000, guid: 5206e60aae2b34244af2a47248cfdfc6, type: 3}
+    prefab: {fileID: 1406974120171146217, guid: a2f097f1a7f70854180350683a0223fd, type: 3}
+  - index: 1
+    name: 1
+    sprite: {fileID: 21300000, guid: 3a4199454ab180b41baf68b9e8729b9c, type: 3}
+    prefab: {fileID: 1406974120171146217, guid: b93223be088fbd74d8cf0237a6023a7d, type: 3}
