@@ -62,8 +62,7 @@ public class MapGenerator : MonoBehaviour
 
         DisplayRoomType(); //시작방, 주방, 보스방 표시
         
-
-
+        //플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
     }
 
@@ -286,18 +285,42 @@ public class MapGenerator : MonoBehaviour
         roomList[ROW, COL].roomRect = new Rect(x, y, width, height);
         Rect roomRect = roomList[ROW, COL].roomRect;
 
+        //room의 맨 왼쪽 위 사각형 좌표
+        Vector3 temp = new Vector3(0, 0, 0);
+        //room의 맨 오른쪽 아래 사각형 좌표
+        Vector3 temp2 = new Vector3(0, 0, 0);
+
         //룸타일 그리기
-        for(float i= roomRect.x; i<roomRect.x + roomRect.width;i++)
+        for (float i= roomRect.x; i<roomRect.x + roomRect.width;i++)
         {
             for(float j=roomRect.y;j>roomRect.y-roomRect.height;j--)
             {
                 Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, j, 0));
+                
+                if(i==roomRect.x && j == roomRect.y)
+                {
+                    //처음
+                    temp = new Vector3(tilePosition.x+0.5f,tilePosition.y+0.5f,tilePosition.z);
+                    
+                }
+
+                if ((int)i == (int)(roomRect.x + roomRect.width - 1) && (int)j == (int)(roomRect.y - roomRect.height + 1))
+                {
+                    //마지막
+                    //temp2 = new Vector3(tilePosition.x+1.5f, tilePosition.y+0.5f, tilePosition.z);
+                   
+                }
+
+                Debug.LogFormat("i = {0} j = {1} {2} {3}", i,j, (roomRect.x + roomRect.width - 1), (roomRect.y - roomRect.height + 1));
+
                 if (tileMap.GetTile(tilePosition) == outTile)
                 {
                     if(i==roomRect.x&& tileMap.GetTile(tileMap.WorldToCell(new Vector3(i - 1, j, 0))) == roomTile)
                     {
                         //만약 바로 왼쪽 벽이 룸타일이면
                         //여기도 룸타일을 생성하면 벽 구분을 할 수 없으므로 룸타일을 생성해주지 않는다.
+                        temp = new Vector3(tilePosition.x + 1.5f, tilePosition.y + 0.5f, tilePosition.z);
+
                     }
                     else
                     {
@@ -314,12 +337,22 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
+        //position 피벗이 중앙임
         //룸 하나당 에너미 제너레이터도 하나씩 생성
         roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator);
-        roomList[ROW, COL].enemyGenerator.transform.position = new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2));
-        roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3(roomList[ROW, COL].roomRect.width, roomList[ROW, COL].roomRect.height);
-        BoxCollider2D boxCollider = roomList[ROW, COL].enemyGenerator.GetComponent<BoxCollider2D>();
-        //UnityEngine.Debug.LogFormat("boxCollider.size.x : {0} boxCollider.size.y : {1}", boxCollider.size.x, boxCollider.size.y);
+        temp2 = new Vector3(temp.x + (int)roomList[ROW, COL].roomRect.width, temp.y - (int)roomList[ROW, COL].roomRect.height);
+
+        //room의 맨 왼쪽 위 사각형 표시
+        //Instantiate(EnemyGenerator).transform.position = new Vector3(temp.x, temp.y);
+        //room의 맨 오른쪽 아래 사각형 표시
+        //Instantiate(EnemyGenerator).transform.position = new Vector3(temp2.x, temp2.y); 
+
+        //EnemyGenerator 크기 room 크기에 맞추기 조정
+        roomList[ROW, COL].enemyGenerator.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 ); 
+        roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1,  (int)roomList[ROW, COL].roomRect.height + 1);
+
+
+
     }
 
     void DrawLine(Vector2 from, Vector2 to)
@@ -331,22 +364,59 @@ public class MapGenerator : MonoBehaviour
 
     void DrawRoad(int x,int y,int nextX,int nextY)
     {
+        //x,y nextX, nextY
         Rect fromRect = roomList[y, x].roomRect;
         Rect toRect = roomList[nextY, nextX].roomRect;
         Vector2 fromCenter = new Vector2(fromRect.x + fromRect.width/2 , fromRect.y - fromRect.height/2);
         Vector2 toCenter = new Vector2(toRect.x + toRect.width/2 , toRect.y - toRect.height/2);
 
-        for (float i=Mathf.Min(fromCenter.x,toCenter.x);i<=Mathf.Max(fromCenter.x,toCenter.x);i++)
+        //가로 길
+        //바로 오른쪽, 왼쪽 방에만 길을 그릴 수 있도록 설정하기
+        if (x == nextX+1 || x == nextX-1)
         {
-            Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i , fromCenter.y , 0));
-            tileMap.SetTile(tilePosition, roomTile);
+            for (float i = Mathf.Min(fromCenter.x, toCenter.x); i <= Mathf.Max(fromCenter.x, toCenter.x); i++)
+            {
+
+                float distanceY = (Mathf.Max(fromRect.y, toRect.y) - Mathf.Min(fromRect.y - fromRect.height, toRect.y - toRect.height)) / 2;
+                float pointY = Mathf.Max(fromRect.y, toRect.y) - distanceY;
+
+                Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, pointY, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+
+
+                tilePosition = tileMap.WorldToCell(new Vector3(i, pointY - 1, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+
+
+                tilePosition = tileMap.WorldToCell(new Vector3(i, pointY + 1, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+
+            }
         }
 
-        for (float i = Mathf.Min(fromCenter.y, toCenter.y); i <= Mathf.Max(fromCenter.y, toCenter.y); i++)
+        //세로 길
+        //바로 위쪽, 아래쪽 방에만 길을 그릴 수 있도록 설정하기
+        if (y == nextY+1 || y == nextY-1)
         {
-            Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(toCenter.x , i, 0));
-            tileMap.SetTile(tilePosition, roomTile);
+            
+            for (float i = Mathf.Min(fromCenter.y, toCenter.y); i <= Mathf.Max(fromCenter.y, toCenter.y); i++)
+            {
+                float distanceX = (Mathf.Max(fromRect.x + fromRect.width, toRect.x + toRect.width) - Mathf.Min(fromRect.x, toRect.x)) / 2;
+                float pointX = Mathf.Min(fromRect.x, toRect.x) + distanceX;
+
+                Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(pointX, i, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+
+
+                tilePosition = tileMap.WorldToCell(new Vector3(pointX - 1, i, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+
+                tilePosition = tileMap.WorldToCell(new Vector3(pointX + 1, i, 0));
+                tileMap.SetTile(tilePosition, roomTile);
+
+            }
         }
+        
 
     }
 
