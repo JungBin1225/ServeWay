@@ -33,6 +33,12 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] GameObject Player;
     [SerializeField] GameObject EnemyGenerator;
 
+    // 미니맵
+    [SerializeField] Tilemap miniTileMap;
+    [SerializeField] Tile miniRoomTile;
+    [SerializeField] Tile miniWallTile;
+    [SerializeField] Tile miniOutTile;
+
 
     const int NUM_ROOM = 5; 
     Room[ , ] roomList = new Room[NUM_ROOM,NUM_ROOM];
@@ -106,6 +112,7 @@ public class MapGenerator : MonoBehaviour
             for(int j=-10;j<mapSize.y+10;j++)
             {
                 tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), outTile);
+                miniTileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), miniOutTile);
             }
         }
     }
@@ -300,6 +307,7 @@ public class MapGenerator : MonoBehaviour
                     else
                     {
                         tileMap.SetTile(tilePosition, roomTile);
+                        miniTileMap.SetTile(tilePosition, miniRoomTile);
                     }
                    
 
@@ -308,6 +316,7 @@ public class MapGenerator : MonoBehaviour
                     //만약 같은 위치에 여러번 룸타일이 겹친다면
                     //벽이 생기지 않을 수 있으므로 바깥타일로 교체
                     tileMap.SetTile(tilePosition, outTile);
+                    miniTileMap.SetTile(tilePosition, miniOutTile);
                 }
             }
         }
@@ -338,12 +347,14 @@ public class MapGenerator : MonoBehaviour
         {
             Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i , fromCenter.y , 0));
             tileMap.SetTile(tilePosition, roomTile);
+            miniTileMap.SetTile(tilePosition, miniRoomTile);
         }
 
         for (float i = Mathf.Min(fromCenter.y, toCenter.y); i <= Mathf.Max(fromCenter.y, toCenter.y); i++)
         {
             Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(toCenter.x , i, 0));
             tileMap.SetTile(tilePosition, roomTile);
+            miniTileMap.SetTile(tilePosition, miniRoomTile);
         }
 
     }
@@ -393,6 +404,7 @@ public class MapGenerator : MonoBehaviour
                             if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + x, j - mapSize.y / 2 + y, 0)) == roomTile)
                             {
                                 tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile);
+                                miniTileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), miniWallTile);
                                 break;
                             }
                         }
@@ -483,6 +495,7 @@ public class MapGenerator : MonoBehaviour
                     {
 
                         tileMap.SetTile(tilePosition, nowTile);
+                        miniTileMap.SetTile(tilePosition, nowTile);
                     }
                  
 
