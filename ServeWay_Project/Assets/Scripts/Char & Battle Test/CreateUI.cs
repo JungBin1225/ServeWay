@@ -7,15 +7,19 @@ using TMPro;
 public class CreateUI : MonoBehaviour
 {
     private List<GameObject> buttonList;
+    private List<GameObject> ingredientList;
     private FoodInfoList foodInfo;
     private FoodInfo selectedFood;
+    private IngredientList ingredientInfo;
     private InventoryManager inventory;
 
     public GameObject explaneUI;
+    public GameObject ingredientUI;
 
     void Start()
     {
         foodInfo = FindObjectOfType<DataController>().FoodInfoList;
+        ingredientInfo = FindObjectOfType<DataController>().IngredientList;
         inventory = FindObjectOfType<InventoryManager>();
 
         buttonList = new List<GameObject>();
@@ -25,6 +29,12 @@ public class CreateUI : MonoBehaviour
             {
                 buttonList.Add(transform.GetChild(i).gameObject);
             }
+        }
+
+        ingredientList = new List<GameObject>();
+        for(int i = 0; i < ingredientUI.transform.childCount; i++)
+        {
+            ingredientList.Add(ingredientUI.transform.GetChild(i).gameObject);
         }
     }
 
@@ -64,6 +74,20 @@ public class CreateUI : MonoBehaviour
 
                 explaneUI.transform.GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
                 explaneUI.transform.GetChild(1).GetComponent<TMP_Text>().text = food.foodName;
+
+                for(int i = 0; i < ingredientList.Count; i++)
+                {
+                    ingredientList[i].SetActive(false);
+                }
+
+                int index = 0;
+
+                foreach (IngredientList.IngredientsName name in food.needIngredient.Keys)
+                {
+                    ingredientList[index].SetActive(true);
+                    ingredientList[index].GetComponent<Image>().sprite = ingredientInfo.ingredientList[ingredientInfo.FindIndex(name)].sprite;
+                    ingredientList[index].GetComponentInChildren<TMP_Text>().text = string.Format("X {0}", food.needIngredient[name].ToString());
+                }
             }
         }
     }
