@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MissonManager : MonoBehaviour
 {
@@ -69,28 +70,28 @@ public class MissonManager : MonoBehaviour
                 targetAmount[index] = Random.Range(20, 50);
 
                 matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
                 break;
             case 1:
                 missonEvent += DashInTime;
                 targetAmount[index] = Random.Range(2, 5);
 
                 matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
                 break;
             case 2:
                 missonEvent += NoHitInTime;
                 targetAmount[index] = Random.Range(20, 60);
 
                 matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F1"));
+                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F1"));
                 break;
             case 3:
                 missonEvent += DamageNoDash;
                 targetAmount[index] = Random.Range(20, 50);
 
                 matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
                 break;
             case 4:
                 break;
@@ -110,12 +111,12 @@ public class MissonManager : MonoBehaviour
 
             if (isClear != (nowAmount[missonID] >= targetAmount[missonID]))
             {
-                matchedUI[missonID].GetComponent<Text>().color = new Color(0, 1, 0);
+                matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            matchedUI[missonID].GetComponent<Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
+            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
             //UI에 수치 갱신 reload num in UI
         }
     }
@@ -141,12 +142,12 @@ public class MissonManager : MonoBehaviour
 
             if (isClear != (nowAmount[missonID] >= targetAmount[missonID]))
             {
-                matchedUI[missonID].GetComponent<Text>().color = new Color(0, 1, 0);
+                matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            matchedUI[missonID].GetComponent<Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
+            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
             //UI에 수치 갱신 reload num in UI
         }
     }
@@ -168,12 +169,12 @@ public class MissonManager : MonoBehaviour
 
             if (isClear != (nowAmount[missonID] >= targetAmount[missonID]))
             {
-                matchedUI[missonID].GetComponent<Text>().color = new Color(0, 1, 0);
+                matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            matchedUI[missonID].GetComponent<Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString("F1"));
+            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString("F1"));
             //UI에 수치 갱신 reload num in UI
         }
     }
@@ -195,12 +196,12 @@ public class MissonManager : MonoBehaviour
 
             if (isClear != (nowAmount[missonID] >= targetAmount[missonID]))
             {
-                matchedUI[missonID].GetComponent<Text>().color = new Color(0, 1, 0);
+                matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            matchedUI[missonID].GetComponent<Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
+            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
             //UI에 수치 갱신 reload num in UI
         }
     }

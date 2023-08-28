@@ -6,15 +6,19 @@ public class Kitchen : MonoBehaviour
 {
     private FoodInfoList foodInfo;
     private InventoryManager Inventory;
-    private string list;
+    private List<string> list;
     private bool isTouch;
+    private CreateUI createUI;
 
     void Start()
     {
-        list = "";
+        list = new List<string>();
         isTouch = false;
         Inventory = FindObjectOfType<InventoryManager>();
         foodInfo = FindObjectOfType<DataController>().FoodInfoList;
+        createUI = FindObjectOfType<CreateUI>();
+
+        createUI.gameObject.SetActive(false);
     }
 
     
@@ -24,7 +28,14 @@ public class Kitchen : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.F))
             {
-                CreatableList();
+                if(Time.timeScale == 1)
+                {
+                    CreatableList();
+                    createUI.gameObject.SetActive(true);
+                    createUI.SetList(list);
+                    list.Clear();
+                    Time.timeScale = 0;
+                }
             }
         }
     }
@@ -35,7 +46,7 @@ public class Kitchen : MonoBehaviour
         {
             if(CheckIngredient(food.needIngredient, Inventory.inventory))
             {
-                Debug.Log(food.foodName);
+                list.Add(food.foodName);
             }
         }
     }

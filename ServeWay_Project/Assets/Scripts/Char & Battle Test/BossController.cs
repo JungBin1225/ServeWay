@@ -62,7 +62,7 @@ public class BossController : MonoBehaviour
 
     public void GetDamage(float damage, Vector3 effectPos)
     {
-        GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
+        //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
 
         hp -= damage;
         misson.OccurreEvent(0, damage);
@@ -236,9 +236,9 @@ public class BossController : MonoBehaviour
         StartCoroutine(EnemyMove());
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != "Player")
+        if (collision.gameObject.tag == "Wall")
         {
             rigidbody.velocity *= -1;
         }

@@ -10,8 +10,12 @@ public class EnemyGenerator : MonoBehaviour
     public List<GameObject> doorList;
     public int enemyAmount;
 
+    // 미니맵
+    [SerializeField] GameObject miniPlayerIcon;
+
     private Dictionary<GameObject, int> spawnlist;
     private BoxCollider2D boxCollider;
+    private IngredientList ingredientList;
     private bool isClear;
     private bool isStarted = false;
     //Start() 함수가 끝까지 실행된 이후에 true로 바뀜
@@ -21,6 +25,7 @@ public class EnemyGenerator : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         spawnlist = new Dictionary<GameObject, int>();
+        ingredientList = FindObjectOfType<DataController>().IngredientList;
         isClear = false;
     
 
@@ -49,8 +54,10 @@ public class EnemyGenerator : MonoBehaviour
             foreach (GameObject door in doorList)
             {
                 door.SetActive(false);
-                this.gameObject.SetActive(false);
             }
+
+            DropIngredient(1, 4);
+            this.gameObject.SetActive(false);
         }
     }
 
@@ -88,8 +95,33 @@ public class EnemyGenerator : MonoBehaviour
         enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
     }
 
+    private void DropIngredient(int min, int max)
+    {
+        int dropAmount = Random.Range(min, max + 1);
+        float radius = 2.5f;
+
+        for (int i = 0; i < dropAmount; i++)
+        {
+            float angle = i * Mathf.PI * 2 / dropAmount;
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+            Vector3 pos = transform.position + new Vector3(x, y, 0);
+            float angleDegrees = -angle * Mathf.Rad2Deg;
+            Instantiate(RandomIngredient(), pos, Quaternion.Euler(0, 0, 0));
+        }
+    }
+
+    private GameObject RandomIngredient()
+    {
+        int randomIndex = Random.Range(0, ingredientList.ingredientList.Count);
+
+        return ingredientList.ingredientList[randomIndex].prefab;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        GameObject.Find("MiniPlayerIcon").transform.position = gameObject.transform.position;
+        
         if(collision.gameObject.tag == "Player" && !isClear && isStarted)
         {
             foreach (GameObject door in doorList)
