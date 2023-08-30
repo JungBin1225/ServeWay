@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     public Texture2D cursorImage;
     public bool isBossStage;
-    //public BossMission mission;
+    public CharData charData;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        //mission = this.gameObject.GetComponent<BossMission>();
+        charData = gameObject.GetComponent<CharData>();
         isBossStage = false;
         Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
     }
