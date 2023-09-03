@@ -265,28 +265,46 @@ public class MapGenerator : MonoBehaviour
     void DrawRoom(float horz,float vert,int ROW,int COL)
     {
         /**여기 좌표는 모두 좌측 상단 기준**/
-
-        //노드 생성 
-        //LineRenderer nodeRenderer = Instantiate(node).GetComponent<LineRenderer>();
+        
+        //노드 생성(디버그용)
+        /*
+        LineRenderer nodeRenderer = Instantiate(node).GetComponent<LineRenderer>();
+        nodeRenderer.SetPosition(0, new Vector2(horz, vert - (float)mapSize.y / 5)); //좌측 하단
+        nodeRenderer.SetPosition(1, new Vector2(horz + (float)mapSize.x / 5, vert- (float)mapSize.y / 5)); //우측 하단
+        nodeRenderer.SetPosition(2, new Vector2(horz + (float)mapSize.x / 5, vert)); //우측 상단
+        nodeRenderer.SetPosition(3, new Vector2(horz, vert)); //좌측 상단
+        */
 
         roomList[ROW, COL].nodeRect = new Rect(horz, vert, (float)mapSize.x / 5, (float)mapSize.y / 5);
         Rect nodeRect = roomList[ROW, COL].nodeRect;
 
-        //노드 안의 방 생성
-        //LineRenderer roomRenderer = Instantiate(room).GetComponent<LineRenderer>();
-
-        float width = UnityEngine.Random.Range(nodeRect.width / 2, nodeRect.width - 1);
+        //width 범위의 최대값을  nodeRect.width-2까지 잡아야 방끼리 겹침 문제가 안생김
+        float width = UnityEngine.Random.Range(nodeRect.width / 2, nodeRect.width - 2);
         float height = UnityEngine.Random.Range(nodeRect.height/2, nodeRect.height - 1);
-        float x = nodeRect.x + UnityEngine.Random.Range(1,nodeRect.width-width);
-        float y = nodeRect.y - UnityEngine.Random.Range(1,nodeRect.height-height);
+        float x = nodeRect.x + UnityEngine.Random.Range(1,nodeRect.width-width-1);
+        float y = nodeRect.y - UnityEngine.Random.Range(1,nodeRect.height-height-1);
+
+        // 노드 안의 방 생성(디버그용)
+        /*
+        LineRenderer roomRenderer = Instantiate(room).GetComponent<LineRenderer>();
+        roomRenderer.SetPosition(0, new Vector2(x, y - height)); //좌측 하단
+        roomRenderer.SetPosition(1, new Vector2(x + width, y - height)); //우측 하단
+        roomRenderer.SetPosition(2, new Vector2(x + width,y)); //우측 상단
+        roomRenderer.SetPosition(3, new Vector2(x, y)); //좌측 상단
+        */
+
 
         roomList[ROW, COL].roomRect = new Rect(x, y, width, height);
         Rect roomRect = roomList[ROW, COL].roomRect;
 
+
+        //** 방 크기에 에너미 제너레이터 크기를 맞추기 위한 변수 **
         //room의 맨 왼쪽 위 사각형 좌표
         Vector3 temp = new Vector3(0, 0, 0);
         //room의 맨 오른쪽 아래 사각형 좌표
         Vector3 temp2 = new Vector3(0, 0, 0);
+        
+     
 
         //룸타일 그리기
         for (float i= roomRect.x; i<roomRect.x + roomRect.width;i++)
@@ -309,7 +327,7 @@ public class MapGenerator : MonoBehaviour
                    
                 }
 
-                Debug.LogFormat("i = {0} j = {1} {2} {3}", i,j, (roomRect.x + roomRect.width - 1), (roomRect.y - roomRect.height + 1));
+                //Debug.LogFormat("i = {0} j = {1} {2} {3}", i,j, (roomRect.x + roomRect.width - 1), (roomRect.y - roomRect.height + 1));
 
                 if (tileMap.GetTile(tilePosition) == outTile)
                 {
@@ -317,8 +335,7 @@ public class MapGenerator : MonoBehaviour
                     {
                         //만약 바로 왼쪽 벽이 룸타일이면
                         //여기도 룸타일을 생성하면 벽 구분을 할 수 없으므로 룸타일을 생성해주지 않는다.
-                        temp = new Vector3(tilePosition.x + 1.5f, tilePosition.y + 0.5f, tilePosition.z);
-
+                       
                     }
                     else
                     {
@@ -338,17 +355,21 @@ public class MapGenerator : MonoBehaviour
         //position 피벗이 중앙임
         //룸 하나당 에너미 제너레이터도 하나씩 생성
         roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator);
-        temp2 = new Vector3(temp.x + (int)roomList[ROW, COL].roomRect.width, temp.y - (int)roomList[ROW, COL].roomRect.height);
 
+        temp2 = new Vector3(temp.x + (int)roomList[ROW, COL].roomRect.width, temp.y - (int)roomList[ROW, COL].roomRect.height);
         //room의 맨 왼쪽 위 사각형 표시
         //Instantiate(EnemyGenerator).transform.position = new Vector3(temp.x, temp.y);
         //room의 맨 오른쪽 아래 사각형 표시
         //Instantiate(EnemyGenerator).transform.position = new Vector3(temp2.x, temp2.y); 
 
         //EnemyGenerator 크기 room 크기에 맞추기 조정
-        roomList[ROW, COL].enemyGenerator.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 ); 
-        roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1,  (int)roomList[ROW, COL].roomRect.height + 1);
-
+        roomList[ROW, COL].enemyGenerator.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 );
+        
+        //+1 안해주면 양쪽 반 칸이 모자름
+        roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1, (int)roomList[ROW, COL].roomRect.height + 1);
+       
+       
+        
 
 
     }
