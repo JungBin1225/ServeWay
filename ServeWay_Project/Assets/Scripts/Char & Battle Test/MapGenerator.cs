@@ -32,6 +32,9 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] GameObject Player;
     [SerializeField] GameObject EnemyGenerator;
+    [SerializeField] GameObject BossGenerator;
+    [SerializeField] GameObject createTablePrefab;
+    [SerializeField] GameObject doorPrefab;
 
 
     const int NUM_ROOM = 5; 
@@ -59,7 +62,7 @@ public class MapGenerator : MonoBehaviour
         CreateMap(); //방이랑 길 그리기
 
         DisplayRoomType(); //시작방, 주방, 보스방 표시
-        
+        SetDoor();
         //플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
     }
@@ -363,13 +366,9 @@ public class MapGenerator : MonoBehaviour
         //Instantiate(EnemyGenerator).transform.position = new Vector3(temp2.x, temp2.y); 
 
         //EnemyGenerator 크기 room 크기에 맞추기 조정
-        roomList[ROW, COL].enemyGenerator.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 );
-        
-        //+1 안해주면 양쪽 반 칸이 모자름
-        roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1, (int)roomList[ROW, COL].roomRect.height + 1);
-       
-       
-        
+        roomList[ROW, COL].enemyGenerator.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 ); 
+        roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width,  (int)roomList[ROW, COL].roomRect.height);
+
 
 
     }
@@ -393,9 +392,9 @@ public class MapGenerator : MonoBehaviour
         //바로 오른쪽, 왼쪽 방에만 길을 그릴 수 있도록 설정하기
         if (x == nextX+1 || x == nextX-1)
         {
+
             for (float i = Mathf.Min(fromCenter.x, toCenter.x); i <= Mathf.Max(fromCenter.x, toCenter.x); i++)
             {
-
                 float distanceY = (Mathf.Max(fromRect.y, toRect.y) - Mathf.Min(fromRect.y - fromRect.height, toRect.y - toRect.height)) / 2;
                 float pointY = Mathf.Max(fromRect.y, toRect.y) - distanceY;
 
@@ -410,6 +409,32 @@ public class MapGenerator : MonoBehaviour
                 tilePosition = tileMap.WorldToCell(new Vector3(i, pointY + 1, 0));
                 tileMap.SetTile(tilePosition, roomTile);
 
+                if(x == nextX + 1)
+                {
+                    if(pointY < 0)
+                    {
+                        roomList[y, x].rightYPoint = (int)(pointY) - 0.5f;
+                        roomList[nextY, nextX].leftYPoint = (int)(pointY) - 0.5f;
+                    }
+                    else
+                    {
+                        roomList[y, x].rightYPoint = (int)(pointY) + 0.5f;
+                        roomList[nextY, nextX].leftYPoint = (int)(pointY) + 0.5f;
+                    }
+                }
+                else
+                {
+                    if (pointY < 0)
+                    {
+                        roomList[y, x].leftYPoint = (int)(pointY) - 0.5f;
+                        roomList[nextY, nextX].rightYPoint = (int)(pointY) - 0.5f;
+                    }
+                    else
+                    {
+                        roomList[y, x].leftYPoint = (int)(pointY) + 0.5f;
+                        roomList[nextY, nextX].rightYPoint = (int)(pointY) + 0.5f;
+                    }
+                }
             }
         }
 
@@ -417,11 +442,12 @@ public class MapGenerator : MonoBehaviour
         //바로 위쪽, 아래쪽 방에만 길을 그릴 수 있도록 설정하기
         if (y == nextY+1 || y == nextY-1)
         {
-            
             for (float i = Mathf.Min(fromCenter.y, toCenter.y); i <= Mathf.Max(fromCenter.y, toCenter.y); i++)
             {
                 float distanceX = (Mathf.Max(fromRect.x + fromRect.width, toRect.x + toRect.width) - Mathf.Min(fromRect.x, toRect.x)) / 2;
                 float pointX = Mathf.Min(fromRect.x, toRect.x) + distanceX;
+
+                GameObject door;
 
                 Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(pointX, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
@@ -433,6 +459,33 @@ public class MapGenerator : MonoBehaviour
                 tilePosition = tileMap.WorldToCell(new Vector3(pointX + 1, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
 
+                if (y == nextY + 1)
+                {
+                    if (pointX < 0)
+                    {
+                        roomList[y, x].upXPoint = (int)(pointX) - 0.5f;
+                        roomList[nextY, nextX].downXPoint = (int)(pointX) - 0.5f;
+                    }
+                    else
+                    {
+                        roomList[y, x].upXPoint = (int)(pointX) + 0.5f;
+                        roomList[nextY, nextX].downXPoint = (int)(pointX) + 0.5f;
+                    }
+
+                }
+                else
+                {
+                    if (pointX < 0)
+                    {
+                        roomList[y, x].downXPoint = (int)(pointX) - 0.5f;
+                        roomList[nextY, nextX].upXPoint = (int)(pointX) - 0.5f;
+                    }
+                    else
+                    {
+                        roomList[y, x].downXPoint = (int)(pointX) + 0.5f;
+                        roomList[nextY, nextX].upXPoint = (int)(pointX) + 0.5f;
+                    }
+                }
             }
         }
         
@@ -550,17 +603,29 @@ public class MapGenerator : MonoBehaviour
             {
                 ROW = startY;COL = startX;
                 nowTile = startRoomTile;
-               
-            }else if (k == 1)
+                Destroy(roomList[ROW, COL].enemyGenerator);
+            }
+            else if (k == 1)
             {
                 ROW = kitchenPos.Value; COL = kitchenPos.Key;
                 nowTile = kitchenTile;
 
-            }else if (k == 2)
+                Destroy(roomList[ROW, COL].enemyGenerator);
+                GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2), 0), Quaternion.Euler(0, 0, 0));
+            }
+            else if (k == 2)
             {
                 ROW = bossPos.Value; COL = bossPos.Key;
                 nowTile = bossTile;
+
+                Vector3 pos = roomList[ROW, COL].enemyGenerator.transform.position;
+                Vector3 size = roomList[ROW, COL].enemyGenerator.transform.localScale;
+                Destroy(roomList[ROW, COL].enemyGenerator);
+                roomList[ROW, COL].enemyGenerator = Instantiate(BossGenerator);
+                roomList[ROW, COL].enemyGenerator.transform.position = pos;
+                roomList[ROW, COL].enemyGenerator.transform.localScale = size;
             }
+            
 
             Rect roomRect = roomList[ROW, COL].roomRect;
 
@@ -581,5 +646,87 @@ public class MapGenerator : MonoBehaviour
             }
         }
        
+    }
+
+    void SetDoor()
+    {
+        for(int i = 0; i < NUM_ROOM; i++)
+        {
+            for(int j = 0; j < NUM_ROOM; j++)
+            {
+                if(roomList[i, j].isCreated != 0 && roomList[i, j].roomType == RoomType.ROOM_NORMAL)
+                {
+                    float point;
+
+                    if (i > 0 && roomList[i - 1, j].isCreated != 0)
+                    {
+                        point = roomList[i, j].enemyGenerator.transform.position.y + ((roomList[i, j].enemyGenerator.transform.localScale.y + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
+                        GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].upXPoint, point, 0), Quaternion.Euler(0, 0, 0));
+                        roomList[i, j].enemyGenerator.GetComponent<EnemyGenerator>().doorList.Add(door);
+                        door.SetActive(false);
+                    }
+
+                    if (i < NUM_ROOM - 1 && roomList[i + 1, j].isCreated != 0)
+                    {
+                        point = roomList[i, j].enemyGenerator.transform.position.y - ((roomList[i, j].enemyGenerator.transform.localScale.y + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
+                        GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].downXPoint, point, 0), Quaternion.Euler(0, 0, 180));
+                        roomList[i, j].enemyGenerator.GetComponent<EnemyGenerator>().doorList.Add(door);
+                        door.SetActive(false);
+                    }
+
+                    if (j > 0 && roomList[i, j - 1].isCreated != 0)
+                    {
+                        point = roomList[i, j].enemyGenerator.transform.position.x - ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
+                        GameObject door = Instantiate(doorPrefab, new Vector3(point, roomList[i, j].rightYPoint, 0), Quaternion.Euler(0, 0, 90));
+                        roomList[i, j].enemyGenerator.GetComponent<EnemyGenerator>().doorList.Add(door);
+                        door.SetActive(false);
+                    }
+
+                    if (j < NUM_ROOM - 1 && roomList[i, j + 1].isCreated != 0)
+                    {
+                        point = roomList[i, j].enemyGenerator.transform.position.x + ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
+                        GameObject door = Instantiate(doorPrefab, new Vector3(point, roomList[i, j].leftYPoint, 0), Quaternion.Euler(0, 0, -90));
+                        roomList[i, j].enemyGenerator.GetComponent<EnemyGenerator>().doorList.Add(door);
+                        door.SetActive(false);
+                    }
+                }
+                else if(roomList[i, j].isCreated != 0 && roomList[i, j].roomType == RoomType.ROOM_BOSS)
+                {
+                    float point;
+
+                    if (i > 0 && roomList[i - 1, j].isCreated != 0)
+                    {
+                        point = roomList[i, j].enemyGenerator.transform.position.y + ((roomList[i, j].enemyGenerator.transform.localScale.y + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
+                        GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].upXPoint, point, 0), Quaternion.Euler(0, 0, 0));
+                        roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
+                        door.SetActive(false);
+                    }
+
+                    if (i < NUM_ROOM - 1 && roomList[i + 1, j].isCreated != 0)
+                    {
+                        point = roomList[i, j].enemyGenerator.transform.position.y - ((roomList[i, j].enemyGenerator.transform.localScale.y + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
+                        GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].downXPoint, point, 0), Quaternion.Euler(0, 0, 180));
+                        roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
+                        door.SetActive(false);
+                    }
+
+                    if (j > 0 && roomList[i, j - 1].isCreated != 0)
+                    {
+                        point = roomList[i, j].enemyGenerator.transform.position.x - ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
+                        GameObject door = Instantiate(doorPrefab, new Vector3(point, roomList[i, j].rightYPoint, 0), Quaternion.Euler(0, 0, 90));
+                        roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
+                        door.SetActive(false);
+                    }
+
+                    if (j < NUM_ROOM - 1 && roomList[i, j + 1].isCreated != 0)
+                    {
+                        point = roomList[i, j].enemyGenerator.transform.position.x + ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
+                        GameObject door = Instantiate(doorPrefab, new Vector3(point, roomList[i, j].leftYPoint, 0), Quaternion.Euler(0, 0, -90));
+                        roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
+                        door.SetActive(false);
+                    }
+                }
+            }
+        }
     }
 }
