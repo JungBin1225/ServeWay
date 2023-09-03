@@ -20,11 +20,6 @@ public class Room
     public RoomType roomType; //방의 종류
     public GameObject enemyGenerator; //방의 에너미 제너레이터 정보
 
-    public float rightYPoint;
-    public float leftYPoint;
-    public float upXPoint;
-    public float downXPoint;
-
     public Room()
     {
         this.isCreated = 0;

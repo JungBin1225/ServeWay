@@ -12,9 +12,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private Dictionary<GameObject, int> spawnlist;
     private BoxCollider2D boxCollider;
-    private IngredientList ingredientList;
     private bool isClear;
-    private bool isSpawn;
     private bool isStarted = false;
     //Start() 함수가 끝까지 실행된 이후에 true로 바뀜
     //해주는 이유 : spawnlist를 초기화해주는 Start() 함수가 불리기 이전에 spawnlist를 참조하는 OnTriggerEnter2D()가 불릴 수 있기 때문이다.
@@ -23,9 +21,7 @@ public class EnemyGenerator : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         spawnlist = new Dictionary<GameObject, int>();
-        ingredientList = FindObjectOfType<DataController>().IngredientList;
         isClear = false;
-        isSpawn = false;
     
 
         int i = 0;
@@ -53,17 +49,14 @@ public class EnemyGenerator : MonoBehaviour
             foreach (GameObject door in doorList)
             {
                 door.SetActive(false);
+                this.gameObject.SetActive(false);
             }
-
-            DropIngredient(1, 4);
-            this.gameObject.SetActive(false);
         }
     }
 
     private IEnumerator SelectEnamy()
     {
-        isSpawn = true;
-        
+
         foreach(GameObject enemy in spawnlist.Keys)
         {
             for(int i = 0; i < spawnlist[enemy]; i++)
@@ -91,31 +84,8 @@ public class EnemyGenerator : MonoBehaviour
         UnityEngine.Debug.LogFormat("minX : {0} maxX : {1} posX : {2} posY : {3}", minX, maxX, posX,posY);
 
         GameObject enemy = Instantiate(enemyPrefab, new Vector3(posX, posY, 0), rot);
-        enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
-        enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
-    }
-
-    private void DropIngredient(int min, int max)
-    {
-        int dropAmount = Random.Range(min, max + 1);
-        float radius = 2.5f;
-
-        for (int i = 0; i < dropAmount; i++)
-        {
-            float angle = i * Mathf.PI * 2 / dropAmount;
-            float x = Mathf.Cos(angle) * radius;
-            float y = Mathf.Sin(angle) * radius;
-            Vector3 pos = transform.position + new Vector3(x, y, 0);
-            float angleDegrees = -angle * Mathf.Rad2Deg;
-            Instantiate(RandomIngredient(), pos, Quaternion.Euler(0, 0, 0));
-        }
-    }
-
-    private GameObject RandomIngredient()
-    {
-        int randomIndex = Random.Range(0, ingredientList.ingredientList.Count);
-
-        return ingredientList.ingredientList[randomIndex].prefab;
+        //enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
+        //enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -126,11 +96,7 @@ public class EnemyGenerator : MonoBehaviour
             {
                 door.SetActive(true);
             }
-
-            if(!isSpawn)
-            {
-                StartCoroutine(SelectEnamy());
-            }
+            StartCoroutine(SelectEnamy());
         }
     }
 

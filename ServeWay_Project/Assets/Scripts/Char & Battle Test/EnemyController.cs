@@ -53,7 +53,7 @@ public class EnemyController : MonoBehaviour
 
     public void GetDamage(float damage, Vector3 effectPos)
     {
-        //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
+        GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
 
         hp -= damage;
     }
@@ -127,7 +127,7 @@ public class EnemyController : MonoBehaviour
         Debug.Log("aa");
         moveAble = false;
         rigidBody.velocity = Vector2.zero;
-        rigidBody.AddForce((transform.position - player.transform.position).normalized * 20, ForceMode2D.Impulse);
+        rigidBody.AddForce((transform.position - player.transform.position).normalized * 100 * 100, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(0.2f);
 
@@ -149,21 +149,17 @@ public class EnemyController : MonoBehaviour
         this.generator = generator;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<PlayerController>().isCharge)
+        if(collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<PlayerController>().isCharge)
         {
             StartCoroutine(Knockback(collision.gameObject));
         }
-        /*else if(collision.gameObject.tag == "Enemy" && !collision.gameObject.GetComponent<EnemyController>().moveAble)
+        else if(collision.gameObject.tag == "Enemy" && !collision.gameObject.GetComponent<EnemyController>().moveAble)
         {
             StartCoroutine(Knockback(collision.gameObject));
-        }*/
-        else if (!moveAble && collision.gameObject.tag == "Wall")
-        {
-            rigidBody.velocity = Vector2.zero;
         }
-        else if(moveAble && collision.gameObject.tag == "Wall")
+        else if(moveAble)
         {
             rigidBody.velocity *= -1;
         }

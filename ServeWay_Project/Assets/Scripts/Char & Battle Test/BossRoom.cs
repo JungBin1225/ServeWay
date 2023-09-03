@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BossRoom : MonoBehaviour
 {
@@ -12,26 +11,20 @@ public class BossRoom : MonoBehaviour
     public GameObject intro;
     public GameObject startButton;
     public GameObject bossPrefab;
-    public GameObject stairPrefab;
+    public GameObject stair;
     public List<GameObject> doorList;
 
     void Start()
     {
         isClear = false;
-
-        intro = GameObject.Find("BossIntro");
-        startButton = GameObject.Find("IntroButton");
-
         intro.SetActive(false);
         startButton.SetActive(false);
-
-        startButton.GetComponent<Button>().onClick.AddListener(OnStartClicked);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     private IEnumerator BossIntro()
@@ -62,7 +55,7 @@ public class BossRoom : MonoBehaviour
 
     public void CloseDoor()
     {
-        foreach (GameObject door in doorList)
+        foreach(GameObject door in doorList)
         {
             door.SetActive(true);
         }
@@ -78,14 +71,14 @@ public class BossRoom : MonoBehaviour
 
     public void ActiveStair()
     {
-        GameObject stair = Instantiate(stairPrefab, transform.position, transform.rotation);
+        stair.SetActive(true);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && !isClear)
+        if(collision.gameObject.tag == "Player" && !isClear)
         {
-            GameManager.gameManager.isBossStage = true;
+            //GameManager.gameManager.isBossStage = true;
             StartCoroutine(BossIntro());
         }
     }

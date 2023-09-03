@@ -8,32 +8,24 @@ public class PlayerHealth : MonoBehaviour
     public float nowHp;
 
     private PlayerController playerController;
-    private MissonManager misson;
 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
-        misson = FindObjectOfType<MissonManager>();
-        
+        nowHp = maxHp;
     }
 
     void Update()
     {
-        if (GameManager.gameManager.isBossStage)
-        {
-            misson.OccurreEvent(2, Time.deltaTime);
-        }
+        //돌진 중일때, 무적
+        //if charge, ivincible
     }
 
     public void PlayerDamaged(float damage)
     {
-        if (!playerController.isCharge)
+        if(!playerController.isCharge)
         {
             nowHp -= damage;
-            if (GameManager.gameManager.isBossStage)
-            {
-                misson.OccurreEvent(2, 0);
-            }
         }
     }
 }
