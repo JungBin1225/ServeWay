@@ -4,23 +4,42 @@ using UnityEngine;
 
 public class CharData : MonoBehaviour
 {
-    public List<string> weaponList;
-    public float playerHp;
-    public float playerSpeed;
-    public float playerChargeSpeed;
-    public float playerChargeLength;
-    public float playerChargeCooltime;
-
-    public int stage;
+    public SaveFile saveFile;
 
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SaveData()
+    {
+        PlayerController plInfo = FindObjectOfType<PlayerController>();
+        InventoryManager inventory = GameManager.gameManager.inventory;
+
+        saveFile.weaponList.Clear();
+
+        for (int i = 0; i < plInfo.weaponSlot.gameObject.transform.childCount; i++)
+        {
+            saveFile.weaponList.Add(plInfo.weaponSlot.gameObject.transform.GetChild(i).GetChild(0).GetComponent<WeaponController>().weaponName);
+        }
+
+        saveFile.playerSpeed = plInfo.speed;
+        saveFile.playerChargeSpeed = plInfo.chargeSpeed;
+        saveFile.playerChargeLength = plInfo.chargeLength;
+        saveFile.playerChargeCooltime = plInfo.chargeCooltime;
+        saveFile.playerHp = plInfo.GetnowHp();
+
+        saveFile.inventory = new Dictionary<IngredientList.IngredientsName, int>();
+        foreach(IngredientList.IngredientsName name in inventory.inventory.Keys)
+        {
+            saveFile.inventory.Add(name, inventory.inventory[name]);
+        }
+
+        UnityEditor.EditorUtility.SetDirty(saveFile);
     }
 }

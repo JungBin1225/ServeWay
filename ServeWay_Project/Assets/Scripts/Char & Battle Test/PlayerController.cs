@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
 
     public void InitCharactor()
     {
-        if(GameManager.gameManager.charData.weaponList.Count != 0)
+        if(GameManager.gameManager.charData.saveFile.weaponList.Count != 0)
         {
             weaponSlot.InitSlot();
             for (int i = 0; i < weaponSlot.gameObject.transform.childCount; i++)
@@ -186,16 +186,16 @@ public class PlayerController : MonoBehaviour
             }
 
             weaponSlot.index = 0;
-            foreach(string weapon in GameManager.gameManager.charData.weaponList)
+            foreach(string weapon in GameManager.gameManager.charData.saveFile.weaponList)
             {
                 weaponSlot.GetWeapon(foodInfo.FindPrefabToName(weapon).GetComponent<GetItem>().weaponPrefab);
             }
 
-            speed = GameManager.gameManager.charData.playerSpeed;
-            chargeSpeed = GameManager.gameManager.charData.playerChargeSpeed;
-            chargeLength = GameManager.gameManager.charData.playerChargeLength;
-            chargeCooltime = GameManager.gameManager.charData.playerChargeCooltime;
-            playerHealth.nowHp = GameManager.gameManager.charData.playerHp;
+            speed = GameManager.gameManager.charData.saveFile.playerSpeed;
+            chargeSpeed = GameManager.gameManager.charData.saveFile.playerChargeSpeed;
+            chargeLength = GameManager.gameManager.charData.saveFile.playerChargeLength;
+            chargeCooltime = GameManager.gameManager.charData.saveFile.playerChargeCooltime;
+            playerHealth.nowHp = GameManager.gameManager.charData.saveFile.playerHp;
         }
         else
         {
@@ -204,19 +204,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SaveCharData()
+    public float GetnowHp()
     {
-        GameManager.gameManager.charData.weaponList.Clear();
-
-        for(int i = 0; i < weaponSlot.gameObject.transform.childCount; i++)
-        {
-            GameManager.gameManager.charData.weaponList.Add(weaponSlot.gameObject.transform.GetChild(i).GetChild(0).GetComponent<WeaponController>().weaponName);
-        }
-
-        GameManager.gameManager.charData.playerSpeed = speed;
-        GameManager.gameManager.charData.playerChargeSpeed = chargeSpeed;
-        GameManager.gameManager.charData.playerChargeLength = chargeLength;
-        GameManager.gameManager.charData.playerChargeCooltime = chargeCooltime;
-        GameManager.gameManager.charData.playerHp = playerHealth.nowHp;
+        return playerHealth.nowHp;
     }
 }

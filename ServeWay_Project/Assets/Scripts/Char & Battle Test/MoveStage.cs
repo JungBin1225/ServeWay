@@ -22,7 +22,7 @@ public class MoveStage : MonoBehaviour
     private void MoveNextStage(string name)
     {
         //GameManager.gameManager.mission.InitCount();
-        player.SaveCharData();
+        GameManager.gameManager.charData.SaveData();
         SceneManager.LoadScene(name);
     }
 
