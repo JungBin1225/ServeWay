@@ -45,27 +45,34 @@ public class MapGenerator : MonoBehaviour
     //맵 만드는데 필요한 변수들
     int roomCnt, tempCnt;
     int lastDepth = 1;
-    int[] dx = new int[4] { -1, 1, 0, 0 };
+    int[] dx = new int[4] { -1, 1, 0, 0 }; //좌 우 하 상 
     int[] dy = new int[4] { 0, 0, 1, -1 };
 
 
     // Start is called before the first frame update
     void Start()
     {
-        SetRoomList(); //방 리스트 초기화
-        SetStartPos(); //시작점 정하기
+        Init(); //초기화
 
-        DrawBackGround(0,0); //전체 맵 사각형 그리기
         CreateMap(); //방이랑 길 그리기
-
+      
         DisplayRoomType(); //시작방, 주방, 보스방 표시
         
         //플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
     }
 
-    void SetStartPos()
+    void Init()
     {
+        //방 리스트 초기화
+        for (int i = 0; i < NUM_ROOM; i++)
+        {
+            for (int j = 0; j < NUM_ROOM; j++)
+            {
+                roomList[i, j] = new Room();
+            }
+        }
+
         //시작점 위치 정하기
         switch (UnityEngine.Random.Range(0, 4))
         {
@@ -80,64 +87,39 @@ public class MapGenerator : MonoBehaviour
             default:
                 startX = 0; startY = 0; break;
         }
-        Debug.LogFormat("startX = {0} startY = {1}",startX,startY);
+        Debug.LogFormat("startX = {0} startY = {1}", startX, startY);
         roomList[startY, startX].isCreated = 1;
-        
-    }
 
-    void SetRoomList()
-    {
-        for(int i = 0; i < NUM_ROOM; i++)
+ 
+        //타일 그리기 전 백그라운드 타일로 다 채우기
+        for (int i = -10; i < mapSize.x + 10; i++)
         {
-            for(int j = 0; j < NUM_ROOM; j++)
-            {
-                roomList[i,j] = new Room();
-            }
-        }
-       
-
-    }
-
-    void DrawBackGround(int x, int y) //x,y는 화면의 중앙위치
-    {
-        for(int i=-10;i<mapSize.x+10;i++)
-        {
-            for(int j=-10;j<mapSize.y+10;j++)
+            for (int j = -10; j < mapSize.y + 10; j++)
             {
                 tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), outTile);
             }
         }
+
+        //만들 방의 전체 개수 설정
+        roomCnt = UnityEngine.Random.Range(10, 21);
+        //앞으로 만들어야할 방 개수 설정
+        tempCnt = roomCnt;
     }
+
 
     void CreateMap()
     {
-        //10~20까지의 난수
-        roomCnt = UnityEngine.Random.Range(10, 21);
-        tempCnt = roomCnt;
-
-        //그래프 생성
+        //방 구조 그래프 생성
         DFS(startX, startY, 1);
 
-        //구조에 따라 맵 생성
+        //맵을 크기에 맞게 칸을 나누고 칸 안에 방 생성, 
         Divide(); 
 
         //각 방마다 시작 방까지의 거리 계산하기 + 길 생성
         BFS(startX, startY, 1);
 
+        //방을 둘러싸는 벽 타일 그리기
         DrawWall();
-
-        for(int i=0;i<NUM_ROOM; i++)
-        {
-            for(int j = 0; j < NUM_ROOM; j++)
-            {
-                if (roomList[i,j].isCreated != 0)
-                {
-                    Debug.LogFormat("row : {0} col : {1} depth : {2}", i, j, roomList[i,j].isCreated);
-                }
-            }
-        }
-
-        Debug.LogFormat("lastDepth : {0}",lastDepth);
     }
 
     void DFS(int x,int y,int depth)
@@ -147,6 +129,7 @@ public class MapGenerator : MonoBehaviour
 
         //만들 수 있는 방 개수
         int curCnt = 0;
+        //갈 수 있는 방향
         int[] isDir = new int[4];
         for (int i = 0; i < isDir.Length; i++)
         {
@@ -164,6 +147,8 @@ public class MapGenerator : MonoBehaviour
             }
         }
         if (curCnt == 0) return; //더 나아갈 수 없다면 리턴
+
+        //현재 방에서 만들 방의 개수를 1~만들수 있는 방향 개수 중 랜덤으로 정한다
         int temp = UnityEngine.Random.Range(1, curCnt + 1);
         curCnt = temp;
 
@@ -221,8 +206,6 @@ public class MapGenerator : MonoBehaviour
         isVisited[startY,startX] = 1;
         roomList[startY,startX].isCreated = 1;
         
-      
-
         while (q.Count != 0)
         {
             int x = q.Peek().Key;
@@ -320,15 +303,6 @@ public class MapGenerator : MonoBehaviour
                     
                 }
 
-                if ((int)i == (int)(roomRect.x + roomRect.width - 1) && (int)j == (int)(roomRect.y - roomRect.height + 1))
-                {
-                    //마지막
-                    //temp2 = new Vector3(tilePosition.x+1.5f, tilePosition.y+0.5f, tilePosition.z);
-                   
-                }
-
-                //Debug.LogFormat("i = {0} j = {1} {2} {3}", i,j, (roomRect.x + roomRect.width - 1), (roomRect.y - roomRect.height + 1));
-
                 if (tileMap.GetTile(tilePosition) == outTile)
                 {
                     if(i==roomRect.x&& tileMap.GetTile(tileMap.WorldToCell(new Vector3(i - 1, j, 0))) == roomTile)
@@ -372,13 +346,6 @@ public class MapGenerator : MonoBehaviour
         
 
 
-    }
-
-    void DrawLine(Vector2 from, Vector2 to)
-    {
-        LineRenderer lineRenderer = Instantiate(road).GetComponent<LineRenderer>();
-        lineRenderer.SetPosition(0, from);
-        lineRenderer.SetPosition(1, to);
     }
 
     void DrawRoad(int x,int y,int nextX,int nextY)
@@ -455,7 +422,7 @@ public class MapGenerator : MonoBehaviour
             {
                 if (roomList[i, j].isCreated > 0)
                 {
-                    //방이 만들어진 경우만 출력하기
+                    //방 타일 그리기 
                     DrawRoom(horzPoint, vertPoint, i, j);
                 }
                 horzPoint += horzSize;
