@@ -551,8 +551,11 @@ public class MapGenerator : MonoBehaviour
         roomList[kitchenPos.Value, kitchenPos.Key].roomType = RoomType.ROOM_KITCHEN;
         roomList[bossPos.Value, bossPos.Key].roomType = RoomType.ROOM_BOSS;
 
+        // 미니맵에 부엌, 보스방 위치 표시
+        GameObject.Find("miniKitchen").transform.position = roomList[kitchenPos.Value, kitchenPos.Key].enemyGenerator.transform.position;
+        GameObject.Find("miniBoss").transform.position = roomList[bossPos.Value, bossPos.Key].enemyGenerator.transform.position;
 
-        for(int k = 0; k < 3; k++)
+        for (int k = 0; k < 3; k++)
         {
             Tile nowTile = roomTile;
             int ROW = 0, COL = 0;
@@ -566,7 +569,7 @@ public class MapGenerator : MonoBehaviour
             {
                 ROW = kitchenPos.Value; COL = kitchenPos.Key;
                 nowTile = kitchenTile;
-
+                Debug.Log("kitchenRow: " + ROW + "\nkitchenCol: " + COL);
                 Destroy(roomList[ROW, COL].enemyGenerator);
                 GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2), 0), Quaternion.Euler(0, 0, 0));
             }
@@ -574,6 +577,7 @@ public class MapGenerator : MonoBehaviour
             {
                 ROW = bossPos.Value; COL = bossPos.Key;
                 nowTile = bossTile;
+                Debug.Log("bossRow: " + ROW + "\nbossCol: " + COL);
 
                 Destroy(roomList[ROW, COL].enemyGenerator);
                 roomList[ROW, COL].enemyGenerator = Instantiate(BossGenerator);

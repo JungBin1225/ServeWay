@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
@@ -120,7 +119,10 @@ public class EnemyGenerator : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject.Find("MiniPlayerIcon").transform.position = gameObject.transform.position;
+        Debug.Log("방 이동");
+        GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+        if (GameObject.Find("miniPlayer"))
+            Debug.Log("미니맵 플레이어 위치 이동 완료");
         
         if(collision.gameObject.tag == "Player" && !isClear && isStarted)
         {
