@@ -42,4 +42,29 @@ public class CharData : MonoBehaviour
 
         UnityEditor.EditorUtility.SetDirty(saveFile);
     }
+
+    public void SaveMapData(Room[ , ] roomList, int startX, int startY)
+    {
+        saveFile.roomList = new List<Room>();
+
+        foreach(Room room in roomList)
+        {
+            room.enemyGenerator = null;
+
+            saveFile.roomList.Add(room);
+        }
+        saveFile.startX = startX;
+        saveFile.startY = startY;
+
+        saveFile.isMapSave = true;
+
+        UnityEditor.EditorUtility.SetDirty(saveFile);
+    }
+
+    public void DeleteMapData()
+    {
+        saveFile.isMapSave = false;
+
+        UnityEditor.EditorUtility.SetDirty(saveFile);
+    }
 }

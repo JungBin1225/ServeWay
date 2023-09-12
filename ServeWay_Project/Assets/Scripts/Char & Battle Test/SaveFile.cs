@@ -14,4 +14,9 @@ public class SaveFile : ScriptableObject
     public float playerChargeCooltime;
 
     public int stage;
+
+    public bool isMapSave;
+    public List<Room> roomList;
+    public int startX;
+    public int startY;
 }

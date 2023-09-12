@@ -23,6 +23,7 @@ public class MoveStage : MonoBehaviour
     {
         //GameManager.gameManager.mission.InitCount();
         GameManager.gameManager.charData.SaveData();
+        GameManager.gameManager.charData.DeleteMapData();
         SceneManager.LoadScene(name);
     }
 

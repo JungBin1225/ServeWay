@@ -55,16 +55,26 @@ public class MapGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetRoomList(); //방 리스트 초기화
-        SetStartPos(); //시작점 정하기
+        if (GameManager.gameManager.charData.saveFile.isMapSave)
+        {
+            LoadMap();
+        }
+        else
+        {
+            SetRoomList(); //방 리스트 초기화
+            SetStartPos(); //시작점 정하기
+        }
 
-        DrawBackGround(0,0); //전체 맵 사각형 그리기
+        DrawBackGround(0, 0); //전체 맵 사각형 그리기
         CreateMap(); //방이랑 길 그리기
+
 
         DisplayRoomType(); //시작방, 주방, 보스방 표시
         SetDoor();
         //플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
+
+        GameManager.gameManager.charData.SaveMapData(roomList, startX, startY);
     }
 
     void SetStartPos()
@@ -114,15 +124,17 @@ public class MapGenerator : MonoBehaviour
 
     void CreateMap()
     {
-        //10~20까지의 난수
-        roomCnt = UnityEngine.Random.Range(10, 21);
-        tempCnt = roomCnt;
+        if(!GameManager.gameManager.charData.saveFile.isMapSave)
+        {
+            //10~20까지의 난수
+            roomCnt = UnityEngine.Random.Range(10, 21);
+            tempCnt = roomCnt;
 
-        //그래프 생성
-        DFS(startX, startY, 1);
-
+            //그래프 생성
+            DFS(startX, startY, 1);
+        }
         //구조에 따라 맵 생성
-        Divide(); 
+        Divide();
 
         //각 방마다 시작 방까지의 거리 계산하기 + 길 생성
         BFS(startX, startY, 1);
@@ -552,48 +564,74 @@ public class MapGenerator : MonoBehaviour
         List<KeyValuePair <int, int>> kitchenIdxList = new List <KeyValuePair<int, int>>();
 
         int bossNum = lastDepth; int kitchenNum = 0;
-        
-        if (bossNum > 4)
+
+        var kitchenPos = new KeyValuePair<int, int>();
+        var bossPos = new KeyValuePair<int, int>();
+
+        if (!GameManager.gameManager.charData.saveFile.isMapSave)
         {
-            //주방은 4~lastDepth-1 사이에
-            kitchenNum = (UnityEngine.Random.Range(4, bossNum)); 
-        }
-        else
-        {
-            //lastDepth가 4이면
-            //주방은 3에 (4가 되면 겹침)
-            kitchenNum = 3;
-        }
-        
-        //주방 깊이랑 보스방 깊이가 같은 방이 여러개 일 수 있음.
-        //그 중 방 하나를 랜덤으로 뽑아야함.
-        for (int i = 0; i < NUM_ROOM; i++)
-        {
-            for (int j = 0; j < NUM_ROOM; j++)
+            if (bossNum > 4)
             {
-                if (roomList[i,j].isCreated != 0)
+                //주방은 4~lastDepth-1 사이에
+                kitchenNum = (UnityEngine.Random.Range(4, bossNum));
+            }
+            else
+            {
+                //lastDepth가 4이면
+                //주방은 3에 (4가 되면 겹침)
+                kitchenNum = 3;
+            }
+
+            //주방 깊이랑 보스방 깊이가 같은 방이 여러개 일 수 있음.
+            //그 중 방 하나를 랜덤으로 뽑아야함.
+            for (int i = 0; i < NUM_ROOM; i++)
+            {
+                for (int j = 0; j < NUM_ROOM; j++)
                 {
-                    if(startY == i && startX == j)
+                    if (roomList[i, j].isCreated != 0)
                     {
-                        roomList[i, j].roomType = RoomType.ROOM_START;
-                    }else if (roomList[i,j].isCreated == kitchenNum)
-                    {
-                        //x,y 형태로 집어 넣기
-                        kitchenIdxList.Add(new KeyValuePair<int, int>(j, i));
-                    }else if (roomList[i,j].isCreated == bossNum)
-                    {
-                        bossIdxList.Add(new KeyValuePair<int, int>(j, i));
+                        if (startY == i && startX == j)
+                        {
+                            roomList[i, j].roomType = RoomType.ROOM_START;
+                        }
+                        else if (roomList[i, j].isCreated == kitchenNum)
+                        {
+                            //x,y 형태로 집어 넣기
+                            kitchenIdxList.Add(new KeyValuePair<int, int>(j, i));
+                        }
+                        else if (roomList[i, j].isCreated == bossNum)
+                        {
+                            bossIdxList.Add(new KeyValuePair<int, int>(j, i));
+                        }
                     }
                 }
             }
+
+            kitchenPos = kitchenIdxList[UnityEngine.Random.Range(0, kitchenIdxList.Count)];
+            bossPos = bossIdxList[UnityEngine.Random.Range(0, bossIdxList.Count)];
+
+            roomList[kitchenPos.Value, kitchenPos.Key].roomType = RoomType.ROOM_KITCHEN;
+            roomList[bossPos.Value, bossPos.Key].roomType = RoomType.ROOM_BOSS;
         }
+        else
+        {
+            for (int i = 0; i < NUM_ROOM; i++)
+            {
+                for(int j = 0; j < NUM_ROOM; j++)
+                {
+                    if(roomList[i, j].roomType == RoomType.ROOM_KITCHEN)
+                    {
+                        kitchenPos = new KeyValuePair<int, int>(j, i);
+                    }
 
-        var kitchenPos = kitchenIdxList[UnityEngine.Random.Range(0, kitchenIdxList.Count)];
-        var bossPos = bossIdxList[UnityEngine.Random.Range(0, bossIdxList.Count)];
-
-        roomList[kitchenPos.Value, kitchenPos.Key].roomType = RoomType.ROOM_KITCHEN;
-        roomList[bossPos.Value, bossPos.Key].roomType = RoomType.ROOM_BOSS;
-
+                    if(roomList[i, j].roomType == RoomType.ROOM_BOSS)
+                    {
+                        bossPos = new KeyValuePair<int, int>(j, i);
+                    }
+                }
+            }
+             
+        }
 
         for(int k = 0; k < 3; k++)
         {
@@ -728,5 +766,22 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void LoadMap()
+    {
+        int index = 0;
+        for(int i = 0; i < NUM_ROOM; i++)
+        {
+            for(int j = 0; j < NUM_ROOM; j++)
+            {
+                roomList[i, j] = GameManager.gameManager.charData.saveFile.roomList[index];
+                index++;
+            }
+        }
+        startX = GameManager.gameManager.charData.saveFile.startX;
+        startY = GameManager.gameManager.charData.saveFile.startY;
+
+        roomList[startY, startX].isCreated = 1;
     }
 }
