@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class CharData : MonoBehaviour
 {
+
     public SaveFile saveFile;
+
+    public List<string> weaponList;
+    public float playerHp;
+    public float playerSpeed;
+    public float playerChargeSpeed;
+    public float playerChargeLength;
+    public float playerChargeCooltime;
+
+    public int stage;
 
     void Start()
     {
@@ -15,6 +25,7 @@ public class CharData : MonoBehaviour
     {
         
     }
+
 
     public void SaveData()
     {
@@ -67,4 +78,5 @@ public class CharData : MonoBehaviour
 
         UnityEditor.EditorUtility.SetDirty(saveFile);
     }
+
 }

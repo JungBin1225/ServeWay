@@ -11,28 +11,32 @@ public class WeaponController : MonoBehaviour
     private float coolTime;
     private bool shootAble;
 
+    public string weaponName;
     public float shootDuration;
     public float damage;
     public float speed;
     public GameObject bulletPrefab;
     public GameObject effectPrefab;
+    public GameObject dropPrefab;
 
     void Start()
     {
-        player = transform.parent.parent.gameObject.GetComponent<PlayerController>();
-        playerSprite = transform.parent.parent.gameObject.GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        playerSprite = player.GetComponent<SpriteRenderer>();
         weaponSprite = GetComponent<SpriteRenderer>();
 
         coolTime = 0;
         shootAble = true;
     }
 
-    
+
     void Update()
     {
+        if (Time.timeScale == 0) { return; }
+
         SetTransform();
 
-        if(coolTime > 0)
+        if (coolTime > 0)
         {
             coolTime -= Time.deltaTime;
             shootAble = false;
@@ -41,15 +45,15 @@ public class WeaponController : MonoBehaviour
         {
             shootAble = true;
         }
-        
-        if(Input.GetMouseButton(0))
+
+        if (Input.GetMouseButton(0))
         {
-            if(shootAble && player.controllAble)
+            if (shootAble && player.controllAble)
             {
                 GenerateBullet(speed, damage, mousePos);
                 coolTime = shootDuration;
             }
-            
+
         }
     }
 
@@ -78,7 +82,7 @@ public class WeaponController : MonoBehaviour
     private void GenerateBullet(float speed, float damage, Vector3 mousePos)
     {
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-        GameObject effect = Instantiate(effectPrefab, transform);
+        //GameObject effect = Instantiate(effectPrefab, transform);
         bullet.GetComponent<BulletController>().SetTarget(-transform.up);
         bullet.GetComponent<BulletController>().SetSpeed(speed);
         bullet.GetComponent<BulletController>().SetDamage(damage);

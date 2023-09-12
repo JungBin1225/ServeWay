@@ -12,9 +12,9 @@ public class BossMission : MonoBehaviour
         InitCount();
     }
 
-     void Update()
+    void Update()
     {
-        if(boss != null && chargeCount >= 5)
+        if (boss != null && chargeCount >= 5)
         {
             boss.GetComponent<BossController>().BossDie();
         }
@@ -22,10 +22,10 @@ public class BossMission : MonoBehaviour
 
     public void CheckCharge()
     {
-        /*if(GameManager.gameManager.isBossStage)
+        if (GameManager.gameManager.isBossStage)
         {
             chargeCount++;
-        }*/
+        }
     }
 
     public void InitCount()
