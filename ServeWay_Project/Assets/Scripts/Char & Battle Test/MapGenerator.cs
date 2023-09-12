@@ -55,11 +55,11 @@ public class MapGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GameManager.gameManager.charData.saveFile.isMapSave)
+        if (GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 실행
         {
             LoadMap();
         }
-        else
+        else // 로드될 맵이 없으면 새로 생성
         {
             SetRoomList(); //방 리스트 초기화
             SetStartPos(); //시작점 정하기
@@ -124,7 +124,7 @@ public class MapGenerator : MonoBehaviour
 
     void CreateMap()
     {
-        if(!GameManager.gameManager.charData.saveFile.isMapSave)
+        if(!GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 실행하지 않음
         {
             //10~20까지의 난수
             roomCnt = UnityEngine.Random.Range(10, 21);
@@ -568,7 +568,7 @@ public class MapGenerator : MonoBehaviour
         var kitchenPos = new KeyValuePair<int, int>();
         var bossPos = new KeyValuePair<int, int>();
 
-        if (!GameManager.gameManager.charData.saveFile.isMapSave)
+        if (!GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 이미 보스방, 주방이 결정되어 있으므로 실행X
         {
             if (bossNum > 4)
             {
@@ -613,7 +613,7 @@ public class MapGenerator : MonoBehaviour
             roomList[kitchenPos.Value, kitchenPos.Key].roomType = RoomType.ROOM_KITCHEN;
             roomList[bossPos.Value, bossPos.Key].roomType = RoomType.ROOM_BOSS;
         }
-        else
+        else //로드될 맵이 있으면 주방과 보스방의 인덱스를 반환
         {
             for (int i = 0; i < NUM_ROOM; i++)
             {
