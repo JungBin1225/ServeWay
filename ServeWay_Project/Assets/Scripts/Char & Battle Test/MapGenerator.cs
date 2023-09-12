@@ -61,7 +61,7 @@ public class MapGenerator : MonoBehaviour
             Init(); //초기화
         }
 
-        //DrawBackGround(0, 0); //전체 맵 사각형 그리기
+        DrawBackGround(); //전체 맵 사각형 그리기
         CreateMap(); //방이랑 길 그리기
         DisplayRoomType(); //시작방, 주방, 보스방 표시
         
@@ -99,7 +99,14 @@ public class MapGenerator : MonoBehaviour
         Debug.LogFormat("startX = {0} startY = {1}", startX, startY);
         roomList[startY, startX].isCreated = 1;
 
- 
+        //만들 방의 전체 개수 설정
+        roomCnt = UnityEngine.Random.Range(10, 21);
+        //앞으로 만들어야할 방 개수 설정
+        tempCnt = roomCnt;
+    }
+
+    void DrawBackGround()
+    {
         //타일 그리기 전 백그라운드 타일로 다 채우기
         for (int i = -10; i < mapSize.x + 10; i++)
         {
@@ -109,22 +116,13 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        //만들 방의 전체 개수 설정
-        roomCnt = UnityEngine.Random.Range(10, 21);
-        //앞으로 만들어야할 방 개수 설정
-        tempCnt = roomCnt;
     }
-
 
     void CreateMap()
     {
 
         if(!GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 실행하지 않음
         {
-            //10~20까지의 난수
-            roomCnt = UnityEngine.Random.Range(10, 21);
-            tempCnt = roomCnt;
-
             //그래프 생성
             DFS(startX, startY, 1);
         }
@@ -417,7 +415,6 @@ public class MapGenerator : MonoBehaviour
         
 
     }
-
 
     void Divide()
     {
