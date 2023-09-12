@@ -12,6 +12,7 @@ public enum RoomType
     
 };
 
+[System.Serializable]
 public class Room
 {
     public Rect nodeRect; //공간의 사각형 정보

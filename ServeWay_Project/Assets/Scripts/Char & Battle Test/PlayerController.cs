@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 mousePos;
     private float coolTime;
     private Vector2 moveVel;
+    private MissonManager misson;
+    private float missonTime;
+    private PlayerHealth playerHealth;
+    private FoodInfoList foodInfo;
 
     public float speed;
     public float chargeSpeed;
@@ -18,20 +22,30 @@ public class PlayerController : MonoBehaviour
     public bool controllAble;
     public bool isCharge;
 
+    public WeaponSlot weaponSlot;
+
     void Start()
     {
         controllAble = true;
         isCharge = false;
         coolTime = 0;
+        missonTime = 0;
 
         anim = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
+        misson = FindObjectOfType<MissonManager>();
+        playerHealth = gameObject.GetComponent<PlayerHealth>();
+        foodInfo = FindObjectOfType<DataController>().FoodInfoList;
+
+        InitCharactor();
     }
 
     
     void Update()
     {
-        if(controllAble)
+        if (Time.timeScale == 0) { return; }
+
+        if (controllAble)
         {
             mousePos = UpdateMousePos();
             UpdateDirection(mousePos);
@@ -48,18 +62,35 @@ public class PlayerController : MonoBehaviour
             coolTime = 0;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && controllAble)
         {
             if(coolTime == 0)
             {
                 StartCoroutine(UseCharge());
+                if (GameManager.gameManager.isBossStage)
+                {
+                    if (missonTime <= 0)
+                    {
+                        missonTime = 30;
+                    }
+                    misson.OccurreEvent(1, 1);
+                    misson.OccurreEvent(3, 0);
+                }
             }
             else
             {
-                Debug.Log("Cool Time!");
+                //Debug.Log("Cool Time!");
             }
         }
-        
+
+        if (missonTime > 0)
+        {
+            missonTime -= Time.deltaTime;
+        }
+        else
+        {
+            misson.OccurreEvent(1, 0);
+        }
     }
 
     public Vector3 UpdateMousePos()
@@ -142,5 +173,39 @@ public class PlayerController : MonoBehaviour
 
         controllAble = true;
         coolTime = chargeCooltime;
+    }
+
+    public void InitCharactor()
+    {
+        if(GameManager.gameManager.charData.saveFile.weaponList.Count != 0)
+        {
+            weaponSlot.InitSlot();
+            for (int i = 0; i < weaponSlot.gameObject.transform.childCount; i++)
+            {
+                weaponSlot.DeleteWeapon(weaponSlot.gameObject.transform.GetChild(0).gameObject);
+            }
+
+            weaponSlot.index = 0;
+            foreach(string weapon in GameManager.gameManager.charData.saveFile.weaponList)
+            {
+                weaponSlot.GetWeapon(foodInfo.FindPrefabToName(weapon).GetComponent<GetItem>().weaponPrefab);
+            }
+
+            speed = GameManager.gameManager.charData.saveFile.playerSpeed;
+            chargeSpeed = GameManager.gameManager.charData.saveFile.playerChargeSpeed;
+            chargeLength = GameManager.gameManager.charData.saveFile.playerChargeLength;
+            chargeCooltime = GameManager.gameManager.charData.saveFile.playerChargeCooltime;
+            playerHealth.nowHp = GameManager.gameManager.charData.saveFile.playerHp;
+        }
+        else
+        {
+            weaponSlot.InitSlot();
+            playerHealth.nowHp = playerHealth.maxHp;
+        }
+    }
+
+    public float GetnowHp()
+    {
+        return playerHealth.nowHp;
     }
 }

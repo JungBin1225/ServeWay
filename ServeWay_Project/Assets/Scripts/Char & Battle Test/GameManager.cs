@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager;
 
+    public Texture2D cursorImage;
+    public bool isBossStage;
+    public CharData charData;
+    public InventoryManager inventory;
+
     private void Awake()
     {
         if (gameManager == null)
@@ -19,11 +24,15 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+        charData = gameObject.GetComponent<CharData>();
+        inventory = gameObject.GetComponent<InventoryManager>();
+        isBossStage = false;
+        Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
     }
 
+    // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
