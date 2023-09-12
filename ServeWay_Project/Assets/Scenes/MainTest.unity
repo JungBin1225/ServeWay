@@ -4564,10 +4564,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 168348f3d0bb5cf4eaf24f7dc5eebcf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorImage: {fileID: 0}
+  cursorImage: {fileID: 2800000, guid: ce5f11cd993284c4f9c54f854bdc8c9c, type: 3}
   isBossStage: 0
-  charData: {fileID: 0}
-  inventory: {fileID: 0}
+  charData: {fileID: 1493189980}
+  inventory: {fileID: 1493189981}
 --- !u!4 &1493189979
 Transform:
   m_ObjectHideFlags: 0
@@ -4592,10 +4592,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493189977}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a274c4cef756814cb146035fdd5f3ed, type: 3}
+  m_Script: {fileID: 11500000, guid: 447877d4d2d3d5245bde80483382d6be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventoryUI: {fileID: 1193119816}
+  saveFile: {fileID: 11400000, guid: 494afcae66c1dc449849286c8c20528e, type: 2}
+  weaponList: []
+  playerHp: 0
+  playerSpeed: 0
+  playerChargeSpeed: 0
+  playerChargeLength: 0
+  playerChargeCooltime: 0
+  stage: 0
 --- !u!114 &1493189981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4605,10 +4612,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493189977}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c0086da54e7322458fc342328200a6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 27ab78d35ec13af4d9f2818daa9e71c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveFile: {fileID: 11400000, guid: 494afcae66c1dc449849286c8c20528e, type: 2}
 --- !u!1 &1581328098
 GameObject:
   m_ObjectHideFlags: 0
