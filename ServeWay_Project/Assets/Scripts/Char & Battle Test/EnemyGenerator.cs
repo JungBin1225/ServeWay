@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
@@ -17,7 +16,6 @@ public class EnemyGenerator : MonoBehaviour
     private BoxCollider2D boxCollider;
     private IngredientList ingredientList;
     private bool isClear;
-    private bool isSpawn;
     private bool isStarted = false;
     //Start() 함수가 끝까지 실행된 이후에 true로 바뀜
     //해주는 이유 : spawnlist를 초기화해주는 Start() 함수가 불리기 이전에 spawnlist를 참조하는 OnTriggerEnter2D()가 불릴 수 있기 때문이다.
@@ -28,7 +26,6 @@ public class EnemyGenerator : MonoBehaviour
         spawnlist = new Dictionary<GameObject, int>();
         ingredientList = FindObjectOfType<DataController>().IngredientList;
         isClear = false;
-        isSpawn = false;
     
 
         int i = 0;
@@ -65,8 +62,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private IEnumerator SelectEnamy()
     {
-        isSpawn = true;
-        
+
         foreach(GameObject enemy in spawnlist.Keys)
         {
             for(int i = 0; i < spawnlist[enemy]; i++)
@@ -134,11 +130,7 @@ public class EnemyGenerator : MonoBehaviour
             {
                 door.SetActive(true);
             }
-
-            if(!isSpawn)
-            {
-                StartCoroutine(SelectEnamy());
-            }
+            StartCoroutine(SelectEnamy());
         }
     }
 

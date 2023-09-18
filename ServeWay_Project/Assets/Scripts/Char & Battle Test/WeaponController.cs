@@ -11,7 +11,6 @@ public class WeaponController : MonoBehaviour
     private float coolTime;
     private bool shootAble;
 
-    public string weaponName;
     public float shootDuration;
     public float damage;
     public float speed;

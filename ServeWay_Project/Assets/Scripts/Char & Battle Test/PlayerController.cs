@@ -11,8 +11,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveVel;
     private MissonManager misson;
     private float missonTime;
-    private PlayerHealth playerHealth;
-    private FoodInfoList foodInfo;
 
     public float speed;
     public float chargeSpeed;
@@ -34,10 +32,6 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
         misson = FindObjectOfType<MissonManager>();
-        playerHealth = gameObject.GetComponent<PlayerHealth>();
-        foodInfo = FindObjectOfType<DataController>().FoodInfoList;
-
-        InitCharactor();
     }
 
     
@@ -173,39 +167,5 @@ public class PlayerController : MonoBehaviour
 
         controllAble = true;
         coolTime = chargeCooltime;
-    }
-
-    public void InitCharactor()
-    {
-        if(GameManager.gameManager.charData.saveFile.weaponList.Count != 0)
-        {
-            weaponSlot.InitSlot();
-            for (int i = 0; i < weaponSlot.gameObject.transform.childCount; i++)
-            {
-                weaponSlot.DeleteWeapon(weaponSlot.gameObject.transform.GetChild(0).gameObject);
-            }
-
-            weaponSlot.index = 0;
-            foreach(string weapon in GameManager.gameManager.charData.saveFile.weaponList)
-            {
-                weaponSlot.GetWeapon(foodInfo.FindPrefabToName(weapon).GetComponent<GetItem>().weaponPrefab);
-            }
-
-            speed = GameManager.gameManager.charData.saveFile.playerSpeed;
-            chargeSpeed = GameManager.gameManager.charData.saveFile.playerChargeSpeed;
-            chargeLength = GameManager.gameManager.charData.saveFile.playerChargeLength;
-            chargeCooltime = GameManager.gameManager.charData.saveFile.playerChargeCooltime;
-            playerHealth.nowHp = GameManager.gameManager.charData.saveFile.playerHp;
-        }
-        else
-        {
-            weaponSlot.InitSlot();
-            playerHealth.nowHp = playerHealth.maxHp;
-        }
-    }
-
-    public float GetnowHp()
-    {
-        return playerHealth.nowHp;
     }
 }

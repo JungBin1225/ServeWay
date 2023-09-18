@@ -5,12 +5,20 @@ using UnityEngine;
 public class WeaponSlot : MonoBehaviour
 {
     private List<GameObject> weaponList;
-    public int index;
+    private int index;
     private float changeCooltime;
 
     void Start()
     {
-        //InitSlot();
+        weaponList = new List<GameObject>();
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            weaponList.Add(transform.GetChild(i).gameObject);
+            if(transform.GetChild(i).gameObject.activeSelf)
+            {
+                index = i;
+            }
+        }
 
         changeCooltime = 0;
     }
@@ -81,10 +89,6 @@ public class WeaponSlot : MonoBehaviour
             {
                 weapon.SetActive(false);
             }
-            else
-            {
-                weapon.SetActive(true);
-            }
         }
         else
         {
@@ -94,10 +98,6 @@ public class WeaponSlot : MonoBehaviour
             if (!weaponList[index].Equals(weapon))
             {
                 weapon.SetActive(false);
-            }
-            else
-            {
-                weapon.SetActive(true);
             }
         }
 
@@ -116,15 +116,6 @@ public class WeaponSlot : MonoBehaviour
         }
     }
 
-    public void DeleteWeapon(GameObject weapon)
-    {
-        if(weaponList.Contains(weapon))
-        {
-            weaponList.Remove(weapon);
-            Destroy(weapon);
-        }
-    }
-
     public void updateIndex()
     {
         int i = 0;
@@ -135,25 +126,4 @@ public class WeaponSlot : MonoBehaviour
             i++;
         }
     }
-
-    public void InitSlot()
-    {
-        weaponList = new List<GameObject>();
-
-        index = 0;
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            weaponList.Add(transform.GetChild(i).gameObject);
-            if (i == 0)
-            {
-                transform.GetChild(i).gameObject.SetActive(true);
-            }
-            else
-            {
-                transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
-    }
-
-
 }

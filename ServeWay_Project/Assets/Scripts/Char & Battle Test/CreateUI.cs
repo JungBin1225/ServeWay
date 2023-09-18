@@ -87,8 +87,6 @@ public class CreateUI : MonoBehaviour
                     ingredientList[index].SetActive(true);
                     ingredientList[index].GetComponent<Image>().sprite = ingredientInfo.ingredientList[ingredientInfo.FindIndex(name)].sprite;
                     ingredientList[index].GetComponentInChildren<TMP_Text>().text = string.Format("X {0}", food.needIngredient[name].ToString());
-
-                    index++;
                 }
             }
         }

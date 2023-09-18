@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         misson = FindObjectOfType<MissonManager>();
-        
+        nowHp = maxHp;
     }
 
     void Update()

@@ -5,13 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MoveStage : MonoBehaviour
 {
-    private PlayerController player;
-
     public string nextStage;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        
     }
 
     void Update()
@@ -22,8 +20,6 @@ public class MoveStage : MonoBehaviour
     private void MoveNextStage(string name)
     {
         //GameManager.gameManager.mission.InitCount();
-        GameManager.gameManager.charData.SaveData();
-        GameManager.gameManager.charData.DeleteMapData();
         SceneManager.LoadScene(name);
     }
 
