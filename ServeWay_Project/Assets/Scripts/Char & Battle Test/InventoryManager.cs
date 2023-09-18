@@ -10,7 +10,15 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         inventory = new Dictionary<IngredientList.IngredientsName, int>();
+<<<<<<< HEAD
         InventoryUI = FindObjectOfType<InventoryUI>();
+=======
+        //InventoryUI = FindObjectOfType<InventoryUI>();
+
+        if(inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
+        {
+            LoadInventory();
+>>>>>>> parent of 124d1a3 (marge Update)
     }
 
     
