@@ -7,4 +7,32 @@ public class FoodInfoList : ScriptableObject
 {
     [SerializeField]
     public List<FoodInfo> foodInfo;
+
+    public string FindNameToSprite(Sprite sprite)
+    {
+        foreach(FoodInfo food in foodInfo)
+        {
+            if(sprite == food.foodSprite)
+            {
+                return food.foodName;
+            }
+        }
+
+        
+        return null;
+    }
+
+    public GameObject FindPrefabToName(string name)
+    {
+        foreach (FoodInfo food in foodInfo)
+        {
+            if (name == food.foodName)
+            {
+                return food.foodPrefab;
+            }
+        }
+
+        Debug.Log("err");
+        return null;
+    }
 }

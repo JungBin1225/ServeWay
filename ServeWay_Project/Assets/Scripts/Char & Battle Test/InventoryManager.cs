@@ -5,12 +5,18 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public Dictionary<IngredientList.IngredientsName, int> inventory;
-    public InventoryUI InventoryUI;
+    //public InventoryUI InventoryUI;
 
     void Start()
     {
         inventory = new Dictionary<IngredientList.IngredientsName, int>();
-        InventoryUI = FindObjectOfType<InventoryUI>();
+        //InventoryUI = FindObjectOfType<InventoryUI>();
+
+        if (inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
+        {
+            LoadInventory();
+
+        }
     }
 
     
@@ -53,6 +59,17 @@ public class InventoryManager : MonoBehaviour
         foreach (IngredientList.IngredientsName name in inventory.Keys)
         {
             Debug.Log(name + ", " + inventory[name]);
+        }
+    }
+
+    public void LoadInventory()
+    {
+        Dictionary<IngredientList.IngredientsName, int> saveInven = GameManager.gameManager.charData.saveFile.inventory;
+
+        inventory.Clear();
+        foreach (IngredientList.IngredientsName name in saveInven.Keys)
+        {
+            inventory.Add(name, saveInven[name]);
         }
     }
 }
