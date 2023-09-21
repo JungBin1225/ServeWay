@@ -24,6 +24,7 @@ public class MoveStage : MonoBehaviour
         //GameManager.gameManager.mission.InitCount();
         GameManager.gameManager.charData.SaveData();
         GameManager.gameManager.charData.DeleteMapData();
+        GameManager.gameManager.stage++;
         SceneManager.LoadScene(name);
     }
 
@@ -31,7 +32,14 @@ public class MoveStage : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            MoveNextStage(nextStage);
+            if(GameManager.gameManager.stage < 7)
+            {
+                MoveNextStage(nextStage);
+            }
+            else
+            {
+
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private Dictionary<GameObject, int> spawnlist;
     private BoxCollider2D boxCollider;
-    private IngredientList ingredientList;
+    private DataController data;
     private bool isClear;
     private bool isSpawn;
     private bool isStarted = false;
@@ -23,25 +23,12 @@ public class EnemyGenerator : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         spawnlist = new Dictionary<GameObject, int>();
-        ingredientList = FindObjectOfType<DataController>().IngredientList;
+        data = FindObjectOfType<DataController>();
         isClear = false;
         isSpawn = false;
-    
-
-        int i = 0;
-        foreach(GameObject enemy in enemyPrefab)
-        {
-            spawnlist.Add(enemy, amountList[i]);
-            i++;
-        }
-
-        enemyAmount = 0;
-        foreach(int n in amountList)
-        {
-            enemyAmount += n;
-        }
-
         isStarted = true;
+
+        InitEnemy();
     }
 
     void Update()
@@ -77,10 +64,10 @@ public class EnemyGenerator : MonoBehaviour
 
     private void spawnEnemy(GameObject enemyPrefab)
     {
-        float minX = transform.position.x - (transform.localScale.x / 2);
-        float maxX = transform.position.x + (transform.localScale.x / 2);
-        float minY = transform.position.y - (transform.localScale.y / 2);
-        float maxY = transform.position.y + (transform.localScale.y / 2);
+        float minX = transform.position.x - (transform.localScale.x / 2) + 2;
+        float maxX = transform.position.x + (transform.localScale.x / 2) - 2;
+        float minY = transform.position.y - (transform.localScale.y / 2) + 2;
+        float maxY = transform.position.y + (transform.localScale.y / 2) - 2;
 
         float posX = Random.Range(minX, maxX);
         float posY = Random.Range(minY, maxY);
@@ -113,9 +100,9 @@ public class EnemyGenerator : MonoBehaviour
 
     private GameObject RandomIngredient()
     {
-        int randomIndex = Random.Range(0, ingredientList.ingredientList.Count);
+        int randomIndex = Random.Range(0, data.IngredientList.ingredientList.Count);
 
-        return ingredientList.ingredientList[randomIndex].prefab;
+        return data.IngredientList.ingredientList[randomIndex].prefab;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -142,6 +129,45 @@ public class EnemyGenerator : MonoBehaviour
         }else if(collision.gameObject.tag == "Player")
         {
             //StopCoroutine(SelectEnamy());
+        }
+    }
+
+    private void InitEnemy()
+    {
+        enemyAmount = Random.Range(6, 16);
+        int num = enemyAmount;
+
+        enemyPrefab.Clear();
+        amountList.Clear();
+        while(num != 0)
+        {
+            int amount = Random.Range(2, 6);
+            if(num < amount)
+            {
+                amount = num;
+            }
+
+            GameObject enemy = data.enemyList.RandomEnemy();
+
+            if(enemyPrefab.Contains(enemy))
+            {
+                amountList[enemyPrefab.FindIndex(o => o == enemy)] += amount;
+            }
+            else
+            {
+                enemyPrefab.Add(enemy);
+                amountList.Add(amount);
+            }
+
+
+            num -= amount;
+        }
+
+        int n = 0;
+        foreach (GameObject enemy in enemyPrefab)
+        {
+            spawnlist.Add(enemy, amountList[n]);
+            n++;
         }
     }
 }

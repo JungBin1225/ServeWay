@@ -51,6 +51,8 @@ public class CharData : MonoBehaviour
             saveFile.inventory.Add(name, inventory.inventory[name]);
         }
 
+        stage = GameManager.gameManager.stage;
+
         UnityEditor.EditorUtility.SetDirty(saveFile);
     }
 

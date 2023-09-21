@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public bool isBossStage;
     public CharData charData;
     public InventoryManager inventory;
+    public int stage;
 
     private void Awake()
     {
@@ -28,6 +29,15 @@ public class GameManager : MonoBehaviour
         inventory = gameObject.GetComponent<InventoryManager>();
         isBossStage = false;
         Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
+
+        if(charData.saveFile.weaponList.Count != 0)
+        {
+            stage = charData.saveFile.stage;
+        }
+        else
+        {
+            stage = 1;
+        }
     }
 
     // Update is called once per frame
