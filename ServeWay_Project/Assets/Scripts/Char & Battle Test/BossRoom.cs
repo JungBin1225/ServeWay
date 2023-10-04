@@ -28,7 +28,6 @@ public class BossRoom : MonoBehaviour
         startButton.GetComponent<Button>().onClick.AddListener(OnStartClicked);
     }
 
-    // Update is called once per frame
     void Update()
     {
 

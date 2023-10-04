@@ -7,15 +7,4 @@ public class DataController : MonoBehaviour
     public FoodInfoList FoodInfoList;
     public IngredientList IngredientList;
     public EnemyList enemyList;
-
-    void Start()
-    {
-        
-    }
-
-    
-    void Update()
-    {
-        
-    }
 }

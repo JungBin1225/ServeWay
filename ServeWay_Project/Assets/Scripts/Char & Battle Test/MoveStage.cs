@@ -21,11 +21,17 @@ public class MoveStage : MonoBehaviour
 
     private void MoveNextStage(string name)
     {
-        //GameManager.gameManager.mission.InitCount();
         GameManager.gameManager.charData.SaveData();
         GameManager.gameManager.charData.DeleteMapData();
-        GameManager.gameManager.stage++;
-        SceneManager.LoadScene(name);
+        if(GameManager.gameManager.stage == 7)
+        {
+            //Ending Scene
+        }
+        else
+        {
+            GameManager.gameManager.stage++;
+            SceneManager.LoadScene(name);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,10 +41,6 @@ public class MoveStage : MonoBehaviour
             if(GameManager.gameManager.stage < 7)
             {
                 MoveNextStage(nextStage);
-            }
-            else
-            {
-
             }
         }
     }

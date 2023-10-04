@@ -155,10 +155,6 @@ public class EnemyController : MonoBehaviour
         {
             StartCoroutine(Knockback(collision.gameObject));
         }
-        /*else if(collision.gameObject.tag == "Enemy" && !collision.gameObject.GetComponent<EnemyController>().moveAble)
-        {
-            StartCoroutine(Knockback(collision.gameObject));
-        }*/
         else if (!moveAble && collision.gameObject.tag == "Wall")
         {
             rigidBody.velocity = Vector2.zero;

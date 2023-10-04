@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                //Debug.Log("Cool Time!");
+                
             }
         }
 
@@ -165,7 +165,6 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(chargeLength); //µ¹Áø
 
-        //GameManager.gameManager.mission.CheckCharge();
         isCharge = false;
 
         rigidBody.velocity = Vector2.zero;

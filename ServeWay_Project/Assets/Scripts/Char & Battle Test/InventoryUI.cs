@@ -6,11 +6,8 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     public List<GameObject> buttonList;
-    //public List<string> itemNameList;
-    //public List<Sprite> itemSpriteList;
     public GameObject panel;
 
-    //private Dictionary<string, Sprite> itemList;
     private InventoryManager inventory;
     private Sprite defaultSprite;
     private IngredientList itemList;
@@ -20,8 +17,6 @@ public class InventoryUI : MonoBehaviour
         inventory = FindObjectOfType<InventoryManager>();
         defaultSprite = buttonList[0].GetComponent<Image>().sprite;
         itemList = FindObjectOfType<DataController>().IngredientList;
-
-        //UpdateUI();
     }
 
     

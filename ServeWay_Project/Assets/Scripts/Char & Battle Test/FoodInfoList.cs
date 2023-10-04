@@ -17,7 +17,6 @@ public class FoodInfoList : ScriptableObject
                 return food.foodName;
             }
         }
-
         
         return null;
     }
@@ -32,7 +31,6 @@ public class FoodInfoList : ScriptableObject
             }
         }
 
-        Debug.Log("err");
         return null;
     }
 }
