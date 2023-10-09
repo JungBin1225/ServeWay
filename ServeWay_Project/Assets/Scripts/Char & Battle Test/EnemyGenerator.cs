@@ -10,7 +10,8 @@ public class EnemyGenerator : MonoBehaviour
     public int enemyAmount;
 
     // 미니맵
-    [SerializeField] GameObject miniPlayerIcon;
+    [SerializeField] GameObject miniRoomMesh;
+    private bool isVisited = false;
 
     private Dictionary<GameObject, int> spawnlist;
     private BoxCollider2D boxCollider;
@@ -29,6 +30,8 @@ public class EnemyGenerator : MonoBehaviour
         isClear = false;
         isSpawn = false;
         isStarted = true;
+
+        isVisited = false;
 
         InitEnemy();
     }
@@ -109,13 +112,18 @@ public class EnemyGenerator : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("방 이동");
-        GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
-        if (GameObject.Find("miniPlayer"))
-            Debug.Log("미니맵 플레이어 위치 이동 완료");
-
         if (collision.gameObject.tag == "Player" && !isClear && isStarted)
         {
+            if (!isVisited)
+            {
+                // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("miniMapMeshGroup").transform);
+            }
+
+            Debug.Log("방 이동");
+            GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+            if (GameObject.Find("miniPlayer"))
+                Debug.Log("미니맵 플레이어 위치 이동 완료");
             foreach (GameObject door in doorList)
             {
                 door.SetActive(true);
