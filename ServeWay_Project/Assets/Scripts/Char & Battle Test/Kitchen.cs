@@ -10,6 +10,10 @@ public class Kitchen : MonoBehaviour
     private bool isTouch;
     private CreateUI createUI;
 
+    // 미니맵
+    [SerializeField] GameObject miniRoomMesh;
+    private bool isVisited = false;
+
     void Start()
     {
         list = new List<string>();
@@ -19,6 +23,8 @@ public class Kitchen : MonoBehaviour
         createUI = FindObjectOfType<CreateUI>();
 
         createUI.gameObject.SetActive(false);
+
+        isVisited = false;
     }
 
     
@@ -66,15 +72,26 @@ public class Kitchen : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.gameObject.tag == "Player")
         {
+            // 미니맵
+            if (!isVisited)
+            {
+                isVisited = true;
+                // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("miniMapMeshGroup").transform);
+            }
+
+            GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+
+            // 주방 작동
             isTouch = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.gameObject.tag == "Player")
         {
             isTouch = false;
         }

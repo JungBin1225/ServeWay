@@ -75,6 +75,7 @@ public class MapGenerator : MonoBehaviour
         SetDoor();
         //플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
+        GameObject.Find("miniPlayer").transform.position = roomList[startY, startX].enemyGenerator.transform.position;
 
         GameManager.gameManager.charData.SaveMapData(roomList, startX, startY);
     }
@@ -614,11 +615,11 @@ public class MapGenerator : MonoBehaviour
 
         }
 
-        // 미니맵에 부엌, 보스방 위치 표시
+        // 미니맵에 주방, 보스방 위치 표시
         GameObject.Find("miniKitchen").transform.position = roomList[kitchenPos.Value, kitchenPos.Key].enemyGenerator.transform.position;
         GameObject.Find("miniBoss").transform.position = roomList[bossPos.Value, bossPos.Key].enemyGenerator.transform.position;
 
-        Debug.Log("부엌 위치: " + GameObject.Find("miniKitchen").transform.position);
+        Debug.Log("주방 위치: " + GameObject.Find("miniKitchen").transform.position);
         Debug.Log("보스방 위치: " + GameObject.Find("miniBoss").transform.position);
 
         for (int k = 0; k < 3; k++)

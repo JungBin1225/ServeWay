@@ -15,6 +15,10 @@ public class BossRoom : MonoBehaviour
     public GameObject stairPrefab;
     public List<GameObject> doorList;
 
+    // 미니맵
+    [SerializeField] GameObject miniRoomMesh;
+    private bool isVisited = false;
+
     void Start()
     {
         isClear = false;
@@ -26,6 +30,8 @@ public class BossRoom : MonoBehaviour
         startButton.SetActive(false);
 
         startButton.GetComponent<Button>().onClick.AddListener(OnStartClicked);
+
+        isVisited = false;
     }
 
     void Update()
@@ -84,6 +90,17 @@ public class BossRoom : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
+            // 미니맵
+            if (!isVisited)
+            {
+                isVisited = true;
+                // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("miniMapMeshGroup").transform);
+            }
+
+            GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+
+            // 보스방 작동
             GameManager.gameManager.isBossStage = true;
             StartCoroutine(BossIntro());
         }
