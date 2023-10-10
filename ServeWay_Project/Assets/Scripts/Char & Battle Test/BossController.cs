@@ -42,7 +42,12 @@ public class BossController : MonoBehaviour
     {
         if (hp <= 0)
         {
-            BossDie();
+            BossDie(0);
+        }
+
+        if(misson.isClear())
+        {
+            BossDie(1);
         }
 
         if (coolTime > 0)
@@ -51,9 +56,20 @@ public class BossController : MonoBehaviour
         }
     }
 
-    public void BossDie()
+    public void BossDie(int dieType)
     {
         room.isClear = true;
+
+        switch(dieType)
+        {
+            case 0: //Hp 소진
+                room.DropIngredient(4, 9);
+                break;
+            case 1: //미션 클리어
+                room.DropIngredient(6, 13);
+                break;
+        }
+
         room.OpenDoor();
         room.ActiveStair();
         GameManager.gameManager.isBossStage = false;

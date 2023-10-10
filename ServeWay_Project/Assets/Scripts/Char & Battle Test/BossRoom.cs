@@ -7,6 +7,7 @@ public class BossRoom : MonoBehaviour
 {
     private GameObject boss;
     private BossController controller;
+    private DataController data;
 
     public bool isClear;
     public GameObject intro;
@@ -23,6 +24,7 @@ public class BossRoom : MonoBehaviour
     {
         isClear = false;
 
+        data = FindObjectOfType<DataController>();
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
 
@@ -63,6 +65,29 @@ public class BossRoom : MonoBehaviour
         boss = Instantiate(bossPrefab, transform.position, transform.rotation);
         controller = boss.GetComponent<BossController>();
         controller.room = this;
+    }
+
+    public void DropIngredient(int min, int max)
+    {
+        int dropAmount = Random.Range(min, max + 1);
+        float radius = 5f;
+
+        for (int i = 0; i < dropAmount; i++)
+        {
+            float angle = i * Mathf.PI * 2 / dropAmount;
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+            Vector3 pos = transform.position + new Vector3(x, y, 0);
+            float angleDegrees = -angle * Mathf.Rad2Deg;
+            Instantiate(RandomIngredient(), pos, Quaternion.Euler(0, 0, 0));
+        }
+    }
+
+    private GameObject RandomIngredient()
+    {
+        int randomIndex = Random.Range(0, data.IngredientList.ingredientList.Count);
+
+        return data.IngredientList.ingredientList[randomIndex].prefab;
     }
 
     public void CloseDoor()

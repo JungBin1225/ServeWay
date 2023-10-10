@@ -6,16 +6,20 @@ using TMPro;
 
 public class MissonManager : MonoBehaviour
 {
+    const int NUM_MISSON = 2;
+
     public delegate void missionDelegate(int missonID, float increase);
     public event missionDelegate missonEvent;
     public List<string> missonName;
     public List<GameObject> missonUI;
+    public int clearAmount;
 
     private List<float> targetAmount;
     private List<float> nowAmount;
     private Dictionary<int, GameObject> matchedUI;
     void Start()
     {
+        clearAmount = 0;
         targetAmount = new List<float>();
         nowAmount = new List<float>();
         matchedUI = new Dictionary<int, GameObject>();
@@ -30,13 +34,18 @@ public class MissonManager : MonoBehaviour
             missonName[i] = missonName[i].Replace("\\n", "\n");
         }
 
-        SetMisson(2);
+        SetMisson(NUM_MISSON);
     }
 
 
     void Update()
     {
 
+    }
+
+    public bool isClear()
+    {
+        return (clearAmount == NUM_MISSON);
     }
 
     public void OccurreEvent(int missonID, float increase)
@@ -113,6 +122,7 @@ public class MissonManager : MonoBehaviour
             {
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
@@ -144,6 +154,7 @@ public class MissonManager : MonoBehaviour
             {
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
@@ -171,6 +182,7 @@ public class MissonManager : MonoBehaviour
             {
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
@@ -198,6 +210,7 @@ public class MissonManager : MonoBehaviour
             {
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
