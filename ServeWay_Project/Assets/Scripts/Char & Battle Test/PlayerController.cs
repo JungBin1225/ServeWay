@@ -83,13 +83,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (missonTime > 0)
+        if(GameManager.gameManager.isBossStage)
         {
-            missonTime -= Time.deltaTime;
-        }
-        else
-        {
-            misson.OccurreEvent(1, 0);
+            if (missonTime > 0)
+            {
+                missonTime -= Time.deltaTime;
+            }
+            else
+            {
+                misson.OccurreEvent(1, 0);
+            }
         }
     }
 

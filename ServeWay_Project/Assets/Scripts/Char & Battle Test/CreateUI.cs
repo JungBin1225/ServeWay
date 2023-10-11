@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -64,9 +65,21 @@ public class CreateUI : MonoBehaviour
 
     public void OnSelectClicked(TMP_Text text)
     {
+        List<FoodInfo> list;
+
         explaneUI.SetActive(true);
 
-        foreach(FoodInfo food in foodInfo.foodInfo)
+        if(SceneManager.GetActiveScene().name.Contains("Start"))
+        {
+            list = foodInfo.start_foodInfo;
+        }
+        else
+        {
+            list = foodInfo.foodInfo;
+        }
+        
+
+        foreach(FoodInfo food in list)
         {
             if(food.foodName == text.text)
             {
@@ -96,9 +109,12 @@ public class CreateUI : MonoBehaviour
 
     public void OnCreateClicked()
     {
-        foreach(IngredientList.IngredientsName name in selectedFood.needIngredient.Keys)
+        if (!SceneManager.GetActiveScene().name.Contains("Start"))
         {
-            inventory.DeleteItem(name, selectedFood.needIngredient[name]);
+            foreach (IngredientList.IngredientsName name in selectedFood.needIngredient.Keys)
+            {
+                inventory.DeleteItem(name, selectedFood.needIngredient[name]);
+            }
         }
 
         Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));

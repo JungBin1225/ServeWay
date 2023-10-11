@@ -7,6 +7,7 @@ public class FoodInfoList : ScriptableObject
 {
     [SerializeField]
     public List<FoodInfo> foodInfo;
+    public List<FoodInfo> start_foodInfo;
 
     public string FindNameToSprite(Sprite sprite)
     {

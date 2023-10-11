@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            stage = 1;
+            stage = 0;
         }
     }
 
