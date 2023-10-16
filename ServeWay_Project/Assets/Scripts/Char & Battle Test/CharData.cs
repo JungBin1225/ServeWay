@@ -45,7 +45,7 @@ public class CharData : MonoBehaviour
         saveFile.playerChargeCooltime = plInfo.chargeCooltime;
         saveFile.playerHp = plInfo.GetnowHp();
 
-        saveFile.inventory = new Dictionary<IngredientList.IngredientsName, int>();
+        saveFile.inventory = new NameAmount();
         foreach(IngredientList.IngredientsName name in inventory.inventory.Keys)
         {
             saveFile.inventory.Add(name, inventory.inventory[name]);

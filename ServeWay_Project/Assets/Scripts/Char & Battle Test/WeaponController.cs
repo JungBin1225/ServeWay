@@ -12,6 +12,9 @@ public class WeaponController : MonoBehaviour
     private bool shootAble;
 
     public string weaponName;
+    public Food_Grade grade;
+    public Food_MainIngred mainIngred;
+    public Food_Nation nation;
     public float shootDuration;
     public float damage;
     public float speed;

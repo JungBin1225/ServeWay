@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public Dictionary<IngredientList.IngredientsName, int> inventory;
+    public NameAmount inventory;
 
     void Start()
     {
-        inventory = new Dictionary<IngredientList.IngredientsName, int>();
+        inventory = new NameAmount();
 
         if (inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
         {
             LoadInventory();
-
         }
     }
 

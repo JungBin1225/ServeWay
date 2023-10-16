@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Save File", menuName = "Scriptable Object/Save Flie", order = int.MinValue + 1)]
 public class SaveFile : ScriptableObject
 {
-    public Dictionary<IngredientList.IngredientsName, int> inventory;
+    public NameAmount inventory;
     public List<string> weaponList;
     public float playerHp;
     public float playerSpeed;
