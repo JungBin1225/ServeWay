@@ -9,26 +9,26 @@ public class FoodInfoList : ScriptableObject
     public List<FoodInfo> foodInfo;
     public List<FoodInfo> start_foodInfo;
 
-    public string FindNameToSprite(Sprite sprite)
-    {
-        foreach(FoodInfo food in foodInfo)
-        {
-            if(sprite == food.foodSprite)
-            {
-                return food.foodName;
-            }
-        }
-        
-        return null;
-    }
-
-    public GameObject FindPrefabToName(string name)
+    public FoodInfo FindFood(string name)
     {
         foreach (FoodInfo food in foodInfo)
         {
             if (name == food.foodName)
             {
-                return food.foodPrefab;
+                return food;
+            }
+        }
+
+        return null;
+    }
+
+    public FoodInfo FindFood(Sprite sprite)
+    {
+        foreach (FoodInfo food in foodInfo)
+        {
+            if (sprite == food.foodSprite)
+            {
+                return food;
             }
         }
 

@@ -76,6 +76,7 @@ public class WeaponSlot : MonoBehaviour
         if(weaponList.Count < 3)
         {
             GameObject weapon = Instantiate(newWeapon, this.transform);
+            weapon.GetComponentInChildren<WeaponController>().InitWeapon();
             weaponList.Add(weapon);
             if(!weaponList[index].Equals(weapon))
             {

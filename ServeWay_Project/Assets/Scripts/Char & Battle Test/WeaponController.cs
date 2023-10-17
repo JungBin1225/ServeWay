@@ -90,4 +90,16 @@ public class WeaponController : MonoBehaviour
         bullet.GetComponent<BulletController>().SetSpeed(speed);
         bullet.GetComponent<BulletController>().SetDamage(damage);
     }
+
+    public void InitWeapon()
+    {
+        FoodInfo foodInfo = FindObjectOfType<DataController>().FoodInfoList.FindFood(weaponName);
+
+        grade = foodInfo.grade;
+        mainIngred = foodInfo.mainIngred;
+        nation = foodInfo.nation;
+        shootDuration = foodInfo.coolTime;
+        damage = foodInfo.damage;
+        speed = foodInfo.speed;
+    }
 }
