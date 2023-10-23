@@ -188,9 +188,11 @@ public class PlayerController : MonoBehaviour
             }
 
             weaponSlot.index = 0;
+            int n = 0;
             foreach(string weapon in GameManager.gameManager.charData.saveFile.weaponList)
             {
-                weaponSlot.GetWeapon(foodInfo.FindFood(weapon).foodPrefab.GetComponent<GetItem>().weaponPrefab);
+                weaponSlot.GetWeapon(foodInfo.FindFood(weapon).foodPrefab.GetComponent<GetItem>().weaponPrefab, GameManager.gameManager.charData.saveFile.weaponSuccess[n]);
+                n++;
             }
 
             speed = GameManager.gameManager.charData.saveFile.playerSpeed;

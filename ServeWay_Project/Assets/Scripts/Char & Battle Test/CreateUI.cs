@@ -117,9 +117,27 @@ public class CreateUI : MonoBehaviour
             }
         }
 
-        Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));
+        GameObject food = Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));
+        food.GetComponent<GetItem>().success = RandomSuccess();
 
         CloseUI();
+    }
+
+    public Create_Success RandomSuccess()
+    {
+        int i = Random.Range(0, 3);
+
+        switch(i)
+        {
+            case 0:
+                return Create_Success.FAIL;
+            case 1:
+                return Create_Success.SUCCESS;
+            case 2:
+                return Create_Success.GREAT;
+        }
+
+        return Create_Success.SUCCESS;
     }
 
     public void CloseUI()

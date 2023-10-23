@@ -46,6 +46,10 @@ public class FoodInfo
     public float speed;
     public float coolTime;
 
+    public float successDamage;
+    public float successSpeed;
+    public float successCoolTime;
+
     public GameObject foodPrefab;
     public NameAmount needIngredient;
 }

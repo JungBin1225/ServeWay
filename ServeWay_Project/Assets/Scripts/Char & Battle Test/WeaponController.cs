@@ -15,6 +15,7 @@ public class WeaponController : MonoBehaviour
     public Food_Grade grade;
     public Food_MainIngred mainIngred;
     public Food_Nation nation;
+    public Create_Success success;
     public float shootDuration;
     public float damage;
     public float speed;
@@ -98,8 +99,24 @@ public class WeaponController : MonoBehaviour
         grade = foodInfo.grade;
         mainIngred = foodInfo.mainIngred;
         nation = foodInfo.nation;
-        shootDuration = foodInfo.coolTime;
-        damage = foodInfo.damage;
-        speed = foodInfo.speed;
+
+        switch(success)
+        {
+            case Create_Success.FAIL:
+                shootDuration = foodInfo.coolTime + foodInfo.successCoolTime;
+                damage = foodInfo.damage - foodInfo.successDamage;
+                speed = foodInfo.speed - foodInfo.successSpeed;
+                break;
+            case Create_Success.SUCCESS:
+                shootDuration = foodInfo.coolTime;
+                damage = foodInfo.damage;
+                speed = foodInfo.speed;
+                break;
+            case Create_Success.GREAT:
+                shootDuration = foodInfo.coolTime - foodInfo.successCoolTime;
+                damage = foodInfo.damage + foodInfo.successDamage;
+                speed = foodInfo.speed + foodInfo.successSpeed;
+                break;
+        }
     }
 }

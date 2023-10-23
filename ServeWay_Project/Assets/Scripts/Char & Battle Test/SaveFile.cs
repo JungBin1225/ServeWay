@@ -7,6 +7,7 @@ public class SaveFile : ScriptableObject
 {
     public NameAmount inventory;
     public List<string> weaponList;
+    public List<Create_Success> weaponSuccess;
     public float playerHp;
     public float playerSpeed;
     public float playerChargeSpeed;

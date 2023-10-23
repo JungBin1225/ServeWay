@@ -2,11 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Create_Success
+{
+    FAIL,
+    SUCCESS,
+    GREAT
+};
+
 public class GetItem : MonoBehaviour
 {
     private bool getAble;
     private WeaponSlot weaponSlot;
 
+    public Create_Success success;
     public GameObject weaponPrefab;
     void Start()
     {
@@ -28,7 +36,7 @@ public class GetItem : MonoBehaviour
 
     public void GetWeapon()
     {
-        weaponSlot.GetWeapon(weaponPrefab);
+        weaponSlot.GetWeapon(weaponPrefab, success);
         Destroy(this.gameObject);
     }
 

@@ -36,7 +36,11 @@ public class CharData : MonoBehaviour
 
         for (int i = 0; i < plInfo.weaponSlot.gameObject.transform.childCount; i++)
         {
-            saveFile.weaponList.Add(plInfo.weaponSlot.gameObject.transform.GetChild(i).GetChild(0).GetComponent<WeaponController>().weaponName);
+            string name = plInfo.weaponSlot.gameObject.transform.GetChild(i).GetChild(0).GetComponent<WeaponController>().weaponName;
+            Create_Success success = plInfo.weaponSlot.gameObject.transform.GetChild(i).GetChild(0).GetComponent<WeaponController>().success;
+
+            saveFile.weaponList.Add(name);
+            saveFile.weaponSuccess.Add(success);
         }
 
         saveFile.playerSpeed = plInfo.speed;
