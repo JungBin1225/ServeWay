@@ -79,7 +79,7 @@ public class MissonManager : MonoBehaviour
                 targetAmount[index] = Random.Range(20, 50);
 
                 matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1].ToString());
                 break;
             case 1:
                 missonEvent += DashInTime;
@@ -126,7 +126,7 @@ public class MissonManager : MonoBehaviour
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
+            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString(), GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1].ToString());
             //UI에 수치 갱신 reload num in UI
         }
     }

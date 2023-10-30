@@ -56,6 +56,7 @@ public class CharData : MonoBehaviour
         }
 
         stage = GameManager.gameManager.stage;
+        saveFile.bossNations = GameManager.gameManager.bossNations;
 
         UnityEditor.EditorUtility.SetDirty(saveFile);
     }

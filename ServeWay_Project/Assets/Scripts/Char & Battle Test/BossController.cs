@@ -21,6 +21,7 @@ public class BossController : MonoBehaviour
     public float attackCoolTime;
     public float bulletSpeed;
     public float bulletDamage;
+    public Boss_Nation nation;
 
     void Start()
     {
@@ -76,12 +77,16 @@ public class BossController : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void GetDamage(float damage, Vector3 effectPos)
+    public void GetDamage(float damage, Vector3 effectPos, Food_Nation nation)
     {
         //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
 
         hp -= damage;
-        misson.OccurreEvent(0, damage);
+        
+        if(nation.ToString() == this.nation.ToString())
+        {
+            misson.OccurreEvent(0, damage);
+        }
         misson.OccurreEvent(3, damage);
     }
 

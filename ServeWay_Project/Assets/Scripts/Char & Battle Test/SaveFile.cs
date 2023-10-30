@@ -15,6 +15,7 @@ public class SaveFile : ScriptableObject
     public float playerChargeCooltime;
 
     public int stage;
+    public List<Boss_Nation> bossNations;
 
     public bool isMapSave;
     public List<Room> roomList;

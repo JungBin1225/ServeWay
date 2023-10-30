@@ -1578,7 +1578,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missonName:
-  - "\uBCF4\uC2A4\uC758 \uB9CC\uC871\uB3C4 {0} \uCC44\uC6B0\uAE30\\n({1} / {0})"
+  - "{2} \uC74C\uC2DD\uC73C\uB85C \uBCF4\uC2A4\uC758 \uB9CC\uC871\uB3C4 {0} \uCC44\uC6B0\uAE30\\n({1}
+    / {0})"
   - "30\uCD08 \uB0B4\uC5D0 {0}\uBC88 \uB300\uC2DC\uD558\uAE30\\n({1} / {0})"
   - "{0}\uCD08 \uB3D9\uC548 \uD53C\uACA9 \uB2F9\uD558\uC9C0 \uC54A\uAE30\\n({1} /
     {0})"
@@ -5021,6 +5022,7 @@ MonoBehaviour:
   charData: {fileID: 1493189980}
   inventory: {fileID: 1493189981}
   stage: 0
+  bossNations: 
 --- !u!4 &1493189979
 Transform:
   m_ObjectHideFlags: 0
@@ -5068,6 +5070,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ab78d35ec13af4d9f2818daa9e71c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory:
+    m_keys: 
+    m_values: 
 --- !u!1 &1581328098
 GameObject:
   m_ObjectHideFlags: 0

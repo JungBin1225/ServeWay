@@ -90,6 +90,7 @@ public class WeaponController : MonoBehaviour
         bullet.GetComponent<BulletController>().SetTarget(-transform.up);
         bullet.GetComponent<BulletController>().SetSpeed(speed);
         bullet.GetComponent<BulletController>().SetDamage(damage);
+        bullet.GetComponent<BulletController>().SetNation(nation);
     }
 
     public void InitWeapon()

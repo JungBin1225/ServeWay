@@ -21,6 +21,8 @@ public class MoveStage : MonoBehaviour
 
     private void MoveNextStage(string name)
     {
+        GameManager.gameManager.stage++;
+
         GameManager.gameManager.charData.SaveData();
         GameManager.gameManager.charData.DeleteMapData();
         if(GameManager.gameManager.stage == 7)
@@ -29,7 +31,6 @@ public class MoveStage : MonoBehaviour
         }
         else
         {
-            GameManager.gameManager.stage++;
             SceneManager.LoadScene(name);
         }
     }

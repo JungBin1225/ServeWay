@@ -2,6 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Boss_Nation
+{
+    KOREA,
+    JAPAN,
+    CHINA,
+    USA,
+    FRANCE
+};
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager;
@@ -11,6 +20,7 @@ public class GameManager : MonoBehaviour
     public CharData charData;
     public InventoryManager inventory;
     public int stage;
+    public List<Boss_Nation> bossNations;
 
     private void Awake()
     {
@@ -25,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        bossNations = new List<Boss_Nation>();
         charData = gameObject.GetComponent<CharData>();
         inventory = gameObject.GetComponent<InventoryManager>();
         isBossStage = false;
@@ -33,16 +44,46 @@ public class GameManager : MonoBehaviour
         if(charData.saveFile.weaponList.Count != 0)
         {
             stage = charData.saveFile.stage;
+            bossNations = charData.saveFile.bossNations;
         }
         else
         {
             stage = 0;
+            InitNation();
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void InitNation()
+    {
+        for(int i = 0; i < 7; i++)
+        {
+            bossNations.Add(RandomNation());
+        }
+    }
+
+    public Boss_Nation RandomNation()
+    {
+        int i = Random.Range(0, 5);
+
+        switch(i)
+        {
+            case 0:
+                return Boss_Nation.KOREA;
+            case 1:
+                return Boss_Nation.JAPAN;
+            case 2:
+                return Boss_Nation.CHINA;
+            case 3:
+                return Boss_Nation.USA;
+            case 4:
+                return Boss_Nation.FRANCE;
+            default:
+                return Boss_Nation.KOREA;
+        }
     }
 }
