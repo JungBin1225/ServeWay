@@ -41,6 +41,10 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tile miniRoomTile;
     [SerializeField] Tile miniWallTile;
     [SerializeField] Tile miniOutTile;
+    // 주방 콜라이더
+    GameObject KitchenCollider;
+    // 시작방 콜라이더
+    GameObject StartCollider;
 
     const int NUM_ROOM = 5; 
     Room[ , ] roomList = new Room[NUM_ROOM,NUM_ROOM];
@@ -337,7 +341,7 @@ public class MapGenerator : MonoBehaviour
                     else
                     {
                         tileMap.SetTile(tilePosition, roomTile);
-                        miniTileMap.SetTile(tilePosition, miniRoomTile);
+                        //miniTileMap.SetTile(tilePosition, miniRoomTile);
                     }
                    
 
@@ -346,7 +350,7 @@ public class MapGenerator : MonoBehaviour
                     //만약 같은 위치에 여러번 룸타일이 겹친다면
                     //벽이 생기지 않을 수 있으므로 바깥타일로 교체
                     tileMap.SetTile(tilePosition, outTile);
-                    miniTileMap.SetTile(tilePosition, miniOutTile);
+                    //miniTileMap.SetTile(tilePosition, miniOutTile);
                 }
             }
         }
@@ -389,17 +393,17 @@ public class MapGenerator : MonoBehaviour
 
                 Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, pointY, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                miniTileMap.SetTile(tilePosition, miniRoomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(i, pointY - 1, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                miniTileMap.SetTile(tilePosition, miniRoomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(i, pointY + 1, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                miniTileMap.SetTile(tilePosition, miniRoomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
                 if (x == nextX + 1)
                 {
@@ -443,16 +447,16 @@ public class MapGenerator : MonoBehaviour
 
                 Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(pointX, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                miniTileMap.SetTile(tilePosition, miniRoomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(pointX - 1, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                miniTileMap.SetTile(tilePosition, miniRoomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
                 tilePosition = tileMap.WorldToCell(new Vector3(pointX + 1, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                miniTileMap.SetTile(tilePosition, miniRoomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
                 if (y == nextY + 1)
                 {
@@ -628,20 +632,25 @@ public class MapGenerator : MonoBehaviour
             int ROW = 0, COL = 0;
             if (k == 0)
             {
+                // 시작방
                 ROW = startY;COL = startX;
                 nowTile = startRoomTile;
-                Destroy(roomList[ROW, COL].enemyGenerator);
+                roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().nonEnemyRoom = true;
+                //Destroy(roomList[ROW, COL].enemyGenerator);
             }
             else if (k == 1)
             {
+                // 주방
                 ROW = kitchenPos.Value; COL = kitchenPos.Key;
                 nowTile = kitchenTile;
 
-                Destroy(roomList[ROW, COL].enemyGenerator);
+                roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().nonEnemyRoom = true;
+                //Destroy(roomList[ROW, COL].enemyGenerator);
                 GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2), 0), Quaternion.Euler(0, 0, 0));
             }
             else if (k == 2)
             {
+                // 보스방
                 ROW = bossPos.Value; COL = bossPos.Key;
                 nowTile = bossTile;
 
@@ -666,7 +675,7 @@ public class MapGenerator : MonoBehaviour
                     {
 
                         tileMap.SetTile(tilePosition, nowTile);
-                        miniTileMap.SetTile(tilePosition, nowTile);
+                        //miniTileMap.SetTile(tilePosition, nowTile);
                     }
                  
 

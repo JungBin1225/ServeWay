@@ -12,6 +12,7 @@ public class EnemyGenerator : MonoBehaviour
     // 미니맵
     [SerializeField] GameObject miniRoomMesh;
     private bool isVisited = false;
+    public bool nonEnemyRoom = false;
 
     private Dictionary<GameObject, int> spawnlist;
     private BoxCollider2D boxCollider;
@@ -48,7 +49,8 @@ public class EnemyGenerator : MonoBehaviour
             }
 
             DropIngredient(1, 4);
-            this.gameObject.SetActive(false);
+            if (!nonEnemyRoom)
+                this.gameObject.SetActive(false);
         }
     }
 
@@ -118,21 +120,24 @@ public class EnemyGenerator : MonoBehaviour
             if (!isVisited)
             {
                 isVisited = true;
-                // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
-                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("miniMapMeshGroup").transform);
+                // minimapGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("minimapGroup").transform);
             }
 
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
 
-            // 일반 방 작동
-            foreach (GameObject door in doorList)
+            if (!nonEnemyRoom)
             {
-                door.SetActive(true);
-            }
+                // 일반 방 작동
+                foreach (GameObject door in doorList)
+                {
+                    door.SetActive(true);
+                }
 
-            if(!isSpawn)
-            {
-                StartCoroutine(SelectEnamy());
+                if (!isSpawn)
+                {
+                    StartCoroutine(SelectEnamy());
+                }
             }
         }
     }
