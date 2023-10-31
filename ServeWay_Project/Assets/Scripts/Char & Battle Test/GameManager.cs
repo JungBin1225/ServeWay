@@ -86,4 +86,23 @@ public class GameManager : MonoBehaviour
                 return Boss_Nation.KOREA;
         }
     }
+
+    public string NationToString(Boss_Nation nation)
+    {
+        switch(nation)
+        {
+            case Boss_Nation.KOREA:
+                return "한국";
+            case Boss_Nation.JAPAN:
+                return "일본";
+            case Boss_Nation.CHINA:
+                return "중국";
+            case Boss_Nation.USA:
+                return "미국";
+            case Boss_Nation.FRANCE:
+                return "프랑스";
+            default:
+                return "";
+        }
+    }
 }

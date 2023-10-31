@@ -25,12 +25,13 @@ public class MoveStage : MonoBehaviour
 
         GameManager.gameManager.charData.SaveData();
         GameManager.gameManager.charData.DeleteMapData();
-        if(GameManager.gameManager.stage == 7)
+        if(GameManager.gameManager.stage == 8)
         {
             //Ending Scene
         }
         else
         {
+            
             SceneManager.LoadScene(name);
         }
     }

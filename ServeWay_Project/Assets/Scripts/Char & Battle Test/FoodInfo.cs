@@ -52,4 +52,59 @@ public class FoodInfo
 
     public GameObject foodPrefab;
     public NameAmount needIngredient;
+
+    public string EunmToString(Food_Grade grade)
+    {
+        switch(grade)
+        {
+            case Food_Grade.STAR_1:
+                return "1성";
+            case Food_Grade.STAR_2:
+                return "2성";
+            case Food_Grade.STAR_3:
+                return "3성";
+            case Food_Grade.STAR_4:
+                return "4성";
+            default:
+                return "";
+        }
+    }
+
+    public string EunmToString(Food_MainIngred ingred)
+    {
+        switch (ingred)
+        {
+            case Food_MainIngred.MEAT:
+                return "고기";
+            case Food_MainIngred.RICE:
+                return "쌀";
+            case Food_MainIngred.SOUP:
+                return "국물";
+            case Food_MainIngred.NOODLE:
+                return "면";
+            case Food_MainIngred.BREAD:
+                return "빵";
+            default:
+                return "";
+        }
+    }
+
+    public string EunmToString(Food_Nation nation)
+    {
+        switch (nation)
+        {
+            case Food_Nation.KOREA:
+                return "한국";
+            case Food_Nation.JAPAN:
+                return "일본";
+            case Food_Nation.CHINA:
+                return "중국";
+            case Food_Nation.USA:
+                return "미국";
+            case Food_Nation.FRANCE:
+                return "프랑스";
+            default:
+                return "";
+        }
+    }
 }

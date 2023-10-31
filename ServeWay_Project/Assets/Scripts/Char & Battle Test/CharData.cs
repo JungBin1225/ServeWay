@@ -7,14 +7,14 @@ public class CharData : MonoBehaviour
 
     public SaveFile saveFile;
 
-    public List<string> weaponList;
+    /*public List<string> weaponList;
     public float playerHp;
     public float playerSpeed;
     public float playerChargeSpeed;
     public float playerChargeLength;
     public float playerChargeCooltime;
 
-    public int stage;
+    public int stage;*/
 
     void Start()
     {
@@ -55,7 +55,7 @@ public class CharData : MonoBehaviour
             saveFile.inventory.Add(name, inventory.inventory[name]);
         }
 
-        stage = GameManager.gameManager.stage;
+        saveFile.stage = GameManager.gameManager.stage;
         saveFile.bossNations = GameManager.gameManager.bossNations;
 
         UnityEditor.EditorUtility.SetDirty(saveFile);

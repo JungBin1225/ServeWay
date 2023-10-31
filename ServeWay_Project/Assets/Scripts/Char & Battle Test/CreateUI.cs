@@ -87,8 +87,11 @@ public class CreateUI : MonoBehaviour
 
                 explaneUI.transform.GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
                 explaneUI.transform.GetChild(1).GetComponent<TMP_Text>().text = food.foodName;
+                explaneUI.transform.GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
+                explaneUI.transform.GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
+                explaneUI.transform.GetChild(4).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
 
-                for(int i = 0; i < ingredientList.Count; i++)
+                for (int i = 0; i < ingredientList.Count; i++)
                 {
                     ingredientList[i].SetActive(false);
                 }

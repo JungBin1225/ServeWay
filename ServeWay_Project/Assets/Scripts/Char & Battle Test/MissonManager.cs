@@ -66,6 +66,11 @@ public class MissonManager : MonoBehaviour
     public void RandomMisson(int textIndex)
     {
         int index = Random.Range(0, missonName.Count);
+        if(textIndex == 0)
+        {
+            index = 0;
+        }
+
 
         if (targetAmount[index] != 0)
         {
@@ -79,7 +84,8 @@ public class MissonManager : MonoBehaviour
                 targetAmount[index] = Random.Range(20, 50);
 
                 matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1].ToString());
+                Boss_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), GameManager.gameManager.NationToString(nation));
                 break;
             case 1:
                 missonEvent += DashInTime;
@@ -126,7 +132,8 @@ public class MissonManager : MonoBehaviour
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString(), GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1].ToString());
+            Boss_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString(), GameManager.gameManager.NationToString(nation));
             //UI에 수치 갱신 reload num in UI
         }
     }
