@@ -22,6 +22,7 @@ public class WeaponController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject effectPrefab;
     public GameObject dropPrefab;
+    public List<float> alphaStat;
 
     void Start()
     {
@@ -87,19 +88,80 @@ public class WeaponController : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
         //GameObject effect = Instantiate(effectPrefab, transform);
-        bullet.GetComponent<BulletController>().SetTarget(-transform.up);
-        bullet.GetComponent<BulletController>().SetSpeed(speed);
-        bullet.GetComponent<BulletController>().SetDamage(damage);
-        bullet.GetComponent<BulletController>().SetNation(nation);
+
+        var bulletController = bullet.GetComponent<BulletController>();
+        switch(mainIngred)
+        {
+            case Food_MainIngred.BREAD:
+                var explosionbulletController = bullet.GetComponent<ExplosionBullet>();
+                explosionbulletController.SetTarget(-transform.up);
+                explosionbulletController.SetSpeed(speed);
+                explosionbulletController.SetDamage(damage);
+                explosionbulletController.SetNation(nation);
+                explosionbulletController.SetRadius(alphaStat[0]);
+                break;
+            case Food_MainIngred.MEAT:
+                bulletController = bullet.GetComponent<BulletController>();
+                bulletController.SetTarget(-transform.up);
+                bulletController.SetSpeed(speed);
+                bulletController.SetDamage(damage);
+                bulletController.SetNation(nation);
+                break;
+            case Food_MainIngred.RICE:
+                bulletController = bullet.GetComponent<BulletController>();
+                bulletController.SetTarget(-transform.up);
+                bulletController.SetSpeed(speed);
+                bulletController.SetDamage(damage);
+                bulletController.SetNation(nation);
+                break;
+            case Food_MainIngred.SOUP:
+                Destroy(bullet);
+                GenerateSoupBullet(speed, damage, mousePos, alphaStat[0], alphaStat[1]);
+                break;
+            default:
+                bulletController = bullet.GetComponent<BulletController>();
+                bulletController.SetTarget(-transform.up);
+                bulletController.SetSpeed(speed);
+                bulletController.SetDamage(damage);
+                bulletController.SetNation(nation);
+                break;
+        }
+    }
+
+    public void GenerateSoupBullet(float speed, float damage, Vector3 mousePos, float radius, float bulletAmount)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            for (int i = 0; i < bulletAmount; i++)
+            {
+                float angle = i * Mathf.PI * 2 / bulletAmount;
+                float x = Mathf.Cos(angle) * radius;
+                float y = Mathf.Sin(angle) * radius;
+                Vector3 pos = transform.position + new Vector3(x, y, 0);
+
+                if (Mathf.Abs(Vector2.SignedAngle(pos - transform.position, mousePos - transform.position)) < 60)
+                {
+                    float angleDegrees = -angle * Mathf.Rad2Deg;
+                    Quaternion rot = Quaternion.Euler(0, 0, angleDegrees);
+                    GameObject bullet = Instantiate(bulletPrefab, pos, rot);
+                    bullet.GetComponent<BulletController>().SetTarget(new Vector3(-x, -y, 0).normalized);
+                    bullet.GetComponent<BulletController>().SetSpeed(speed);
+                    bullet.GetComponent<BulletController>().SetDamage(damage);
+                    bullet.GetComponent<BulletController>().SetNation(nation);
+                }
+            }
+        }
     }
 
     public void InitWeapon()
     {
         FoodInfo foodInfo = FindObjectOfType<DataController>().FoodInfoList.FindFood(weaponName);
+        alphaStat = new List<float>();
 
         grade = foodInfo.grade;
         mainIngred = foodInfo.mainIngred;
         nation = foodInfo.nation;
+        alphaStat = foodInfo.alphaStat;
 
         switch(success)
         {

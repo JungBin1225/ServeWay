@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-    private float speed;
-    private float damage;
-    private Vector3 target;
-    private Food_Nation nation;
+    protected float speed;
+    protected float damage;
+    protected Vector3 target;
+    protected Food_Nation nation;
 
-    void Start()
+    protected void Start()
     {
 
     }
 
-    void Update()
+    protected void Update()
     {
         Fire();
     }

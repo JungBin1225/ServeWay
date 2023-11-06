@@ -50,6 +50,8 @@ public class FoodInfo
     public float successSpeed;
     public float successCoolTime;
 
+    public List<float> alphaStat;
+
     public GameObject foodPrefab;
     public NameAmount needIngredient;
 

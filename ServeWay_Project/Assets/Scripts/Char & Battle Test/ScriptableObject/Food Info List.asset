@@ -24,6 +24,7 @@ MonoBehaviour:
     successDamage: 5
     successSpeed: 5
     successCoolTime: 0.05
+    alphaStat: []
     foodPrefab: {fileID: 8164251098009920836, guid: 0a4f700751b61db42aa62a151d6291b2, type: 3}
     needIngredient:
       m_keys: 0000000001000000
@@ -39,6 +40,7 @@ MonoBehaviour:
     successDamage: 5
     successSpeed: 5
     successCoolTime: 0.05
+    alphaStat: []
     foodPrefab: {fileID: 8164251098009920836, guid: 0a4f700751b61db42aa62a151d6291b2, type: 3}
     needIngredient:
       m_keys: 0000000001000000
@@ -54,6 +56,8 @@ MonoBehaviour:
     successDamage: 5
     successSpeed: 5
     successCoolTime: 0.05
+    alphaStat:
+    - 2
     foodPrefab: {fileID: 8164251098009920836, guid: 0a4f700751b61db42aa62a151d6291b2, type: 3}
     needIngredient:
       m_keys: 01000000
@@ -69,6 +73,7 @@ MonoBehaviour:
     successDamage: 5
     successSpeed: 5
     successCoolTime: 0.05
+    alphaStat: []
     foodPrefab: {fileID: 8164251098009920836, guid: 0a4f700751b61db42aa62a151d6291b2, type: 3}
     needIngredient:
       m_keys: 00000000
@@ -84,6 +89,7 @@ MonoBehaviour:
     successDamage: 5
     successSpeed: 5
     successCoolTime: 0.05
+    alphaStat: []
     foodPrefab: {fileID: 8164251098009920836, guid: 0a4f700751b61db42aa62a151d6291b2, type: 3}
     needIngredient:
       m_keys: 0000000001000000
@@ -92,7 +98,7 @@ MonoBehaviour:
   - foodName: Start
     foodSprite: {fileID: 21300112, guid: 01842c69a0801d74382f6f4ed41ec4bf, type: 3}
     grade: 0
-    mainIngred: 0
+    mainIngred: 2
     nation: 0
     damage: 10
     speed: 10
@@ -100,6 +106,9 @@ MonoBehaviour:
     successDamage: 0
     successSpeed: 0
     successCoolTime: 0
+    alphaStat:
+    - 3
+    - 16
     foodPrefab: {fileID: 8164251098009920836, guid: 0a4f700751b61db42aa62a151d6291b2, type: 3}
     needIngredient:
       m_keys: 

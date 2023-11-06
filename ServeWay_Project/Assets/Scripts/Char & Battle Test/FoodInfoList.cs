@@ -19,12 +19,28 @@ public class FoodInfoList : ScriptableObject
             }
         }
 
+        foreach (FoodInfo food in start_foodInfo)
+        {
+            if (name == food.foodName)
+            {
+                return food;
+            }
+        }
+
         return null;
     }
 
     public FoodInfo FindFood(Sprite sprite)
     {
         foreach (FoodInfo food in foodInfo)
+        {
+            if (sprite == food.foodSprite)
+            {
+                return food;
+            }
+        }
+
+        foreach (FoodInfo food in start_foodInfo)
         {
             if (sprite == food.foodSprite)
             {
