@@ -7,9 +7,14 @@ public class WeaponController : MonoBehaviour
     private PlayerController player;
     private SpriteRenderer playerSprite;
     private SpriteRenderer weaponSprite;
+    private LineRenderer lineRenderer;
     private Vector3 mousePos;
     private float coolTime;
     private bool shootAble;
+    private Ray2D ray;
+    private RaycastHit2D hit;
+    private bool isClicked;
+    private bool isLaser;
 
     public string weaponName;
     public Food_Grade grade;
@@ -20,6 +25,7 @@ public class WeaponController : MonoBehaviour
     public float damage;
     public float speed;
     public GameObject bulletPrefab;
+    public GameObject laserPrefab;
     public GameObject effectPrefab;
     public GameObject dropPrefab;
     public List<float> alphaStat;
@@ -29,9 +35,14 @@ public class WeaponController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         playerSprite = player.GetComponent<SpriteRenderer>();
         weaponSprite = GetComponent<SpriteRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.enabled = false;
 
         coolTime = 0;
         shootAble = true;
+        isClicked = false;
+        isLaser = false;
     }
 
 
@@ -53,12 +64,20 @@ public class WeaponController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            if (shootAble && player.controllAble)
+            isClicked = true;
+            if (shootAble && player.controllAble && mainIngred != Food_MainIngred.NOODLE)
             {
                 GenerateBullet(speed, damage, mousePos);
                 coolTime = shootDuration;
             }
-
+            else if(player.controllAble && mainIngred == Food_MainIngred.NOODLE && !isLaser)
+            {
+                GenerateBullet(speed, damage, mousePos);
+            }
+        }
+        else if(Input.GetMouseButtonUp(0))
+        {
+            isClicked = false;
         }
     }
 
@@ -118,13 +137,17 @@ public class WeaponController : MonoBehaviour
                 Destroy(bullet);
                 GenerateSoupBullet(speed, damage, mousePos, alphaStat[0], alphaStat[1]);
                 break;
-            default:
+            case Food_MainIngred.NOODLE:
+                Destroy(bullet);
+                StartCoroutine(GenerateLaser());
+                break;
+            /*default:
                 bulletController = bullet.GetComponent<BulletController>();
                 bulletController.SetTarget(-transform.up);
                 bulletController.SetSpeed(speed);
                 bulletController.SetDamage(damage);
                 bulletController.SetNation(nation);
-                break;
+                break;*/
         }
     }
 
@@ -151,6 +174,49 @@ public class WeaponController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public IEnumerator GenerateLaser()
+    {
+        lineRenderer.enabled = true;
+        isLaser = true;
+        GameObject laser = Instantiate(laserPrefab, this.transform);
+
+        laser.GetComponent<LaserController>().SetDamage(damage);
+        laser.GetComponent<LaserController>().SetCoolTime(shootDuration);
+        laser.GetComponent<LaserController>().SetNation(nation);
+
+        while (isClicked)
+        {
+            ray = new Ray2D(transform.position, mousePos - transform.position);
+
+            lineRenderer.SetPosition(0, transform.position);
+
+            int mask = 1 << LayerMask.NameToLayer("RayTarget");
+            hit = Physics2D.Raycast(ray.origin, ray.direction, 50f, mask);
+            if (hit)
+            {
+                lineRenderer.SetPosition(1, hit.point);
+            }
+            else
+            {
+                lineRenderer.SetPosition(1, mousePos);
+            }
+
+            Vector3 start = lineRenderer.GetPosition(0);
+            Vector3 end = lineRenderer.GetPosition(1);
+
+            laser.transform.localScale = new Vector3(Vector3.Distance(start, end), 1, 0);
+            laser.transform.position = (start + end) / 2;
+            laser.transform.localRotation = Quaternion.Euler(0, 0, 90);
+
+            yield return null;
+        }
+
+        lineRenderer.enabled = false;
+        isLaser = false;
+        Destroy(laser);
+        yield return null;
     }
 
     public void InitWeapon()
