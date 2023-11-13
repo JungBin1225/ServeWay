@@ -206,9 +206,13 @@ public class WeaponController : MonoBehaviour
             Vector3 start = lineRenderer.GetPosition(0);
             Vector3 end = lineRenderer.GetPosition(1);
 
-            laser.transform.localScale = new Vector3(Vector3.Distance(start, end), 1, 0);
-            laser.transform.position = (start + end) / 2;
-            laser.transform.localRotation = Quaternion.Euler(0, 0, 90);
+            laser.transform.localScale = new Vector3(Vector3.Distance(start, end) * 1.25f, lineRenderer.startWidth * 1.25f, 0);
+            Vector3 pos = (start + end) / 2;
+            Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.localRotation = angleAxis;
+            laser.transform.position = pos;
 
             yield return null;
         }
