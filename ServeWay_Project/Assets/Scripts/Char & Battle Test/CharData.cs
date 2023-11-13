@@ -7,14 +7,14 @@ public class CharData : MonoBehaviour
 
     public SaveFile saveFile;
 
-    public List<string> weaponList;
+    /*public List<string> weaponList;
     public float playerHp;
     public float playerSpeed;
     public float playerChargeSpeed;
     public float playerChargeLength;
     public float playerChargeCooltime;
 
-    public int stage;
+    public int stage;*/
 
     void Start()
     {
@@ -36,7 +36,11 @@ public class CharData : MonoBehaviour
 
         for (int i = 0; i < plInfo.weaponSlot.gameObject.transform.childCount; i++)
         {
-            saveFile.weaponList.Add(plInfo.weaponSlot.gameObject.transform.GetChild(i).GetChild(0).GetComponent<WeaponController>().weaponName);
+            string name = plInfo.weaponSlot.gameObject.transform.GetChild(i).GetChild(0).GetComponent<WeaponController>().weaponName;
+            Create_Success success = plInfo.weaponSlot.gameObject.transform.GetChild(i).GetChild(0).GetComponent<WeaponController>().success;
+
+            saveFile.weaponList.Add(name);
+            saveFile.weaponSuccess.Add(success);
         }
 
         saveFile.playerSpeed = plInfo.speed;
@@ -45,11 +49,14 @@ public class CharData : MonoBehaviour
         saveFile.playerChargeCooltime = plInfo.chargeCooltime;
         saveFile.playerHp = plInfo.GetnowHp();
 
-        saveFile.inventory = new Dictionary<IngredientList.IngredientsName, int>();
+        saveFile.inventory = new NameAmount();
         foreach(IngredientList.IngredientsName name in inventory.inventory.Keys)
         {
             saveFile.inventory.Add(name, inventory.inventory[name]);
         }
+
+        saveFile.stage = GameManager.gameManager.stage;
+        saveFile.bossNations = GameManager.gameManager.bossNations;
 
         UnityEditor.EditorUtility.SetDirty(saveFile);
     }

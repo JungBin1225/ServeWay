@@ -12,13 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3679d410c1c85934883eee7a993f0b84, type: 3}
   m_Name: Save File
   m_EditorClassIdentifier: 
-  weaponList: []
-  playerHp: 0
-  playerSpeed: 0
-  playerChargeSpeed: 0
-  playerChargeLength: 0
-  playerChargeCooltime: 0
-  stage: 0
+  inventory:
+    m_keys: 
+    m_values: 
+  weaponList:
+  - Start
+  weaponSuccess: 01000000
+  playerHp: 200
+  playerSpeed: 10
+  playerChargeSpeed: 100
+  playerChargeLength: 0.2
+  playerChargeCooltime: 1
+  stage: 1
+  bossNations: 04000000010000000200000004000000030000000100000000000000
   isMapSave: 1
   roomList:
   - nodeRect:
@@ -29,15 +35,15 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -58.906414
-      y: 55.885082
-      width: 15.853863
-      height: 18.515167
-    isCreated: 9
-    roomType: 3
+      x: -62.927372
+      y: 54.18557
+      width: 22.991184
+      height: 16.561089
+    isCreated: 5
+    roomType: 1
     enemyGenerator: {fileID: 0}
     rightYPoint: 0
-    leftYPoint: 47.5
+    leftYPoint: 46.5
     upXPoint: 0
     downXPoint: -50.5
   - nodeRect:
@@ -48,17 +54,17 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -33.67403
-      y: 56.952923
-      width: 13.670983
-      height: 18.01034
-    isCreated: 8
+      x: -33.822037
+      y: 55.181496
+      width: 19.285578
+      height: 15.860862
+    isCreated: 4
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: 47.5
-    leftYPoint: 47.5
+    rightYPoint: 46.5
+    leftYPoint: 48.5
     upXPoint: 0
-    downXPoint: 0
+    downXPoint: -25.5
   - nodeRect:
       serializedVersion: 2
       x: -12.800001
@@ -67,17 +73,17 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -10.727946
-      y: 57.32125
-      width: 12.882404
-      height: 20.318727
-    isCreated: 7
+      x: -5.929219
+      y: 58.914238
+      width: 17.539677
+      height: 20.871693
+    isCreated: 3
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: 47.5
-    leftYPoint: 47.5
+    rightYPoint: 48.5
+    leftYPoint: 48.5
     upXPoint: 0
-    downXPoint: -2.5
+    downXPoint: 0
   - nodeRect:
       serializedVersion: 2
       x: 12.799999
@@ -86,17 +92,17 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: 17.58578
-      y: 56.24109
-      width: 15.566446
-      height: 13.099842
-    isCreated: 6
+      x: 15.592594
+      y: 57.53739
+      width: 21.65556
+      height: 13.320942
+    isCreated: 2
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: 47.5
-    leftYPoint: 47.5
+    rightYPoint: 48.5
+    leftYPoint: 49.5
     upXPoint: 0
-    downXPoint: 24.5
+    downXPoint: 0
   - nodeRect:
       serializedVersion: 2
       x: 38.4
@@ -105,17 +111,17 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: 41.512398
-      y: 58.55144
-      width: 16.747551
-      height: 21.347921
+      x: 47.26171
+      y: 57.39841
+      width: 14.887432
+      height: 18.469616
     isCreated: 5
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: 47.5
+    rightYPoint: 49.5
     leftYPoint: 0
     upXPoint: 0
-    downXPoint: 49.5
+    downXPoint: 0
   - nodeRect:
       serializedVersion: 2
       x: -64
@@ -124,17 +130,36 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -58.011772
-      y: 34.35377
-      width: 16.002216
-      height: 19.881992
-    isCreated: 8
+      x: -62.702885
+      y: 29.028221
+      width: 15.463329
+      height: 14.105386
+    isCreated: 6
     roomType: 1
     enemyGenerator: {fileID: 0}
     rightYPoint: 0
+    leftYPoint: 21.5
+    upXPoint: -51.5
+    downXPoint: -53.5
+  - nodeRect:
+      serializedVersion: 2
+      x: -38.4
+      y: 36
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -37.087795
+      y: 30.286396
+      width: 23.280859
+      height: 16.657196
+    isCreated: 5
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 21.5
     leftYPoint: 0
-    upXPoint: -50.5
-    downXPoint: -50.5
+    upXPoint: -25.5
+    downXPoint: -25.5
   - nodeRect:
       serializedVersion: 2
       x: 0
@@ -156,61 +181,42 @@ MonoBehaviour:
     downXPoint: 0
   - nodeRect:
       serializedVersion: 2
-      x: -12.800001
-      y: 36
-      width: 25.6
-      height: 24
+      x: 0
+      y: 0
+      width: 0
+      height: 0
     roomRect:
       serializedVersion: 2
-      x: -9.710629
-      y: 32.895527
-      width: 15.904082
-      height: 15.9944935
-    isCreated: 6
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
     roomType: 1
     enemyGenerator: {fileID: 0}
     rightYPoint: 0
-    leftYPoint: 23.5
-    upXPoint: -2.5
+    leftYPoint: 0
+    upXPoint: 0
     downXPoint: 0
   - nodeRect:
       serializedVersion: 2
-      x: 12.799999
-      y: 36
-      width: 25.6
-      height: 24
+      x: 0
+      y: 0
+      width: 0
+      height: 0
     roomRect:
       serializedVersion: 2
-      x: 15.037154
-      y: 27.239868
-      width: 17.602623
-      height: 13.908411
-    isCreated: 5
-    roomType: 2
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 23.5
-    leftYPoint: 21.5
-    upXPoint: 24.5
-    downXPoint: 23.5
-  - nodeRect:
-      serializedVersion: 2
-      x: 38.4
-      y: 36
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: 40.44655
-      y: 29.216606
-      width: 18.732904
-      height: 12.00028
-    isCreated: 4
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: 21.5
+    rightYPoint: 0
     leftYPoint: 0
-    upXPoint: 49.5
-    downXPoint: 51.5
+    upXPoint: 0
+    downXPoint: 0
   - nodeRect:
       serializedVersion: 2
       x: -64
@@ -219,17 +225,17 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -57.980453
-      y: 10.041739
-      width: 14.226316
-      height: 18.295864
+      x: -60.754944
+      y: 10.897355
+      width: 16.347677
+      height: 21.793497
     isCreated: 7
     roomType: 1
     enemyGenerator: {fileID: 0}
     rightYPoint: 0
     leftYPoint: 0.5
-    upXPoint: -50.5
-    downXPoint: 0
+    upXPoint: -53.5
+    downXPoint: -52.5
   - nodeRect:
       serializedVersion: 2
       x: -38.4
@@ -238,10 +244,10 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -35.321064
-      y: 9.498582
-      width: 19.857025
-      height: 17.524242
+      x: -34.28539
+      y: 5.233112
+      width: 13.368525
+      height: 15.820179
     isCreated: 6
     roomType: 1
     enemyGenerator: {fileID: 0}
@@ -276,36 +282,17 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: 17.23824
-      y: 7.680573
-      width: 13.658266
-      height: 16.79639
-    isCreated: 4
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
     roomType: 1
     enemyGenerator: {fileID: 0}
     rightYPoint: 0
-    leftYPoint: 0.5
-    upXPoint: 23.5
-    downXPoint: 26.5
-  - nodeRect:
-      serializedVersion: 2
-      x: 38.4
-      y: 12
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: 49.56527
-      y: 10.791013
-      width: 13.196721
-      height: 20.234121
-    isCreated: 3
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0.5
     leftYPoint: 0
-    upXPoint: 51.5
-    downXPoint: 54.5
+    upXPoint: 0
+    downXPoint: 0
   - nodeRect:
       serializedVersion: 2
       x: 0
@@ -333,12 +320,12 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -35.50651
-      y: -12.782546
-      width: 14.64901
-      height: 22.604889
-    isCreated: 5
-    roomType: 1
+      x: -59.464535
+      y: -20.153229
+      width: 12.859742
+      height: 12.6677885
+    isCreated: 8
+    roomType: 3
     enemyGenerator: {fileID: 0}
     rightYPoint: 0
     leftYPoint: -24.5
@@ -352,55 +339,36 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -6.1458364
-      y: -14.014571
-      width: 17.270687
-      height: 20.864265
-    isCreated: 4
-    roomType: 1
+      x: -37.266155
+      y: -13.416119
+      width: 19.262054
+      height: 21.121223
+    isCreated: 7
+    roomType: 2
     enemyGenerator: {fileID: 0}
-    rightYPoint: -24.5
-    leftYPoint: -24.5
-    upXPoint: 0
-    downXPoint: -0.5
-  - nodeRect:
-      serializedVersion: 2
-      x: 12.799999
-      y: -12
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: 19.748442
-      y: -13.400697
-      width: 15.2284155
-      height: 21.418531
-    isCreated: 3
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: -24.5
-    leftYPoint: -24.5
-    upXPoint: 26.5
-    downXPoint: 25.5
-  - nodeRect:
-      serializedVersion: 2
-      x: 38.4
-      y: -12
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: 46.254585
-      y: -14.376522
-      width: 13.446817
-      height: 20.560669
-    isCreated: 2
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: -24.5
+    rightYPoint: -23.5
     leftYPoint: 0
-    upXPoint: 54.5
-    downXPoint: 52.5
+    upXPoint: -27.5
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 0
   - nodeRect:
       serializedVersion: 2
       x: 0
@@ -441,60 +409,98 @@ MonoBehaviour:
     downXPoint: 0
   - nodeRect:
       serializedVersion: 2
-      x: -12.800001
-      y: -36
-      width: 25.6
-      height: 24
+      x: 0
+      y: 0
+      width: 0
+      height: 0
     roomRect:
       serializedVersion: 2
-      x: -11.7169
-      y: -39.48173
-      width: 23.345882
-      height: 18.306694
-    isCreated: 3
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
     roomType: 1
     enemyGenerator: {fileID: 0}
     rightYPoint: 0
-    leftYPoint: -47.5
-    upXPoint: -0.5
+    leftYPoint: 0
+    upXPoint: 0
     downXPoint: 0
   - nodeRect:
       serializedVersion: 2
-      x: 12.799999
-      y: -36
-      width: 25.6
-      height: 24
+      x: 0
+      y: 0
+      width: 0
+      height: 0
     roomRect:
       serializedVersion: 2
-      x: 13.874909
-      y: -38.114437
-      width: 23.43324
-      height: 13.13393
-    isCreated: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: -47.5
-    leftYPoint: -47.5
-    upXPoint: 25.5
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
     downXPoint: 0
   - nodeRect:
       serializedVersion: 2
-      x: 38.4
-      y: -36
-      width: 25.6
-      height: 24
+      x: 0
+      y: 0
+      width: 0
+      height: 0
     roomRect:
       serializedVersion: 2
-      x: 43.142994
-      y: -37.31445
-      width: 18.712416
-      height: 20.912779
-    isCreated: 1
-    roomType: 0
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: -47.5
+    rightYPoint: 0
     leftYPoint: 0
-    upXPoint: 52.5
+    upXPoint: 0
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
     downXPoint: 0
   startX: 4
-  startY: 4
+  startY: 0

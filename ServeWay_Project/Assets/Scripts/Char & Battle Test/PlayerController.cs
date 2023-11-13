@@ -79,17 +79,20 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                //Debug.Log("Cool Time!");
+                
             }
         }
 
-        if (missonTime > 0)
+        if(GameManager.gameManager.isBossStage)
         {
-            missonTime -= Time.deltaTime;
-        }
-        else
-        {
-            misson.OccurreEvent(1, 0);
+            if (missonTime > 0)
+            {
+                missonTime -= Time.deltaTime;
+            }
+            else
+            {
+                misson.OccurreEvent(1, 0);
+            }
         }
     }
 
@@ -165,7 +168,6 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(chargeLength); //µ¹Áø
 
-        //GameManager.gameManager.mission.CheckCharge();
         isCharge = false;
 
         rigidBody.velocity = Vector2.zero;
@@ -186,9 +188,11 @@ public class PlayerController : MonoBehaviour
             }
 
             weaponSlot.index = 0;
+            int n = 0;
             foreach(string weapon in GameManager.gameManager.charData.saveFile.weaponList)
             {
-                weaponSlot.GetWeapon(foodInfo.FindPrefabToName(weapon).GetComponent<GetItem>().weaponPrefab);
+                weaponSlot.GetWeapon(foodInfo.FindFood(weapon).foodPrefab.GetComponent<GetItem>().weaponPrefab, GameManager.gameManager.charData.saveFile.weaponSuccess[n]);
+                n++;
             }
 
             speed = GameManager.gameManager.charData.saveFile.playerSpeed;

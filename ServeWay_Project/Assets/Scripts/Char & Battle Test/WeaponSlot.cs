@@ -71,11 +71,13 @@ public class WeaponSlot : MonoBehaviour
         weaponList[index].SetActive(true);
     }
 
-    public void GetWeapon(GameObject newWeapon)
+    public void GetWeapon(GameObject newWeapon, Create_Success success)
     {
         if(weaponList.Count < 3)
         {
             GameObject weapon = Instantiate(newWeapon, this.transform);
+            weapon.GetComponentInChildren<WeaponController>().success = success;
+            weapon.GetComponentInChildren<WeaponController>().InitWeapon();
             weaponList.Add(weapon);
             if(!weaponList[index].Equals(weapon))
             {
@@ -90,6 +92,8 @@ public class WeaponSlot : MonoBehaviour
         {
             DeleteWeapon();
             GameObject weapon = Instantiate(newWeapon, this.transform);
+            weapon.GetComponentInChildren<WeaponController>().success = success;
+            weapon.GetComponentInChildren<WeaponController>().InitWeapon();
             weaponList[index] = weapon;
             if (!weaponList[index].Equals(weapon))
             {

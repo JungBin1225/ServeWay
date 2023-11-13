@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -64,9 +65,21 @@ public class CreateUI : MonoBehaviour
 
     public void OnSelectClicked(TMP_Text text)
     {
+        List<FoodInfo> list;
+
         explaneUI.SetActive(true);
 
-        foreach(FoodInfo food in foodInfo.foodInfo)
+        if(SceneManager.GetActiveScene().name.Contains("Start"))
+        {
+            list = foodInfo.start_foodInfo;
+        }
+        else
+        {
+            list = foodInfo.foodInfo;
+        }
+        
+
+        foreach(FoodInfo food in list)
         {
             if(food.foodName == text.text)
             {
@@ -74,8 +87,11 @@ public class CreateUI : MonoBehaviour
 
                 explaneUI.transform.GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
                 explaneUI.transform.GetChild(1).GetComponent<TMP_Text>().text = food.foodName;
+                explaneUI.transform.GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
+                explaneUI.transform.GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
+                explaneUI.transform.GetChild(4).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
 
-                for(int i = 0; i < ingredientList.Count; i++)
+                for (int i = 0; i < ingredientList.Count; i++)
                 {
                     ingredientList[i].SetActive(false);
                 }
@@ -96,14 +112,35 @@ public class CreateUI : MonoBehaviour
 
     public void OnCreateClicked()
     {
-        foreach(IngredientList.IngredientsName name in selectedFood.needIngredient.Keys)
+        if (!SceneManager.GetActiveScene().name.Contains("Start"))
         {
-            inventory.DeleteItem(name, selectedFood.needIngredient[name]);
+            foreach (IngredientList.IngredientsName name in selectedFood.needIngredient.Keys)
+            {
+                inventory.DeleteItem(name, selectedFood.needIngredient[name]);
+            }
         }
 
-        Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));
+        GameObject food = Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));
+        food.GetComponent<GetItem>().success = RandomSuccess();
 
         CloseUI();
+    }
+
+    public Create_Success RandomSuccess()
+    {
+        int i = Random.Range(0, 3);
+
+        switch(i)
+        {
+            case 0:
+                return Create_Success.FAIL;
+            case 1:
+                return Create_Success.SUCCESS;
+            case 2:
+                return Create_Success.GREAT;
+        }
+
+        return Create_Success.SUCCESS;
     }
 
     public void CloseUI()

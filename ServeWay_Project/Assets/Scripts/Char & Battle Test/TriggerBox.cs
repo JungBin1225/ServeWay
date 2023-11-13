@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class TriggerBox : MonoBehaviour
@@ -10,9 +9,14 @@ public class TriggerBox : MonoBehaviour
     public List<GameObject> doorList;
     public int enemyAmount;
 
+    // 미니맵
+    [SerializeField] GameObject miniRoomMesh;
+    private bool isVisited = false;
+    public bool nonEnemyRoom = false;
+
     private Dictionary<GameObject, int> spawnlist;
     private BoxCollider2D boxCollider;
-    private IngredientList ingredientList;
+    private DataController data;
     private bool isClear;
     private bool isSpawn;
     private bool isStarted = false;
@@ -23,25 +27,14 @@ public class TriggerBox : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         spawnlist = new Dictionary<GameObject, int>();
-        ingredientList = FindObjectOfType<DataController>().IngredientList;
+        data = FindObjectOfType<DataController>();
         isClear = false;
         isSpawn = false;
-    
-
-        int i = 0;
-        foreach(GameObject enemy in enemyPrefab)
-        {
-            spawnlist.Add(enemy, amountList[i]);
-            i++;
-        }
-
-        enemyAmount = 0;
-        foreach(int n in amountList)
-        {
-            enemyAmount += n;
-        }
-
         isStarted = true;
+
+        isVisited = false;
+
+        InitEnemy();
     }
 
     void Update()
@@ -56,7 +49,8 @@ public class TriggerBox : MonoBehaviour
             }
 
             DropIngredient(1, 4);
-            this.gameObject.SetActive(false);
+            if (!nonEnemyRoom)
+                this.gameObject.SetActive(false);
         }
     }
 
@@ -77,10 +71,10 @@ public class TriggerBox : MonoBehaviour
 
     private void spawnEnemy(GameObject enemyPrefab)
     {
-        float minX = transform.position.x - (transform.localScale.x / 2);
-        float maxX = transform.position.x + (transform.localScale.x / 2);
-        float minY = transform.position.y - (transform.localScale.y / 2);
-        float maxY = transform.position.y + (transform.localScale.y / 2);
+        float minX = transform.position.x - (transform.localScale.x / 2) + 2;
+        float maxX = transform.position.x + (transform.localScale.x / 2) - 2;
+        float minY = transform.position.y - (transform.localScale.y / 2) + 2;
+        float maxY = transform.position.y + (transform.localScale.y / 2) - 2;
 
         float posX = Random.Range(minX, maxX);
         float posY = Random.Range(minY, maxY);
@@ -113,23 +107,37 @@ public class TriggerBox : MonoBehaviour
 
     private GameObject RandomIngredient()
     {
-        int randomIndex = Random.Range(0, ingredientList.ingredientList.Count);
+        int randomIndex = Random.Range(0, data.IngredientList.ingredientList.Count);
 
-        return ingredientList.ingredientList[randomIndex].prefab;
+        return data.IngredientList.ingredientList[randomIndex].prefab;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player" && !isClear && isStarted)
+        if (collision.gameObject.tag == "Player" && !isClear && isStarted)
         {
-            foreach (GameObject door in doorList)
+            // 미니맵
+            if (!isVisited)
             {
-                door.SetActive(true);
+                isVisited = true;
+                // minimapGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("minimapGroup").transform);
             }
 
-            if(!isSpawn)
+            GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+
+            if (!nonEnemyRoom)
             {
-                StartCoroutine(SelectEnamy());
+                // 일반 방 작동
+                foreach (GameObject door in doorList)
+                {
+                    door.SetActive(true);
+                }
+
+                if (!isSpawn)
+                {
+                    StartCoroutine(SelectEnamy());
+                }
             }
         }
     }
@@ -142,6 +150,45 @@ public class TriggerBox : MonoBehaviour
         }else if(collision.gameObject.tag == "Player")
         {
             //StopCoroutine(SelectEnamy());
+        }
+    }
+
+    private void InitEnemy()
+    {
+        enemyAmount = Random.Range(6, 16);
+        int num = enemyAmount;
+
+        enemyPrefab.Clear();
+        amountList.Clear();
+        while(num != 0)
+        {
+            int amount = Random.Range(2, 6);
+            if(num < amount)
+            {
+                amount = num;
+            }
+
+            GameObject enemy = data.enemyList.RandomEnemy();
+
+            if(enemyPrefab.Contains(enemy))
+            {
+                amountList[enemyPrefab.FindIndex(o => o == enemy)] += amount;
+            }
+            else
+            {
+                enemyPrefab.Add(enemy);
+                amountList.Add(amount);
+            }
+
+
+            num -= amount;
+        }
+
+        int n = 0;
+        foreach (GameObject enemy in enemyPrefab)
+        {
+            spawnlist.Add(enemy, amountList[n]);
+            n++;
         }
     }
 }

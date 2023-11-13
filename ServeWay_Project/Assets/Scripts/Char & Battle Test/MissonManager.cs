@@ -6,16 +6,20 @@ using TMPro;
 
 public class MissonManager : MonoBehaviour
 {
+    const int NUM_MISSON = 2;
+
     public delegate void missionDelegate(int missonID, float increase);
     public event missionDelegate missonEvent;
     public List<string> missonName;
     public List<GameObject> missonUI;
+    public int clearAmount;
 
     private List<float> targetAmount;
     private List<float> nowAmount;
     private Dictionary<int, GameObject> matchedUI;
     void Start()
     {
+        clearAmount = 0;
         targetAmount = new List<float>();
         nowAmount = new List<float>();
         matchedUI = new Dictionary<int, GameObject>();
@@ -30,13 +34,18 @@ public class MissonManager : MonoBehaviour
             missonName[i] = missonName[i].Replace("\\n", "\n");
         }
 
-        SetMisson(2);
+        SetMisson(NUM_MISSON);
     }
 
 
     void Update()
     {
 
+    }
+
+    public bool isClear()
+    {
+        return (clearAmount == NUM_MISSON);
     }
 
     public void OccurreEvent(int missonID, float increase)
@@ -57,6 +66,11 @@ public class MissonManager : MonoBehaviour
     public void RandomMisson(int textIndex)
     {
         int index = Random.Range(0, missonName.Count);
+        if(textIndex == 0)
+        {
+            index = 0;
+        }
+
 
         if (targetAmount[index] != 0)
         {
@@ -70,7 +84,8 @@ public class MissonManager : MonoBehaviour
                 targetAmount[index] = Random.Range(20, 50);
 
                 matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                Boss_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), GameManager.gameManager.NationToString(nation));
                 break;
             case 1:
                 missonEvent += DashInTime;
@@ -113,10 +128,12 @@ public class MissonManager : MonoBehaviour
             {
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
+            Boss_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString(), GameManager.gameManager.NationToString(nation));
             //UI에 수치 갱신 reload num in UI
         }
     }
@@ -144,6 +161,7 @@ public class MissonManager : MonoBehaviour
             {
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
@@ -171,6 +189,7 @@ public class MissonManager : MonoBehaviour
             {
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
@@ -198,6 +217,7 @@ public class MissonManager : MonoBehaviour
             {
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 

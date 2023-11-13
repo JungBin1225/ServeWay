@@ -42,6 +42,15 @@ public enum DirectType
     [SerializeField] GameObject createTablePrefab;
     [SerializeField] GameObject doorPrefab;
 
+    // 미니맵
+    [SerializeField] Tilemap miniTileMap;
+    [SerializeField] Tile miniRoomTile;
+    [SerializeField] Tile miniWallTile;
+    [SerializeField] Tile miniOutTile;
+    // 주방 콜라이더
+    GameObject KitchenCollider;
+    // 시작방 콜라이더
+    GameObject StartCollider;
 
     const int NUM_ROOM = 5; 
     Room[ , ] roomList = new Room[NUM_ROOM,NUM_ROOM];
@@ -78,6 +87,7 @@ public enum DirectType
         SetDoor();
         //플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
+        GameObject.Find("miniPlayer").transform.position = roomList[startY, startX].enemyGenerator.transform.position;
 
        // GameManager.gameManager.charData.SaveMapData(roomList, startX, startY);
     }
@@ -311,6 +321,7 @@ public enum DirectType
                     else
                     {
                         tileMap.SetTile(tilePosition, roomTile);
+                        //miniTileMap.SetTile(tilePosition, miniRoomTile);
                     }
                    
 
@@ -319,6 +330,7 @@ public enum DirectType
                     //만약 같은 위치에 여러번 룸타일이 겹친다면
                     //벽이 생기지 않을 수 있으므로 바깥타일로 교체
                     tileMap.SetTile(tilePosition, outTile);
+                    //miniTileMap.SetTile(tilePosition, miniOutTile);
                 }
             }
         }
@@ -361,16 +373,19 @@ public enum DirectType
 
                 Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, pointY, 0));
                 tileMap.SetTile(tilePosition, roomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(i, pointY - 1, 0));
                 tileMap.SetTile(tilePosition, roomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(i, pointY + 1, 0));
                 tileMap.SetTile(tilePosition, roomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
-                if(x == nextX + 1)
+                if (x == nextX + 1)
                 {
                     if(pointY < 0)
                     {
@@ -412,13 +427,16 @@ public enum DirectType
 
                 Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(pointX, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(pointX - 1, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
                 tilePosition = tileMap.WorldToCell(new Vector3(pointX + 1, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
+                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
                 if (y == nextY + 1)
                 {
@@ -622,8 +640,17 @@ public enum DirectType
                     }
                 }
             }
+
+        }
              
         }*/
+
+        // 미니맵에 주방, 보스방 위치 표시
+        GameObject.Find("miniKitchen").transform.position = roomList[kitchenPos.Value, kitchenPos.Key].enemyGenerator.transform.position;
+        GameObject.Find("miniBoss").transform.position = roomList[bossPos.Value, bossPos.Key].enemyGenerator.transform.position;
+
+        Debug.Log("주방 위치: " + GameObject.Find("miniKitchen").transform.position);
+        Debug.Log("보스방 위치: " + GameObject.Find("miniBoss").transform.position);
 
         for (int k = 0; k < 3; k++)
         {
@@ -631,12 +658,14 @@ public enum DirectType
             int ROW = 0, COL = 0;
             if (k == 0)
             {
+                // 시작방
                 ROW = startY;COL = startX;
                 nowTile = startRoomTile;
                 Destroy(roomList[ROW, COL].triggerBox);
             }
             else if (k == 1)
             {
+                // 주방
                 ROW = kitchenPos.Value; COL = kitchenPos.Key;
                 nowTile = kitchenTile;
 
@@ -645,6 +674,7 @@ public enum DirectType
             }
             else if (k == 2)
             {
+                // 보스방
                 ROW = bossPos.Value; COL = bossPos.Key;
                 nowTile = bossTile;
 
@@ -669,6 +699,7 @@ public enum DirectType
                     {
 
                         tileMap.SetTile(tilePosition, nowTile);
+                        //miniTileMap.SetTile(tilePosition, nowTile);
                     }
                  
 

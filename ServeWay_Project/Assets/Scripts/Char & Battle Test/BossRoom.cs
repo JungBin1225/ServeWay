@@ -7,6 +7,7 @@ public class BossRoom : MonoBehaviour
 {
     private GameObject boss;
     private BossController controller;
+    private DataController data;
 
     public bool isClear;
     public GameObject intro;
@@ -14,21 +15,30 @@ public class BossRoom : MonoBehaviour
     public GameObject bossPrefab;
     public GameObject stairPrefab;
     public List<GameObject> doorList;
+    public Boss_Nation bossNation;
+
+    // 미니맵
+    [SerializeField] GameObject miniRoomMesh;
+    private bool isVisited = false;
 
     void Start()
     {
         isClear = false;
 
+        data = FindObjectOfType<DataController>();
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
+        bossNation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+
 
         intro.SetActive(false);
         startButton.SetActive(false);
 
         startButton.GetComponent<Button>().onClick.AddListener(OnStartClicked);
+
+        isVisited = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -58,6 +68,30 @@ public class BossRoom : MonoBehaviour
         boss = Instantiate(bossPrefab, transform.position, transform.rotation);
         controller = boss.GetComponent<BossController>();
         controller.room = this;
+        controller.nation = this.bossNation;
+    }
+
+    public void DropIngredient(int min, int max)
+    {
+        int dropAmount = Random.Range(min, max + 1);
+        float radius = 5f;
+
+        for (int i = 0; i < dropAmount; i++)
+        {
+            float angle = i * Mathf.PI * 2 / dropAmount;
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+            Vector3 pos = transform.position + new Vector3(x, y, 0);
+            float angleDegrees = -angle * Mathf.Rad2Deg;
+            Instantiate(RandomIngredient(), pos, Quaternion.Euler(0, 0, 0));
+        }
+    }
+
+    private GameObject RandomIngredient()
+    {
+        int randomIndex = Random.Range(0, data.IngredientList.ingredientList.Count);
+
+        return data.IngredientList.ingredientList[randomIndex].prefab;
     }
 
     public void CloseDoor()
@@ -85,6 +119,17 @@ public class BossRoom : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
+            // 미니맵
+            if (!isVisited)
+            {
+                isVisited = true;
+                // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("miniMapMeshGroup").transform);
+            }
+
+            GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+
+            // 보스방 작동
             GameManager.gameManager.isBossStage = true;
             StartCoroutine(BossIntro());
         }
