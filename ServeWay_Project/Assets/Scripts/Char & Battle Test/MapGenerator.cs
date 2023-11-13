@@ -11,9 +11,15 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 using Debug = UnityEngine.Debug;
 
+public enum DirectType
+{
+    LEFT,
+    RIGHT,
+    DOWN,
+    UP
+};
 
-
-public class MapGenerator : MonoBehaviour
+ public class MapGenerator : MonoBehaviour
 {
     [SerializeField] Vector2Int mapSize;
     [SerializeField] private GameObject map;
@@ -31,7 +37,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tile bossTile; //보스방 타일
 
     [SerializeField] GameObject Player;
-    [SerializeField] GameObject EnemyGenerator;
+    [SerializeField] GameObject TriggerBox;
     [SerializeField] GameObject BossGenerator;
     [SerializeField] GameObject createTablePrefab;
     [SerializeField] GameObject doorPrefab;
@@ -50,19 +56,21 @@ public class MapGenerator : MonoBehaviour
     int lastDepth = 1;
     int[] dx = new int[4] { -1, 1, 0, 0 }; //좌 우 하 상 
     int[] dy = new int[4] { 0, 0, 1, -1 };
-
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        /*
         if (GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 실행
         {
             LoadMap();
         }
         else // 로드될 맵이 없으면 새로 생성
         {
-            Init(); //초기화
-        }
+            
+        }*/
+        Init(); //초기화
 
         DrawBackGround(); //전체 맵 사각형 그리기
         CreateMap(); //방이랑 길 그리기
@@ -71,7 +79,7 @@ public class MapGenerator : MonoBehaviour
         //플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
 
-        GameManager.gameManager.charData.SaveMapData(roomList, startX, startY);
+       // GameManager.gameManager.charData.SaveMapData(roomList, startX, startY);
     }
 
     void Init()
@@ -123,93 +131,66 @@ public class MapGenerator : MonoBehaviour
 
     void CreateMap()
     {
-
+        /*
         if(!GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 실행하지 않음
         {
-            //그래프 생성
-            DFS(startX, startY, 1);
-        }
-        //구조에 따라 맵 생성
+            
+        }*/
+        //그래프 데이터 생성
+        DFS(startX, startY);
+
+        //그래프 데이터에 따라 맵 생성
         Divide();
 
-        //각 방마다 시작 방까지의 거리 계산하기 + 길 생성
-        BFS(startX, startY, 1);
+        //각 방마다 시작 방까지의 거리 계산 + 방과 방을 잇는 길 생성
+        BFS(startX, startY);
 
         //방을 둘러싸는 벽 타일 그리기
         DrawWall();
     }
-
-    void DFS(int x,int y,int depth)
+   
+    void DFS(int x, int y)
     {
-        //이미 방이 다 만들어졌다면 더 로직을 진행할 필요가 없다.
+        //만약 방을 다 만들었으면 종료
         if (tempCnt == 0) return;
+        
+        //방을 만들 수 있는 방향
+        List<DirectType> ableDir = new List<DirectType>();
 
-        //만들 수 있는 방 개수
-        int curCnt = 0;
-        //갈 수 있는 방향
-        int[] isDir = new int[4];
-        for (int i = 0; i < isDir.Length; i++)
-        {
-            isDir[i] = 0;
-        }
-
-        //4방향에서 갈 수 있는 방향을 파악한 후, 그 중에 한 방향을 골라 이동한다.
+        //현재 위치에서 방을 만들 수 있는 방향을 파악
         for (int i = 0; i < 4; i++)
         {
             int tx = x + dx[i]; int ty = y + dy[i];
-            if (tx >= 0 && ty >= 0 && tx < NUM_ROOM && ty < NUM_ROOM && roomList[ty,tx].isCreated == 0)
+            if (tx >= 0 && ty >= 0 && tx < NUM_ROOM && ty < NUM_ROOM && roomList[ty, tx].isCreated == 0)
             {
-                curCnt++;
-                isDir[i] = 1;
+                ableDir.Add((DirectType)i);
             }
         }
-        if (curCnt == 0) return; //더 나아갈 수 없다면 리턴
 
-        //현재 방에서 만들 방의 개수를 1~만들수 있는 방향 개수 중 랜덤으로 정한다
-        int temp = UnityEngine.Random.Range(1, curCnt + 1);
-        curCnt = temp;
-
-        for (int i = 0; i < 4; i++)
+        //만약 만들 수 있는 방향이 없거나 방을 전부 만들었다면 종료
+        while (ableDir.Count > 0 && tempCnt > 0)
         {
-            if (curCnt == 0) return; //방 다 만들었다면 리턴
-            if (tempCnt == 0) return;
+            //지금 만들 수 있는 방향중 랜덤으로 한 방향을 택
+            int nowIdx = UnityEngine.Random.Range(0, ableDir.Count);
+            int tx = x + dx[(int)ableDir[nowIdx]]; int ty = y + dy[(int)ableDir[nowIdx]];
 
-            //어디방향으로 갈지 택
-            int dir = UnityEngine.Random.Range(0,4);
-
-            //한쪽 방향 쏠림 방지
-            while (isDir[dir] != 1)
+            //뽑은 방향으로 방 만들기 
+            if (tx >= 0 && ty >= 0 && tx < NUM_ROOM && ty < NUM_ROOM && roomList[ty, tx].isCreated == 0)
             {
-                dir = UnityEngine.Random.Range(0, 4);
-
-                //무한루프 이슈 방지용 임시 땜빵..추후 수정예정
-                int sum = 0;
-                for (int j = 0; j < 4; j++)
-                {
-                    sum += isDir[j];
-                }
-                if (sum == 0) return;
-            }
-            //한번 택한 방향은 선택할 수 없게 처리
-            isDir[dir] = 0;
-            int tx = x + dx[dir];
-            int ty = y + dy[dir];
-            if (tx >= 0 && ty >= 0 && tx < NUM_ROOM && ty < NUM_ROOM && roomList[ty,tx].isCreated == 0)
-            {
-
-                roomList[ty,tx].isCreated = roomList[y, x].isCreated + 1;
-
-                curCnt--;
+                // DFS에서는 굳이 시작점으로부터 최단거리를 잴필요가 없음
+                // 방이 있다는 표시만 하면 됨
+                // roomList[ty, tx].isCreated = roomList[y, x].isCreated + 1;
+                roomList[ty, tx].isCreated = 1;
                 tempCnt--;
-                DFS(tx, ty, roomList[ty, tx].isCreated);
+                DFS(tx, ty);
             }
+
+            //한번 가려고 시도한 방향은 지우기 (무한반복 방지)
+            ableDir.RemoveAt(nowIdx);
         }
-
-       
-
     }
-
-    void BFS(int startX, int startY, int depth)
+    
+    void BFS(int startX, int startY)
     {
         int[,] isVisited = new int[NUM_ROOM, NUM_ROOM];
         for (int i = 0; i < NUM_ROOM; i++)
@@ -231,8 +212,7 @@ public class MapGenerator : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                int tx = x + dx[i];
-                int ty = y + dy[i];
+                int tx = x + dx[i]; int ty = y + dy[i];
 
                 if (tx >= 0 && tx < NUM_ROOM && ty >= 0 && ty < NUM_ROOM)
                 {
@@ -345,7 +325,7 @@ public class MapGenerator : MonoBehaviour
 
         //position 피벗이 중앙임
         //룸 하나당 에너미 제너레이터도 하나씩 생성
-        roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator);
+        roomList[ROW, COL].triggerBox = Instantiate(TriggerBox);
 
         temp2 = new Vector3(temp.x + (int)roomList[ROW, COL].roomRect.width, temp.y - (int)roomList[ROW, COL].roomRect.height);
         //room의 맨 왼쪽 위 사각형 표시
@@ -354,10 +334,10 @@ public class MapGenerator : MonoBehaviour
         //Instantiate(EnemyGenerator).transform.position = new Vector3(temp2.x, temp2.y); 
 
         //EnemyGenerator 크기 room 크기에 맞추기 조정
-        roomList[ROW, COL].enemyGenerator.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 );
+        roomList[ROW, COL].triggerBox.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 );
         
         //+1 안해주면 양쪽 반 칸이 모자름
-        roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1, (int)roomList[ROW, COL].roomRect.height + 1);
+        roomList[ROW, COL].triggerBox.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1, (int)roomList[ROW, COL].roomRect.height + 1);
        
     }
 
@@ -536,6 +516,50 @@ public class MapGenerator : MonoBehaviour
         var kitchenPos = new KeyValuePair<int, int>();
         var bossPos = new KeyValuePair<int, int>();
 
+        if (bossNum > 4)
+        {
+            //주방은 4~lastDepth-1 사이에
+            kitchenNum = (UnityEngine.Random.Range(4, bossNum));
+        }
+        else
+        {
+            //lastDepth가 4이면
+            //주방은 3에 (4가 되면 겹침)
+            kitchenNum = 3;
+        }
+
+        //주방 깊이랑 보스방 깊이가 같은 방이 여러개 일 수 있음.
+        //그 중 방 하나를 랜덤으로 뽑아야함.
+        for (int i = 0; i < NUM_ROOM; i++)
+        {
+            for (int j = 0; j < NUM_ROOM; j++)
+            {
+                if (roomList[i, j].isCreated != 0)
+                {
+                    if (startY == i && startX == j)
+                    {
+                        roomList[i, j].roomType = RoomType.ROOM_START;
+                    }
+                    else if (roomList[i, j].isCreated == kitchenNum)
+                    {
+                        //x,y 형태로 집어 넣기
+                        kitchenIdxList.Add(new KeyValuePair<int, int>(j, i));
+                    }
+                    else if (roomList[i, j].isCreated == bossNum)
+                    {
+                        bossIdxList.Add(new KeyValuePair<int, int>(j, i));
+                    }
+                }
+            }
+        }
+
+        kitchenPos = kitchenIdxList[UnityEngine.Random.Range(0, kitchenIdxList.Count)];
+        bossPos = bossIdxList[UnityEngine.Random.Range(0, bossIdxList.Count)];
+
+        roomList[kitchenPos.Value, kitchenPos.Key].roomType = RoomType.ROOM_KITCHEN;
+        roomList[bossPos.Value, bossPos.Key].roomType = RoomType.ROOM_BOSS;
+
+        /*
         if (!GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 이미 보스방, 주방이 결정되어 있으므로 실행X
         {
             if (bossNum > 4)
@@ -599,9 +623,9 @@ public class MapGenerator : MonoBehaviour
                 }
             }
              
-        }
+        }*/
 
-        for(int k = 0; k < 3; k++)
+        for (int k = 0; k < 3; k++)
         {
             Tile nowTile = roomTile;
             int ROW = 0, COL = 0;
@@ -609,14 +633,14 @@ public class MapGenerator : MonoBehaviour
             {
                 ROW = startY;COL = startX;
                 nowTile = startRoomTile;
-                Destroy(roomList[ROW, COL].enemyGenerator);
+                Destroy(roomList[ROW, COL].triggerBox);
             }
             else if (k == 1)
             {
                 ROW = kitchenPos.Value; COL = kitchenPos.Key;
                 nowTile = kitchenTile;
 
-                Destroy(roomList[ROW, COL].enemyGenerator);
+                Destroy(roomList[ROW, COL].triggerBox);
                 GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2), 0), Quaternion.Euler(0, 0, 0));
             }
             else if (k == 2)
@@ -624,12 +648,12 @@ public class MapGenerator : MonoBehaviour
                 ROW = bossPos.Value; COL = bossPos.Key;
                 nowTile = bossTile;
 
-                Vector3 pos = roomList[ROW, COL].enemyGenerator.transform.position;
-                Vector3 size = roomList[ROW, COL].enemyGenerator.transform.localScale;
-                Destroy(roomList[ROW, COL].enemyGenerator);
-                roomList[ROW, COL].enemyGenerator = Instantiate(BossGenerator);
-                roomList[ROW, COL].enemyGenerator.transform.position = pos;
-                roomList[ROW, COL].enemyGenerator.transform.localScale = size;
+                Vector3 pos = roomList[ROW, COL].triggerBox.transform.position;
+                Vector3 size = roomList[ROW, COL].triggerBox.transform.localScale;
+                Destroy(roomList[ROW, COL].triggerBox);
+                roomList[ROW, COL].triggerBox = Instantiate(TriggerBox);
+                roomList[ROW, COL].triggerBox.transform.position = pos;
+                roomList[ROW, COL].triggerBox.transform.localScale = size;
             }
             
 
@@ -667,33 +691,33 @@ public class MapGenerator : MonoBehaviour
 
                     if (i > 0 && roomList[i - 1, j].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.y + ((roomList[i, j].enemyGenerator.transform.localScale.y + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
+                        point = roomList[i, j].triggerBox.transform.position.y + ((roomList[i, j].triggerBox.transform.localScale.y + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].upXPoint, point, 0), Quaternion.Euler(0, 0, 0));
-                        roomList[i, j].enemyGenerator.GetComponent<EnemyGenerator>().doorList.Add(door);
+                        roomList[i, j].triggerBox.GetComponent<TriggerBox>().doorList.Add(door);
                         door.SetActive(false);
                     }
 
                     if (i < NUM_ROOM - 1 && roomList[i + 1, j].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.y - ((roomList[i, j].enemyGenerator.transform.localScale.y + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
+                        point = roomList[i, j].triggerBox.transform.position.y - ((roomList[i, j].triggerBox.transform.localScale.y + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].downXPoint, point, 0), Quaternion.Euler(0, 0, 180));
-                        roomList[i, j].enemyGenerator.GetComponent<EnemyGenerator>().doorList.Add(door);
+                        roomList[i, j].triggerBox.GetComponent<TriggerBox>().doorList.Add(door);
                         door.SetActive(false);
                     }
 
                     if (j > 0 && roomList[i, j - 1].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.x - ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
+                        point = roomList[i, j].triggerBox.transform.position.x - ((roomList[i, j].triggerBox.transform.localScale.x + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(point, roomList[i, j].rightYPoint, 0), Quaternion.Euler(0, 0, 90));
-                        roomList[i, j].enemyGenerator.GetComponent<EnemyGenerator>().doorList.Add(door);
+                        roomList[i, j].triggerBox.GetComponent<TriggerBox>().doorList.Add(door);
                         door.SetActive(false);
                     }
 
                     if (j < NUM_ROOM - 1 && roomList[i, j + 1].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.x + ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
+                        point = roomList[i, j].triggerBox.transform.position.x + ((roomList[i, j].triggerBox.transform.localScale.x + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(point, roomList[i, j].leftYPoint, 0), Quaternion.Euler(0, 0, -90));
-                        roomList[i, j].enemyGenerator.GetComponent<EnemyGenerator>().doorList.Add(door);
+                        roomList[i, j].triggerBox.GetComponent<TriggerBox>().doorList.Add(door);
                         door.SetActive(false);
                     }
                 }
@@ -703,33 +727,33 @@ public class MapGenerator : MonoBehaviour
 
                     if (i > 0 && roomList[i - 1, j].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.y + ((roomList[i, j].enemyGenerator.transform.localScale.y + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
+                        point = roomList[i, j].triggerBox.transform.position.y + ((roomList[i, j].triggerBox.transform.localScale.y + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].upXPoint, point, 0), Quaternion.Euler(0, 0, 0));
-                        roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
+                        roomList[i, j].triggerBox.GetComponent<BossRoom>().doorList.Add(door);
                         door.SetActive(false);
                     }
 
                     if (i < NUM_ROOM - 1 && roomList[i + 1, j].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.y - ((roomList[i, j].enemyGenerator.transform.localScale.y + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
+                        point = roomList[i, j].triggerBox.transform.position.y - ((roomList[i, j].triggerBox.transform.localScale.y + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].downXPoint, point, 0), Quaternion.Euler(0, 0, 180));
-                        roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
+                        roomList[i, j].triggerBox.GetComponent<BossRoom>().doorList.Add(door);
                         door.SetActive(false);
                     }
 
                     if (j > 0 && roomList[i, j - 1].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.x - ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
+                        point = roomList[i, j].triggerBox.transform.position.x - ((roomList[i, j].triggerBox.transform.localScale.x + 1) / 2) - (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(point, roomList[i, j].rightYPoint, 0), Quaternion.Euler(0, 0, 90));
-                        roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
+                        roomList[i, j].triggerBox.GetComponent<BossRoom>().doorList.Add(door);
                         door.SetActive(false);
                     }
 
                     if (j < NUM_ROOM - 1 && roomList[i, j + 1].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.x + ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
+                        point = roomList[i, j].triggerBox.transform.position.x + ((roomList[i, j].triggerBox.transform.localScale.x + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(point, roomList[i, j].leftYPoint, 0), Quaternion.Euler(0, 0, -90));
-                        roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
+                        roomList[i, j].triggerBox.GetComponent<BossRoom>().doorList.Add(door);
                         door.SetActive(false);
                     }
                 }

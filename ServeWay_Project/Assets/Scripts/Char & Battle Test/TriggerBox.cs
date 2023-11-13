@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-public class EnemyGenerator : MonoBehaviour
+public class TriggerBox : MonoBehaviour
 {
     public List<GameObject> enemyPrefab;
     public List<int> amountList;
