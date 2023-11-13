@@ -87,7 +87,7 @@ public enum DirectType
         SetDoor();
         //플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
-        GameObject.Find("miniPlayer").transform.position = roomList[startY, startX].enemyGenerator.transform.position;
+        GameObject.Find("miniPlayer").transform.position = roomList[startY, startX].triggerBox.transform.position;
 
        // GameManager.gameManager.charData.SaveMapData(roomList, startX, startY);
     }
@@ -646,8 +646,8 @@ public enum DirectType
         }*/
 
         // 미니맵에 주방, 보스방 위치 표시
-        GameObject.Find("miniKitchen").transform.position = roomList[kitchenPos.Value, kitchenPos.Key].enemyGenerator.transform.position;
-        GameObject.Find("miniBoss").transform.position = roomList[bossPos.Value, bossPos.Key].enemyGenerator.transform.position;
+        GameObject.Find("miniKitchen").transform.position = roomList[kitchenPos.Value, kitchenPos.Key].triggerBox.transform.position;
+        GameObject.Find("miniBoss").transform.position = roomList[bossPos.Value, bossPos.Key].triggerBox.transform.position;
 
         Debug.Log("주방 위치: " + GameObject.Find("miniKitchen").transform.position);
         Debug.Log("보스방 위치: " + GameObject.Find("miniBoss").transform.position);
@@ -681,7 +681,7 @@ public enum DirectType
                 Vector3 pos = roomList[ROW, COL].triggerBox.transform.position;
                 Vector3 size = roomList[ROW, COL].triggerBox.transform.localScale;
                 Destroy(roomList[ROW, COL].triggerBox);
-                roomList[ROW, COL].triggerBox = Instantiate(TriggerBox);
+                roomList[ROW, COL].triggerBox = Instantiate(BossGenerator);
                 roomList[ROW, COL].triggerBox.transform.position = pos;
                 roomList[ROW, COL].triggerBox.transform.localScale = size;
             }

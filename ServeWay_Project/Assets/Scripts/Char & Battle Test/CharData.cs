@@ -67,7 +67,7 @@ public class CharData : MonoBehaviour
 
         foreach(Room room in roomList)
         {
-            room.enemyGenerator = null;
+            room.triggerBox = null;
 
             saveFile.roomList.Add(room);
         }
