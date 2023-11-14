@@ -211,7 +211,7 @@ public class WeaponController : MonoBehaviour
             Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
-            transform.localRotation = angleAxis;
+            laser.transform.rotation = angleAxis;
             laser.transform.position = pos;
 
             yield return null;
@@ -228,10 +228,12 @@ public class WeaponController : MonoBehaviour
         FoodInfo foodInfo = FindObjectOfType<DataController>().FoodInfoList.FindFood(weaponName);
         alphaStat = new List<float>();
 
+        GetComponent<SpriteRenderer>().sprite = foodInfo.foodSprite;
         grade = foodInfo.grade;
         mainIngred = foodInfo.mainIngred;
         nation = foodInfo.nation;
         alphaStat = foodInfo.alphaStat;
+        bulletPrefab = foodInfo.bulletPrefab;
 
         switch(success)
         {

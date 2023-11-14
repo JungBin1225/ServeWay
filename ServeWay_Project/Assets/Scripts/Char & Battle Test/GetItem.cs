@@ -14,6 +14,7 @@ public class GetItem : MonoBehaviour
     private bool getAble;
     private WeaponSlot weaponSlot;
 
+    public string name;
     public Create_Success success;
     public GameObject weaponPrefab;
     void Start()
@@ -36,8 +37,13 @@ public class GetItem : MonoBehaviour
 
     public void GetWeapon()
     {
-        weaponSlot.GetWeapon(weaponPrefab, success);
+        weaponSlot.GetWeapon(weaponPrefab, success, name);
         Destroy(this.gameObject);
+    }
+
+    public void SetSprite()
+    {
+        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<DataController>().FoodInfoList.FindFood(name).foodSprite;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

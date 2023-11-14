@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour
             int n = 0;
             foreach(string weapon in GameManager.gameManager.charData.saveFile.weaponList)
             {
-                weaponSlot.GetWeapon(foodInfo.FindFood(weapon).foodPrefab.GetComponent<GetItem>().weaponPrefab, GameManager.gameManager.charData.saveFile.weaponSuccess[n]);
+                weaponSlot.GetWeapon(foodInfo.FindFood(weapon).foodPrefab.GetComponent<GetItem>().weaponPrefab, GameManager.gameManager.charData.saveFile.weaponSuccess[n], weapon);
                 n++;
             }
 

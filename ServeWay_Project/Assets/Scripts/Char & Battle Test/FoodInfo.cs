@@ -53,6 +53,7 @@ public class FoodInfo
     public List<float> alphaStat;
 
     public GameObject foodPrefab;
+    public GameObject bulletPrefab;
     public NameAmount needIngredient;
 
     public string EunmToString(Food_Grade grade)
