@@ -62,10 +62,10 @@ public class WeaponController : MonoBehaviour
             shootAble = true;
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && player.controllAble)
         {
             isClicked = true;
-            if (shootAble && player.controllAble && mainIngred != Food_MainIngred.NOODLE)
+            if (shootAble && mainIngred != Food_MainIngred.NOODLE)
             {
                 GenerateBullet(speed, damage, mousePos);
                 coolTime = shootDuration;
@@ -75,7 +75,7 @@ public class WeaponController : MonoBehaviour
                 GenerateBullet(speed, damage, mousePos);
             }
         }
-        else if(Input.GetMouseButtonUp(0))
+        else if(Input.GetMouseButtonUp(0) || !player.controllAble)
         {
             isClicked = false;
         }

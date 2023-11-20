@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    private PlayerController player;
+
     public NameAmount inventory;
 
     void Start()
     {
         inventory = new NameAmount();
+        player = FindObjectOfType<PlayerController>();
 
         if (inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
         {
@@ -31,12 +34,13 @@ public class InventoryManager : MonoBehaviour
         else
         {
             inventory.Add(itemName, amount);
+            GetPassive(itemName, true);
         }
 
-        foreach(IngredientList.IngredientsName name in inventory.Keys)
+        /*foreach(IngredientList.IngredientsName name in inventory.Keys)
         {
             Debug.Log(name + ", " + inventory[name]);
-        }
+        }*/
     }
 
     public void DeleteItem(IngredientList.IngredientsName itemName, int amount)
@@ -50,13 +54,14 @@ public class InventoryManager : MonoBehaviour
             else
             {
                 inventory.Remove(itemName);
+                GetPassive(itemName, false);
             }
         }
 
-        foreach (IngredientList.IngredientsName name in inventory.Keys)
+        /*foreach (IngredientList.IngredientsName name in inventory.Keys)
         {
             Debug.Log(name + ", " + inventory[name]);
-        }
+        }*/
     }
 
     public void LoadInventory()
@@ -67,6 +72,30 @@ public class InventoryManager : MonoBehaviour
         foreach (IngredientList.IngredientsName name in saveInven.Keys)
         {
             inventory.Add(name, saveInven[name]);
+        }
+    }
+
+    public void GetPassive(IngredientList.IngredientsName itemName, bool increase)
+    {
+        int amount = 0;
+
+        if(increase)
+        {
+            amount = 1;
+        }
+        else
+        {
+            amount = -1;
+        }
+
+        switch(itemName)
+        {
+            case IngredientList.IngredientsName.Pumpkin:
+                player.speed += amount * 10;
+                break;
+            case IngredientList.IngredientsName.Strawberrie:
+                player.chargeLength += amount * 0.1f;
+                break;
         }
     }
 }
