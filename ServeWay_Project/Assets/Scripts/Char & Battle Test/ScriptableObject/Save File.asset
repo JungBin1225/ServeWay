@@ -17,14 +17,14 @@ MonoBehaviour:
     m_values: 
   weaponList:
   - Start
-  weaponSuccess: 01000000
-  playerHp: 200
+  weaponSuccess: 0100000001000000
+  playerHp: 10
   playerSpeed: 10
   playerChargeSpeed: 100
   playerChargeLength: 0.2
   playerChargeCooltime: 1
-  stage: 1
-  bossNations: 04000000010000000200000004000000030000000100000000000000
+  stage: 3
+  bossNations: 04000000040000000200000003000000020000000000000004000000
   isMapSave: 1
   roomList:
   - nodeRect:
@@ -35,17 +35,17 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -60.32566
-      y: 59.094715
-      width: 13.773136
-      height: 22.114126
+      x: -58.19293
+      y: 54.49196
+      width: 18.456139
+      height: 15.1327715
     isCreated: 5
     roomType: 1
     enemyGenerator: {fileID: 0}
     rightYPoint: 0
-    leftYPoint: 48.5
+    leftYPoint: 47.5
     upXPoint: 0
-    downXPoint: -51.5
+    downXPoint: -50.5
   - nodeRect:
       serializedVersion: 2
       x: -38.4
@@ -54,17 +54,17 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -37.384304
-      y: 57.1882
-      width: 23.506586
-      height: 17.731665
-    isCreated: 4
+      x: -37.366356
+      y: 56.19898
+      width: 18.890543
+      height: 17.821815
+    isCreated: 6
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: 48.5
-    leftYPoint: 49.5
+    rightYPoint: 47.5
+    leftYPoint: 47.5
     upXPoint: 0
-    downXPoint: -25.5
+    downXPoint: -27.5
   - nodeRect:
       serializedVersion: 2
       x: -12.800001
@@ -73,434 +73,434 @@ MonoBehaviour:
       height: 24
     roomRect:
       serializedVersion: 2
-      x: -7.2401114
-      y: 58.827877
-      width: 14.013464
-      height: 14.524385
+      x: -10.293961
+      y: 51.45969
+      width: 15.88702
+      height: 12.019172
+    isCreated: 7
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 47.5
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: -0.5
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: -64
+      y: 36
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -61.963665
+      y: 34.37774
+      width: 21.68253
+      height: 12.887077
+    isCreated: 4
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 24.5
+    upXPoint: -50.5
+    downXPoint: -51.5
+  - nodeRect:
+      serializedVersion: 2
+      x: -38.4
+      y: 36
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -33.796665
+      y: 35.802933
+      width: 16.995829
+      height: 22.892645
+    isCreated: 5
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 24.5
+    leftYPoint: 24.5
+    upXPoint: -27.5
+    downXPoint: -25.5
+  - nodeRect:
+      serializedVersion: 2
+      x: -12.800001
+      y: 36
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -11.070553
+      y: 33.30444
+      width: 21.732386
+      height: 17.876911
+    isCreated: 6
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 24.5
+    leftYPoint: 23.5
+    upXPoint: -0.5
+    downXPoint: -0.5
+  - nodeRect:
+      serializedVersion: 2
+      x: 12.799999
+      y: 36
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: 13.878949
+      y: 33.066128
+      width: 23.45958
+      height: 19.974154
+    isCreated: 7
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 23.5
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 25.5
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: -64
+      y: 12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -57.7825
+      y: 9.04547
+      width: 15.519783
+      height: 17.610687
     isCreated: 3
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: 49.5
-    leftYPoint: 48.5
+    rightYPoint: 0
+    leftYPoint: -0.5
+    upXPoint: -51.5
+    downXPoint: -48.5
+  - nodeRect:
+      serializedVersion: 2
+      x: -38.4
+      y: 12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -35.177216
+      y: 3.1570435
+      width: 16.950218
+      height: 13.431155
+    isCreated: 4
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: -0.5
+    leftYPoint: -1.5
+    upXPoint: -25.5
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: -12.800001
+      y: 12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -11.225595
+      y: 8.004562
+      width: 20.743864
+      height: 18.87479
+    isCreated: 5
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: -1.5
+    leftYPoint: -1.5
+    upXPoint: -0.5
+    downXPoint: -0.5
+  - nodeRect:
+      serializedVersion: 2
+      x: 12.799999
+      y: 12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: 21.120483
+      y: 7.874329
+      width: 13.127798
+      height: 13.988658
+    isCreated: 6
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: -1.5
+    leftYPoint: 2.5
+    upXPoint: 25.5
+    downXPoint: 24.5
+  - nodeRect:
+      serializedVersion: 2
+      x: 38.4
+      y: 12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: 48.400917
+      y: 10.622073
+      width: 14.283664
+      height: 13.998367
+    isCreated: 7
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 2.5
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 51.5
+  - nodeRect:
+      serializedVersion: 2
+      x: -64
+      y: -12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -58.414032
+      y: -19.039135
+      width: 18.856031
+      height: 15.841759
+    isCreated: 2
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: -48.5
+    downXPoint: -51.5
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: -12.800001
+      y: -12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -4.8426185
+      y: -14.293156
+      width: 16.066216
+      height: 15.398254
+    isCreated: 6
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: -24.5
+    upXPoint: -0.5
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: 12.799999
+      y: -12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: 15.393256
+      y: -13.805051
+      width: 18.639694
+      height: 21.06405
+    isCreated: 7
+    roomType: 2
+    enemyGenerator: {fileID: 0}
+    rightYPoint: -24.5
+    leftYPoint: -24.5
+    upXPoint: 24.5
+    downXPoint: 25.5
+  - nodeRect:
+      serializedVersion: 2
+      x: 38.4
+      y: -12
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: 39.874012
+      y: -14.320835
+      width: 21.264355
+      height: 12.411963
+    isCreated: 8
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: -24.5
+    leftYPoint: 0
+    upXPoint: 51.5
+    downXPoint: 51.5
+  - nodeRect:
+      serializedVersion: 2
+      x: -64
+      y: -36
+      width: 25.6
+      height: 24
+    roomRect:
+      serializedVersion: 2
+      x: -62.771843
+      y: -37.54539
+      width: 23.286018
+      height: 21.088818
+    isCreated: 1
+    roomType: 0
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: -51.5
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
+    upXPoint: 0
+    downXPoint: 0
+  - nodeRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    roomRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    isCreated: 0
+    roomType: 1
+    enemyGenerator: {fileID: 0}
+    rightYPoint: 0
+    leftYPoint: 0
     upXPoint: 0
     downXPoint: 0
   - nodeRect:
       serializedVersion: 2
       x: 12.799999
-      y: 60
+      y: -36
       width: 25.6
       height: 24
     roomRect:
       serializedVersion: 2
-      x: 21.858173
-      y: 55.694496
-      width: 13.086872
-      height: 17.072315
-    isCreated: 2
+      x: 13.928147
+      y: -44.330196
+      width: 22.910486
+      height: 13.497879
+    isCreated: 8
     roomType: 1
     enemyGenerator: {fileID: 0}
-    rightYPoint: 48.5
-    leftYPoint: 47.5
-    upXPoint: 0
+    rightYPoint: 0
+    leftYPoint: -47.5
+    upXPoint: 25.5
     downXPoint: 0
   - nodeRect:
       serializedVersion: 2
       x: 38.4
-      y: 60
+      y: -36
       width: 25.6
       height: 24
     roomRect:
       serializedVersion: 2
-      x: 42.797783
-      y: 58.48851
-      width: 19.31466
-      height: 20.990782
-    isCreated: 1
-    roomType: 0
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 47.5
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: -64
-      y: 36
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: -62.03027
-      y: 32.625046
-      width: 20.535877
-      height: 15.092662
-    isCreated: 6
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 23.5
-    upXPoint: -51.5
-    downXPoint: -51.5
-  - nodeRect:
-      serializedVersion: 2
-      x: -38.4
-      y: 36
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: -33.716103
-      y: 34.38084
-      width: 14.467789
-      height: 21.320688
-    isCreated: 5
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 23.5
-    leftYPoint: 0
-    upXPoint: -25.5
-    downXPoint: -25.5
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: -64
-      y: 12
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: -62.062717
-      y: 10.768481
-      width: 20.54944
-      height: 18.071178
-    isCreated: 7
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 1.5
-    upXPoint: -51.5
-    downXPoint: -51.5
-  - nodeRect:
-      serializedVersion: 2
-      x: -38.4
-      y: 12
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: -37.383488
-      y: 9.545971
-      width: 23.578886
-      height: 17.71738
-    isCreated: 6
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 1.5
-    leftYPoint: 0
-    upXPoint: -25.5
-    downXPoint: -25.5
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: -64
-      y: -12
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: -57.015484
-      y: -13.153387
-      width: 14.542896
-      height: 21.339325
-    isCreated: 8
+      x: 39.404724
+      y: -38.166813
+      width: 23.586998
+      height: 18.464413
+    isCreated: 9
     roomType: 3
     enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: -23.5
-    upXPoint: -51.5
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: -38.4
-      y: -12
-      width: 25.6
-      height: 24
-    roomRect:
-      serializedVersion: 2
-      x: -32.757187
-      y: -21.227867
-      width: 18.22185
-      height: 12.348153
-    isCreated: 7
-    roomType: 2
-    enemyGenerator: {fileID: 0}
-    rightYPoint: -23.5
+    rightYPoint: -47.5
     leftYPoint: 0
-    upXPoint: -25.5
+    upXPoint: 51.5
     downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  - nodeRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    roomRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    isCreated: 0
-    roomType: 1
-    enemyGenerator: {fileID: 0}
-    rightYPoint: 0
-    leftYPoint: 0
-    upXPoint: 0
-    downXPoint: 0
-  startX: 4
-  startY: 0
+  startX: 0
+  startY: 4

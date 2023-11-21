@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -9,12 +10,18 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerController playerController;
     private MissonManager misson;
+    private GameObject gameOverUI;
 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
         misson = FindObjectOfType<MissonManager>();
-        
+        if(!SceneManager.GetActiveScene().name.Contains("Start"))
+        {
+            gameOverUI = FindObjectOfType<GameOver>().gameObject;
+
+            gameOverUI.SetActive(false);
+        }
     }
 
     void Update()
@@ -22,6 +29,12 @@ public class PlayerHealth : MonoBehaviour
         if (GameManager.gameManager.isBossStage)
         {
             misson.OccurreEvent(2, Time.deltaTime);
+        }
+
+        if(nowHp <= 0)
+        {
+            Time.timeScale = 0;
+            gameOverUI.SetActive(true);
         }
     }
 

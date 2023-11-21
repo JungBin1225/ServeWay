@@ -6,8 +6,14 @@ public class SplitBullet : EnemyBullet
 {
     public GameObject bulletPrefab;
 
+    private float bigDamage;
     private float splitSpeed;
     private float splitDamage;
+
+    public void SetBigDamage(float damage)
+    {
+        this.bigDamage = damage;
+    }
 
     public void SetSplitSpeed(float speed)
     {
@@ -41,7 +47,7 @@ public class SplitBullet : EnemyBullet
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(bigDamage);
         }
 
         if (collision.tag == "Player" || collision.tag == "Wall")

@@ -2480,7 +2480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d115e3fb2927544da04a128edf2f156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 200
+  maxHp: 10
   nowHp: 0
 --- !u!61 &1204714094
 BoxCollider2D:
@@ -2926,7 +2926,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 119
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3717,7 +3717,7 @@ GameObject:
   - component: {fileID: 1814471006}
   - component: {fileID: 1814471005}
   - component: {fileID: 1814471004}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Wall
   m_Icon: {fileID: 0}

@@ -21,6 +21,7 @@ public class BossController : MonoBehaviour
     public float attackCoolTime;
     public float bulletSpeed;
     public float bulletDamage;
+    public float splitBulletDamage;
     public Boss_Nation nation;
 
     void Start()
@@ -195,6 +196,7 @@ public class BossController : MonoBehaviour
             bullet.GetComponent<SplitBullet>().SetDamage(bulletDamage * 2);
             bullet.GetComponent<SplitBullet>().SetSplitSpeed(bulletSpeed);
             bullet.GetComponent<SplitBullet>().SetSplitDamage(bulletDamage);
+            bullet.GetComponent<SplitBullet>().SetBigDamage(splitBulletDamage);
         }
         yield return new WaitForSeconds(1f);
 

@@ -206,6 +206,8 @@ public class PlayerController : MonoBehaviour
             weaponSlot.InitSlot();
             playerHealth.nowHp = playerHealth.maxHp;
         }
+
+        Time.timeScale = 1;
     }
 
     public float GetnowHp()

@@ -21,4 +21,23 @@ public class SaveFile : ScriptableObject
     public List<Room> roomList;
     public int startX;
     public int startY;
+
+    public void Reset()
+    {
+        inventory = new NameAmount();
+        weaponList = new List<string>();
+        weaponSuccess = new List<Create_Success>();
+        playerHp = 10;
+        playerSpeed = 0;
+        playerChargeSpeed = 0;
+        playerChargeLength = 0;
+        playerChargeCooltime = 0;
+
+        stage = 0;
+        bossNations = new List<Boss_Nation>();
+
+        roomList = new List<Room>();
+        startX = 0;
+        startY = 0;
+    }
 }

@@ -66,6 +66,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ClearInventory()
+    {
+        inventory.inventory.Clear();
+    }
+
     public Boss_Nation RandomNation()
     {
         int i = Random.Range(0, 5);
