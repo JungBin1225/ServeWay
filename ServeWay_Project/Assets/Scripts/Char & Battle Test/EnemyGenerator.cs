@@ -13,6 +13,9 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] GameObject miniRoomMesh;
     private bool isVisited = false;
     public bool nonEnemyRoom = false;
+    public int myRow;
+    public int myCol;
+    [SerializeField] MinimapManager minimapMG;
 
     private Dictionary<GameObject, int> spawnlist;
     private BoxCollider2D boxCollider;
@@ -35,6 +38,9 @@ public class EnemyGenerator : MonoBehaviour
         isVisited = false;
 
         InitEnemy();
+
+        // 미니맵
+        minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
     }
 
     void Update()
@@ -121,7 +127,10 @@ public class EnemyGenerator : MonoBehaviour
             {
                 isVisited = true;
                 // minimapGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
-                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("minimapGroup").transform);
+                GameObject tmp = Instantiate(miniRoomMesh, transform);
+
+                Debug.Log("EG: " + myRow + ", " + myCol);
+                minimapMG.putMesh(tmp, myRow, myCol);
             }
 
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;

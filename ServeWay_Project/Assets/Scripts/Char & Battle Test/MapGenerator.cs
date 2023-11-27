@@ -358,6 +358,9 @@ public class MapGenerator : MonoBehaviour
         //position 피벗이 중앙임
         //룸 하나당 에너미 제너레이터도 하나씩 생성
         roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator);
+        // 미니맵
+        roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myRow = ROW;
+        roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myCol = COL;
 
         temp2 = new Vector3(temp.x + (int)roomList[ROW, COL].roomRect.width, temp.y - (int)roomList[ROW, COL].roomRect.height);
         //room의 맨 왼쪽 위 사각형 표시

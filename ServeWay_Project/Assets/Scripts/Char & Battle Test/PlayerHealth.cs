@@ -22,6 +22,9 @@ public class PlayerHealth : MonoBehaviour
 
             gameOverUI.SetActive(false);
         }
+
+        maxHp = 100;
+        nowHp = 100;
     }
 
     void Update()
@@ -35,6 +38,12 @@ public class PlayerHealth : MonoBehaviour
         {
             Time.timeScale = 0;
             gameOverUI.SetActive(true);
+        }
+
+        // UI test
+        if (Input.GetKey(KeyCode.K))
+        {
+            nowHp -= 2;
         }
     }
 
