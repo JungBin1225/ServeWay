@@ -19,4 +19,6 @@ public class Ingredient
     public Ingred_Grade grade;
     public Sprite sprite;
     public GameObject prefab;
+
+    public string passive;
 }
