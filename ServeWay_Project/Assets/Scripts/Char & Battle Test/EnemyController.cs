@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class EnemyController : MonoBehaviour
     private Vector2 minPos;
     public Vector2 maxPos;
     private GameObject generator;
+
+    public Image hpImage;
 
     public GameObject damageEffect;
 
@@ -56,6 +59,14 @@ public class EnemyController : MonoBehaviour
         //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
 
         hp -= damage;
+        if(hp <= 0)
+        {
+            hpImage.fillAmount = 0;
+        }
+        else
+        {
+            hpImage.fillAmount = hp / maxHp;
+        }
     }
 
     private IEnumerator EnemyMove()
@@ -92,10 +103,12 @@ public class EnemyController : MonoBehaviour
         if(target.transform.position.x > transform.position.x)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
+            hpImage.gameObject.transform.parent.parent.localRotation = Quaternion.Euler(0, 0, 0);
         }
         else
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
+            hpImage.gameObject.transform.parent.parent.localRotation = Quaternion.Euler(0, 180, 0);
         }
 
         if(coolTime > 0)
