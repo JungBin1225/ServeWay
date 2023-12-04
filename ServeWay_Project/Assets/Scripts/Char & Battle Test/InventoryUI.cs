@@ -5,18 +5,22 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    public List<GameObject> buttonList;
-    public GameObject panel;
+    public List<GameObject> inventoryButtonList;
+    public GameObject buttonGroup;
+    public List<GameObject> panel;
 
     private InventoryManager inventory;
     private Sprite defaultSprite;
     private IngredientList itemList;
-
+    private bool isOpen;
+    private int index;
     void Start()
     {
         inventory = FindObjectOfType<InventoryManager>();
-        defaultSprite = buttonList[0].GetComponent<Image>().sprite;
+        defaultSprite = inventoryButtonList[0].GetComponent<Image>().sprite;
         itemList = FindObjectOfType<DataController>().IngredientList;
+        isOpen = false;
+        index = 0;
     }
 
     
@@ -24,42 +28,96 @@ public class InventoryUI : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Tab))
         {
-            panel.SetActive(!panel.activeSelf);
-            if(panel.activeSelf)
+            if(!isOpen)
             {
                 if(Time.timeScale == 1)
                 {
                     Time.timeScale = 0;
-                    UpdateUI();
+                    GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
+                    buttonGroup.SetActive(true);
+
+                    isOpen = true;
+                    index = 0;
+                    OpenPanel(index);
                 }
             }
             else
             {
+                isOpen = false;
+                buttonGroup.SetActive(false);
+                foreach (GameObject menu in panel)
+                {
+                    menu.SetActive(false);
+                }
+                GetComponent<Image>().color = new Color(0, 0, 0, 0);
                 Time.timeScale = 1;
             }
         }
     }
 
-    public void UpdateUI()
+    public void OpenPanel(int index)
+    {
+        foreach (GameObject menu in panel)
+        {
+            menu.SetActive(false);
+        }
+
+        switch(index)
+        {
+            case 0:
+                //mini map
+                panel[index].SetActive(true);
+                OpenMap();
+                break;
+            case 1:
+                //inventory
+                panel[index].SetActive(true);
+                OpenInventory();
+                break;
+            case 2:
+                //food&ingred info
+                panel[index].SetActive(true);
+                OpenInfoList();
+                break;
+        }
+    }
+
+    public void OpenMap()
+    {
+
+    }
+
+    public void OpenInventory()
     {
         int i = 0;
         foreach(IngredientList.IngredientsName item in inventory.inventory.Keys)
         {
-            buttonList[i].transform.GetChild(0).gameObject.SetActive(true);
-            buttonList[i].GetComponent<Image>().sprite = itemList.ingredientList[itemList.FindIndex(item)].sprite;
-            buttonList[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[item].ToString();
+            inventoryButtonList[i].transform.GetChild(0).gameObject.SetActive(true);
+            inventoryButtonList[i].GetComponent<Image>().sprite = itemList.ingredientList[itemList.FindIndex(item)].sprite;
+            inventoryButtonList[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[item].ToString();
 
             i++;
         }
 
-        if(i < buttonList.Count - 1)
+        if(i < inventoryButtonList.Count - 1)
         {
-            for(; i < buttonList.Count; i++)
+            for(; i < inventoryButtonList.Count; i++)
             {
-                buttonList[i].transform.GetChild(0).gameObject.SetActive(false);
-                buttonList[i].GetComponent<Image>().sprite = defaultSprite;
+                inventoryButtonList[i].transform.GetChild(0).gameObject.SetActive(false);
+                inventoryButtonList[i].GetComponent<Image>().sprite = defaultSprite;
             }
         }
+    }
+
+    public void OpenInfoList()
+    {
+
+    }
+
+    public void OnIndexButtonClicked(int num)
+    {
+        index = num;
+        OpenPanel(num);
     }
 
     public void OnButtonClicked(int num)
@@ -68,11 +126,11 @@ public class InventoryUI : MonoBehaviour
 
         foreach(Ingredient item in itemList.ingredientList)
         {
-            if(item.sprite == buttonList[num].GetComponent<Image>().sprite)
+            if(item.sprite == inventoryButtonList[num].GetComponent<Image>().sprite)
             {
                 name = item.name;
                 inventory.DeleteItem(name, 1);
-                UpdateUI();
+                OpenInventory();
                 break;
             }
         }

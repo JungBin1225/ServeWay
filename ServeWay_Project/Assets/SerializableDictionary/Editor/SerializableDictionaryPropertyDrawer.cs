@@ -6,6 +6,8 @@ using System.Reflection;
 using System;
 
 [CustomPropertyDrawer(typeof(NameAmount))]
+[CustomPropertyDrawer(typeof(FoodDex))]
+[CustomPropertyDrawer(typeof(IngredDex))]
 public class SerializableDictionaryPropertyDrawer : PropertyDrawer
 {
 	const string KeysFieldName = "m_keys";
