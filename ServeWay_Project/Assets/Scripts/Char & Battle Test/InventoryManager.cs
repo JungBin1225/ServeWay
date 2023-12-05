@@ -5,6 +5,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     private PlayerController player;
+    private DataController dataController;
 
     public NameAmount inventory;
 
@@ -12,6 +13,7 @@ public class InventoryManager : MonoBehaviour
     {
         inventory = new NameAmount();
         player = FindObjectOfType<PlayerController>();
+        dataController = FindObjectOfType<DataController>();
 
         if (inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
         {
@@ -35,6 +37,9 @@ public class InventoryManager : MonoBehaviour
         {
             inventory.Add(itemName, amount);
             GetPassive(itemName, true);
+
+            dataController.FoodIngredDex.ingredDex[itemName] = true;
+            UnityEditor.EditorUtility.SetDirty(dataController.FoodIngredDex);
         }
 
         /*foreach(IngredientList.IngredientsName name in inventory.Keys)

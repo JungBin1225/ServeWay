@@ -7,11 +7,12 @@ public class WeaponSlot : MonoBehaviour
     private List<GameObject> weaponList;
     public int index;
     private float changeCooltime;
+    private DataController dataController;
 
     void Start()
     {
         //InitSlot();
-
+        dataController = FindObjectOfType<DataController>();
         changeCooltime = 0;
     }
 
@@ -107,6 +108,8 @@ public class WeaponSlot : MonoBehaviour
             }
         }
 
+        dataController.FoodIngredDex.foodDex[name] = true;
+        UnityEditor.EditorUtility.SetDirty(dataController.FoodIngredDex);
         updateIndex();
     }
 
@@ -142,6 +145,17 @@ public class WeaponSlot : MonoBehaviour
             weapon.transform.SetSiblingIndex(i);
             i++;
         }
+    }
+
+    public List<string> ReturnWeaponList()
+    {
+        List<string> nameList = new List<string>();
+        foreach(GameObject weapon in weaponList)
+        {
+            nameList.Add(weapon.GetComponentInChildren<WeaponController>().weaponName);
+        }
+
+        return nameList;
     }
 
     public void InitSlot()
