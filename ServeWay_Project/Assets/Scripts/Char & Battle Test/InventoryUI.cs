@@ -7,12 +7,15 @@ public class InventoryUI : MonoBehaviour
 {
     public Sprite defaultSprite;
 
-    private List<GameObject> inventoryButtonList;
+    private List<GameObject> inventoryButtonList_0;
+    private List<GameObject> inventoryButtonList_1;
     private List<GameObject> foodImageList;
     private InventoryManager inventory;
     private IngredientList itemList;
     private FoodInfoList foodInfoList;
     private List<string> weaponName;
+    private int page;
+
     void Start()
     {
 
@@ -26,24 +29,50 @@ public class InventoryUI : MonoBehaviour
         weaponName = FindObjectOfType<WeaponSlot>().ReturnWeaponList();
 
         foodImageList = new List<GameObject>();
-        for (int i = 0; i < transform.GetChild(0).childCount; i++)
+        for (int i = 0; i < transform.GetChild(0).GetChild(0).childCount; i++)
         {
-            foodImageList.Add(transform.GetChild(0).GetChild(i).gameObject);
+            foodImageList.Add(transform.GetChild(0).GetChild(0).GetChild(i).gameObject);
         }
 
-        inventoryButtonList = new List<GameObject>();
+        inventoryButtonList_0 = new List<GameObject>();
+        for (int i = 0; i < transform.GetChild(0).GetChild(1).childCount; i++)
+        {
+            inventoryButtonList_0.Add(transform.GetChild(0).GetChild(1).GetChild(i).gameObject);
+        }
+
+        inventoryButtonList_1 = new List<GameObject>();
         for (int i = 0; i < transform.GetChild(1).childCount; i++)
         {
-            inventoryButtonList.Add(transform.GetChild(1).GetChild(i).gameObject);
+            inventoryButtonList_1.Add(transform.GetChild(1).GetChild(i).gameObject);
         }
 
-        InitFood();
-        InitIngred();
+        page = 0;
+
+        InitPage(page);
     }
 
     void Update()
     {
         
+    }
+
+    public void InitPage(int page)
+    {
+        if(page == 0)
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(false);
+
+            InitFood();
+            InitIngred_0();
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(true);
+
+            InitIngred_1();
+        }
     }
 
     public void InitFood()
@@ -65,28 +94,56 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    public void InitIngred()
+    public void InitIngred_0()
     {
         int i = 0;
         foreach(IngredientList.IngredientsName item in inventory.inventory.Keys)
         {
-            inventoryButtonList[i].transform.GetChild(0).gameObject.SetActive(true);
-            inventoryButtonList[i].GetComponent<Image>().sprite = itemList.ingredientList[itemList.FindIndex(item)].sprite;
-            inventoryButtonList[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[item].ToString();
+            inventoryButtonList_0[i].transform.GetChild(0).gameObject.SetActive(true);
+            inventoryButtonList_0[i].GetComponent<Image>().sprite = itemList.ingredientList[itemList.FindIndex(item)].sprite;
+            inventoryButtonList_0[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[item].ToString();
 
             i++;
         }
 
-        if(i < inventoryButtonList.Count - 1)
+        if(i < inventoryButtonList_0.Count - 1)
         {
-            for(; i < inventoryButtonList.Count; i++)
+            for(; i < inventoryButtonList_0.Count; i++)
             {
-                inventoryButtonList[i].transform.GetChild(0).gameObject.SetActive(false);
-                inventoryButtonList[i].GetComponent<Image>().sprite = defaultSprite;
+                inventoryButtonList_0[i].transform.GetChild(0).gameObject.SetActive(false);
+                inventoryButtonList_0[i].GetComponent<Image>().sprite = defaultSprite;
             }
         }
     }
+
+    public void InitIngred_1()
+    {
+        for (int i = 0; i < inventoryButtonList_1.Count; i++)
+        {
+            inventoryButtonList_1[i].transform.GetChild(0).gameObject.SetActive(false);
+            inventoryButtonList_1[i].GetComponent<Image>().sprite = defaultSprite;
+        }
+    }
     
+    public void OnPageClicked(int page)
+    {
+        if(page < 0)
+        {
+            if(this.page > 0)
+            {
+                this.page -= 1;
+            }
+        }
+        else
+        {
+            if(this.page < 1)
+            {
+                this.page += 1;
+            }
+        }
+
+        InitPage(this.page);
+    }
 
     public void OnButtonClicked(int num)
     {
@@ -94,11 +151,22 @@ public class InventoryUI : MonoBehaviour
 
         foreach(Ingredient item in itemList.ingredientList)
         {
-            if(item.sprite == inventoryButtonList[num].GetComponent<Image>().sprite)
+            Image image = inventoryButtonList_0[num].GetComponent<Image>();
+
+            if(page == 0)
+            {
+                image = inventoryButtonList_0[num].GetComponent<Image>();
+            }
+            else
+            {
+                image = inventoryButtonList_1[num].GetComponent<Image>();
+            }
+
+            if(item.sprite == image.sprite)
             {
                 name = item.name;
                 inventory.DeleteItem(name, 1);
-                InitIngred();
+                InitPage(this.page);
                 break;
             }
         }
