@@ -38,6 +38,11 @@ public class TabMenu : MonoBehaviour
             {
                 isOpen = false;
                 buttonGroup.SetActive(false);
+                for(int i = 0; i < buttonGroup.transform.childCount; i++)
+                {
+                    buttonGroup.transform.GetChild(i).GetComponent<Button>().interactable = false;
+                    buttonGroup.transform.GetChild(i).GetComponent<Button>().interactable = true;
+                }
                 foreach (GameObject menu in panel)
                 {
                     menu.SetActive(false);
