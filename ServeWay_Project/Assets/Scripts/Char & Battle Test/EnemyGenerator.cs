@@ -8,6 +8,7 @@ public class EnemyGenerator : MonoBehaviour
     public List<int> amountList;
     public List<GameObject> doorList;
     public int enemyAmount;
+    public GameObject itemPrefab;
 
     // ¹Ì´Ï¸Ê
     [SerializeField] GameObject miniRoomMesh;
@@ -107,15 +108,19 @@ public class EnemyGenerator : MonoBehaviour
             float y = Mathf.Sin(angle) * radius;
             Vector3 pos = transform.position + new Vector3(x, y, 0);
             float angleDegrees = -angle * Mathf.Rad2Deg;
-            Instantiate(RandomIngredient(), pos, Quaternion.Euler(0, 0, 0));
+            
+            Ingredient ingredient = RandomIngredient();
+            GameObject item = Instantiate(itemPrefab, pos, Quaternion.Euler(0, 0, 0));
+            item.GetComponent<GetIngredients>().itemName = ingredient.name;
+            item.GetComponent<GetIngredients>().SetSprite(ingredient.sprite);
         }
     }
 
-    private GameObject RandomIngredient()
+    private Ingredient RandomIngredient()
     {
         int randomIndex = Random.Range(0, data.IngredientList.ingredientList.Count);
 
-        return data.IngredientList.ingredientList[randomIndex].prefab;
+        return data.IngredientList.ingredientList[randomIndex];
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

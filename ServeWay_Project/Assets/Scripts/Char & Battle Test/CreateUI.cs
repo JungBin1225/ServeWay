@@ -101,7 +101,7 @@ public class CreateUI : MonoBehaviour
                 foreach (IngredientList.IngredientsName name in food.needIngredient.Keys)
                 {
                     ingredientList[index].SetActive(true);
-                    ingredientList[index].GetComponent<Image>().sprite = ingredientInfo.ingredientList[ingredientInfo.FindIndex(name)].sprite;
+                    ingredientList[index].GetComponent<Image>().sprite = ingredientInfo.FindIngredient(name).sprite;
                     ingredientList[index].GetComponentInChildren<TMP_Text>().text = string.Format("X {0}", food.needIngredient[name].ToString());
 
                     index++;

@@ -8,22 +8,25 @@ using UnityEngine;
 [System.Serializable]
 public class IngredientList : ScriptableObject
 {
-    public enum IngredientsName{Pumpkin, Strawberrie};
+    public enum IngredientsName
+    {
+        Pumpkin, Strawberrie, Water, Meat, Bread, Noodle, Onion, Lettuce, Garlic, Pepper
+    };
 
     [SerializeField]
     public List<Ingredient> ingredientList;
 
-    public int FindIndex(IngredientsName name)
+    public Ingredient FindIngredient(IngredientsName name)
     {
         foreach(Ingredient ingredient in ingredientList)
         {
             if(ingredient.name == name)
             {
-                return ingredient.index;
+                return ingredient;
             }
         }
 
-        return 1000;
+        return null;
     }
 }
 

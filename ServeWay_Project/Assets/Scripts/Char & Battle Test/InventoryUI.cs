@@ -14,6 +14,7 @@ public class InventoryUI : MonoBehaviour
     private IngredientList itemList;
     private FoodInfoList foodInfoList;
     private List<string> weaponName;
+    private List<IngredientList.IngredientsName> ingredients;
     private int page;
 
     void Start()
@@ -27,6 +28,8 @@ public class InventoryUI : MonoBehaviour
         itemList = FindObjectOfType<DataController>().IngredientList;
         foodInfoList = FindObjectOfType<DataController>().FoodInfoList;
         weaponName = FindObjectOfType<WeaponSlot>().ReturnWeaponList();
+
+        InitIngredList();
 
         foodImageList = new List<GameObject>();
         for (int i = 0; i < transform.GetChild(0).GetChild(0).childCount; i++)
@@ -54,6 +57,15 @@ public class InventoryUI : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void InitIngredList()
+    {
+        ingredients = new List<IngredientList.IngredientsName>();
+        foreach (IngredientList.IngredientsName item in inventory.inventory.Keys)
+        {
+            ingredients.Add(item);
+        }
     }
 
     public void InitPage(int page)
@@ -96,32 +108,51 @@ public class InventoryUI : MonoBehaviour
 
     public void InitIngred_0()
     {
-        int i = 0;
-        foreach(IngredientList.IngredientsName item in inventory.inventory.Keys)
-        {
-            inventoryButtonList_0[i].transform.GetChild(0).gameObject.SetActive(true);
-            inventoryButtonList_0[i].GetComponent<Image>().sprite = itemList.ingredientList[itemList.FindIndex(item)].sprite;
-            inventoryButtonList_0[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[item].ToString();
+        InitIngredList();
 
-            i++;
+        for (int j = 0; j < inventoryButtonList_0.Count; j++)
+        {
+            inventoryButtonList_0[j].transform.GetChild(0).gameObject.SetActive(false);
+            inventoryButtonList_0[j].GetComponent<Image>().sprite = defaultSprite;
         }
 
-        if(i < inventoryButtonList_0.Count - 1)
+        int i = 0;
+        for(; i < inventoryButtonList_0.Count; i++)
         {
-            for(; i < inventoryButtonList_0.Count; i++)
+            if (ingredients.Count <= i)
             {
-                inventoryButtonList_0[i].transform.GetChild(0).gameObject.SetActive(false);
-                inventoryButtonList_0[i].GetComponent<Image>().sprite = defaultSprite;
+                break;
             }
+            inventoryButtonList_0[i].transform.GetChild(0).gameObject.SetActive(true);
+            inventoryButtonList_0[i].GetComponent<Image>().sprite = itemList.FindIngredient(ingredients[i]).sprite;
+            inventoryButtonList_0[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[ingredients[i]].ToString();
         }
     }
 
     public void InitIngred_1()
     {
-        for (int i = 0; i < inventoryButtonList_1.Count; i++)
+        InitIngredList();
+
+        for (int j = 0; j < inventoryButtonList_1.Count; j++)
         {
-            inventoryButtonList_1[i].transform.GetChild(0).gameObject.SetActive(false);
-            inventoryButtonList_1[i].GetComponent<Image>().sprite = defaultSprite;
+            inventoryButtonList_1[j].transform.GetChild(0).gameObject.SetActive(false);
+            inventoryButtonList_1[j].GetComponent<Image>().sprite = defaultSprite;
+        }
+
+        int i = 0;
+        if (ingredients.Count > ((page - 1) * 6) + inventoryButtonList_0.Count)
+        {
+            for(; i < inventoryButtonList_1.Count; i++)
+            {
+                if (ingredients.Count <= ((page - 1) * 6) + inventoryButtonList_0.Count + i)
+                {
+                    break;
+                }
+
+                inventoryButtonList_1[i].transform.GetChild(0).gameObject.SetActive(true);
+                inventoryButtonList_1[i].GetComponent<Image>().sprite = itemList.FindIngredient(ingredients[((page - 1) * 6) + inventoryButtonList_0.Count + i]).sprite;
+                inventoryButtonList_1[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[ingredients[((page - 1) * 6) + inventoryButtonList_0.Count + i]].ToString();
+            }
         }
     }
     
@@ -136,7 +167,7 @@ public class InventoryUI : MonoBehaviour
         }
         else
         {
-            if(this.page < 1)
+            if (this.page < ((ingredients.Count - 4) / 6 + 1) && ingredients.Count > 3)
             {
                 this.page += 1;
             }

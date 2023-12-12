@@ -31,6 +31,11 @@ public class GetIngredients : MonoBehaviour
         }*/
     }
 
+    public void SetSprite(Sprite sprite)
+    {
+        GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+
     private void GetItem()
     {
         inventory.GetItem(this.itemName, 1);
