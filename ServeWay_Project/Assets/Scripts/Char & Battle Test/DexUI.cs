@@ -6,10 +6,15 @@ using UnityEngine.UI;
 public class DexUI : MonoBehaviour
 {
     private DataController dataController;
-    private GameObject foodDex;
-    private GameObject ingredDex;
+    private int dexMod;
+    private List<string> foodList;
+    private List<IngredientList.IngredientsName> ingredientList;
+    private List<GameObject> buttonList;
+    private int page;
 
     public Sprite lockSprite;
+    public GameObject buttonGruop;
+    public GameObject infoWindow;
 
     void Start()
     {
@@ -21,44 +26,126 @@ public class DexUI : MonoBehaviour
     private void OnEnable()
     {
         dataController = FindObjectOfType<DataController>();
-        foodDex = transform.GetChild(0).gameObject;
-        ingredDex = transform.GetChild(1).gameObject;
-        InitList();
+        buttonList = new List<GameObject>();
+        for(int i = 0; i < buttonGruop.transform.childCount; i++)
+        {
+            buttonList.Add(buttonGruop.transform.GetChild(i).gameObject);
+        }
+
+        foodList = new List<string>();
+        ingredientList = new List<IngredientList.IngredientsName>();
+        dexMod = 0;
+        page = 0;
+
+        InitList(page);
     }
 
-    private void InitList()
+    private void InitList(int page)
     {
-        for(int i = 0; i < foodDex.transform.childCount; i++)
+        if(dexMod == 0)
         {
-            List<FoodInfo> foodList = dataController.FoodInfoList.foodInfo;
-            int index = i;
+            foodList = new List<string>();
 
-            if(i >= dataController.FoodInfoList.foodInfo.Count)
+            foreach (string food in dataController.FoodIngredDex.foodDex.Keys)
             {
-                foodList = dataController.FoodInfoList.start_foodInfo;
-                index = i - dataController.FoodInfoList.foodInfo.Count;
+                if(dataController.FoodIngredDex.foodDex[food])
+                {
+                    foodList.Add(food);
+                }
             }
 
-            if(dataController.FoodIngredDex.foodDex[foodList[index].foodName])
+            foreach(GameObject button in buttonList)
             {
-                foodDex.transform.GetChild(i).GetComponent<Image>().sprite = foodList[index].foodSprite;
+                button.GetComponent<Image>().sprite = lockSprite;
+            }
+
+            
+            for(int i = buttonList.Count * page; i < foodList.Count; i++)
+            {
+                if(i != buttonList.Count * page && i % buttonList.Count == 0)
+                {
+                    break;
+                }
+                buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FoodInfoList.FindFood(foodList[i]).foodSprite;
+            }
+        }
+        else
+        {
+            ingredientList = new List<IngredientList.IngredientsName>();
+
+            foreach (IngredientList.IngredientsName ingred in dataController.FoodIngredDex.ingredDex.Keys)
+            {
+                if(dataController.FoodIngredDex.ingredDex[ingred])
+                {
+                    ingredientList.Add(ingred);
+                }
+            }
+
+            foreach (GameObject button in buttonList)
+            {
+                button.GetComponent<Image>().sprite = lockSprite;
+            }
+
+            for (int i = buttonList.Count * page; i < ingredientList.Count; i++)
+            {
+                if (i != buttonList.Count * page && i % buttonList.Count == 0)
+                {
+                    break;
+                }
+                buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.IngredientList.FindIngredient(ingredientList[i]).sprite;
+            }
+        }
+    }
+
+    public void OnModChangeClicked(int index)
+    {
+        dexMod = index;
+        page = 0;
+
+        InitList(page);
+    }
+
+    public void OnPageClicked(int page)
+    {
+        if (page < 0)
+        {
+            if (this.page > 0)
+            {
+                this.page -= 1;
+            }
+        }
+        else
+        {
+            if (dexMod == 0)
+            {
+                if (buttonList.Count * (page + 1) < foodList.Count)
+                {
+                    this.page += 1;
+                }
             }
             else
             {
-                foodDex.transform.GetChild(i).GetComponent<Image>().sprite = lockSprite;
+                if (buttonList.Count * (page + 1) < ingredientList.Count)
+                {
+                    this.page += 1;
+                }
             }
         }
 
-        for (int i = 0; i < ingredDex.transform.childCount; i++)
+        InitList(this.page);
+    }
+
+    public void OnInfoOpenClicked(Image image)
+    {
+        if (image.sprite != lockSprite)
         {
-            if (dataController.FoodIngredDex.ingredDex[dataController.IngredientList.ingredientList[i].name])
-            {
-                ingredDex.transform.GetChild(i).GetComponent<Image>().sprite = dataController.IngredientList.ingredientList[i].sprite;
-            }
-            else
-            {
-                ingredDex.transform.GetChild(i).GetComponent<Image>().sprite = lockSprite;
-            }
+            infoWindow.SetActive(true);
+            infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = image.sprite;
         }
+    }
+
+    public void OnInfoCloseClicked()
+    {
+        infoWindow.SetActive(false);
     }
 }

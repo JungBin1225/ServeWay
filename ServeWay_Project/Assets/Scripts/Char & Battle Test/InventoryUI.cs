@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     public Sprite defaultSprite;
+    public GameObject infoWindow;
 
     private List<GameObject> inventoryButtonList_0;
     private List<GameObject> inventoryButtonList_1;
@@ -52,6 +53,11 @@ public class InventoryUI : MonoBehaviour
         page = 0;
 
         InitPage(page);
+    }
+
+    private void OnDisable()
+    {
+        infoWindow.SetActive(false);
     }
 
     void Update()
@@ -176,7 +182,21 @@ public class InventoryUI : MonoBehaviour
         InitPage(this.page);
     }
 
-    public void OnButtonClicked(int num)
+    public void OnInfoOpenClicked(Image image)
+    {
+        if(image.sprite != defaultSprite)
+        {
+            infoWindow.SetActive(true);
+            infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = image.sprite;
+        }
+    }
+
+    public void OnInfoCloseClicked()
+    {
+        infoWindow.SetActive(false);
+    }
+
+    /*public void OnButtonClicked(int num)
     {
         IngredientList.IngredientsName name;
 
@@ -201,5 +221,5 @@ public class InventoryUI : MonoBehaviour
                 break;
             }
         }
-    }
+    }*/
 }
