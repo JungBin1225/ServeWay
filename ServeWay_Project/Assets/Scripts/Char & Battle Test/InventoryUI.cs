@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -187,7 +188,61 @@ public class InventoryUI : MonoBehaviour
         if(image.sprite != defaultSprite)
         {
             infoWindow.SetActive(true);
-            infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = image.sprite;
+
+            if(foodInfoList.FindFood(image.sprite) != null)
+            {
+                FoodInfo food = foodInfoList.FindFood(image.sprite);
+                Create_Success success = FindObjectOfType<WeaponSlot>().GetWeaponInfo(food.foodName).success;
+
+                string success_D = "";
+                string success_S = "";
+                string success_C = "";
+                switch (success)
+                {
+                    case Create_Success.FAIL:
+                        success_D = "- " + food.successDamage.ToString();
+                        success_S = "- " + food.successSpeed.ToString();
+                        success_C = "+ " + food.successCoolTime.ToString();
+                        break;
+                    case Create_Success.SUCCESS:
+                        success_D = "+ 0";
+                        success_S = "+ 0";
+                        success_C = "- 0";
+                        break;
+                    case Create_Success.GREAT:
+                        success_D = "+ " + food.successDamage.ToString();
+                        success_S = "+ " + food.successSpeed.ToString();
+                        success_C = "- " + food.successCoolTime.ToString();
+                        break;
+                }
+
+                infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
+
+                infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = food.foodSprite;
+                infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
+                infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
+                infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
+                infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
+                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("만족도: {0} ({1})", food.damage, success_D);
+                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0} ({1})", food.speed, success_S);
+                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0} ({1})", food.coolTime, success_C);
+            }
+            else
+            {
+                Ingredient ingred = itemList.FindIngredient(image.sprite);
+
+                infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = ingred.sprite;
+                infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);
+                infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = ingred.EunmToString(ingred.grade);
+                infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
+                infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
+                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = ingred.passive;
+                infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
+                infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
+            }
         }
     }
 

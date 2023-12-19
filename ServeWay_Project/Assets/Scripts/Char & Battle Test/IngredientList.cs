@@ -28,5 +28,18 @@ public class IngredientList : ScriptableObject
 
         return null;
     }
+
+    public Ingredient FindIngredient(Sprite sprite)
+    {
+        foreach (Ingredient ingredient in ingredientList)
+        {
+            if (ingredient.sprite == sprite)
+            {
+                return ingredient;
+            }
+        }
+
+        return null;
+    }
 }
 

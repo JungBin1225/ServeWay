@@ -158,6 +158,20 @@ public class WeaponSlot : MonoBehaviour
         return nameList;
     }
 
+    public WeaponController GetWeaponInfo(string name)
+    {
+        foreach(GameObject weapon in weaponList)
+        {
+            if(weapon.GetComponentInChildren<WeaponController>().weaponName == name)
+            {
+                Debug.Log(weapon.GetComponentInChildren<WeaponController>().name);
+                return weapon.GetComponentInChildren<WeaponController>();
+            }
+        }
+
+        return null;
+    }
+
     public void InitSlot()
     {
         weaponList = new List<GameObject>();
