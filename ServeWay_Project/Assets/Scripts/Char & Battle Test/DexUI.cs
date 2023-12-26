@@ -119,14 +119,15 @@ public class DexUI : MonoBehaviour
         {
             if (dexMod == 0)
             {
-                if (buttonList.Count * (page + 1) < foodList.Count)
+                if (buttonList.Count * (this.page + 1) < foodList.Count)
                 {
                     this.page += 1;
                 }
             }
             else
             {
-                if (buttonList.Count * (page + 1) < ingredientList.Count)
+                Debug.Log(ingredientList.Count);
+                if (buttonList.Count * (this.page + 1) < ingredientList.Count)
                 {
                     this.page += 1;
                 }

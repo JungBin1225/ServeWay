@@ -10,7 +10,7 @@ public class IngredientList : ScriptableObject
 {
     public enum IngredientsName
     {
-        Pumpkin, Strawberrie, Water, Meat, Bread, Noodle, Onion, Lettuce, Garlic, Pepper
+        Pumpkin, Strawberrie, Water, Meat, Bread, Noodle, Onion, Lettuce, Garlic, Pepper, Rice, Salt, Sugar
     };
 
     [SerializeField]

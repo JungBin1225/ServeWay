@@ -46,6 +46,12 @@ public class Ingredient
                 return "∏∂¥√";
             case IngredientList.IngredientsName.Pepper:
                 return "««∏¡";
+            case IngredientList.IngredientsName.Rice:
+                return "Ω“";
+            case IngredientList.IngredientsName.Salt:
+                return "º“±›";
+            case IngredientList.IngredientsName.Sugar:
+                return "º≥≈¡";
             default:
                 return "";
         }
