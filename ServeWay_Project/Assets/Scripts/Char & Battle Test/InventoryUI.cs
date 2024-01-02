@@ -197,22 +197,27 @@ public class InventoryUI : MonoBehaviour
                 string success_D = "";
                 string success_S = "";
                 string success_C = "";
+                Color color = new Color(0, 0, 0);
+
                 switch (success)
                 {
                     case Create_Success.FAIL:
                         success_D = "- " + food.successDamage.ToString();
                         success_S = "- " + food.successSpeed.ToString();
                         success_C = "+ " + food.successCoolTime.ToString();
+                        color = new Color(1, 0, 0);
                         break;
                     case Create_Success.SUCCESS:
                         success_D = "+ 0";
                         success_S = "+ 0";
                         success_C = "- 0";
+                        color = new Color(1, 1, 1);
                         break;
                     case Create_Success.GREAT:
                         success_D = "+ " + food.successDamage.ToString();
                         success_S = "+ " + food.successSpeed.ToString();
                         success_C = "- " + food.successCoolTime.ToString();
+                        color = new Color(0, 1, 0);
                         break;
                 }
 
@@ -220,15 +225,25 @@ public class InventoryUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
                 infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
                 infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(7).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(8).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(9).gameObject.SetActive(true);
+
+                infoWindow.transform.GetChild(3).GetChild(7).GetComponent<TMP_Text>().color = color;
+                infoWindow.transform.GetChild(3).GetChild(8).GetComponent<TMP_Text>().color = color;
+                infoWindow.transform.GetChild(3).GetChild(9).GetComponent<TMP_Text>().color = color;
 
                 infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = food.foodSprite;
                 infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
                 infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
                 infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
                 infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
-                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("만족도: {0} ({1})", food.damage, success_D);
-                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0} ({1})", food.speed, success_S);
-                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0} ({1})", food.coolTime, success_C);
+                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("만족도: {0}", food.damage);
+                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0}", food.speed);
+                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0}", food.coolTime);
+                infoWindow.transform.GetChild(3).GetChild(7).GetComponent<TMP_Text>().text = string.Format("({0})", success_D);
+                infoWindow.transform.GetChild(3).GetChild(8).GetComponent<TMP_Text>().text = string.Format("({0})", success_S);
+                infoWindow.transform.GetChild(3).GetChild(9).GetComponent<TMP_Text>().text = string.Format("({0})", success_C);
             }
             else
             {
@@ -242,6 +257,9 @@ public class InventoryUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = ingred.passive;
                 infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
                 infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
+                infoWindow.transform.GetChild(3).GetChild(7).gameObject.SetActive(false);
+                infoWindow.transform.GetChild(3).GetChild(8).gameObject.SetActive(false);
+                infoWindow.transform.GetChild(3).GetChild(9).gameObject.SetActive(false);
             }
         }
     }
