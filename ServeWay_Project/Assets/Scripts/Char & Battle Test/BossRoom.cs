@@ -20,6 +20,10 @@ public class BossRoom : MonoBehaviour
     // 미니맵
     [SerializeField] GameObject miniRoomMesh;
     private bool isVisited = false;
+    [SerializeField] MinimapManager minimapMG;
+    [SerializeField] MapGenerator mapGen;
+    private int myRow;
+    private int myCol;
 
     void Start()
     {
@@ -37,6 +41,12 @@ public class BossRoom : MonoBehaviour
         startButton.GetComponent<Button>().onClick.AddListener(OnStartClicked);
 
         isVisited = false;
+
+        // 미니맵
+        minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
+        mapGen = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
+        myRow = 0;
+        myCol = 0;
     }
 
     void Update()
@@ -115,6 +125,14 @@ public class BossRoom : MonoBehaviour
         GameObject stair = Instantiate(stairPrefab, transform.position, transform.rotation);
     }
 
+    // 미니맵 좌표
+    private void setMiniRowCol(int row, int col)
+    {
+        KeyValuePair<int, int> bossPos = mapGen.BossGridNum();
+        myRow = bossPos.Value;
+        myCol = bossPos.Key;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player" && !isClear)
@@ -124,7 +142,9 @@ public class BossRoom : MonoBehaviour
             {
                 isVisited = true;
                 // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
-                Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("miniMapMeshGroup").transform);
+                GameObject tmp = Instantiate(miniRoomMesh, transform);
+                minimapMG.putMesh(tmp, myRow, myCol);
+                
             }
 
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;

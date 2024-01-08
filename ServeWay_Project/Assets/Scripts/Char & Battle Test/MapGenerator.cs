@@ -70,14 +70,14 @@ public class MapGenerator : MonoBehaviour
         }
         else // 로드될 맵이 없으면 새로 생성
         {
-            Init(); //초기화
+            Init(); // 초기화
         }
 
-        DrawBackGround(); //전체 맵 사각형 그리기
-        CreateMap(); //방이랑 길 그리기
-        DisplayRoomType(); //시작방, 주방, 보스방 표시
+        DrawBackGround(); // 전체 맵 사각형 그리기
+        CreateMap(); // 방이랑 길 그리기
+        DisplayRoomType(); // 시작방, 주방, 보스방 표시
         SetDoor();
-        //플레이어 위치 초기화
+        // 플레이어 위치 초기화
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
         GameObject.Find("miniPlayer").transform.position = roomList[startY, startX].enemyGenerator.transform.position;
 
@@ -358,7 +358,7 @@ public class MapGenerator : MonoBehaviour
         //position 피벗이 중앙임
         //룸 하나당 에너미 제너레이터도 하나씩 생성
         roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator);
-        // 미니맵
+        // 미니맵 - collider에 룸 위치 전달
         roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myRow = ROW;
         roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myCol = COL;
 
@@ -373,7 +373,6 @@ public class MapGenerator : MonoBehaviour
         
         //+1 안해주면 양쪽 반 칸이 모자름
         roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1, (int)roomList[ROW, COL].roomRect.height + 1);
-       
     }
 
     void DrawRoad(int x,int y,int nextX,int nextY)
@@ -517,6 +516,8 @@ public class MapGenerator : MonoBehaviour
 
             vertPoint -= vertSize;
         }
+        // 미니맵 - 시작 방이면 miniRoomMesh 바로 생성
+        roomList[startY, startX].enemyGenerator.GetComponent<EnemyGenerator>().generateMiniRoomMesh();
 
     }
 
@@ -786,6 +787,23 @@ public class MapGenerator : MonoBehaviour
         startY = GameManager.gameManager.charData.saveFile.startY;
 
         roomList[startY, startX].isCreated = 1;
+    }
+
+    // 보스방 좌표 알리기
+    public KeyValuePair<int, int> BossGridNum()
+    {
+        var targetPos = new KeyValuePair<int, int>();
+        for (int i = 0; i < NUM_ROOM; i++)
+        {
+            for (int j = 0; j < NUM_ROOM; j++)
+            {
+                if (roomList[i, j].roomType == RoomType.ROOM_BOSS)
+                {
+                    targetPos = new KeyValuePair<int, int>(j, i);
+                }
+            }
+        }
+        return targetPos;
     }
 
 }

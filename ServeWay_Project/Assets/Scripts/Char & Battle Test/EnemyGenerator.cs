@@ -128,15 +128,7 @@ public class EnemyGenerator : MonoBehaviour
         if (collision.gameObject.tag == "Player" && !isClear && isStarted)
         {
             // 미니맵
-            if (!isVisited)
-            {
-                isVisited = true;
-                // minimapGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
-                GameObject tmp = Instantiate(miniRoomMesh, transform);
-
-                Debug.Log("EG: " + myRow + ", " + myCol);
-                minimapMG.putMesh(tmp, myRow, myCol);
-            }
+            generateMiniRoomMesh();
 
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
 
@@ -203,6 +195,24 @@ public class EnemyGenerator : MonoBehaviour
         {
             spawnlist.Add(enemy, amountList[n]);
             n++;
+        }
+    }
+
+    // 미니맵
+    public void generateMiniRoomMesh()
+    {
+        if (!isVisited)
+        {
+            isVisited = true;
+            // minimapGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+            GameObject tmp = Instantiate(miniRoomMesh, transform);
+
+            Debug.Log("EG: " + myRow + ", " + myCol);
+            if (!minimapMG)
+            {
+                minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
+            }
+            minimapMG.putMesh(tmp, myRow, myCol);
         }
     }
 }

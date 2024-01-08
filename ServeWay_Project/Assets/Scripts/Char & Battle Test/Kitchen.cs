@@ -88,15 +88,7 @@ public class Kitchen : MonoBehaviour
         {
             if (!SceneManager.GetActiveScene().name.Contains("Start"))
             {
-                // 미니맵
-                if (!isVisited)
-                {
-                    isVisited = true;
-                    // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
-                    Instantiate(miniRoomMesh, transform).transform.SetParent(GameObject.Find("miniMapMeshGroup").transform);
-                }
 
-                GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
             }
 
             // 주방 작동
