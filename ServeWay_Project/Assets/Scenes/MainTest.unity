@@ -3639,6 +3639,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464146950}
   m_CullTransparentMesh: 1
+--- !u!1 &482195766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 482195767}
+  - component: {fileID: 482195768}
+  m_Layer: 0
+  m_Name: Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &482195767
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482195766}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.35441825, y: 0.2833158, z: -8.190993}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &482195768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482195766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8cb3a63787fe84290368e1ab22df7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodData:
+    _FoodName: 
+    _FoodSpriteIndex: 0
+    _Grade: 0
+    _MainIngred: 0
+    _Nation: 0
+    _Damage: 0
+    _Speed: 0
+    _CoolTime: 0
+    _SuccessDamage: 0
+    _SuccessSpeed: 0
+    _SuccessCoolTime: 0
+    _AlphaStat: 
+    _FoodPrefabPath: 
+    _BulletPrefabPath: 
+    _NeedIngredient: 
 --- !u!1 &482963018
 GameObject:
   m_ObjectHideFlags: 0
@@ -4675,6 +4735,7 @@ MonoBehaviour:
   IngredientList: {fileID: 11400000, guid: e1c6ac973bea5d14b968f425e7d10545, type: 2}
   enemyList: {fileID: 11400000, guid: 528f1fd0fa7519445a6089625fffca0c, type: 2}
   FoodIngredDex: {fileID: 11400000, guid: 49ef0c16f4fdb044abde3b4dceb650f6, type: 2}
+  foodData: {fileID: 11400000, guid: d8153a01b0dc8b94da524cdfe7c348c2, type: 2}
 --- !u!4 &609882562
 Transform:
   m_ObjectHideFlags: 0

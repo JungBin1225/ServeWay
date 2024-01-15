@@ -8,4 +8,5 @@ public class DataController : MonoBehaviour
     public IngredientList IngredientList;
     public EnemyList enemyList;
     public FoodIngredDex FoodIngredDex;
+    public FoodDataSet foodData;
 }
