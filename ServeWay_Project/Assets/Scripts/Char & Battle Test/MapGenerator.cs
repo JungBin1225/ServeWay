@@ -36,6 +36,13 @@ public enum DirectType
     [SerializeField] Tile kitchenTile; //주방 타일
     [SerializeField] Tile bossTile; //보스방 타일
 
+    [SerializeField] Tile startRoomcorner_1; //왼쪽 위 모서리
+    [SerializeField] Tile startRoomcorner_2; //오른쪽 위 모서리
+    [SerializeField] Tile startRoomcorner_3; //왼쪽 아래 모서리
+    [SerializeField] Tile startRoomcorner_4; //오른쪽 아래 모서리
+    [SerializeField] Tile startRoomEdge; //가장자리 부분
+
+
     [SerializeField] GameObject Player;
     [SerializeField] GameObject TriggerBox;
     [SerializeField] GameObject BossGenerator;
@@ -700,8 +707,59 @@ public enum DirectType
 
                         tileMap.SetTile(tilePosition, nowTile);
                         //miniTileMap.SetTile(tilePosition, nowTile);
+
+                        //만약 가장자리이면
+                        if(i==roomRect.x || i+1 >= roomRect.x+roomRect.width || j == roomRect.y || j-1 <= roomRect.y - roomRect.height)
+                        {
+                            
+                            if(i == roomRect.x && j == roomRect.y)
+                            {
+                                //왼쪽 위 모서리
+                                tileMap.SetTile(tilePosition, startRoomcorner_1);
+                            }
+                            else if (i + 1 >= roomRect.x + roomRect.width && j == roomRect.y)
+                            {
+                                //오른쪽 위 모서리
+                                tileMap.SetTile(tilePosition, startRoomcorner_2);
+
+                            }
+                            else if (i == roomRect.x && j - 1 <= roomRect.y - roomRect.height)
+                            {
+                                //왼쪽 아래 모서리
+                                tileMap.SetTile(tilePosition, startRoomcorner_3);
+
+                            }
+                            else if(i + 1 >= roomRect.x + roomRect.width && j - 1 <= roomRect.y - roomRect.height)
+                            {
+                                //오른쪽 아래 모서리
+                                tileMap.SetTile(tilePosition, startRoomcorner_4);
+                                
+                            }
+                            else
+                            {
+                                Vector3Int tempPosition = tileMap.WorldToCell(new Vector3(roomList[ROW, COL].upXPoint, j, 0));
+
+                                //만약 바로 옆이 문이면 그리지 않는다
+                                if (tileMap.GetTile(tileMap.WorldToCell(new Vector3(roomList[ROW, COL].upXPoint, j, 0))) == roomTile)
+                                {
+                                    
+                                }
+
+
+
+                                //모서리를 제외한 가장자리 부분
+                                tileMap.SetTile(tilePosition, startRoomEdge);
+                            }
+
+                        } 
+
+                        
+
+
+
+
                     }
-                 
+
 
                 }
             }
@@ -722,6 +780,7 @@ public enum DirectType
 
                     if (i > 0 && roomList[i - 1, j].isCreated != 0)
                     {
+                        //왼쪽 길
                         point = roomList[i, j].triggerBox.transform.position.y + ((roomList[i, j].triggerBox.transform.localScale.y + 1) / 2) + (doorPrefab.transform.localScale.y / 2);
                         GameObject door = Instantiate(doorPrefab, new Vector3(roomList[i, j].upXPoint, point, 0), Quaternion.Euler(0, 0, 0));
                         roomList[i, j].triggerBox.GetComponent<TriggerBox>().doorList.Add(door);
