@@ -43,7 +43,7 @@ public class GetItem : MonoBehaviour
 
     public void SetSprite()
     {
-        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<DataController>().FoodInfoList.FindFood(name).foodSprite;
+        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<DataController>().FindFood(name).foodSprite;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

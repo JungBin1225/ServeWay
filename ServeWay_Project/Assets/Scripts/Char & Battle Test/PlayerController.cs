@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private MissonManager misson;
     private float missonTime;
     private PlayerHealth playerHealth;
-    private FoodInfoList foodInfo;
+    private DataController foodData;
 
     public float speed;
     public float chargeSpeed;
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         misson = FindObjectOfType<MissonManager>();
         playerHealth = gameObject.GetComponent<PlayerHealth>();
-        foodInfo = FindObjectOfType<DataController>().FoodInfoList;
+        foodData = FindObjectOfType<DataController>();
 
         InitCharactor();
     }
@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour
             int n = 0;
             foreach(string weapon in GameManager.gameManager.charData.saveFile.weaponList)
             {
-                weaponSlot.GetWeapon(foodInfo.FindFood(weapon).foodPrefab.GetComponent<GetItem>().weaponPrefab, GameManager.gameManager.charData.saveFile.weaponSuccess[n], weapon);
+                weaponSlot.GetWeapon(foodData.FindFood(weapon).foodPrefab.GetComponent<GetItem>().weaponPrefab, GameManager.gameManager.charData.saveFile.weaponSuccess[n], weapon);
                 n++;
             }
 

@@ -217,6 +217,7 @@ public class WeaponController : MonoBehaviour
             yield return null;
         }
 
+        lineRenderer.SetPosition(1, transform.position);
         lineRenderer.enabled = false;
         isLaser = false;
         Destroy(laser);
@@ -225,7 +226,7 @@ public class WeaponController : MonoBehaviour
 
     public void InitWeapon()
     {
-        FoodInfo foodInfo = FindObjectOfType<DataController>().FoodInfoList.FindFood(weaponName);
+        FoodData foodInfo = FindObjectOfType<DataController>().FindFood(weaponName);
         alphaStat = new List<float>();
 
         GetComponent<SpriteRenderer>().sprite = foodInfo.foodSprite;

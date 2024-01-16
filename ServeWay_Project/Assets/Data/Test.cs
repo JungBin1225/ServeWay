@@ -5,13 +5,13 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
     public FoodData foodData;
-    public Sprite sprite;
+    public GameObject prefab;
 
     void Start()
     {
         foodData = FindObjectOfType<DataController>().foodData.FoodDatas[0];
 
-        sprite = foodData.foodSprite;
+        prefab = foodData.foodPrefab;
         foreach(IngredientList.IngredientsName name in foodData.needIngredient.Keys)
         {
             Debug.Log(name + ", " +foodData.needIngredient[name].ToString());

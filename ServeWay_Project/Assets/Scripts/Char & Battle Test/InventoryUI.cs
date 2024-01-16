@@ -14,7 +14,7 @@ public class InventoryUI : MonoBehaviour
     private List<GameObject> foodImageList;
     private InventoryManager inventory;
     private IngredientList itemList;
-    private FoodInfoList foodInfoList;
+    private DataController foodInfo;
     private List<string> weaponName;
     private List<IngredientList.IngredientsName> ingredients;
     private int page;
@@ -28,7 +28,7 @@ public class InventoryUI : MonoBehaviour
     {
         inventory = FindObjectOfType<InventoryManager>();
         itemList = FindObjectOfType<DataController>().IngredientList;
-        foodInfoList = FindObjectOfType<DataController>().FoodInfoList;
+        foodInfo = FindObjectOfType<DataController>();
         weaponName = FindObjectOfType<WeaponSlot>().ReturnWeaponList();
 
         InitIngredList();
@@ -99,7 +99,7 @@ public class InventoryUI : MonoBehaviour
         int i = 0;
         foreach(string name in weaponName)
         {
-            foodImageList[i].GetComponent<Image>().sprite = foodInfoList.FindFood(name).foodSprite;
+            foodImageList[i].GetComponent<Image>().sprite = foodInfo.FindFood(name).foodSprite;
 
             i++;
         }
@@ -189,9 +189,9 @@ public class InventoryUI : MonoBehaviour
         {
             infoWindow.SetActive(true);
 
-            if(foodInfoList.FindFood(image.sprite) != null)
+            if(foodInfo.FindFood(image.sprite) != null)
             {
-                FoodInfo food = foodInfoList.FindFood(image.sprite);
+                FoodData food = foodInfo.FindFood(image.sprite);
                 Create_Success success = FindObjectOfType<WeaponSlot>().GetWeaponInfo(food.foodName).success;
 
                 string success_D = "";

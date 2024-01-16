@@ -67,7 +67,7 @@ public class DexUI : MonoBehaviour
                 {
                     break;
                 }
-                buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FoodInfoList.FindFood(foodList[i]).foodSprite;
+                buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
             }
         }
         else
@@ -142,9 +142,9 @@ public class DexUI : MonoBehaviour
         if (image.sprite != lockSprite)
         {
             infoWindow.SetActive(true);
-            if (dataController.FoodInfoList.FindFood(image.sprite) != null)
+            if (dataController.FindFood(image.sprite) != null)
             {
-                FoodInfo food = dataController.FoodInfoList.FindFood(image.sprite);
+                FoodData food = dataController.FindFood(image.sprite);
                 
                 infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
                 infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);

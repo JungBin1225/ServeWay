@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Kitchen : MonoBehaviour
 {
-    private FoodInfoList foodInfo;
+    private FoodDataSet foodInfo;
+    private StartFoodDataSet startFoodInfo;
     private InventoryManager Inventory;
     private List<string> list;
     private bool isTouch;
@@ -20,7 +21,8 @@ public class Kitchen : MonoBehaviour
         list = new List<string>();
         isTouch = false;
         Inventory = FindObjectOfType<InventoryManager>();
-        foodInfo = FindObjectOfType<DataController>().FoodInfoList;
+        foodInfo = FindObjectOfType<DataController>().foodData;
+        startFoodInfo = FindObjectOfType<DataController>().startFoodData;
         createUI = FindObjectOfType<CreateUI>();
 
         createUI.gameObject.SetActive(false);
@@ -51,14 +53,14 @@ public class Kitchen : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name.Contains("Start"))
         {
-            foreach(FoodInfo food in foodInfo.start_foodInfo)
+            foreach(FoodData food in startFoodInfo.StartFoodDatas)
             {
                 list.Add(food.foodName);
             }
         }
         else
         {
-            foreach (FoodInfo food in foodInfo.foodInfo)
+            foreach (FoodData food in foodInfo.FoodDatas)
             {
                 if (CheckIngredient(food.needIngredient, Inventory.inventory))
                 {

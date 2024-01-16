@@ -9,8 +9,9 @@ public class CreateUI : MonoBehaviour
 {
     private List<GameObject> buttonList;
     private List<GameObject> ingredientList;
-    private FoodInfoList foodInfo;
-    private FoodInfo selectedFood;
+    private FoodDataSet foodInfo;
+    private StartFoodDataSet startFoodInfo;
+    private FoodData selectedFood;
     private IngredientList ingredientInfo;
     private InventoryManager inventory;
 
@@ -19,7 +20,8 @@ public class CreateUI : MonoBehaviour
 
     void Start()
     {
-        foodInfo = FindObjectOfType<DataController>().FoodInfoList;
+        foodInfo = FindObjectOfType<DataController>().foodData;
+        startFoodInfo = FindObjectOfType<DataController>().startFoodData;
         ingredientInfo = FindObjectOfType<DataController>().IngredientList;
         inventory = FindObjectOfType<InventoryManager>();
 
@@ -65,21 +67,21 @@ public class CreateUI : MonoBehaviour
 
     public void OnSelectClicked(TMP_Text text)
     {
-        List<FoodInfo> list;
+        List<FoodData> list;
 
         explaneUI.SetActive(true);
 
         if(SceneManager.GetActiveScene().name.Contains("Start"))
         {
-            list = foodInfo.start_foodInfo;
+            list = startFoodInfo.StartFoodDatas;
         }
         else
         {
-            list = foodInfo.foodInfo;
+            list = foodInfo.FoodDatas;
         }
         
 
-        foreach(FoodInfo food in list)
+        foreach(FoodData food in list)
         {
             if(food.foodName == text.text)
             {
