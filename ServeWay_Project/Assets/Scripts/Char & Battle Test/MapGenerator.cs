@@ -737,18 +737,24 @@ public enum DirectType
                             }
                             else
                             {
-                                Vector3Int tempPosition = tileMap.WorldToCell(new Vector3(roomList[ROW, COL].upXPoint, j, 0));
-
-                                //만약 바로 옆이 문이면 그리지 않는다
-                                if (tileMap.GetTile(tileMap.WorldToCell(new Vector3(roomList[ROW, COL].upXPoint, j, 0))) == roomTile)
+                                bool wallFlag = false;
+                                //만약 상하좌우에 다 벽이 없다면
+                                for(int cnt = 0; cnt < 4; cnt++)
                                 {
-                                    
+                                    Vector3Int tempPosition = tileMap.WorldToCell(new Vector3(i + dx[cnt], j + dy[cnt], 0));
+                                    //길과 맞닿은 가장자리 이므로 모서리 타일을 그려주지 않는다.
+                                    if (tileMap.GetTile(tempPosition) == wallTile)
+                                    {
+                                        wallFlag = true;
+                                    }
                                 }
 
-
-
-                                //모서리를 제외한 가장자리 부분
-                                tileMap.SetTile(tilePosition, startRoomEdge);
+                                if (wallFlag)
+                                {
+                                    //모서리를 제외한 가장자리 부분
+                                    tileMap.SetTile(tilePosition, startRoomEdge);
+                                }
+                               
                             }
 
                         } 
