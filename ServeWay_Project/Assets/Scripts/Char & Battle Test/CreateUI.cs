@@ -9,10 +9,11 @@ public class CreateUI : MonoBehaviour
 {
     private List<GameObject> buttonList;
     private List<GameObject> ingredientList;
+    private DataController dataController;
     private FoodDataSet foodInfo;
     private StartFoodDataSet startFoodInfo;
     private FoodData selectedFood;
-    private IngredientList ingredientInfo;
+    private IngredientDataSet ingredientInfo;
     private InventoryManager inventory;
 
     public GameObject explaneUI;
@@ -20,9 +21,10 @@ public class CreateUI : MonoBehaviour
 
     void Start()
     {
-        foodInfo = FindObjectOfType<DataController>().foodData;
-        startFoodInfo = FindObjectOfType<DataController>().startFoodData;
-        ingredientInfo = FindObjectOfType<DataController>().IngredientList;
+        dataController = FindObjectOfType<DataController>();
+        foodInfo = dataController.foodData;
+        startFoodInfo = dataController.startFoodData;
+        ingredientInfo = dataController.IngredientList;
         inventory = FindObjectOfType<InventoryManager>();
 
         buttonList = new List<GameObject>();
@@ -100,10 +102,10 @@ public class CreateUI : MonoBehaviour
 
                 int index = 0;
 
-                foreach (IngredientList.IngredientsName name in food.needIngredient.Keys)
+                foreach (Ingred_Name name in food.needIngredient.Keys)
                 {
                     ingredientList[index].SetActive(true);
-                    ingredientList[index].GetComponent<Image>().sprite = ingredientInfo.FindIngredient(name).sprite;
+                    ingredientList[index].GetComponent<Image>().sprite = dataController.FindIngredient(name).sprite;
                     ingredientList[index].GetComponentInChildren<TMP_Text>().text = string.Format("X {0}", food.needIngredient[name].ToString());
 
                     index++;
@@ -116,7 +118,7 @@ public class CreateUI : MonoBehaviour
     {
         if (!SceneManager.GetActiveScene().name.Contains("Start"))
         {
-            foreach (IngredientList.IngredientsName name in selectedFood.needIngredient.Keys)
+            foreach (Ingred_Name name in selectedFood.needIngredient.Keys)
             {
                 inventory.DeleteItem(name, selectedFood.needIngredient[name]);
             }

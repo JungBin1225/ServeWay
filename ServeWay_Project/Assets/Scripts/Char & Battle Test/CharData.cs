@@ -50,7 +50,7 @@ public class CharData : MonoBehaviour
         saveFile.playerHp = plInfo.GetnowHp();
 
         saveFile.inventory = new NameAmount();
-        foreach(IngredientList.IngredientsName name in inventory.inventory.Keys)
+        foreach(Ingred_Name name in inventory.inventory.Keys)
         {
             saveFile.inventory.Add(name, inventory.inventory[name]);
         }

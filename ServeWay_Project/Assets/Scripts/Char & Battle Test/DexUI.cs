@@ -9,7 +9,7 @@ public class DexUI : MonoBehaviour
     private DataController dataController;
     private int dexMod;
     private List<string> foodList;
-    private List<IngredientList.IngredientsName> ingredientList;
+    private List<Ingred_Name> ingredientList;
     private List<GameObject> buttonList;
     private int page;
 
@@ -34,7 +34,7 @@ public class DexUI : MonoBehaviour
         }
 
         foodList = new List<string>();
-        ingredientList = new List<IngredientList.IngredientsName>();
+        ingredientList = new List<Ingred_Name>();
         dexMod = 0;
         page = 0;
 
@@ -72,9 +72,9 @@ public class DexUI : MonoBehaviour
         }
         else
         {
-            ingredientList = new List<IngredientList.IngredientsName>();
+            ingredientList = new List<Ingred_Name>();
 
-            foreach (IngredientList.IngredientsName ingred in dataController.FoodIngredDex.ingredDex.Keys)
+            foreach (Ingred_Name ingred in dataController.FoodIngredDex.ingredDex.Keys)
             {
                 if(dataController.FoodIngredDex.ingredDex[ingred])
                 {
@@ -93,7 +93,7 @@ public class DexUI : MonoBehaviour
                 {
                     break;
                 }
-                buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.IngredientList.FindIngredient(ingredientList[i]).sprite;
+                buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FindIngredient(ingredientList[i]).sprite;
             }
         }
     }
@@ -162,7 +162,7 @@ public class DexUI : MonoBehaviour
             }
             else
             {
-                Ingredient ingred = dataController.IngredientList.FindIngredient(image.sprite);
+                Ingredient ingred = dataController.FindIngredient(image.sprite);
 
                 infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = ingred.sprite;
                 infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);

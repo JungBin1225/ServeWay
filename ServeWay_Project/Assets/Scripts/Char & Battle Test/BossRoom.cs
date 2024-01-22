@@ -99,9 +99,9 @@ public class BossRoom : MonoBehaviour
 
     private GameObject RandomIngredient()
     {
-        int randomIndex = Random.Range(0, data.IngredientList.ingredientList.Count);
+        int randomIndex = Random.Range(0, data.IngredientList.IngredientList.Count);
 
-        return data.IngredientList.ingredientList[randomIndex].prefab;
+        return data.IngredientList.IngredientList[randomIndex].prefab;
     }
 
     public void CloseDoor()

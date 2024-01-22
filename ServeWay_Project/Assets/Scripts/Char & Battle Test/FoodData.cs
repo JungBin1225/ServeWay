@@ -31,7 +31,7 @@ public enum Food_Nation
 };
 
 [Serializable]
-public class NameAmount : SerializableDictionary<IngredientList.IngredientsName, int> { }
+public class NameAmount : SerializableDictionary<Ingred_Name, int> { }
 
 [Serializable]
 public class FoodData
@@ -122,7 +122,7 @@ public class FoodData
             foreach (string ingred in ingreds)
             {
                 string[] dic = ingred.Split(",");
-                need.Add((IngredientList.IngredientsName)Enum.Parse(typeof(IngredientList.IngredientsName), dic[0]), int.Parse(dic[1]));
+                need.Add((Ingred_Name)Enum.Parse(typeof(Ingred_Name), dic[0]), int.Parse(dic[1]));
             }
 
             return need;

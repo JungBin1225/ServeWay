@@ -7,7 +7,7 @@ public class GetIngredients : MonoBehaviour
     private bool getAble;
     private InventoryManager inventory;
 
-    public IngredientList.IngredientsName itemName;
+    public Ingred_Name itemName;
     void Start()
     {
         inventory = FindObjectOfType<InventoryManager>();

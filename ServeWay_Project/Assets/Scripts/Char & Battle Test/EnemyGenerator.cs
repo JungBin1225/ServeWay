@@ -118,9 +118,9 @@ public class EnemyGenerator : MonoBehaviour
 
     private Ingredient RandomIngredient()
     {
-        int randomIndex = Random.Range(0, data.IngredientList.ingredientList.Count);
+        int randomIndex = Random.Range(0, data.IngredientList.IngredientList.Count);
 
-        return data.IngredientList.ingredientList[randomIndex];
+        return data.IngredientList.IngredientList[randomIndex];
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

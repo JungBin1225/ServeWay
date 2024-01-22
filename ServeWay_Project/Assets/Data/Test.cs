@@ -12,7 +12,7 @@ public class Test : MonoBehaviour
         foodData = FindObjectOfType<DataController>().foodData.FoodDatas[0];
 
         prefab = foodData.foodPrefab;
-        foreach(IngredientList.IngredientsName name in foodData.needIngredient.Keys)
+        foreach(Ingred_Name name in foodData.needIngredient.Keys)
         {
             Debug.Log(name + ", " +foodData.needIngredient[name].ToString());
         }

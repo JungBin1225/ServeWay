@@ -6,7 +6,7 @@ public class DataController : MonoBehaviour
 {
     public FoodDataSet foodData;
     public StartFoodDataSet startFoodData;
-    public IngredientList IngredientList;
+    public IngredientDataSet IngredientList;
     public EnemyList enemyList;
     public FoodIngredDex FoodIngredDex;
 
@@ -46,6 +46,32 @@ public class DataController : MonoBehaviour
             if (sprite == food.foodSprite)
             {
                 return food;
+            }
+        }
+
+        return null;
+    }
+
+    public Ingredient FindIngredient(Ingred_Name name)
+    {
+        foreach (Ingredient ingred in IngredientList.IngredientList)
+        {
+            if (name == ingred.name)
+            {
+                return ingred;
+            }
+        }
+
+        return null;
+    }
+
+    public Ingredient FindIngredient(Sprite sprite)
+    {
+        foreach(Ingredient ingred in IngredientList.IngredientList)
+        {
+            if(sprite == ingred.sprite)
+            {
+                return ingred;
             }
         }
 

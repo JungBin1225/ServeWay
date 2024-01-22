@@ -71,9 +71,9 @@ public class Kitchen : MonoBehaviour
         
     }
 
-    private bool CheckIngredient(NameAmount food, Dictionary<IngredientList.IngredientsName, int> inven)
+    private bool CheckIngredient(NameAmount food, Dictionary<Ingred_Name, int> inven)
     {
-        foreach(IngredientList.IngredientsName ingred in food.Keys)
+        foreach(Ingred_Name ingred in food.Keys)
         {
             if(!inven.ContainsKey(ingred) || food[ingred] > inven[ingred])
             {

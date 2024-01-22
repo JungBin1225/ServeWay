@@ -27,7 +27,7 @@ public class InventoryManager : MonoBehaviour
         
     }
 
-    public void GetItem(IngredientList.IngredientsName itemName, int amount)
+    public void GetItem(Ingred_Name itemName, int amount)
     {
         if(inventory.ContainsKey(itemName))
         {
@@ -48,7 +48,7 @@ public class InventoryManager : MonoBehaviour
         }*/
     }
 
-    public void DeleteItem(IngredientList.IngredientsName itemName, int amount)
+    public void DeleteItem(Ingred_Name itemName, int amount)
     {
         if(inventory.ContainsKey(itemName))
         {
@@ -71,16 +71,16 @@ public class InventoryManager : MonoBehaviour
 
     public void LoadInventory()
     {
-        Dictionary<IngredientList.IngredientsName, int> saveInven = GameManager.gameManager.charData.saveFile.inventory;
+        Dictionary<Ingred_Name, int> saveInven = GameManager.gameManager.charData.saveFile.inventory;
 
         inventory.Clear();
-        foreach (IngredientList.IngredientsName name in saveInven.Keys)
+        foreach (Ingred_Name name in saveInven.Keys)
         {
             inventory.Add(name, saveInven[name]);
         }
     }
 
-    public void GetPassive(IngredientList.IngredientsName itemName, bool increase)
+    public void GetPassive(Ingred_Name itemName, bool increase)
     {
         int amount = 0;
 
@@ -95,10 +95,10 @@ public class InventoryManager : MonoBehaviour
 
         switch(itemName)
         {
-            case IngredientList.IngredientsName.Pumpkin:
+            case Ingred_Name.Pumpkin:
                 player.speed += amount * 10;
                 break;
-            case IngredientList.IngredientsName.Strawberrie:
+            case Ingred_Name.Strawberrie:
                 player.chargeLength += amount * 0.1f;
                 break;
         }
