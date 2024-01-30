@@ -16,6 +16,8 @@ public class DexUI : MonoBehaviour
     public Sprite lockSprite;
     public GameObject buttonGruop;
     public GameObject infoWindow;
+    public Material defultMaterial;
+    public Material grayScale;
 
     void Start()
     {
@@ -49,10 +51,7 @@ public class DexUI : MonoBehaviour
 
             foreach (string food in dataController.FoodIngredDex.foodDex.Keys)
             {
-                if(dataController.FoodIngredDex.foodDex[food])
-                {
                     foodList.Add(food);
-                }
             }
 
             foreach(GameObject button in buttonList)
@@ -67,7 +66,25 @@ public class DexUI : MonoBehaviour
                 {
                     break;
                 }
-                buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
+
+                switch (dataController.FoodIngredDex.foodDex[foodList[i]])
+                {
+                    case FoodDex_Status.CREATED:
+                        buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
+                        buttonList[i % buttonList.Count].GetComponent<Image>().material = defultMaterial;
+                        break;
+                    case FoodDex_Status.RECIPE:
+                        buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
+                        buttonList[i % buttonList.Count].GetComponent<Image>().material = grayScale;
+                        break;
+                    case FoodDex_Status.LOCKED:
+                        buttonList[i % buttonList.Count].GetComponent<Image>().sprite = lockSprite;
+                        buttonList[i % buttonList.Count].GetComponent<Image>().material = defultMaterial;
+
+                        break;
+                }
+
+                
             }
         }
         else
@@ -145,20 +162,27 @@ public class DexUI : MonoBehaviour
             if (dataController.FindFood(image.sprite) != null)
             {
                 FoodData food = dataController.FindFood(image.sprite);
-                
-                infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
 
-                infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = food.foodSprite;
-                infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
-                infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
-                infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
-                infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
-                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("만족도: {0}", food.damage);
-                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0}", food.speed);
-                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0}", food.coolTime);
+                if(dataController.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.CREATED)
+                {
+                    infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
+                    infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
+                    infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
+                    infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
+
+                    infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = food.foodSprite;
+                    infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
+                    infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
+                    infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
+                    infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
+                    infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("만족도: {0}", food.damage);
+                    infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0}", food.speed);
+                    infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0}", food.coolTime);
+                }
+                else
+                {
+                    infoWindow.SetActive(false);
+                }
             }
             else
             {

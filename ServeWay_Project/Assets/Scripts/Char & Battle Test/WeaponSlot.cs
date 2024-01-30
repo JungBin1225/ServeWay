@@ -108,7 +108,7 @@ public class WeaponSlot : MonoBehaviour
             }
         }
 
-        dataController.FoodIngredDex.foodDex[name] = true;
+        dataController.FoodIngredDex.foodDex[name] = FoodDex_Status.CREATED;
         UnityEditor.EditorUtility.SetDirty(dataController.FoodIngredDex);
         updateIndex();
     }
