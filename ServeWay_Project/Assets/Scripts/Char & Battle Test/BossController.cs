@@ -71,6 +71,7 @@ public class BossController : MonoBehaviour
                 room.DropIngredient(6, 13);
                 break;
         }
+        room.DropRecipe();
 
         room.OpenDoor();
         room.ActiveStair();

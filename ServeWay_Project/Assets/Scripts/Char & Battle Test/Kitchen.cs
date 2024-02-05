@@ -7,6 +7,7 @@ public class Kitchen : MonoBehaviour
 {
     private FoodDataSet foodInfo;
     private StartFoodDataSet startFoodInfo;
+    private FoodIngredDex dex;
     private InventoryManager Inventory;
     private List<string> list;
     private bool isTouch;
@@ -23,6 +24,7 @@ public class Kitchen : MonoBehaviour
         Inventory = FindObjectOfType<InventoryManager>();
         foodInfo = FindObjectOfType<DataController>().foodData;
         startFoodInfo = FindObjectOfType<DataController>().startFoodData;
+        dex = FindObjectOfType<DataController>().FoodIngredDex;
         createUI = FindObjectOfType<CreateUI>();
 
         createUI.gameObject.SetActive(false);
@@ -55,14 +57,17 @@ public class Kitchen : MonoBehaviour
         {
             foreach(FoodData food in startFoodInfo.StartFoodDatas)
             {
-                list.Add(food.foodName);
+                if(dex.foodDex[food.foodName] != FoodDex_Status.LOCKED)
+                {
+                    list.Add(food.foodName);
+                }
             }
         }
         else
         {
             foreach (FoodData food in foodInfo.FoodDatas)
             {
-                if (CheckIngredient(food.needIngredient, Inventory.inventory))
+                if (CheckIngredient(food.needIngredient, Inventory.inventory) && dex.foodDex[food.foodName] != FoodDex_Status.LOCKED)
                 {
                     list.Add(food.foodName);
                 }

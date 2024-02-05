@@ -163,25 +163,31 @@ public class DexUI : MonoBehaviour
             {
                 FoodData food = dataController.FindFood(image.sprite);
 
-                if(dataController.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.CREATED)
-                {
-                    infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
-                    infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
-                    infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
-                    infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
+                infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
 
-                    infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = food.foodSprite;
-                    infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
-                    infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
-                    infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
-                    infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
-                    infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("만족도: {0}", food.damage);
-                    infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0}", food.speed);
-                    infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0}", food.coolTime);
-                }
-                else
+                infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = food.foodSprite;
+                infoWindow.transform.GetChild(2).GetComponent<Image>().material = defultMaterial;
+                infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
+                infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
+                infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
+                infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
+                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("만족도: {0}", food.damage);
+                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0}", food.speed);
+                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0}", food.coolTime);
+
+                if (dataController.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.RECIPE)
                 {
-                    infoWindow.SetActive(false);
+                    infoWindow.transform.GetChild(2).GetComponent<Image>().material = grayScale;
+                    infoWindow.transform.GetChild(3).GetChild(1).gameObject.SetActive(false);
+                    infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
+                    infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
+                    infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(false);
+                    infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
+                    infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
                 }
             }
             else
@@ -189,10 +195,12 @@ public class DexUI : MonoBehaviour
                 Ingredient ingred = dataController.FindIngredient(image.sprite);
 
                 infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = ingred.sprite;
+                infoWindow.transform.GetChild(2).GetComponent<Image>().material = defultMaterial;
                 infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);
                 infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = ingred.EunmToString(ingred.grade);
                 infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
                 infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
+                infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
                 infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = ingred.passive;
                 infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
                 infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);

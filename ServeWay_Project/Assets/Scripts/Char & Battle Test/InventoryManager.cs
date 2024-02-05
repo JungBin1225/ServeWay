@@ -38,8 +38,7 @@ public class InventoryManager : MonoBehaviour
             inventory.Add(itemName, amount);
             GetPassive(itemName, true);
 
-            dataController.FoodIngredDex.ingredDex[itemName] = true;
-            UnityEditor.EditorUtility.SetDirty(dataController.FoodIngredDex);
+            dataController.FoodIngredDex.UpdateIngredDex(itemName);
         }
 
         /*foreach(IngredientList.IngredientsName name in inventory.Keys)

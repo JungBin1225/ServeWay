@@ -14,6 +14,7 @@ public class BossRoom : MonoBehaviour
     public GameObject startButton;
     public GameObject bossPrefab;
     public GameObject stairPrefab;
+    public GameObject recipePrefab;
     public List<GameObject> doorList;
     public Boss_Nation bossNation;
 
@@ -94,6 +95,28 @@ public class BossRoom : MonoBehaviour
             Vector3 pos = transform.position + new Vector3(x, y, 0);
             float angleDegrees = -angle * Mathf.Rad2Deg;
             Instantiate(RandomIngredient(), pos, Quaternion.Euler(0, 0, 0));
+        }
+    }
+
+    public void DropRecipe()
+    {
+        int dropAmount = Random.Range(0, 2);
+        List<string> lockedFood = new List<string>();
+        foreach(FoodData food in data.foodData.FoodDatas)
+        {
+            if(data.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.LOCKED)
+            {
+                lockedFood.Add(food.foodName);
+            }
+        }
+
+        string foodName = lockedFood[Random.Range(0, lockedFood.Count)];
+
+        if(dropAmount == 1)
+        {
+            Vector3 pos = transform.position + new Vector3(0, -6f, 0);
+            GameObject recipe = Instantiate(recipePrefab, pos, Quaternion.Euler(0, 0, 0));
+            recipe.GetComponent<GetRecipe>().foodName = foodName;
         }
     }
 
