@@ -149,11 +149,11 @@ public class BossRoom : MonoBehaviour
     }
 
     // 미니맵 좌표
-    private void setMiniRowCol(int row, int col)
+    private void setMiniRowCol()
     {
         KeyValuePair<int, int> bossPos = mapGen.BossGridNum();
-        myRow = bossPos.Value;
-        myCol = bossPos.Key;
+        myCol = bossPos.Key;    // x
+        myRow = bossPos.Value;  // y
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -161,12 +161,13 @@ public class BossRoom : MonoBehaviour
         if (collision.gameObject.tag == "Player" && !isClear)
         {
             // 미니맵
+            setMiniRowCol();
             if (!isVisited)
             {
                 isVisited = true;
                 // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
                 GameObject tmp = Instantiate(miniRoomMesh, transform);
-                minimapMG.putMesh(tmp, myRow, myCol);
+                minimapMG.PutMesh(tmp, myCol, myRow);
                 
             }
 

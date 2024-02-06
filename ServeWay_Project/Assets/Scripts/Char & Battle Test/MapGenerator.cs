@@ -341,7 +341,6 @@ public class MapGenerator : MonoBehaviour
                     else
                     {
                         tileMap.SetTile(tilePosition, roomTile);
-                        //miniTileMap.SetTile(tilePosition, miniRoomTile);
                     }
                    
 
@@ -395,17 +394,14 @@ public class MapGenerator : MonoBehaviour
 
                 Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, pointY, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(i, pointY - 1, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(i, pointY + 1, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
                 if (x == nextX + 1)
                 {
@@ -449,16 +445,13 @@ public class MapGenerator : MonoBehaviour
 
                 Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(pointX, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
 
                 tilePosition = tileMap.WorldToCell(new Vector3(pointX - 1, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
                 tilePosition = tileMap.WorldToCell(new Vector3(pointX + 1, i, 0));
                 tileMap.SetTile(tilePosition, roomTile);
-                //miniTileMap.SetTile(tilePosition, miniRoomTile);
 
                 if (y == nextY + 1)
                 {
@@ -517,7 +510,7 @@ public class MapGenerator : MonoBehaviour
             vertPoint -= vertSize;
         }
         // 미니맵 - 시작 방이면 miniRoomMesh 바로 생성
-        roomList[startY, startX].enemyGenerator.GetComponent<EnemyGenerator>().generateMiniRoomMesh();
+        roomList[startY, startX].enemyGenerator.GetComponent<EnemyGenerator>().GenerateMiniRoomMesh();
 
     }
 
