@@ -2359,7 +2359,7 @@ GameObject:
   - component: {fileID: 303941046}
   - component: {fileID: 303941048}
   - component: {fileID: 303941047}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5963,7 +5963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &807847342
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9761,7 +9761,6 @@ RectTransform:
   - {fileID: 116567103}
   - {fileID: 343528705}
   - {fileID: 846771628}
-  - {fileID: 1786024109}
   - {fileID: 1370072396}
   - {fileID: 1724610952}
   - {fileID: 1839480888}
@@ -10717,7 +10716,7 @@ RectTransform:
   - {fileID: 158229951}
   - {fileID: 1781087462}
   m_Father: {fileID: 1193119815}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -12298,7 +12297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Color: {r: 0.6847748, g: 0.7169812, b: 0.6317551, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12336,6 +12335,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 807847342}
+  - {fileID: 1786024109}
   m_Father: {fileID: 1839480888}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13488,7 +13488,7 @@ RectTransform:
   - {fileID: 653155166}
   - {fileID: 1149278538}
   m_Father: {fileID: 1193119815}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -14033,19 +14033,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786024108}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 303941046}
-  m_Father: {fileID: 1193119815}
-  m_RootOrder: 4
+  m_Father: {fileID: 1532098883}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 700, y: 300}
-  m_SizeDelta: {x: 500, y: 500}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1786024110
 MonoBehaviour:
@@ -14983,7 +14983,7 @@ RectTransform:
   - {fileID: 1011498642}
   - {fileID: 1797187557}
   m_Father: {fileID: 1193119815}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

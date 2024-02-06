@@ -100,7 +100,7 @@ public class MinimapManager : MonoBehaviour
                 miniRoomMeshList[col, row].left = true;
             }
         }
-        else if (row < NUM_ROOM - 1)  // right road (col + 1, row)
+        if (col < NUM_ROOM - 1)  // right road (col + 1, row)
         {
             if (miniRoomMeshList[col + 1, row].miniRoomMesh != null && !miniRoomMeshList[col, row].right)
             {
@@ -126,7 +126,7 @@ public class MinimapManager : MonoBehaviour
                 miniRoomMeshList[col + 1, row].left = true;
             }
         }
-        else
+        if (col <= 0 || col >= NUM_ROOM)
         {
             Debug.Log("wrong miniRoomMesh col " + col);
         }
@@ -158,7 +158,7 @@ public class MinimapManager : MonoBehaviour
                 miniRoomMeshList[col, row].up = true;
             }
         }
-        else if (row < NUM_ROOM - 1)  // lower road (col, row + 1)
+        if (row < NUM_ROOM - 1)  // lower road (col, row + 1)
         {
             Debug.Log("draw lower road");
             Debug.Log("col: " + col + " row: " + row);
@@ -186,7 +186,7 @@ public class MinimapManager : MonoBehaviour
                 miniRoomMeshList[col, row + 1].up = true;
             }
         }
-        else
+        if (row <= 0 || row >= NUM_ROOM)
         {
             Debug.Log("wrong miniRoomMesh row " + row);
         }
