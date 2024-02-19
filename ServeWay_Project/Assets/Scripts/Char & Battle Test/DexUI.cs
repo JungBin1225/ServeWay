@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class DexUI : MonoBehaviour
 {
@@ -41,6 +42,8 @@ public class DexUI : MonoBehaviour
         page = 0;
 
         InitList(page);
+
+        infoWindow.SetActive(false);
     }
 
     private void InitList(int page)
@@ -102,6 +105,7 @@ public class DexUI : MonoBehaviour
             foreach (GameObject button in buttonList)
             {
                 button.GetComponent<Image>().sprite = lockSprite;
+                button.GetComponent<Image>().material = defultMaterial;
             }
 
             for (int i = buttonList.Count * page; i < ingredientList.Count; i++)
@@ -188,6 +192,23 @@ public class DexUI : MonoBehaviour
                     infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(false);
                     infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
                     infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
+                }
+
+                List<Ingred_Name> ingred = food.needIngredient.Keys.ToList();
+                for(int i = 0; i < 4; i++)
+                {
+                    if(i < ingred.Count)
+                    {
+                        infoWindow.transform.GetChild(4).GetChild(i).gameObject.SetActive(true);
+                        infoWindow.transform.GetChild(4).GetChild(i).GetComponent<Image>().sprite = dataController.FindIngredient(ingred[i]).sprite;
+                        infoWindow.transform.GetChild(4).GetChild(i).GetChild(0).GetComponent<TMP_Text>().text = string.Format("X{0}", food.needIngredient[ingred[i]].ToString());
+                    }
+                    else
+                    {
+                        infoWindow.transform.GetChild(4).GetChild(i).gameObject.SetActive(false);
+                    }
+
+                    
                 }
             }
             else

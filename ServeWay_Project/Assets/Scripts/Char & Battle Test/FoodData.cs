@@ -122,7 +122,10 @@ public class FoodData
             foreach (string ingred in ingreds)
             {
                 string[] dic = ingred.Split(",");
-                need.Add((Ingred_Name)Enum.Parse(typeof(Ingred_Name), dic[0]), int.Parse(dic[1]));
+                if(dic[0] != "")
+                {
+                    need.Add((Ingred_Name)Enum.Parse(typeof(Ingred_Name), dic[0]), int.Parse(dic[1]));
+                }
             }
 
             return need;
