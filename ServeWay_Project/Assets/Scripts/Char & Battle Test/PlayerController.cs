@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,14 @@ public class PlayerController : MonoBehaviour
 
     public WeaponSlot weaponSlot;
 
+    // weapon info panel img
+    [SerializeField] GameObject weaponInfoImg;
+    [SerializeField] Text weaponInfoName;
+
+    // skill coolTime
+    [SerializeField] GameObject skillCoolTime;
+    [SerializeField] GameObject chargeCoolTime;
+    
     void Start()
     {
         controllAble = true;
@@ -55,11 +64,15 @@ public class PlayerController : MonoBehaviour
 
         if(coolTime > 0)
         {
+            if (!chargeCoolTime.activeSelf) { chargeCoolTime.SetActive(true); }
             coolTime -= Time.deltaTime;
+            chargeCoolTime.gameObject.transform.GetChild(0).GetComponent<Text>().text = coolTime.ToString("F1");
+
         }
         else if(coolTime < 0)
         {
             coolTime = 0;
+            chargeCoolTime.SetActive(false);
         }
 
         if(Input.GetKeyDown(KeyCode.Space) && controllAble)
@@ -206,6 +219,11 @@ public class PlayerController : MonoBehaviour
             weaponSlot.InitSlot();
             playerHealth.nowHp = playerHealth.maxHp;
         }
+
+        // 무기 바꾸는 부분 나오면 수정해야 함
+        string nowWeaponName = weaponSlot.gameObject.transform.GetChild(weaponSlot.index).GetChild(0).GetComponent<WeaponController>().weaponName;
+        weaponInfoImg.GetComponent<Image>().sprite = FindObjectOfType<DataController>().FindFood(nowWeaponName).foodSprite;
+        weaponInfoName.GetComponent<Text>().text = FindObjectOfType<DataController>().FindFood(nowWeaponName).foodName;
 
         Time.timeScale = 1;
     }
