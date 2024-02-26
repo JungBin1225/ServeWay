@@ -21,6 +21,7 @@ public class EnemyGenerator : MonoBehaviour
     private Dictionary<GameObject, int> spawnlist;
     private BoxCollider2D boxCollider;
     private DataController data;
+    private int wave;
     private bool isClear;
     private bool isSpawn;
     private bool isStarted = false;
@@ -38,6 +39,7 @@ public class EnemyGenerator : MonoBehaviour
 
         isVisited = false;
 
+        wave = 0;
         InitEnemy();
 
         // ¹Ì´Ï¸Ê
@@ -48,16 +50,24 @@ public class EnemyGenerator : MonoBehaviour
     {
         if(enemyAmount == 0)
         {
-            isClear = true;
-            //StopCoroutine(SelectEnamy());
-            foreach (GameObject door in doorList)
+            if(wave == 0)
             {
-                door.SetActive(false);
-            }
+                isClear = true;
+                //StopCoroutine(SelectEnamy());
+                foreach (GameObject door in doorList)
+                {
+                    door.SetActive(false);
+                }
 
-            DropIngredient(1, 4);
-            if (!nonEnemyRoom)
-                this.gameObject.SetActive(false);
+                DropIngredient(1, 4);
+                if (!nonEnemyRoom)
+                    this.gameObject.SetActive(false);
+            }
+            else
+            {
+                InitEnemy();
+                StartCoroutine(SelectEnamy());
+            }
         }
     }
 
@@ -70,10 +80,11 @@ public class EnemyGenerator : MonoBehaviour
             for(int i = 0; i < spawnlist[enemy]; i++)
             {
                 spawnEnemy(enemy);
-                yield return new WaitForSeconds(0.7f);
+                yield return new WaitForSeconds(0.3f);
             }
         }
 
+        wave -= 1;
     }
 
     private void spawnEnemy(GameObject enemyPrefab)
@@ -161,11 +172,42 @@ public class EnemyGenerator : MonoBehaviour
 
     private void InitEnemy()
     {
-        enemyAmount = Random.Range(6, 16);
+        switch(GameManager.gameManager.stage)
+        {
+            case 1:
+                enemyAmount = Random.Range(7, 12);
+                if(wave == 0) wave = 1;
+                break;
+            case 2:
+                enemyAmount = Random.Range(7, 12) + 5;
+                if (wave == 0) wave = 1;
+                break;
+            case 3:
+                enemyAmount = Random.Range(7, 12) + 5;
+                if (wave == 0) wave = 2;
+                break;
+            case 4:
+                enemyAmount = Random.Range(7, 12) + 10;
+                if (wave == 0) wave = 2;
+                break;
+            case 5:
+                enemyAmount = Random.Range(7, 12) + 5;
+                if (wave == 0) wave = 3;
+                break;
+            case 6:
+                enemyAmount = Random.Range(7, 12) + 10;
+                if (wave == 0) wave = 3;
+                break;
+            case 7:
+                enemyAmount = Random.Range(7, 12) + 10;
+                if (wave == 0) wave = 4;
+                break;
+        }
         int num = enemyAmount;
 
         enemyPrefab.Clear();
         amountList.Clear();
+        spawnlist.Clear();
         while(num != 0)
         {
             int amount = Random.Range(2, 6);
