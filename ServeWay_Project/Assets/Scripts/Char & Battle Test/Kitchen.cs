@@ -43,6 +43,7 @@ public class Kitchen : MonoBehaviour
                 {
                     CreatableList();
                     createUI.gameObject.SetActive(true);
+                    createUI.deltaTime = Time.deltaTime;
                     createUI.SetList(list);
                     list.Clear();
                     Time.timeScale = 0;

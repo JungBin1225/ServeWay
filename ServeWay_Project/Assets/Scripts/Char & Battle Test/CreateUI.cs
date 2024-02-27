@@ -16,8 +16,11 @@ public class CreateUI : MonoBehaviour
     private IngredientDataSet ingredientInfo;
     private InventoryManager inventory;
 
+    public float deltaTime;
+    public Create_Success success;
     public GameObject explaneUI;
     public GameObject ingredientUI;
+    public GameObject minigameUI;
 
     void Start()
     {
@@ -116,6 +119,13 @@ public class CreateUI : MonoBehaviour
 
     public void OnCreateClicked()
     {
+        minigameUI.SetActive(true);
+    }
+
+    public void OnGameCleared(GameObject gameUI)
+    {
+        gameUI.SetActive(false);
+
         if (!SceneManager.GetActiveScene().name.Contains("Start"))
         {
             foreach (Ingred_Name name in selectedFood.needIngredient.Keys)
@@ -127,26 +137,9 @@ public class CreateUI : MonoBehaviour
         GameObject food = Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));
         food.GetComponent<GetItem>().name = selectedFood.foodName;
         food.GetComponent<GetItem>().SetSprite();
-        food.GetComponent<GetItem>().success = RandomSuccess();
+        food.GetComponent<GetItem>().success = success;
 
         CloseUI();
-    }
-
-    public Create_Success RandomSuccess()
-    {
-        int i = Random.Range(0, 3);
-
-        switch(i)
-        {
-            case 0:
-                return Create_Success.FAIL;
-            case 1:
-                return Create_Success.SUCCESS;
-            case 2:
-                return Create_Success.GREAT;
-        }
-
-        return Create_Success.SUCCESS;
     }
 
     public void CloseUI()
