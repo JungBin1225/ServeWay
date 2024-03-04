@@ -20,7 +20,7 @@ public class CreateUI : MonoBehaviour
     public Create_Success success;
     public GameObject explaneUI;
     public GameObject ingredientUI;
-    public GameObject minigameUI;
+    public List<GameObject> minigameUI;
 
     void Start()
     {
@@ -97,6 +97,8 @@ public class CreateUI : MonoBehaviour
                 explaneUI.transform.GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
                 explaneUI.transform.GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
                 explaneUI.transform.GetChild(4).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
+                explaneUI.transform.GetChild(5).GetComponent<Button>().onClick.RemoveAllListeners();
+                explaneUI.transform.GetChild(5).GetComponent<Button>().onClick.AddListener(delegate () { this.OnCreateClicked(0); });
 
                 for (int i = 0; i < ingredientList.Count; i++)
                 {
@@ -117,9 +119,9 @@ public class CreateUI : MonoBehaviour
         }
     }
 
-    public void OnCreateClicked()
+    public void OnCreateClicked(int index)
     {
-        minigameUI.SetActive(true);
+        minigameUI[index].SetActive(true);
     }
 
     public void OnGameCleared(GameObject gameUI)
@@ -145,6 +147,10 @@ public class CreateUI : MonoBehaviour
     public void CloseUI()
     {
         explaneUI.SetActive(false);
+        foreach(GameObject minigame in minigameUI)
+        {
+            minigame.SetActive(false);
+        }
         Time.timeScale = 1;
         gameObject.SetActive(false);
     }

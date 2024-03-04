@@ -6,6 +6,8 @@ public class PanFlipGame : MonoBehaviour
 {
     public GameObject alarm;
     public CreateUI createUI;
+    public GameObject explanePanel;
+    public GameObject gamePanel;
 
     private Create_Success success;
     private bool isOver;
@@ -17,7 +19,8 @@ public class PanFlipGame : MonoBehaviour
         isOver = false;
         isClicked = false;
 
-        StartCoroutine(GameStart());
+        explanePanel.SetActive(true);
+        gamePanel.SetActive(false);
     }
 
     void Update()
@@ -30,6 +33,9 @@ public class PanFlipGame : MonoBehaviour
 
     public IEnumerator GameStart()
     {
+        explanePanel.SetActive(false);
+        gamePanel.SetActive(true);
+
         float time = Random.Range(2.0f, 5.0f);
         float now = 0;
 
@@ -67,9 +73,19 @@ public class PanFlipGame : MonoBehaviour
 
         //show result
         Debug.Log(success);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSecondsRealtime(1.0f);
 
         createUI.success = success;
         createUI.OnGameCleared(this.gameObject);
+    }
+
+    public void CloseWindow()
+    {
+        this.gameObject.SetActive(false);
+    }
+
+    public void OnStartClicked()
+    {
+        StartCoroutine(GameStart());
     }
 }

@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
             chargeCoolTime.SetActive(false);
         }
 
-        if(Input.GetKeyDown(KeyCode.Space) && controllAble)
+        if(Input.GetKey(KeyCode.Space) && controllAble)
         {
             if(coolTime == 0)
             {
