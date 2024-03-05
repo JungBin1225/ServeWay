@@ -60,8 +60,8 @@ public class EnemyGenerator : MonoBehaviour
                 }
 
                 DropIngredient(1, 4);
-                if (!nonEnemyRoom)
-                    this.gameObject.SetActive(false);
+                //if (!nonEnemyRoom)
+                    //this.gameObject.SetActive(false);
             }
             else
             {
@@ -136,12 +136,12 @@ public class EnemyGenerator : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+
         if (collision.gameObject.tag == "Player" && !isClear && isStarted)
         {
             // ¹Ì´Ï¸Ê
             GenerateMiniRoomMesh();
-
-            GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
 
             if (!nonEnemyRoom)
             {
