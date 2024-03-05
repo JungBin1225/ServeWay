@@ -97,8 +97,19 @@ public class CreateUI : MonoBehaviour
                 explaneUI.transform.GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
                 explaneUI.transform.GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
                 explaneUI.transform.GetChild(4).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
+
+                int miniGameIndex = 0;
+                switch(food.mainIngred)
+                {
+                    case Food_MainIngred.MEAT:
+                        miniGameIndex = 0;
+                        break;
+                    case Food_MainIngred.NOODLE:
+                        miniGameIndex = 1;
+                        break;
+                }
                 explaneUI.transform.GetChild(5).GetComponent<Button>().onClick.RemoveAllListeners();
-                explaneUI.transform.GetChild(5).GetComponent<Button>().onClick.AddListener(delegate () { this.OnCreateClicked(0); });
+                explaneUI.transform.GetChild(5).GetComponent<Button>().onClick.AddListener(delegate () { this.OnCreateClicked(miniGameIndex); });
 
                 for (int i = 0; i < ingredientList.Count; i++)
                 {
