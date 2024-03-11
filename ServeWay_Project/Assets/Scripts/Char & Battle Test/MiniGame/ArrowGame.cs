@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class ArrowGame : MonoBehaviour
 {
     public CreateUI createUI;
     public GameObject explanePanel;
     public GameObject gamePanel;
+    public List<GameObject> arrowList;
+    public GameObject timer;
 
     private Create_Success success;
     private List<KeyCode> arrows;
@@ -14,6 +18,7 @@ public class ArrowGame : MonoBehaviour
     private KeyCode pressedKey;
     private bool isStart;
     private bool isPressed;
+    private float time;
 
     private void OnEnable()
     {
@@ -21,6 +26,7 @@ public class ArrowGame : MonoBehaviour
         pressedKey = KeyCode.None;
         isPressed = false;
         isStart = false;
+        time = Time.realtimeSinceStartup;
 
         explanePanel.SetActive(true);
         gamePanel.SetActive(false);
@@ -51,6 +57,15 @@ public class ArrowGame : MonoBehaviour
                 pressedKey = KeyCode.RightArrow;
             }
         }
+
+        if(Time.realtimeSinceStartup - time <= 5)
+        {
+            timer.GetComponent<TMP_Text>().text = (5 - (Time.realtimeSinceStartup - time)).ToString("F1");
+        }
+        else
+        {
+            timer.GetComponent<TMP_Text>().text = "0.0";
+        }
     }
 
     private IEnumerator GameStart()
@@ -63,6 +78,7 @@ public class ArrowGame : MonoBehaviour
 
         for(int i = 0; i < 4; i++)
         {
+            time = Time.realtimeSinceStartup;
             arrows.Clear();
             for(int j = 0; j < 5; j++)
             {
@@ -71,13 +87,32 @@ public class ArrowGame : MonoBehaviour
 
             for(int j = 0; j < 5; j++)
             {
-                yield return new WaitUntil(() => isPressed);
+                arrowList[j].SetActive(true);
+                arrowList[j].GetComponent<TMP_Text>().text = ArrowToString(arrows[j]);
+            }
+
+            for(int j = 0; j < 5; j++)
+            {
+                yield return new WaitUntil(() => isPressed || Time.realtimeSinceStartup - time > 5);
+
+                if(Time.realtimeSinceStartup - time > 5)
+                {
+                    isPressed = false;
+                    break;
+                }
 
                 if(arrows[j] == pressedKey)
                 {
                     successAmount++;
                 }
+                arrowList[j].SetActive(false);
+
                 isPressed = false;
+            }
+
+            for (int j = 0; j < 5; j++)
+            {
+                arrowList[j].SetActive(false);
             }
         }
 
@@ -118,6 +153,23 @@ public class ArrowGame : MonoBehaviour
                 return KeyCode.RightArrow;
             default:
                 return KeyCode.UpArrow;
+        }
+    }
+
+    public string ArrowToString(KeyCode key)
+    {
+        switch(key)
+        {
+            case KeyCode.UpArrow:
+                return "ก่";
+            case KeyCode.DownArrow:
+                return "ก้";
+            case KeyCode.LeftArrow:
+                return "ก็";
+            case KeyCode.RightArrow:
+                return "กๆ";
+            default:
+                return "ก่";
         }
     }
 

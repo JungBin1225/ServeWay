@@ -98,11 +98,11 @@ public class CreateUI : MonoBehaviour
                 explaneUI.transform.GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
                 explaneUI.transform.GetChild(4).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
 
-                int miniGameIndex = 0;
+                int miniGameIndex = 1;
                 switch(food.mainIngred)
                 {
                     case Food_MainIngred.MEAT:
-                        miniGameIndex = 0;
+                        miniGameIndex = 1;
                         break;
                     case Food_MainIngred.NOODLE:
                         miniGameIndex = 1;
