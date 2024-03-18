@@ -11,6 +11,26 @@ public enum Boss_Nation
     FRANCE
 };
 
+public enum Stage_Theme
+{
+    STREET,
+    NORMAL,
+    CAFE,
+    CAMPING,
+    BAR,
+    RESTORANT,
+    SCHOOL
+};
+
+public enum Boss_Job
+{
+    JOURNAL,
+    COOKRESEARCH,
+    CRITIC,
+    BLOGGER,
+    YOUTUBER
+};
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager;
@@ -21,6 +41,8 @@ public class GameManager : MonoBehaviour
     public InventoryManager inventory;
     public int stage;
     public List<Boss_Nation> bossNations;
+    public List<Stage_Theme> stageThemes;
+    public List<Boss_Job> bossJobList;
 
     private void Awake()
     {
@@ -36,6 +58,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         bossNations = new List<Boss_Nation>();
+        stageThemes = new List<Stage_Theme>();
+        bossJobList = new List<Boss_Job>();
         charData = gameObject.GetComponent<CharData>();
         inventory = gameObject.GetComponent<InventoryManager>();
         isBossStage = false;
@@ -45,11 +69,13 @@ public class GameManager : MonoBehaviour
         {
             stage = charData.saveFile.stage;
             bossNations = charData.saveFile.bossNations;
+            stageThemes = charData.saveFile.themes;
+            bossJobList = charData.saveFile.bossJobs;
         }
         else
         {
             stage = 0;
-            InitNation();
+            InitList();
         }
     }
 
@@ -58,11 +84,13 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void InitNation()
+    public void InitList()
     {
         for(int i = 0; i < 7; i++)
         {
             bossNations.Add(RandomNation());
+            stageThemes.Add(RandomTheme());
+            bossJobList.Add(RandomJob());
         }
     }
 
@@ -89,6 +117,52 @@ public class GameManager : MonoBehaviour
                 return Boss_Nation.FRANCE;
             default:
                 return Boss_Nation.KOREA;
+        }
+    }
+
+    public Stage_Theme RandomTheme()
+    {
+        int i = Random.Range(0, 7);
+
+        switch(i)
+        {
+            case 0:
+                return Stage_Theme.STREET;
+            case 1:
+                return Stage_Theme.NORMAL;
+            case 2:
+                return Stage_Theme.CAFE;
+            case 3:
+                return Stage_Theme.CAMPING;
+            case 4:
+                return Stage_Theme.BAR;
+            case 5:
+                return Stage_Theme.RESTORANT;
+            case 6:
+                return Stage_Theme.SCHOOL;
+            default:
+                return Stage_Theme.NORMAL;
+        }
+    }
+
+    public Boss_Job RandomJob()
+    {
+        int i = Random.Range(0, 5);
+
+        switch (i)
+        {
+            case 0:
+                return Boss_Job.JOURNAL;
+            case 1:
+                return Boss_Job.COOKRESEARCH;
+            case 2:
+                return Boss_Job.CRITIC;
+            case 3:
+                return Boss_Job.BLOGGER;
+            case 4:
+                return Boss_Job.YOUTUBER;
+            default:
+                return Boss_Job.JOURNAL;
         }
     }
 

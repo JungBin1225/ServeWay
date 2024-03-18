@@ -16,6 +16,8 @@ public class SaveFile : ScriptableObject
 
     public int stage;
     public List<Boss_Nation> bossNations;
+    public List<Boss_Job> bossJobs;
+    public List<Stage_Theme> themes;
 
     public bool isMapSave;
     public List<Room> roomList;
@@ -35,6 +37,8 @@ public class SaveFile : ScriptableObject
 
         stage = 0;
         bossNations = new List<Boss_Nation>();
+        bossJobs = new List<Boss_Job>();
+        themes = new List<Stage_Theme>();
 
         roomList = new List<Room>();
         startX = 0;
