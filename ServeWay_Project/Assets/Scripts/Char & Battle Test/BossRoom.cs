@@ -12,11 +12,11 @@ public class BossRoom : MonoBehaviour
     public bool isClear;
     public GameObject intro;
     public GameObject startButton;
-    public GameObject bossPrefab;
     public GameObject stairPrefab;
     public GameObject recipePrefab;
     public List<GameObject> doorList;
     public Boss_Nation bossNation;
+    public Boss_Job bossJob;
 
     // ¹Ì´Ï¸Ê
     [SerializeField] GameObject miniRoomMesh;
@@ -34,6 +34,7 @@ public class BossRoom : MonoBehaviour
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
         bossNation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+        bossJob = GameManager.gameManager.bossJobList[GameManager.gameManager.stage - 1];
 
 
         intro.SetActive(false);
@@ -76,10 +77,11 @@ public class BossRoom : MonoBehaviour
 
     private void SpawnBoss()
     {
-        boss = Instantiate(bossPrefab, transform.position, transform.rotation);
+        boss = Instantiate(data.bossList.bossPrefab[0], transform.position, transform.rotation);
         controller = boss.GetComponent<BossController>();
         controller.room = this;
         controller.nation = this.bossNation;
+        controller.job = this.bossJob;
     }
 
     public void DropIngredient(int min, int max)

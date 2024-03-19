@@ -9,6 +9,7 @@ public class DataController : MonoBehaviour
     public IngredientDataSet IngredientList;
     public EnemyList enemyList;
     public FoodIngredDex FoodIngredDex;
+    public BossList bossList;
 
     public FoodData FindFood(string name)
     {

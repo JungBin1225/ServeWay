@@ -23,6 +23,7 @@ public class BossController : MonoBehaviour
     public float bulletDamage;
     public float splitBulletDamage;
     public Boss_Nation nation;
+    public Boss_Job job;
 
     void Start()
     {
