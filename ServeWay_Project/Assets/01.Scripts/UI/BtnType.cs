@@ -26,7 +26,7 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandle
         {
             case BTNType.Opening:
                 Debug.Log("오프닝 시작");
-                SceneManager.LoadScene("SampleScene");
+                SceneManager.LoadScene("OpeningCutScene");
                 break;
             case BTNType.Start:
                 Debug.Log("게임 시작");
