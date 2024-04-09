@@ -13,6 +13,7 @@ public class StageStartMessage : MonoBehaviour
     void Start()
     {
         GameObject message = Instantiate(messagePrefab, this.transform);
+        GameManager.gameManager.menuAble = false;
         anim = message.GetComponent<Animator>();
 
         message.GetComponent<TMP_Text>().text = string.Format("{0}차 시험: {1}", GameManager.gameManager.stage, "카페");

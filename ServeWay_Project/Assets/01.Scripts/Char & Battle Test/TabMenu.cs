@@ -19,7 +19,7 @@ public class TabMenu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if ((Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape)) && GameManager.gameManager.menuAble)
         {
             if (!isOpen)
             {

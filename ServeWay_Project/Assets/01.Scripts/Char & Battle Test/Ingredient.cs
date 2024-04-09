@@ -14,7 +14,13 @@ public enum Ingred_Grade
 
 public enum Ingred_Name
 {
-    Pumpkin, Strawberrie, Water, Meat, Bread, Noodle, Onion, Lettuce, Garlic, Pepper, Rice, Salt, Sugar
+    Pumpkin, Strawberrie, Water, Meat, Flour, Noodle, Onion,
+    Lettuce, Garlic, Pepper, Rice, Salt, Sugar, Spice, Egg,
+    Fish, Oil, Tomato, Sauce, Mushroom, Milk, Butter, Cheese,
+    Fruit, Greenonion, Carrot, Beansprout, Seaweed, Vanilla,
+    Coriander, Kimchi, Vinegar, Tofu, Wine, Salary, Radish,
+    Redbean, Eggplant, Olive, Cream, Nuts, Cucumber, Honey,
+    Ginger
 };
 
 [Serializable]
@@ -70,8 +76,8 @@ public class Ingredient
                 return "물";
             case Ingred_Name.Meat:
                 return "고기";
-            case Ingred_Name.Bread:
-                return "빵";
+            case Ingred_Name.Flour:
+                return "밀가루";
             case Ingred_Name.Noodle:
                 return "면";
             case Ingred_Name.Onion:
@@ -88,6 +94,68 @@ public class Ingredient
                 return "소금";
             case Ingred_Name.Sugar:
                 return "설탕";
+            case Ingred_Name.Spice:
+                return "향신료";
+            case Ingred_Name.Egg:
+                return "달걀";
+            case Ingred_Name.Fish:
+                return "해산물";
+            case Ingred_Name.Oil:
+                return "기름";
+            case Ingred_Name.Tomato:
+                return "토마토";
+            case Ingred_Name.Sauce:
+                return "장";
+            case Ingred_Name.Mushroom:
+                return "버섯";
+            case Ingred_Name.Milk:
+                return "우유";
+            case Ingred_Name.Butter:
+                return "버터";
+            case Ingred_Name.Cheese:
+                return "치즈";
+            case Ingred_Name.Fruit:
+                return "과일";
+            case Ingred_Name.Greenonion:
+                return "파";
+            case Ingred_Name.Carrot:
+                return "당근";
+            case Ingred_Name.Beansprout:
+                return "숙주";
+            case Ingred_Name.Seaweed:
+                return "김";
+            case Ingred_Name.Vanilla:
+                return "바닐라";
+            case Ingred_Name.Coriander:
+                return "고수";
+            case Ingred_Name.Kimchi:
+                return "김치";
+            case Ingred_Name.Vinegar:
+                return "식초";
+            case Ingred_Name.Tofu:
+                return "두부";
+            case Ingred_Name.Wine:
+                return "와인";
+            case Ingred_Name.Salary:
+                return "샐러리";
+            case Ingred_Name.Radish:
+                return "무";
+            case Ingred_Name.Redbean:
+                return "팥";
+            case Ingred_Name.Eggplant:
+                return "가지";
+            case Ingred_Name.Olive:
+                return "올리브";
+            case Ingred_Name.Cream:
+                return "크림";
+            case Ingred_Name.Nuts:
+                return "견과류";
+            case Ingred_Name.Cucumber:
+                return "오이";
+            case Ingred_Name.Honey:
+                return "꿀";
+            case Ingred_Name.Ginger:
+                return "생강";
             default:
                 return "";
         }

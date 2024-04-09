@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     public List<Boss_Nation> bossNations;
     public List<Stage_Theme> stageThemes;
     public List<Boss_Job> bossJobList;
+    public bool menuAble;
 
     private void Awake()
     {
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
         charData = gameObject.GetComponent<CharData>();
         inventory = gameObject.GetComponent<InventoryManager>();
         isBossStage = false;
+        menuAble = true;
         Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
 
         if(charData.saveFile.weaponList.Count != 0)

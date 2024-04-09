@@ -147,7 +147,6 @@ public class DexUI : MonoBehaviour
             }
             else
             {
-                Debug.Log(ingredientList.Count);
                 if (buttonList.Count * (this.page + 1) < ingredientList.Count)
                 {
                     this.page += 1;
@@ -225,6 +224,11 @@ public class DexUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = ingred.passive;
                 infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
                 infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
+
+                for(int i = 0; i < 4; i++)
+                {
+                    infoWindow.transform.GetChild(4).GetChild(i).gameObject.SetActive(false);
+                }
             }
         }
     }
