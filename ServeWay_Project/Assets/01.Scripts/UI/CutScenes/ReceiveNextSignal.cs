@@ -8,6 +8,7 @@ public class ReceiveNextSignal : MonoBehaviour
     private SpriteRenderer spr = null;
     [SerializeField] private List<Sprite> images = new List<Sprite>();
 
+    [SerializeField]
     int nowCut = -1;
 
     private void Start()

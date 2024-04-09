@@ -178,9 +178,9 @@ public class DexUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
                 infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
                 infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
-                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("¸¸Á·µµ: {0}", food.damage);
-                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("¼­ºù ¼Óµµ: {0}", food.speed);
-                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("Á¶¸® ¼Óµµ: {0}", food.coolTime);
+                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {0}", food.damage);
+                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½: {0}", food.speed);
+                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½: {0}", food.coolTime);
 
                 if (dataController.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.RECIPE)
                 {

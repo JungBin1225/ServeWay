@@ -25,11 +25,11 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandle
         switch(currentType)
         {
             case BTNType.Opening:
-                Debug.Log("¿ÀÇÁ´× ½ÃÀÛ");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                 SceneManager.LoadScene("OpeningCutScene");
                 break;
             case BTNType.Start:
-                Debug.Log("°ÔÀÓ ½ÃÀÛ");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                 CanvasGroupOn(startGroup);
                 mainGroup.interactable = false;
                 mainGroup.blocksRaycasts = false;
@@ -37,37 +37,37 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandle
             case BTNType.Option:
                 CanvasGroupOff(mainGroup);
                 CanvasGroupOn(optionGroup);
-                Debug.Log("¼³Á¤");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½");
                 break;
             case BTNType.Sound:
-                Debug.Log("¼³Á¤_¼Ò¸®");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½_ï¿½Ò¸ï¿½");
                 if (isSound)
                 {
-                    Debug.Log("»ç¿îµå OFF");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ OFF");
                 } else
                 {
-                    Debug.Log("»ç¿îµå ON");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ ON");
                 }
                 isSound = !isSound;
                 break;
             case BTNType.OptionBack:
-                Debug.Log("¼³Á¤ È­¸é ³ª°¡±â");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
                 CanvasGroupOff(optionGroup);
                 CanvasGroupOn(mainGroup);
                 break;
             case BTNType.New:
-                Debug.Log("»õ·ÎÇÏ±â");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½");
                 SceneManager.LoadScene("Test");
                 break;
             case BTNType.Continue:
-                Debug.Log("ÀÌ¾îÇÏ±â");
+                Debug.Log("ï¿½Ì¾ï¿½ï¿½Ï±ï¿½");
                 break;
             case BTNType.Quit:
-                Debug.Log("°ÔÀÓ Á¾·á");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                 Application.Quit();
                 break;
             case BTNType.CloseStart:
-                Debug.Log("½ÃÀÛ È­¸é ´Ý±â");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½Ý±ï¿½");
                 CanvasGroupOff(startGroup);
                 mainGroup.interactable = true;
                 mainGroup.blocksRaycasts = true;

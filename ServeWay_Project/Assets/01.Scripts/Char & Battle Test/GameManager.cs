@@ -173,15 +173,15 @@ public class GameManager : MonoBehaviour
         switch(nation)
         {
             case Boss_Nation.KOREA:
-                return "ÇÑ±¹";
+                return "ï¿½Ñ±ï¿½";
             case Boss_Nation.JAPAN:
-                return "ÀÏº»";
+                return "ï¿½Ïºï¿½";
             case Boss_Nation.CHINA:
-                return "Áß±¹";
+                return "ï¿½ß±ï¿½";
             case Boss_Nation.USA:
-                return "¹Ì±¹";
+                return "ï¿½Ì±ï¿½";
             case Boss_Nation.FRANCE:
-                return "ÇÁ¶û½º";
+                return "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
             default:
                 return "";
         }

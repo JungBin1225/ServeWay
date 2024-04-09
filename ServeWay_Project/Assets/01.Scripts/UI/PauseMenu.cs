@@ -76,14 +76,14 @@ public class PauseMenu : MonoBehaviour
         Debug.Log("bg " + pauseBG.activeSelf);
     }
 
-    public void ResumeBtn() // °è¼ÓÇÏ±â
+    public void ResumeBtn() // ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
     {
         Resume();
     }
 
-    public void OptionBtn() // ¼³Á¤
+    public void OptionBtn() // ï¿½ï¿½ï¿½ï¿½
     {
-        Debug.Log("¼³Á¤ ¹öÆ° Å¬¸¯");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½");
 
         pauseMenuBtns.SetActive(false);
         pausePanel.SetActive(false);
@@ -94,16 +94,16 @@ public class PauseMenu : MonoBehaviour
         optionMenuBtns.SetActive(true);
     }
 
-    public void ToTitleSceneBtn()   // Å¸ÀÌÆ²È­¸éÀ¸·Î
+    public void ToTitleSceneBtn()   // Å¸ï¿½ï¿½Æ²È­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
-        Debug.Log("Å¸ÀÌÆ²È­¸éÀ¸·Î ¹öÆ° Å¬¸¯");
+        Debug.Log("Å¸ï¿½ï¿½Æ²È­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½");
         warningType = 1;
         popWarningPanel();
     }
 
-    public void QuitGameBtn()   // °ÔÀÓÁ¾·á
+    public void QuitGameBtn()   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
-        Debug.Log("°ÔÀÓÁ¾·á ¹öÆ° Å¬¸¯");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½");
         warningType = 2;
         popWarningPanel();
     }
