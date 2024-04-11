@@ -15,7 +15,7 @@ public class SaveFile : ScriptableObject
     public float playerChargeCooltime;
 
     public int stage;
-    public List<Boss_Nation> bossNations;
+    public List<Food_Nation> bossNations;
     public List<Boss_Job> bossJobs;
     public List<Stage_Theme> themes;
 
@@ -36,7 +36,7 @@ public class SaveFile : ScriptableObject
         playerChargeCooltime = 0;
 
         stage = 0;
-        bossNations = new List<Boss_Nation>();
+        bossNations = new List<Food_Nation>();
         bossJobs = new List<Boss_Job>();
         themes = new List<Stage_Theme>();
 

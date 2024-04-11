@@ -55,7 +55,7 @@ public class MissonManager : MonoBehaviour
 
     public void SetMisson(int num)
     {
-        //º¸½º µ¥¹ÌÁö´Â ¹«Á¶°Ç µé¾î°¨
+        //ë³´ìŠ¤ ë°ë¯¸ì§€ëŠ” ë¬´ì¡°ê±´ ë“¤ì–´ê°
 
         for (int i = 0; i < num; i++)
         {
@@ -84,8 +84,9 @@ public class MissonManager : MonoBehaviour
                 targetAmount[index] = Random.Range(20, 50);
 
                 matchedUI.Add(index, missonUI[textIndex]);
-                Boss_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
-                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), GameManager.gameManager.NationToString(nation));
+                Food_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+                FoodData food = new FoodData();
+                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), food.EunmToString(nation));
                 break;
             case 1:
                 missonEvent += DashInTime;
@@ -129,12 +130,13 @@ public class MissonManager : MonoBehaviour
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
                 clearAmount++;
-                //¿Ï·áÇßÀ¸¸é UI¿¡ ¿Ï·áÇÑ Ç¥½Ã if success, show in UI
+                //ì™„ë£Œí–ˆìœ¼ë©´ UIì— ì™„ë£Œí•œ í‘œì‹œ if success, show in UI
             }
 
-            Boss_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
-            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString(), GameManager.gameManager.NationToString(nation));
-            //UI¿¡ ¼öÄ¡ °»½Å reload num in UI
+            Food_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+            FoodData food = new FoodData();
+            matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString(), food.EunmToString(nation));
+            //UIì— ìˆ˜ì¹˜ ê°±ì‹  reload num in UI
         }
     }
 
@@ -162,11 +164,11 @@ public class MissonManager : MonoBehaviour
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
                 clearAmount++;
-                //¿Ï·áÇßÀ¸¸é UI¿¡ ¿Ï·áÇÑ Ç¥½Ã if success, show in UI
+                //ì™„ë£Œí–ˆìœ¼ë©´ UIì— ì™„ë£Œí•œ í‘œì‹œ if success, show in UI
             }
 
             matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
-            //UI¿¡ ¼öÄ¡ °»½Å reload num in UI
+            //UIì— ìˆ˜ì¹˜ ê°±ì‹  reload num in UI
         }
     }
 
@@ -190,11 +192,11 @@ public class MissonManager : MonoBehaviour
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
                 clearAmount++;
-                //¿Ï·áÇßÀ¸¸é UI¿¡ ¿Ï·áÇÑ Ç¥½Ã if success, show in UI
+                //ì™„ë£Œí–ˆìœ¼ë©´ UIì— ì™„ë£Œí•œ í‘œì‹œ if success, show in UI
             }
 
             matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString("F1"));
-            //UI¿¡ ¼öÄ¡ °»½Å reload num in UI
+            //UIì— ìˆ˜ì¹˜ ê°±ì‹  reload num in UI
         }
     }
 
@@ -218,11 +220,11 @@ public class MissonManager : MonoBehaviour
                 matchedUI[missonID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
                 matchedUI[missonID].transform.GetChild(1).gameObject.SetActive(true);
                 clearAmount++;
-                //¿Ï·áÇßÀ¸¸é UI¿¡ ¿Ï·áÇÑ Ç¥½Ã if success, show in UI
+                //ì™„ë£Œí–ˆìœ¼ë©´ UIì— ì™„ë£Œí•œ í‘œì‹œ if success, show in UI
             }
 
             matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
-            //UI¿¡ ¼öÄ¡ °»½Å reload num in UI
+            //UIì— ìˆ˜ì¹˜ ê°±ì‹  reload num in UI
         }
     }
 }

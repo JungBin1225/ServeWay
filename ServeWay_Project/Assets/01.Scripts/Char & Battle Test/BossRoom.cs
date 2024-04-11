@@ -15,10 +15,10 @@ public class BossRoom : MonoBehaviour
     public GameObject stairPrefab;
     public GameObject recipePrefab;
     public List<GameObject> doorList;
-    public Boss_Nation bossNation;
+    public Food_Nation bossNation;
     public Boss_Job bossJob;
 
-    // ¹Ì´Ï¸Ê
+    // ë¯¸ë‹ˆë§µ
     [SerializeField] GameObject miniRoomMesh;
     private bool isVisited = false;
     [SerializeField] MinimapManager minimapMG;
@@ -44,7 +44,7 @@ public class BossRoom : MonoBehaviour
 
         isVisited = false;
 
-        // ¹Ì´Ï¸Ê
+        // ë¯¸ë‹ˆë§µ
         minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
         mapGen = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
         myRow = 0;
@@ -150,7 +150,7 @@ public class BossRoom : MonoBehaviour
         GameObject stair = Instantiate(stairPrefab, transform.position, transform.rotation);
     }
 
-    // ¹Ì´Ï¸Ê ÁÂÇ¥
+    // ë¯¸ë‹ˆë§µ ì¢Œí‘œ
     private void setMiniRowCol()
     {
         KeyValuePair<int, int> bossPos = mapGen.BossGridNum();
@@ -162,12 +162,12 @@ public class BossRoom : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
-            // ¹Ì´Ï¸Ê
+            // ë¯¸ë‹ˆë§µ
             setMiniRowCol();
             if (!isVisited)
             {
                 isVisited = true;
-                // miniMapMeshGroup °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ ÀÚ½Ä ¿ÀºêÁ§Æ®·Î ¹æÀÇ ¸Ş½Ã ÇÁ¸®ÆÕ »ı¼º
+                // miniMapMeshGroup ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ìì‹ ì˜¤ë¸Œì íŠ¸ë¡œ ë°©ì˜ ë©”ì‹œ í”„ë¦¬íŒ¹ ìƒì„±
                 GameObject tmp = Instantiate(miniRoomMesh, transform);
                 minimapMG.PutMesh(tmp, myCol, myRow);
                 
@@ -175,7 +175,7 @@ public class BossRoom : MonoBehaviour
 
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
 
-            // º¸½º¹æ ÀÛµ¿
+            // ë³´ìŠ¤ë°© ì‘ë™
             GameManager.gameManager.isBossStage = true;
             StartCoroutine(BossIntro());
         }

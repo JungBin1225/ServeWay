@@ -2,15 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Boss_Nation
-{
-    KOREA,
-    JAPAN,
-    CHINA,
-    USA,
-    FRANCE
-};
-
 public enum Stage_Theme
 {
     STREET,
@@ -40,7 +31,7 @@ public class GameManager : MonoBehaviour
     public CharData charData;
     public InventoryManager inventory;
     public int stage;
-    public List<Boss_Nation> bossNations;
+    public List<Food_Nation> bossNations;
     public List<Stage_Theme> stageThemes;
     public List<Boss_Job> bossJobList;
     public bool menuAble;
@@ -58,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        bossNations = new List<Boss_Nation>();
+        bossNations = new List<Food_Nation>();
         stageThemes = new List<Stage_Theme>();
         bossJobList = new List<Boss_Job>();
         charData = gameObject.GetComponent<CharData>();
@@ -101,24 +92,34 @@ public class GameManager : MonoBehaviour
         inventory.inventory.Clear();
     }
 
-    public Boss_Nation RandomNation()
+    public Food_Nation RandomNation()
     {
-        int i = Random.Range(0, 5);
+        int i = Random.Range(0, 10);
 
         switch(i)
         {
             case 0:
-                return Boss_Nation.KOREA;
+                return Food_Nation.KOREA;
             case 1:
-                return Boss_Nation.JAPAN;
+                return Food_Nation.JAPAN;
             case 2:
-                return Boss_Nation.CHINA;
+                return Food_Nation.CHINA;
             case 3:
-                return Boss_Nation.USA;
+                return Food_Nation.USA;
             case 4:
-                return Boss_Nation.FRANCE;
+                return Food_Nation.FRANCE;
+            case 5:
+                return Food_Nation.ITALY;
+            case 6:
+                return Food_Nation.INDONESIA;
+            case 7:
+                return Food_Nation.THAILAND;
+            case 8:
+                return Food_Nation.GERMANY;
+            case 9:
+                return Food_Nation.SPAIN;
             default:
-                return Boss_Nation.KOREA;
+                return Food_Nation.KOREA;
         }
     }
 
@@ -165,25 +166,6 @@ public class GameManager : MonoBehaviour
                 return Boss_Job.YOUTUBER;
             default:
                 return Boss_Job.JOURNAL;
-        }
-    }
-
-    public string NationToString(Boss_Nation nation)
-    {
-        switch(nation)
-        {
-            case Boss_Nation.KOREA:
-                return "�ѱ�";
-            case Boss_Nation.JAPAN:
-                return "�Ϻ�";
-            case Boss_Nation.CHINA:
-                return "�߱�";
-            case Boss_Nation.USA:
-                return "�̱�";
-            case Boss_Nation.FRANCE:
-                return "������";
-            default:
-                return "";
         }
     }
 }

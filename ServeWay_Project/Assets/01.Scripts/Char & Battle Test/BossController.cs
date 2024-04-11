@@ -22,7 +22,7 @@ public class BossController : MonoBehaviour
     public float bulletSpeed;
     public float bulletDamage;
     public float splitBulletDamage;
-    public Boss_Nation nation;
+    public Food_Nation nation;
     public Boss_Job job;
 
     void Start()
@@ -65,10 +65,10 @@ public class BossController : MonoBehaviour
 
         switch(dieType)
         {
-            case 0: //Hp ¼ÒÁø
+            case 0: //Hp ì†Œì§„
                 room.DropIngredient(4, 9);
                 break;
-            case 1: //¹Ì¼Ç Å¬¸®¾î
+            case 1: //ë¯¸ì…˜ í´ë¦¬ì–´
                 room.DropIngredient(6, 13);
                 break;
         }

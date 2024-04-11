@@ -178,9 +178,9 @@ public class DexUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
                 infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
                 infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
-                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("������: {0}", food.damage);
-                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("���� �ӵ�: {0}", food.speed);
-                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("���� �ӵ�: {0}", food.coolTime);
+                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("포만감: {0}", food.damage);
+                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0}", food.speed);
+                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0}", food.coolTime);
 
                 if (dataController.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.RECIPE)
                 {
@@ -194,7 +194,7 @@ public class DexUI : MonoBehaviour
                 }
 
                 List<Ingred_Name> ingred = food.needIngredient.Keys.ToList();
-                for(int i = 0; i < 4; i++)
+                for(int i = 0; i < 6; i++)
                 {
                     if(i < ingred.Count)
                     {
@@ -225,7 +225,7 @@ public class DexUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
                 infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
 
-                for(int i = 0; i < 4; i++)
+                for(int i = 0; i < 6; i++)
                 {
                     infoWindow.transform.GetChild(4).GetChild(i).gameObject.SetActive(false);
                 }

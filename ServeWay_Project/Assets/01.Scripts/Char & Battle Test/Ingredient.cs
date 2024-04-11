@@ -69,93 +69,93 @@ public class Ingredient
         switch(name)
         {
             case Ingred_Name.Pumpkin:
-                return "È£¹Ú";
+                return "í˜¸ë°•";
             case Ingred_Name.Strawberrie:
-                return "µş±â";
+                return "ë”¸ê¸°";
             case Ingred_Name.Water:
-                return "¹°";
+                return "ë¬¼";
             case Ingred_Name.Meat:
-                return "°í±â";
+                return "ê³ ê¸°";
             case Ingred_Name.Flour:
-                return "¹Ğ°¡·ç";
+                return "ë°€ê°€ë£¨";
             case Ingred_Name.Noodle:
-                return "¸é";
+                return "ë©´";
             case Ingred_Name.Onion:
-                return "¾çÆÄ";
+                return "ì–‘íŒŒ";
             case Ingred_Name.Lettuce:
-                return "¾ç¹èÃß";
+                return "ì–‘ë°°ì¶”";
             case Ingred_Name.Garlic:
-                return "¸¶´Ã";
+                return "ë§ˆëŠ˜";
             case Ingred_Name.Pepper:
-                return "ÇÇ¸Á";
+                return "í”¼ë§";
             case Ingred_Name.Rice:
-                return "½Ò";
+                return "ìŒ€";
             case Ingred_Name.Salt:
-                return "¼Ò±İ";
+                return "ì†Œê¸ˆ";
             case Ingred_Name.Sugar:
-                return "¼³ÅÁ";
+                return "ì„¤íƒ•";
             case Ingred_Name.Spice:
-                return "Çâ½Å·á";
+                return "í–¥ì‹ ë£Œ";
             case Ingred_Name.Egg:
-                return "´Ş°¿";
+                return "ë‹¬ê±€";
             case Ingred_Name.Fish:
-                return "ÇØ»ê¹°";
+                return "í•´ì‚°ë¬¼";
             case Ingred_Name.Oil:
-                return "±â¸§";
+                return "ê¸°ë¦„";
             case Ingred_Name.Tomato:
-                return "Åä¸¶Åä";
+                return "í† ë§ˆí† ";
             case Ingred_Name.Sauce:
-                return "Àå";
+                return "ì¥";
             case Ingred_Name.Mushroom:
-                return "¹ö¼¸";
+                return "ë²„ì„¯";
             case Ingred_Name.Milk:
-                return "¿ìÀ¯";
+                return "ìš°ìœ ";
             case Ingred_Name.Butter:
-                return "¹öÅÍ";
+                return "ë²„í„°";
             case Ingred_Name.Cheese:
-                return "Ä¡Áî";
+                return "ì¹˜ì¦ˆ";
             case Ingred_Name.Fruit:
-                return "°úÀÏ";
+                return "ê³¼ì¼";
             case Ingred_Name.Greenonion:
-                return "ÆÄ";
+                return "íŒŒ";
             case Ingred_Name.Carrot:
-                return "´ç±Ù";
+                return "ë‹¹ê·¼";
             case Ingred_Name.Beansprout:
-                return "¼÷ÁÖ";
+                return "ìˆ™ì£¼";
             case Ingred_Name.Seaweed:
-                return "±è";
+                return "ê¹€";
             case Ingred_Name.Vanilla:
-                return "¹Ù´Ò¶ó";
+                return "ë°”ë‹ë¼";
             case Ingred_Name.Coriander:
-                return "°í¼ö";
+                return "ê³ ìˆ˜";
             case Ingred_Name.Kimchi:
-                return "±èÄ¡";
+                return "ê¹€ì¹˜";
             case Ingred_Name.Vinegar:
-                return "½ÄÃÊ";
+                return "ì‹ì´ˆ";
             case Ingred_Name.Tofu:
-                return "µÎºÎ";
+                return "ë‘ë¶€";
             case Ingred_Name.Wine:
-                return "¿ÍÀÎ";
+                return "ì™€ì¸";
             case Ingred_Name.Salary:
-                return "»ø·¯¸®";
+                return "ìƒëŸ¬ë¦¬";
             case Ingred_Name.Radish:
-                return "¹«";
+                return "ë¬´";
             case Ingred_Name.Redbean:
-                return "ÆÏ";
+                return "íŒ¥";
             case Ingred_Name.Eggplant:
-                return "°¡Áö";
+                return "ê°€ì§€";
             case Ingred_Name.Olive:
-                return "¿Ã¸®ºê";
+                return "ì˜¬ë¦¬ë¸Œ";
             case Ingred_Name.Cream:
-                return "Å©¸²";
+                return "í¬ë¦¼";
             case Ingred_Name.Nuts:
-                return "°ß°ú·ù";
+                return "ê²¬ê³¼ë¥˜";
             case Ingred_Name.Cucumber:
-                return "¿ÀÀÌ";
+                return "ì˜¤ì´";
             case Ingred_Name.Honey:
-                return "²Ü";
+                return "ê¿€";
             case Ingred_Name.Ginger:
-                return "»ı°­";
+                return "ìƒê°•";
             default:
                 return "";
         }
@@ -166,13 +166,13 @@ public class Ingredient
         switch (grade)
         {
             case Ingred_Grade.STAR_1:
-                return "1¼º";
+                return "1ì„±";
             case Ingred_Grade.STAR_2:
-                return "2¼º";
+                return "2ì„±";
             case Ingred_Grade.STAR_3:
-                return "3¼º";
+                return "3ì„±";
             case Ingred_Grade.STAR_4:
-                return "4¼º";
+                return "4ì„±";
             default:
                 return "";
         }

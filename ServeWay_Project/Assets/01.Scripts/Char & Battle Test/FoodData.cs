@@ -23,11 +23,9 @@ public enum Food_MainIngred
 
 public enum Food_Nation
 {
-    KOREA,
-    JAPAN,
-    CHINA,
-    USA,
-    FRANCE
+    KOREA, JAPAN, CHINA, USA,
+    FRANCE, ITALY, THAILAND,
+    INDONESIA, GERMANY, SPAIN
 };
 
 [Serializable]
@@ -69,15 +67,10 @@ public class FoodData
     {
         get
         {
-            UnityEngine.Object[] sprites = AssetDatabase.LoadAllAssetsAtPath("Assets/Prefabs/MapPrefabs/Backyard - Free/backyard.png");
+            UnityEngine.Object[] sprites = AssetDatabase.LoadAllAssetsAtPath("Assets/03.Images/Food.png");
             //Sprite[] sprites = Resources.LoadAll<Sprite>("Assets/Prefabs/MapPrefabs/Backyard - Free/backyard.png");
-            foreach(UnityEngine.Object sprite in sprites)
-            {
-                if(sprite.name.Contains(_FoodSpriteIndex))
-                {
-                    _FoodSprite = (Sprite)sprite;
-                }
-            }
+            _FoodSprite = (Sprite)sprites[int.Parse(_FoodSpriteIndex)];
+
             return _FoodSprite;
         }
     }
@@ -137,13 +130,13 @@ public class FoodData
         switch (grade)
         {
             case Food_Grade.STAR_1:
-                return "1º∫";
+                return "1ÏÑ±";
             case Food_Grade.STAR_2:
-                return "2º∫";
+                return "2ÏÑ±";
             case Food_Grade.STAR_3:
-                return "3º∫";
+                return "3ÏÑ±";
             case Food_Grade.STAR_4:
-                return "4º∫";
+                return "4ÏÑ±";
             default:
                 return "";
         }
@@ -154,15 +147,15 @@ public class FoodData
         switch (ingred)
         {
             case Food_MainIngred.MEAT:
-                return "∞Ì±‚";
+                return "Í≥†Í∏∞";
             case Food_MainIngred.RICE:
-                return "Ω“";
+                return "ÏåÄ";
             case Food_MainIngred.SOUP:
-                return "±ππ∞";
+                return "Íµ≠Î¨º";
             case Food_MainIngred.NOODLE:
-                return "∏È";
+                return "Î©¥";
             case Food_MainIngred.BREAD:
-                return "ªß";
+                return "Îπµ";
             default:
                 return "";
         }
@@ -173,15 +166,25 @@ public class FoodData
         switch (nation)
         {
             case Food_Nation.KOREA:
-                return "«—±π";
+                return "ÌïúÍµ≠";
             case Food_Nation.JAPAN:
-                return "¿œ∫ª";
+                return "ÏùºÎ≥∏";
             case Food_Nation.CHINA:
-                return "¡ﬂ±π";
+                return "Ï§ëÍµ≠";
             case Food_Nation.USA:
-                return "πÃ±π";
+                return "ÎØ∏Íµ≠";
             case Food_Nation.FRANCE:
-                return "«¡∂˚Ω∫";
+                return "ÌîÑÎûëÏä§";
+            case Food_Nation.ITALY:
+                return "Ïù¥ÌÉàÎ¶¨ÏïÑ";
+            case Food_Nation.INDONESIA:
+                return "Ïù∏ÎèÑÎÑ§ÏãúÏïÑ";
+            case Food_Nation.THAILAND:
+                return "ÌÉúÍµ≠";
+            case Food_Nation.GERMANY:
+                return "ÎèÖÏùº";
+            case Food_Nation.SPAIN:
+                return "Ïä§ÌéòÏù∏";
             default:
                 return "";
         }
