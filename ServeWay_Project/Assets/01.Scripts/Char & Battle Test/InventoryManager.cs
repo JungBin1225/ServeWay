@@ -75,7 +75,7 @@ public class InventoryManager : MonoBehaviour
         inventory.Clear();
         foreach (Ingred_Name name in saveInven.Keys)
         {
-            inventory.Add(name, saveInven[name]);
+            GetItem(name, saveInven[name]);
         }
     }
 
@@ -95,7 +95,7 @@ public class InventoryManager : MonoBehaviour
         switch(itemName)
         {
             case Ingred_Name.Pumpkin:
-                player.speed += amount * 10;
+                player.speed += amount * 1;
                 break;
             case Ingred_Name.Strawberrie:
                 player.chargeLength += amount * 0.1f;
