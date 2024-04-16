@@ -21,11 +21,6 @@ public class FoodIngredDex : ScriptableObject
 
     public void UpdateFoodDex(string foodName, FoodDex_Status status)
     {
-        if(foodDex[foodName] == FoodDex_Status.LOCKED)
-        {
-            foodDex[foodName] = FoodDex_Status.RECIPE;
-        }
-
         switch(status)
         {
             case FoodDex_Status.LOCKED:
@@ -48,6 +43,20 @@ public class FoodIngredDex : ScriptableObject
     public void UpdateIngredDex(Ingred_Name name)
     {
         ingredDex[name] = true;
+
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+
+    public void AddFoodDex(string foodName, FoodDex_Status status)
+    {
+        foodDex.Add(foodName, status);
+
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+
+    public void AddIngredDex(Ingred_Name name)
+    {
+        ingredDex.Add(name, false);
 
         UnityEditor.EditorUtility.SetDirty(this);
     }

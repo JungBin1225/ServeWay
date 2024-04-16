@@ -4,24 +4,58 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public FoodData foodData;
-    public GameObject prefab;
+    private FoodIngredDex dex;
+    private FoodDataSet foodData;
+    private StartFoodDataSet startFoodData;
+    private IngredientDataSet ingredientData;
+
+    public bool refresh;
 
     void Start()
     {
-        foodData = FindObjectOfType<DataController>().foodData.FoodDatas[0];
+        dex = FindObjectOfType<DataController>().FoodIngredDex;
+        foodData = FindObjectOfType<DataController>().foodData;
+        startFoodData = FindObjectOfType<DataController>().startFoodData;
+        ingredientData = FindObjectOfType<DataController>().IngredientList;
 
-        prefab = foodData.foodPrefab;
-        foreach(Ingred_Name name in foodData.needIngredient.Keys)
-        {
-            Debug.Log(name + ", " +foodData.needIngredient[name].ToString());
-        }
-        
+        refresh = false;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        
+        if(refresh)
+        {
+            RefreshDex();
+            refresh = false;
+        }
+    }
+
+    private void RefreshDex()
+    {
+        foreach(FoodData food in foodData.FoodDatas)
+        {
+            if(!dex.foodDex.ContainsKey(food.foodName))
+            {
+                dex.AddFoodDex(food.foodName, FoodDex_Status.RECIPE);
+            }
+        }
+        foreach (FoodData food in startFoodData.StartFoodDatas)
+        {
+            if (!dex.foodDex.ContainsKey(food.foodName))
+            {
+                dex.AddFoodDex(food.foodName, FoodDex_Status.RECIPE);
+            }
+        }
+
+        foreach(Ingredient ingred in ingredientData.IngredientList)
+        {
+            if(!dex.ingredDex.ContainsKey(ingred.name))
+            {
+                dex.AddIngredDex(ingred.name);
+            }
+        }
+
+        Debug.Log("Refresh Success");
     }
 }
