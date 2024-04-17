@@ -18,6 +18,7 @@ public class CreateUI : MonoBehaviour
 
     public float deltaTime;
     public Create_Success success;
+    public GameObject buttonGroup;
     public GameObject explaneUI;
     public GameObject ingredientUI;
     public List<GameObject> minigameUI;
@@ -31,12 +32,9 @@ public class CreateUI : MonoBehaviour
         inventory = FindObjectOfType<InventoryManager>();
 
         buttonList = new List<GameObject>();
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < buttonGroup.transform.childCount; i++)
         {
-            if(transform.GetChild(i).gameObject.name.Contains("Button"))
-            {
-                buttonList.Add(transform.GetChild(i).gameObject);
-            }
+            buttonList.Add(buttonGroup.transform.GetChild(i).gameObject);
         }
 
         ingredientList = new List<GameObject>();
@@ -56,6 +54,8 @@ public class CreateUI : MonoBehaviour
 
     public void SetList(List<string> nameList)
     {
+        Debug.Log(buttonList.Count);
+
         for(int i = 0; i < buttonList.Count; i++)
         {
             if(i < nameList.Count)

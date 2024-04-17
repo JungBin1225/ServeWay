@@ -9,7 +9,8 @@ public class Test : MonoBehaviour
     private StartFoodDataSet startFoodData;
     private IngredientDataSet ingredientData;
 
-    public bool refresh;
+    public bool dexRefresh;
+    public bool addInventory;
 
     void Start()
     {
@@ -18,16 +19,23 @@ public class Test : MonoBehaviour
         startFoodData = FindObjectOfType<DataController>().startFoodData;
         ingredientData = FindObjectOfType<DataController>().IngredientList;
 
-        refresh = false;
+        dexRefresh = false;
+        addInventory = false;
     }
 
     
     void Update()
     {
-        if(refresh)
+        if(dexRefresh)
         {
             RefreshDex();
-            refresh = false;
+            dexRefresh = false;
+        }
+
+        if(addInventory)
+        {
+            AddAllInven();
+            addInventory = false;
         }
     }
 
@@ -57,5 +65,13 @@ public class Test : MonoBehaviour
         }
 
         Debug.Log("Refresh Success");
+    }
+
+    private void AddAllInven()
+    {
+        foreach(Ingredient ingred in ingredientData.IngredientList)
+        {
+            GameManager.gameManager.inventory.GetItem(ingred.name, 5);
+        }
     }
 }

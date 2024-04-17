@@ -166,6 +166,7 @@ public class DexUI : MonoBehaviour
             {
                 FoodData food = dataController.FindFood(image.sprite);
 
+                infoWindow.transform.GetChild(3).GetChild(1).gameObject.SetActive(true);
                 infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
                 infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
                 infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
