@@ -124,9 +124,30 @@ public class BossRoom : MonoBehaviour
 
     private GameObject RandomIngredient()
     {
-        int randomIndex = Random.Range(0, data.IngredientList.IngredientList.Count);
+        int grade = Random.Range(0, 100) + 1;
 
-        return data.IngredientList.IngredientList[randomIndex].prefab;
+        int num = 0;
+        if (grade <= 55)
+        {
+            num = 1;
+        }
+        else if (grade <= 80)
+        {
+            num = 2;
+        }
+        else if (grade <= 95)
+        {
+            num = 3;
+        }
+        else
+        {
+            num = 4;
+        }
+
+        List<Ingredient> ingredList = data.GetGradeList(num);
+        int randomIndex = Random.Range(0, ingredList.Count);
+
+        return ingredList[randomIndex].prefab;
     }
 
     public void CloseDoor()

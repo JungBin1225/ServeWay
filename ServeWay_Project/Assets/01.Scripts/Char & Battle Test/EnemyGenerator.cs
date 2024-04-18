@@ -10,7 +10,7 @@ public class EnemyGenerator : MonoBehaviour
     public int enemyAmount;
     public GameObject itemPrefab;
 
-    // ¹Ì´Ï¸Ê
+    // ë¯¸ë‹ˆë§µ
     [SerializeField] GameObject miniRoomMesh;
     private bool isVisited = false;
     public bool nonEnemyRoom = false;
@@ -25,8 +25,8 @@ public class EnemyGenerator : MonoBehaviour
     private bool isClear;
     private bool isSpawn;
     private bool isStarted = false;
-    //Start() ÇÔ¼ö°¡ ³¡±îÁö ½ÇÇàµÈ ÀÌÈÄ¿¡ true·Î ¹Ù²ñ
-    //ÇØÁÖ´Â ÀÌÀ¯ : spawnlist¸¦ ÃÊ±âÈ­ÇØÁÖ´Â Start() ÇÔ¼ö°¡ ºÒ¸®±â ÀÌÀü¿¡ spawnlist¸¦ ÂüÁ¶ÇÏ´Â OnTriggerEnter2D()°¡ ºÒ¸± ¼ö ÀÖ±â ¶§¹®ÀÌ´Ù.
+    //Start() í•¨ìˆ˜ê°€ ëê¹Œì§€ ì‹¤í–‰ëœ ì´í›„ì— trueë¡œ ë°”ë€œ
+    //í•´ì£¼ëŠ” ì´ìœ  : spawnlistë¥¼ ì´ˆê¸°í™”í•´ì£¼ëŠ” Start() í•¨ìˆ˜ê°€ ë¶ˆë¦¬ê¸° ì´ì „ì— spawnlistë¥¼ ì°¸ì¡°í•˜ëŠ” OnTriggerEnter2D()ê°€ ë¶ˆë¦´ ìˆ˜ ìˆê¸° ë•Œë¬¸ì´ë‹¤.
 
     void Start()
     {
@@ -42,13 +42,13 @@ public class EnemyGenerator : MonoBehaviour
         wave = 0;
         InitEnemy();
 
-        // ¹Ì´Ï¸Ê
+        // ë¯¸ë‹ˆë§µ
         minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
     }
 
     void Update()
     {
-        if(enemyAmount == 0)
+        if(enemyAmount == 0 && !isClear)
         {
             if(wave == 0)
             {
@@ -129,9 +129,31 @@ public class EnemyGenerator : MonoBehaviour
 
     private Ingredient RandomIngredient()
     {
-        int randomIndex = Random.Range(0, data.IngredientList.IngredientList.Count);
+        int grade = Random.Range(0, 100) + 1;
 
-        return data.IngredientList.IngredientList[randomIndex];
+        int num = 0;
+        if(grade <= 55)
+        {
+            num = 1;
+        }
+        else if(grade <= 80)
+        {
+            num = 2;
+        }
+        else if(grade <= 95)
+        {
+            num = 3;
+        }
+        else
+        {
+            num = 4;
+        }
+        Debug.Log("LUK: " + num);
+
+        List<Ingredient> ingredList = data.GetGradeList(num);
+        int randomIndex = Random.Range(0, ingredList.Count);
+
+        return ingredList[randomIndex];
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -140,12 +162,12 @@ public class EnemyGenerator : MonoBehaviour
 
         if (collision.gameObject.tag == "Player" && !isClear && isStarted)
         {
-            // ¹Ì´Ï¸Ê
+            // ë¯¸ë‹ˆë§µ
             GenerateMiniRoomMesh();
 
             if (!nonEnemyRoom)
             {
-                // ÀÏ¹İ ¹æ ÀÛµ¿
+                // ì¼ë°˜ ë°© ì‘ë™
                 foreach (GameObject door in doorList)
                 {
                     door.SetActive(true);
@@ -240,13 +262,13 @@ public class EnemyGenerator : MonoBehaviour
         }
     }
 
-    // ¹Ì´Ï¸Ê
+    // ë¯¸ë‹ˆë§µ
     public void GenerateMiniRoomMesh()
     {
         if (!isVisited)
         {
             isVisited = true;
-            // minimapGroup °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ ÀÚ½Ä ¿ÀºêÁ§Æ®·Î ¹æÀÇ ¸Ş½Ã ÇÁ¸®ÆÕ »ı¼º
+            // minimapGroup ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ìì‹ ì˜¤ë¸Œì íŠ¸ë¡œ ë°©ì˜ ë©”ì‹œ í”„ë¦¬íŒ¹ ìƒì„±
             GameObject tmp = Instantiate(miniRoomMesh, transform);
 
             Debug.Log("EG: " + myCol + ", " + myRow);
