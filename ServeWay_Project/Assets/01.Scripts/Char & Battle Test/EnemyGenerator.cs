@@ -74,7 +74,9 @@ public class EnemyGenerator : MonoBehaviour
     private IEnumerator SelectEnamy()
     {
         isSpawn = true;
-        
+
+        yield return new WaitForSeconds(0.3f);
+
         foreach(GameObject enemy in spawnlist.Keys)
         {
             for(int i = 0; i < spawnlist[enemy]; i++)
@@ -127,7 +129,7 @@ public class EnemyGenerator : MonoBehaviour
         }
     }
 
-    private Ingredient RandomIngredient()
+    public Ingredient RandomIngredient()
     {
         int grade = Random.Range(0, 100) + 1;
 
@@ -148,7 +150,7 @@ public class EnemyGenerator : MonoBehaviour
         {
             num = 4;
         }
-        Debug.Log("LUK: " + num);
+        
 
         List<Ingredient> ingredList = data.GetGradeList(num);
         int randomIndex = Random.Range(0, ingredList.Count);

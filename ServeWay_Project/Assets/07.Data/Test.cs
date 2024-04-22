@@ -9,8 +9,14 @@ public class Test : MonoBehaviour
     private StartFoodDataSet startFoodData;
     private IngredientDataSet ingredientData;
 
+    private int star1;
+    private int star2;
+    private int star3;
+    private int star4;
+
     public bool dexRefresh;
     public bool addInventory;
+    public bool checkPercent;
 
     void Start()
     {
@@ -19,8 +25,14 @@ public class Test : MonoBehaviour
         startFoodData = FindObjectOfType<DataController>().startFoodData;
         ingredientData = FindObjectOfType<DataController>().IngredientList;
 
+        star1 = 0;
+        star2 = 0;
+        star3 = 0;
+        star4 = 0;
+
         dexRefresh = false;
         addInventory = false;
+        checkPercent = false;
     }
 
     
@@ -36,6 +48,12 @@ public class Test : MonoBehaviour
         {
             AddAllInven();
             addInventory = false;
+        }
+
+        if(checkPercent)
+        {
+            CheckPercent();
+            checkPercent = false;
         }
     }
 
@@ -73,5 +91,38 @@ public class Test : MonoBehaviour
         {
             GameManager.gameManager.inventory.GetItem(ingred.name, 5);
         }
+    }
+
+    private void CheckPercent()
+    {
+        star1 = 0;
+        star2 = 0;
+        star3 = 0;
+        star4 = 0;
+
+        EnemyGenerator generator = FindObjectOfType<EnemyGenerator>();
+
+        for(int i = 0; i < 1000; i++)
+        {
+            Ingredient ingred = generator.RandomIngredient();
+
+            switch(ingred.grade)
+            {
+                case Ingred_Grade.STAR_1:
+                    star1++;
+                    break;
+                case Ingred_Grade.STAR_2:
+                    star2++;
+                    break;
+                case Ingred_Grade.STAR_3:
+                    star3++;
+                    break;
+                case Ingred_Grade.STAR_4:
+                    star4++;
+                    break;
+            }
+        }
+
+        Debug.Log("1성: " + star1 + " 2성: " + star2 + " 3성: " + star3 + " 4성: " + star4);
     }
 }
