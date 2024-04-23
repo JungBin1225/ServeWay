@@ -153,7 +153,7 @@ public class WeaponController : MonoBehaviour
 
     public void GenerateSoupBullet(float speed, float damage, Vector3 mousePos, float radius, float bulletAmount)
     {
-        for (int j = 0; j < 4; j++)
+        /*for (int j = 0; j < 4; j++)
         {
             for (int i = 0; i < bulletAmount; i++)
             {
@@ -173,6 +173,18 @@ public class WeaponController : MonoBehaviour
                     bullet.GetComponent<BulletController>().SetNation(nation);
                 }
             }
+        }*/
+
+        float startAngle = (radius * 10) / 2;
+        float differAngle = (radius * 10) / (bulletAmount - 1);
+
+        for(int i = 0; i < bulletAmount; i++)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+            bullet.GetComponent<BulletController>().SetTarget(-bullet.transform.up);
+            bullet.GetComponent<BulletController>().SetSpeed(speed);
+            bullet.GetComponent<BulletController>().SetDamage(damage);
+            bullet.GetComponent<BulletController>().SetNation(nation);
         }
     }
 
