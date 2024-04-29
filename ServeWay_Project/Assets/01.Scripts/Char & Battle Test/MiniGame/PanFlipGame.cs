@@ -12,12 +12,14 @@ public class PanFlipGame : MonoBehaviour
     private Create_Success success;
     private bool isOver;
     private bool isClicked;
+    private float time;
 
     private void OnEnable()
     {
         alarm.SetActive(false);
         isOver = false;
         isClicked = false;
+        time = Time.realtimeSinceStartup;
 
         explanePanel.SetActive(true);
         gamePanel.SetActive(false);
@@ -36,19 +38,17 @@ public class PanFlipGame : MonoBehaviour
         explanePanel.SetActive(false);
         gamePanel.SetActive(true);
 
-        float time = Random.Range(2.0f, 5.0f);
-        float now = 0;
+        float setTime = Random.Range(2.0f, 5.0f);
+        float now = Time.realtimeSinceStartup - time;
 
         while(!isOver)
         {
-            now += createUI.deltaTime;
-
-            if(now >= time)
+            if((Time.realtimeSinceStartup - time) - now >= setTime)
             {
                 alarm.SetActive(true);
             }
 
-            if (now > 10.0f || isClicked)
+            if ((Time.realtimeSinceStartup - time) - now > 10.0f || isClicked)
             {
                 isOver = true;
             }
@@ -57,7 +57,7 @@ public class PanFlipGame : MonoBehaviour
         }
         alarm.SetActive(false);
 
-        float result = now - time;
+        float result = (Time.realtimeSinceStartup - time) - now - setTime;
         if(result >= 0 && result <= 0.5f)
         {
             success = Create_Success.GREAT;
