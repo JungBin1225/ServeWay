@@ -288,7 +288,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 13346500}
-  - component: {fileID: 13346499}
   m_Layer: 5
   m_Name: BreadGame
   m_TagString: Untagged
@@ -296,28 +295,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &13346499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 13346498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80937543e38d1af46ab2a161db009ef4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  createUI: {fileID: 846771631}
-  explanePanel: {fileID: 1196713981}
-  gamePanel: {fileID: 298495674}
-  arrowList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  timer: {fileID: 0}
 --- !u!224 &13346500
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16208,7 +16185,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 13346499}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ArrowGame, Assembly-CSharp
         m_MethodName: CloseWindow
         m_Mode: 1
@@ -32025,7 +32002,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 13346499}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ArrowGame, Assembly-CSharp
         m_MethodName: OnStartClicked
         m_Mode: 1
