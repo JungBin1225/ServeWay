@@ -41,10 +41,10 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // UI test
-        if (Input.GetKey(KeyCode.K))
+        /*if (Input.GetKey(KeyCode.K))
         {
             nowHp -= 2;
-        }
+        }*/
     }
 
     public void PlayerDamaged(float damage)

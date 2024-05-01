@@ -84,7 +84,6 @@ public class FireGame : MonoBehaviour
             if(degree > 0 && degree < targetBar.GetComponent<RectTransform>().sizeDelta.x)
             {
                 score += Time.realtimeSinceStartup - frameTime;
-                Debug.Log(score);
             }
 
             if((Time.realtimeSinceStartup - time) - barNow > barTime)
@@ -124,4 +123,8 @@ public class FireGame : MonoBehaviour
         StartCoroutine(GameStart());
     }
 
+    public void CloseWindow()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

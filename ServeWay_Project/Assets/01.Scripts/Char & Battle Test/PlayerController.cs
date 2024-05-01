@@ -172,19 +172,19 @@ public class PlayerController : MonoBehaviour
 
         rigidBody.velocity = chargeVel * -2;
 
-        yield return new WaitForSeconds(0.25f); //¼±µô
+        yield return new WaitForSeconds(0.25f); //ì„ ë”œ
 
         isCharge = true;
 
         //rigidbody.velocity = chargeVel;
         rigidBody.AddForce(chargeVel * chargeSpeed * 0.2f, ForceMode2D.Impulse);
 
-        yield return new WaitForSeconds(chargeLength); //µ¹Áø
+        yield return new WaitForSeconds(chargeLength); //ëŒì§„
 
         isCharge = false;
 
         rigidBody.velocity = Vector2.zero;
-        yield return new WaitForSeconds(0.25f); //ÈÄµô
+        yield return new WaitForSeconds(0.25f); //í›„ë”œ
 
         controllAble = true;
         coolTime = chargeCooltime;
@@ -220,10 +220,13 @@ public class PlayerController : MonoBehaviour
             playerHealth.nowHp = playerHealth.maxHp;
         }
 
-        // ¹«±â ¹Ù²Ù´Â ºÎºĞ ³ª¿À¸é ¼öÁ¤ÇØ¾ß ÇÔ
-        string nowWeaponName = weaponSlot.gameObject.transform.GetChild(weaponSlot.index).GetChild(0).GetComponent<WeaponController>().weaponName;
-        weaponInfoImg.GetComponent<Image>().sprite = FindObjectOfType<DataController>().FindFood(nowWeaponName).foodSprite;
-        weaponInfoName.GetComponent<Text>().text = FindObjectOfType<DataController>().FindFood(nowWeaponName).foodName;
+        // ë¬´ê¸° ë°”ê¾¸ëŠ” ë¶€ë¶„ ë‚˜ì˜¤ë©´ ìˆ˜ì •í•´ì•¼ í•¨
+        if(weaponSlot.gameObject.transform.childCount != 0)
+        {
+            string nowWeaponName = weaponSlot.gameObject.transform.GetChild(weaponSlot.index).GetChild(0).GetComponent<WeaponController>().weaponName;
+            weaponInfoImg.GetComponent<Image>().sprite = FindObjectOfType<DataController>().FindFood(nowWeaponName).foodSprite;
+            weaponInfoName.GetComponent<Text>().text = FindObjectOfType<DataController>().FindFood(nowWeaponName).foodName;
+        }
 
         Time.timeScale = 1;
     }

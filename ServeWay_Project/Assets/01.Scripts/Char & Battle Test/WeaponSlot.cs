@@ -42,34 +42,40 @@ public class WeaponSlot : MonoBehaviour
 
     public void ChangeNextWeapon()
     {
-        weaponList[index].SetActive(false);
-
-        if(index >= weaponList.Count - 1)
+        if(weaponList.Count != 0)
         {
-            index = 0;
-        }
-        else
-        {
-            index++;
-        }
+            weaponList[index].SetActive(false);
 
-        weaponList[index].SetActive(true);
+            if (index >= weaponList.Count - 1)
+            {
+                index = 0;
+            }
+            else
+            {
+                index++;
+            }
+
+            weaponList[index].SetActive(true);
+        }
     }
 
     public void ChangePrevWeapon()
     {
-        weaponList[index].SetActive(false);
-
-        if (index <= 0)
+        if (weaponList.Count != 0)
         {
-            index = weaponList.Count - 1;
-        }
-        else
-        {
-            index--;
-        }
+            weaponList[index].SetActive(false);
 
-        weaponList[index].SetActive(true);
+            if (index <= 0)
+            {
+                index = weaponList.Count - 1;
+            }
+            else
+            {
+                index--;
+            }
+
+            weaponList[index].SetActive(true);
+        }
     }
 
     public void GetWeapon(GameObject newWeapon, Create_Success success, string name)
