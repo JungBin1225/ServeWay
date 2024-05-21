@@ -15,6 +15,7 @@ public class CreateUI : MonoBehaviour
     private FoodData selectedFood;
     private IngredientDataSet ingredientInfo;
     private InventoryManager inventory;
+    private WeaponSlot weaponSlot;
 
     public float deltaTime;
     public Create_Success success;
@@ -22,6 +23,7 @@ public class CreateUI : MonoBehaviour
     public GameObject explaneUI;
     public GameObject ingredientUI;
     public List<GameObject> minigameUI;
+    public GameObject weaponPrefab;
 
     void Start()
     {
@@ -30,6 +32,7 @@ public class CreateUI : MonoBehaviour
         startFoodInfo = dataController.startFoodData;
         ingredientInfo = dataController.IngredientList;
         inventory = FindObjectOfType<InventoryManager>();
+        weaponSlot = FindObjectOfType<WeaponSlot>();
 
         buttonList = new List<GameObject>();
         for (int i = 0; i < buttonGroup.transform.childCount; i++)
@@ -156,10 +159,17 @@ public class CreateUI : MonoBehaviour
             }
         }
 
-        GameObject food = Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));
-        food.GetComponent<GetItem>().name = selectedFood.foodName;
-        food.GetComponent<GetItem>().SetSprite();
-        food.GetComponent<GetItem>().success = success;
+        if(weaponSlot.WeaponCount() != 3)
+        {
+            weaponSlot.GetWeapon(weaponPrefab, success, selectedFood.foodName);
+        }
+        else
+        {
+            GameObject food = Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));
+            food.GetComponent<GetItem>().name = selectedFood.foodName;
+            food.GetComponent<GetItem>().SetSprite();
+            food.GetComponent<GetItem>().success = success;
+        }
 
         CloseUI();
     }

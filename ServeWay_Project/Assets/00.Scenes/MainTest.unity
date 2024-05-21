@@ -16230,6 +16230,7 @@ MonoBehaviour:
   - {fileID: 1017345193}
   - {fileID: 13346498}
   - {fileID: 1451853930}
+  weaponPrefab: {fileID: 1687439015561801660, guid: 278ed99b79231b145978934b724b69a9, type: 3}
 --- !u!1 &862271386
 GameObject:
   m_ObjectHideFlags: 0
@@ -37418,19 +37419,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1821389482}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 846771631}
-        m_TargetAssemblyTypeName: CreateUI, Assembly-CSharp
-        m_MethodName: OnCreateClicked
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1821389482
 MonoBehaviour:
   m_ObjectHideFlags: 0

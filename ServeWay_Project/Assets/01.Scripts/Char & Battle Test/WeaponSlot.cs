@@ -196,5 +196,8 @@ public class WeaponSlot : MonoBehaviour
         }
     }
 
-
+    public int WeaponCount()
+    {
+        return weaponList.Count;
+    }
 }

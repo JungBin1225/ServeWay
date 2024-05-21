@@ -125,6 +125,23 @@ public class FoodData
         }
     }
 
+    public int EnumToInt(Food_Grade grade)
+    {
+        switch (grade)
+        {
+            case Food_Grade.STAR_1:
+                return 1;
+            case Food_Grade.STAR_2:
+                return 2;
+            case Food_Grade.STAR_3:
+                return 3;
+            case Food_Grade.STAR_4:
+                return 4;
+            default:
+                return 0;
+        }
+    }
+
     public string EunmToString(Food_Grade grade)
     {
         switch (grade)

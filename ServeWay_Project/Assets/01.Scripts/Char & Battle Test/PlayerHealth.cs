@@ -58,4 +58,18 @@ public class PlayerHealth : MonoBehaviour
             }
         }
     }
+
+    public void PlayerHeal(float healAmount)
+    {
+        if(nowHp + healAmount >= maxHp)
+        {
+            nowHp = maxHp;
+        }
+        else
+        {
+            nowHp += healAmount;
+        }
+
+        Debug.Log(healAmount + " Heal");
+    }
 }
