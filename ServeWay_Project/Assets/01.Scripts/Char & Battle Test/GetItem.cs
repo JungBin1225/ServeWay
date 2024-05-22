@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Create_Success
 {
@@ -16,6 +17,7 @@ public class GetItem : MonoBehaviour
     private float time;
     private PlayerHealth player;
     private DataController dataController;
+    private InteractionWindow interaction;
 
     public string name;
     public Create_Success success;
@@ -27,12 +29,13 @@ public class GetItem : MonoBehaviour
         weaponSlot = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().weaponSlot;
         player = FindObjectOfType<PlayerHealth>();
         dataController = FindObjectOfType<DataController>();
+        interaction = FindObjectOfType<InteractionWindow>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(getAble)
+        if(getAble && interaction.foodGet.activeSelf)
         {
             if(Input.GetKey(KeyCode.F))
             {
@@ -52,19 +55,12 @@ public class GetItem : MonoBehaviour
             {
                 GetWeapon();
             }
+
+            interaction.time.GetComponent<Image>().fillAmount = 1 - (time / 2.0f);
         }
         else
         {
             time = 0;
-        }
-
-
-        if(Input.GetKeyUp(KeyCode.F))
-        {
-            if(getAble)
-            {
-                GetWeapon();
-            }
         }
     }
 
@@ -88,11 +84,12 @@ public class GetItem : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = FindObjectOfType<DataController>().FindFood(name).foodSprite;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
             getAble = true;
+            interaction.SetFoodGetAble(true);
         }
     }
 
@@ -101,6 +98,7 @@ public class GetItem : MonoBehaviour
         if (collision.tag == "Player")
         {
             getAble = false;
+            interaction.SetFoodGetAble(false);
         }
     }
 }

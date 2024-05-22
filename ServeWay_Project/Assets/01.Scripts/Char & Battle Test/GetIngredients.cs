@@ -6,18 +6,20 @@ public class GetIngredients : MonoBehaviour
 {
     private bool getAble;
     private InventoryManager inventory;
+    private InteractionWindow interaction;
 
     public Ingred_Name itemName;
     void Start()
     {
         inventory = FindObjectOfType<InventoryManager>();
+        interaction = FindObjectOfType<InteractionWindow>();
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (getAble)
+            if (getAble && interaction.ingredGet.activeSelf)
             {
                 GetItem();
             }
@@ -47,11 +49,12 @@ public class GetIngredients : MonoBehaviour
         inventory.DeleteItem(this.itemName, 1);
     }*/
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
             getAble = true;
+            interaction.SetIngredGetAble(true);
         }
     }
 
@@ -60,6 +63,7 @@ public class GetIngredients : MonoBehaviour
         if (collision.tag == "Player")
         {
             getAble = false;
+            interaction.SetIngredGetAble(false);
         }
     }
 }

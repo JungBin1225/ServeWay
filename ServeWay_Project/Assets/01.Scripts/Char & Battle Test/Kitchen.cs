@@ -12,8 +12,9 @@ public class Kitchen : MonoBehaviour
     private List<string> list;
     private bool isTouch;
     private CreateUI createUI;
+    private InteractionWindow interaction;
 
-    // πÃ¥œ∏ 
+    // ÎØ∏ÎãàÎßµ
     [SerializeField] GameObject miniRoomMesh;
     private bool isVisited = false;
 
@@ -26,6 +27,7 @@ public class Kitchen : MonoBehaviour
         startFoodInfo = FindObjectOfType<DataController>().startFoodData;
         dex = FindObjectOfType<DataController>().FoodIngredDex;
         createUI = FindObjectOfType<CreateUI>();
+        interaction = FindObjectOfType<InteractionWindow>();
 
         createUI.gameObject.SetActive(false);
 
@@ -35,7 +37,7 @@ public class Kitchen : MonoBehaviour
     
     void Update()
     {
-        if(isTouch)
+        if(isTouch && interaction.cookInteraction.activeSelf)
         {
             if(Input.GetKeyDown(KeyCode.F))
             {
@@ -90,17 +92,18 @@ public class Kitchen : MonoBehaviour
         return true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
-            if (!SceneManager.GetActiveScene().name.Contains("Start"))
+            /*if (!SceneManager.GetActiveScene().name.Contains("Start"))
             {
 
-            }
+            }*/
 
-            // ¡÷πÊ ¿€µø
+            // Ï£ºÎ∞© ÏûëÎèô
             isTouch = true;
+            interaction.SetCookAble(true);
         }
     }
 
@@ -109,6 +112,7 @@ public class Kitchen : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             isTouch = false;
+            interaction.SetCookAble(false);
         }
     }
 }
