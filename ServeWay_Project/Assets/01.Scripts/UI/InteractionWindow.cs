@@ -7,28 +7,32 @@ public class InteractionWindow : MonoBehaviour
     public GameObject foodGet;
     public GameObject ingredGet;
     public GameObject cookInteraction;
+    public GameObject refrigeratorOpen;
     public GameObject time;
 
     private bool foodGetAble;
     private bool ingredGetAble;
     private bool cookAble;
+    private bool refrigeAble;
 
     void Start()
     {
         foodGetAble = false;
         ingredGetAble = false;
         cookAble = false;
+        refrigeAble = false;
 
         foodGet.SetActive(false);
         ingredGet.SetActive(false);
         cookInteraction.SetActive(false);
+        refrigeratorOpen.SetActive(false);
     }
 
     void Update()
     {
         if(foodGetAble)
         {
-            if(!ingredGetAble && !cookAble)
+            if(!ingredGetAble && !cookAble && !refrigeAble)
             {
                 foodGet.SetActive(true);
             }
@@ -40,7 +44,7 @@ public class InteractionWindow : MonoBehaviour
 
         if(ingredGetAble)
         {
-            if(!foodGetAble && !cookAble)
+            if(!foodGetAble && !cookAble && !refrigeAble)
             {
                 ingredGet.SetActive(true);
             }
@@ -52,7 +56,7 @@ public class InteractionWindow : MonoBehaviour
 
         if (cookAble)
         {
-            if (!foodGetAble && !ingredGetAble)
+            if (!foodGetAble && !ingredGetAble && !refrigeAble)
             {
                 cookInteraction.SetActive(true);
             }
@@ -60,6 +64,18 @@ public class InteractionWindow : MonoBehaviour
         else
         {
             cookInteraction.SetActive(false);
+        }
+
+        if(refrigeAble)
+        {
+            if (!foodGetAble && !ingredGetAble && !cookAble)
+            {
+                refrigeratorOpen.SetActive(true);
+            }
+        }
+        else
+        {
+            refrigeratorOpen.SetActive(false);
         }
     }
 
@@ -76,5 +92,10 @@ public class InteractionWindow : MonoBehaviour
     public void SetCookAble(bool able)
     {
         cookAble = able;
+    }
+
+    public void SetRefrigeAble(bool able)
+    {
+        refrigeAble = able;
     }
 }

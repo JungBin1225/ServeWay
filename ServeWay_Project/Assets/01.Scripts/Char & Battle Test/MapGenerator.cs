@@ -22,62 +22,63 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject road;
 
     [SerializeField] Tilemap tileMap;
-    [SerializeField] Tile roomTile; //¹æÀ» ±¸¼ºÇÏ´Â Å¸ÀÏ
-    [SerializeField] Tile wallTile; //¹æ°ú ¿ÜºÎ¸¦ ±¸ºĞÁö¾îÁÙ º® Å¸ÀÏ
-    [SerializeField] Tile outTile; //¹æ ¿ÜºÎÀÇ Å¸ÀÏ
+    [SerializeField] Tile roomTile; //ë°©ì„ êµ¬ì„±í•˜ëŠ” íƒ€ì¼
+    [SerializeField] Tile wallTile; //ë°©ê³¼ ì™¸ë¶€ë¥¼ êµ¬ë¶„ì§€ì–´ì¤„ ë²½ íƒ€ì¼
+    [SerializeField] Tile outTile; //ë°© ì™¸ë¶€ì˜ íƒ€ì¼
 
-    [SerializeField] Tile startRoomTile; //½ÃÀÛ¹æ Å¸ÀÏ
-    [SerializeField] Tile kitchenTile; //ÁÖ¹æ Å¸ÀÏ
-    [SerializeField] Tile bossTile; //º¸½º¹æ Å¸ÀÏ
+    [SerializeField] Tile startRoomTile; //ì‹œì‘ë°© íƒ€ì¼
+    [SerializeField] Tile kitchenTile; //ì£¼ë°© íƒ€ì¼
+    [SerializeField] Tile bossTile; //ë³´ìŠ¤ë°© íƒ€ì¼
 
     [SerializeField] GameObject Player;
     [SerializeField] GameObject EnemyGenerator;
     [SerializeField] GameObject BossGenerator;
     [SerializeField] GameObject createTablePrefab;
+    [SerializeField] GameObject refrigeratorPrefab;
     [SerializeField] GameObject doorPrefab;
 
-    // ¹Ì´Ï¸Ê
+    // ë¯¸ë‹ˆë§µ
     [SerializeField] Tilemap miniTileMap;
     [SerializeField] Tile miniRoomTile;
     [SerializeField] Tile miniWallTile;
     [SerializeField] Tile miniOutTile;
-    // ÁÖ¹æ Äİ¶óÀÌ´õ
+    // ì£¼ë°© ì½œë¼ì´ë”
     GameObject KitchenCollider;
-    // ½ÃÀÛ¹æ Äİ¶óÀÌ´õ
+    // ì‹œì‘ë°© ì½œë¼ì´ë”
     GameObject StartCollider;
 
     const int NUM_ROOM = 5; 
     Room[ , ] roomList = new Room[NUM_ROOM,NUM_ROOM];
 
-    //½ÃÀÛÁ¡ ÁÂÇ¥. ÀÏ´Ü ÁÂÃø»ó´ÜÀ¸·Î °íÁ¤
+    //ì‹œì‘ì  ì¢Œí‘œ. ì¼ë‹¨ ì¢Œì¸¡ìƒë‹¨ìœ¼ë¡œ ê³ ì •
     int startX = 0;
     int startY = 0;
-    //ÃßÈÄ ÁÖ¹æ ÁÂÇ¥, º¸½º¹æ ÁÂÇ¥µµ Ãß°¡ ¿¹Á¤...
+    //ì¶”í›„ ì£¼ë°© ì¢Œí‘œ, ë³´ìŠ¤ë°© ì¢Œí‘œë„ ì¶”ê°€ ì˜ˆì •...
 
-    //¸Ê ¸¸µå´Âµ¥ ÇÊ¿äÇÑ º¯¼öµé
+    //ë§µ ë§Œë“œëŠ”ë° í•„ìš”í•œ ë³€ìˆ˜ë“¤
     int roomCnt, tempCnt;
     int lastDepth = 1;
-    int[] dx = new int[4] { -1, 1, 0, 0 }; //ÁÂ ¿ì ÇÏ »ó 
+    int[] dx = new int[4] { -1, 1, 0, 0 }; //ì¢Œ ìš° í•˜ ìƒ 
     int[] dy = new int[4] { 0, 0, 1, -1 };
 
 
     // Start is called before the first frame update
     void Start()
     {
-        if (GameManager.gameManager.charData.saveFile.isMapSave) //·ÎµåµÉ ¸ÊÀÌ ÀÖÀ¸¸é ½ÇÇà
+        if (GameManager.gameManager.charData.saveFile.isMapSave) //ë¡œë“œë  ë§µì´ ìˆìœ¼ë©´ ì‹¤í–‰
         {
             LoadMap();
         }
-        else // ·ÎµåµÉ ¸ÊÀÌ ¾øÀ¸¸é »õ·Î »ı¼º
+        else // ë¡œë“œë  ë§µì´ ì—†ìœ¼ë©´ ìƒˆë¡œ ìƒì„±
         {
-            Init(); // ÃÊ±âÈ­
+            Init(); // ì´ˆê¸°í™”
         }
 
-        DrawBackGround(); // ÀüÃ¼ ¸Ê »ç°¢Çü ±×¸®±â
-        CreateMap(); // ¹æÀÌ¶û ±æ ±×¸®±â
-        DisplayRoomType(); // ½ÃÀÛ¹æ, ÁÖ¹æ, º¸½º¹æ Ç¥½Ã
+        DrawBackGround(); // ì „ì²´ ë§µ ì‚¬ê°í˜• ê·¸ë¦¬ê¸°
+        CreateMap(); // ë°©ì´ë‘ ê¸¸ ê·¸ë¦¬ê¸°
+        DisplayRoomType(); // ì‹œì‘ë°©, ì£¼ë°©, ë³´ìŠ¤ë°© í‘œì‹œ
         SetDoor();
-        // ÇÃ·¹ÀÌ¾î À§Ä¡ ÃÊ±âÈ­
+        // í”Œë ˆì´ì–´ ìœ„ì¹˜ ì´ˆê¸°í™”
         Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
         GameObject.Find("miniPlayer").transform.position = roomList[startY, startX].enemyGenerator.transform.position;
 
@@ -86,7 +87,7 @@ public class MapGenerator : MonoBehaviour
 
     void Init()
     {
-        //¹æ ¸®½ºÆ® ÃÊ±âÈ­
+        //ë°© ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
         for (int i = 0; i < NUM_ROOM; i++)
         {
             for (int j = 0; j < NUM_ROOM; j++)
@@ -95,7 +96,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        //½ÃÀÛÁ¡ À§Ä¡ Á¤ÇÏ±â
+        //ì‹œì‘ì  ìœ„ì¹˜ ì •í•˜ê¸°
         switch (UnityEngine.Random.Range(0, 4))
         {
             case 0:
@@ -112,15 +113,15 @@ public class MapGenerator : MonoBehaviour
         Debug.LogFormat("startX = {0} startY = {1}", startX, startY);
         roomList[startY, startX].isCreated = 1;
 
-        //¸¸µé ¹æÀÇ ÀüÃ¼ °³¼ö ¼³Á¤
+        //ë§Œë“¤ ë°©ì˜ ì „ì²´ ê°œìˆ˜ ì„¤ì •
         roomCnt = UnityEngine.Random.Range(10, 21);
-        //¾ÕÀ¸·Î ¸¸µé¾î¾ßÇÒ ¹æ °³¼ö ¼³Á¤
+        //ì•ìœ¼ë¡œ ë§Œë“¤ì–´ì•¼í•  ë°© ê°œìˆ˜ ì„¤ì •
         tempCnt = roomCnt;
     }
 
     void DrawBackGround()
     {
-        //Å¸ÀÏ ±×¸®±â Àü ¹é±×¶ó¿îµå Å¸ÀÏ·Î ´Ù Ã¤¿ì±â
+        //íƒ€ì¼ ê·¸ë¦¬ê¸° ì „ ë°±ê·¸ë¼ìš´ë“œ íƒ€ì¼ë¡œ ë‹¤ ì±„ìš°ê¸°
         for (int i = -10; i < mapSize.x + 10; i++)
         {
             for (int j = -10; j < mapSize.y + 10; j++)
@@ -134,36 +135,36 @@ public class MapGenerator : MonoBehaviour
     void CreateMap()
     {
 
-        if(!GameManager.gameManager.charData.saveFile.isMapSave) //·ÎµåµÉ ¸ÊÀÌ ÀÖÀ¸¸é ½ÇÇàÇÏÁö ¾ÊÀ½
+        if(!GameManager.gameManager.charData.saveFile.isMapSave) //ë¡œë“œë  ë§µì´ ìˆìœ¼ë©´ ì‹¤í–‰í•˜ì§€ ì•ŠìŒ
         {
-            //±×·¡ÇÁ »ı¼º
+            //ê·¸ë˜í”„ ìƒì„±
             DFS(startX, startY, 1);
         }
-        //±¸Á¶¿¡ µû¶ó ¸Ê »ı¼º
+        //êµ¬ì¡°ì— ë”°ë¼ ë§µ ìƒì„±
         Divide();
 
-        //°¢ ¹æ¸¶´Ù ½ÃÀÛ ¹æ±îÁöÀÇ °Å¸® °è»êÇÏ±â + ±æ »ı¼º
+        //ê° ë°©ë§ˆë‹¤ ì‹œì‘ ë°©ê¹Œì§€ì˜ ê±°ë¦¬ ê³„ì‚°í•˜ê¸° + ê¸¸ ìƒì„±
         BFS(startX, startY, 1);
 
-        //¹æÀ» µÑ·¯½Î´Â º® Å¸ÀÏ ±×¸®±â
+        //ë°©ì„ ë‘˜ëŸ¬ì‹¸ëŠ” ë²½ íƒ€ì¼ ê·¸ë¦¬ê¸°
         DrawWall();
     }
 
     void DFS(int x,int y,int depth)
     {
-        //ÀÌ¹Ì ¹æÀÌ ´Ù ¸¸µé¾îÁ³´Ù¸é ´õ ·ÎÁ÷À» ÁøÇàÇÒ ÇÊ¿ä°¡ ¾ø´Ù.
+        //ì´ë¯¸ ë°©ì´ ë‹¤ ë§Œë“¤ì–´ì¡Œë‹¤ë©´ ë” ë¡œì§ì„ ì§„í–‰í•  í•„ìš”ê°€ ì—†ë‹¤.
         if (tempCnt == 0) return;
 
-        //¸¸µé ¼ö ÀÖ´Â ¹æ °³¼ö
+        //ë§Œë“¤ ìˆ˜ ìˆëŠ” ë°© ê°œìˆ˜
         int curCnt = 0;
-        //°¥ ¼ö ÀÖ´Â ¹æÇâ
+        //ê°ˆ ìˆ˜ ìˆëŠ” ë°©í–¥
         int[] isDir = new int[4];
         for (int i = 0; i < isDir.Length; i++)
         {
             isDir[i] = 0;
         }
 
-        //4¹æÇâ¿¡¼­ °¥ ¼ö ÀÖ´Â ¹æÇâÀ» ÆÄ¾ÇÇÑ ÈÄ, ±× Áß¿¡ ÇÑ ¹æÇâÀ» °ñ¶ó ÀÌµ¿ÇÑ´Ù.
+        //4ë°©í–¥ì—ì„œ ê°ˆ ìˆ˜ ìˆëŠ” ë°©í–¥ì„ íŒŒì•…í•œ í›„, ê·¸ ì¤‘ì— í•œ ë°©í–¥ì„ ê³¨ë¼ ì´ë™í•œë‹¤.
         for (int i = 0; i < 4; i++)
         {
             int tx = x + dx[i]; int ty = y + dy[i];
@@ -173,26 +174,26 @@ public class MapGenerator : MonoBehaviour
                 isDir[i] = 1;
             }
         }
-        if (curCnt == 0) return; //´õ ³ª¾Æ°¥ ¼ö ¾ø´Ù¸é ¸®ÅÏ
+        if (curCnt == 0) return; //ë” ë‚˜ì•„ê°ˆ ìˆ˜ ì—†ë‹¤ë©´ ë¦¬í„´
 
-        //ÇöÀç ¹æ¿¡¼­ ¸¸µé ¹æÀÇ °³¼ö¸¦ 1~¸¸µé¼ö ÀÖ´Â ¹æÇâ °³¼ö Áß ·£´ıÀ¸·Î Á¤ÇÑ´Ù
+        //í˜„ì¬ ë°©ì—ì„œ ë§Œë“¤ ë°©ì˜ ê°œìˆ˜ë¥¼ 1~ë§Œë“¤ìˆ˜ ìˆëŠ” ë°©í–¥ ê°œìˆ˜ ì¤‘ ëœë¤ìœ¼ë¡œ ì •í•œë‹¤
         int temp = UnityEngine.Random.Range(1, curCnt + 1);
         curCnt = temp;
 
         for (int i = 0; i < 4; i++)
         {
-            if (curCnt == 0) return; //¹æ ´Ù ¸¸µé¾ú´Ù¸é ¸®ÅÏ
+            if (curCnt == 0) return; //ë°© ë‹¤ ë§Œë“¤ì—ˆë‹¤ë©´ ë¦¬í„´
             if (tempCnt == 0) return;
 
-            //¾îµğ¹æÇâÀ¸·Î °¥Áö ÅÃ
+            //ì–´ë””ë°©í–¥ìœ¼ë¡œ ê°ˆì§€ íƒ
             int dir = UnityEngine.Random.Range(0,4);
 
-            //ÇÑÂÊ ¹æÇâ ½ò¸² ¹æÁö
+            //í•œìª½ ë°©í–¥ ì ë¦¼ ë°©ì§€
             while (isDir[dir] != 1)
             {
                 dir = UnityEngine.Random.Range(0, 4);
 
-                //¹«ÇÑ·çÇÁ ÀÌ½´ ¹æÁö¿ë ÀÓ½Ã ¶«»§..ÃßÈÄ ¼öÁ¤¿¹Á¤
+                //ë¬´í•œë£¨í”„ ì´ìŠˆ ë°©ì§€ìš© ì„ì‹œ ë•œë¹µ..ì¶”í›„ ìˆ˜ì •ì˜ˆì •
                 int sum = 0;
                 for (int j = 0; j < 4; j++)
                 {
@@ -200,7 +201,7 @@ public class MapGenerator : MonoBehaviour
                 }
                 if (sum == 0) return;
             }
-            //ÇÑ¹ø ÅÃÇÑ ¹æÇâÀº ¼±ÅÃÇÒ ¼ö ¾ø°Ô Ã³¸®
+            //í•œë²ˆ íƒí•œ ë°©í–¥ì€ ì„ íƒí•  ìˆ˜ ì—†ê²Œ ì²˜ë¦¬
             isDir[dir] = 0;
             int tx = x + dx[dir];
             int ty = y + dy[dir];
@@ -227,7 +228,7 @@ public class MapGenerator : MonoBehaviour
             for(int j=0;j < NUM_ROOM; j++) isVisited[i,j] = 0;
         }
         
-        //½ÃÀÛ ¹æÀº ±æÀÌ 1·Î ÃÊ±âÈ­.
+        //ì‹œì‘ ë°©ì€ ê¸¸ì´ 1ë¡œ ì´ˆê¸°í™”.
         Queue<KeyValuePair<int, int>> q = new Queue<KeyValuePair<int, int>>();
         q.Enqueue(new KeyValuePair<int, int>(startX, startY));
         isVisited[startY,startX] = 1;
@@ -257,8 +258,8 @@ public class MapGenerator : MonoBehaviour
 
                     }else if (isVisited[y,x]+1 == isVisited[ty,tx] && roomList[ty, tx].isCreated != 0)
                     {
-                        //°°Àº ±æÀÌÀÇ ´Ù¸¥ ³ëµå°¡ µµÂø ¹æÀ» ¸ÕÀú ¹æ¹®ÇÑ °æ¿ì¿¡µµ 
-                        //ÇöÀç ³ëµå - µµÂø ¹æ ±æÀ» ±×¸± ¼ö ÀÖµµ·Ï ÇÑ´Ù.
+                        //ê°™ì€ ê¸¸ì´ì˜ ë‹¤ë¥¸ ë…¸ë“œê°€ ë„ì°© ë°©ì„ ë¨¼ì € ë°©ë¬¸í•œ ê²½ìš°ì—ë„ 
+                        //í˜„ì¬ ë…¸ë“œ - ë„ì°© ë°© ê¸¸ì„ ê·¸ë¦´ ìˆ˜ ìˆë„ë¡ í•œë‹¤.
                         isVisited[ty, tx] = isVisited[y, x] + 1;
                         roomList[ty, tx].isCreated = isVisited[ty, tx];
                         DrawRoad(x, y, tx, ty);
@@ -274,33 +275,33 @@ public class MapGenerator : MonoBehaviour
 
     void DrawRoom(float horz,float vert,int ROW,int COL)
     {
-        /**¿©±â ÁÂÇ¥´Â ¸ğµÎ ÁÂÃø »ó´Ü ±âÁØ**/
+        /**ì—¬ê¸° ì¢Œí‘œëŠ” ëª¨ë‘ ì¢Œì¸¡ ìƒë‹¨ ê¸°ì¤€**/
         
-        //³ëµå »ı¼º(µğ¹ö±×¿ë)
+        //ë…¸ë“œ ìƒì„±(ë””ë²„ê·¸ìš©)
         /*
         LineRenderer nodeRenderer = Instantiate(node).GetComponent<LineRenderer>();
-        nodeRenderer.SetPosition(0, new Vector2(horz, vert - (float)mapSize.y / 5)); //ÁÂÃø ÇÏ´Ü
-        nodeRenderer.SetPosition(1, new Vector2(horz + (float)mapSize.x / 5, vert- (float)mapSize.y / 5)); //¿ìÃø ÇÏ´Ü
-        nodeRenderer.SetPosition(2, new Vector2(horz + (float)mapSize.x / 5, vert)); //¿ìÃø »ó´Ü
-        nodeRenderer.SetPosition(3, new Vector2(horz, vert)); //ÁÂÃø »ó´Ü
+        nodeRenderer.SetPosition(0, new Vector2(horz, vert - (float)mapSize.y / 5)); //ì¢Œì¸¡ í•˜ë‹¨
+        nodeRenderer.SetPosition(1, new Vector2(horz + (float)mapSize.x / 5, vert- (float)mapSize.y / 5)); //ìš°ì¸¡ í•˜ë‹¨
+        nodeRenderer.SetPosition(2, new Vector2(horz + (float)mapSize.x / 5, vert)); //ìš°ì¸¡ ìƒë‹¨
+        nodeRenderer.SetPosition(3, new Vector2(horz, vert)); //ì¢Œì¸¡ ìƒë‹¨
         */
 
         roomList[ROW, COL].nodeRect = new Rect(horz, vert, (float)mapSize.x / 5, (float)mapSize.y / 5);
         Rect nodeRect = roomList[ROW, COL].nodeRect;
 
-        //width ¹üÀ§ÀÇ ÃÖ´ë°ªÀ»  nodeRect.width-2±îÁö Àâ¾Æ¾ß ¹æ³¢¸® °ãÄ§ ¹®Á¦°¡ ¾È»ı±è
+        //width ë²”ìœ„ì˜ ìµœëŒ€ê°’ì„  nodeRect.width-2ê¹Œì§€ ì¡ì•„ì•¼ ë°©ë¼ë¦¬ ê²¹ì¹¨ ë¬¸ì œê°€ ì•ˆìƒê¹€
         float width = UnityEngine.Random.Range(nodeRect.width / 2, nodeRect.width - 2);
         float height = UnityEngine.Random.Range(nodeRect.height/2, nodeRect.height - 1);
         float x = nodeRect.x + UnityEngine.Random.Range(1,nodeRect.width-width-1);
         float y = nodeRect.y - UnityEngine.Random.Range(1,nodeRect.height-height-1);
 
-        // ³ëµå ¾ÈÀÇ ¹æ »ı¼º(µğ¹ö±×¿ë)
+        // ë…¸ë“œ ì•ˆì˜ ë°© ìƒì„±(ë””ë²„ê·¸ìš©)
         /*
         LineRenderer roomRenderer = Instantiate(room).GetComponent<LineRenderer>();
-        roomRenderer.SetPosition(0, new Vector2(x, y - height)); //ÁÂÃø ÇÏ´Ü
-        roomRenderer.SetPosition(1, new Vector2(x + width, y - height)); //¿ìÃø ÇÏ´Ü
-        roomRenderer.SetPosition(2, new Vector2(x + width,y)); //¿ìÃø »ó´Ü
-        roomRenderer.SetPosition(3, new Vector2(x, y)); //ÁÂÃø »ó´Ü
+        roomRenderer.SetPosition(0, new Vector2(x, y - height)); //ì¢Œì¸¡ í•˜ë‹¨
+        roomRenderer.SetPosition(1, new Vector2(x + width, y - height)); //ìš°ì¸¡ í•˜ë‹¨
+        roomRenderer.SetPosition(2, new Vector2(x + width,y)); //ìš°ì¸¡ ìƒë‹¨
+        roomRenderer.SetPosition(3, new Vector2(x, y)); //ì¢Œì¸¡ ìƒë‹¨
         */
 
 
@@ -308,15 +309,15 @@ public class MapGenerator : MonoBehaviour
         Rect roomRect = roomList[ROW, COL].roomRect;
 
 
-        //** ¹æ Å©±â¿¡ ¿¡³Ê¹Ì Á¦³Ê·¹ÀÌÅÍ Å©±â¸¦ ¸ÂÃß±â À§ÇÑ º¯¼ö **
-        //roomÀÇ ¸Ç ¿ŞÂÊ À§ »ç°¢Çü ÁÂÇ¥
+        //** ë°© í¬ê¸°ì— ì—ë„ˆë¯¸ ì œë„ˆë ˆì´í„° í¬ê¸°ë¥¼ ë§ì¶”ê¸° ìœ„í•œ ë³€ìˆ˜ **
+        //roomì˜ ë§¨ ì™¼ìª½ ìœ„ ì‚¬ê°í˜• ì¢Œí‘œ
         Vector3 temp = new Vector3(0, 0, 0);
-        //roomÀÇ ¸Ç ¿À¸¥ÂÊ ¾Æ·¡ »ç°¢Çü ÁÂÇ¥
+        //roomì˜ ë§¨ ì˜¤ë¥¸ìª½ ì•„ë˜ ì‚¬ê°í˜• ì¢Œí‘œ
         Vector3 temp2 = new Vector3(0, 0, 0);
         
      
 
-        //·ëÅ¸ÀÏ ±×¸®±â
+        //ë£¸íƒ€ì¼ ê·¸ë¦¬ê¸°
         for (float i= roomRect.x; i<roomRect.x + roomRect.width;i++)
         {
             for(float j=roomRect.y;j>roomRect.y-roomRect.height;j--)
@@ -325,7 +326,7 @@ public class MapGenerator : MonoBehaviour
                 
                 if(i==roomRect.x && j == roomRect.y)
                 {
-                    //Ã³À½
+                    //ì²˜ìŒ
                     temp = new Vector3(tilePosition.x+0.5f,tilePosition.y+0.5f,tilePosition.z);
                     
                 }
@@ -334,8 +335,8 @@ public class MapGenerator : MonoBehaviour
                 {
                     if(i==roomRect.x&& tileMap.GetTile(tileMap.WorldToCell(new Vector3(i - 1, j, 0))) == roomTile)
                     {
-                        //¸¸¾à ¹Ù·Î ¿ŞÂÊ º®ÀÌ ·ëÅ¸ÀÏÀÌ¸é
-                        //¿©±âµµ ·ëÅ¸ÀÏÀ» »ı¼ºÇÏ¸é º® ±¸ºĞÀ» ÇÒ ¼ö ¾øÀ¸¹Ç·Î ·ëÅ¸ÀÏÀ» »ı¼ºÇØÁÖÁö ¾Ê´Â´Ù.
+                        //ë§Œì•½ ë°”ë¡œ ì™¼ìª½ ë²½ì´ ë£¸íƒ€ì¼ì´ë©´
+                        //ì—¬ê¸°ë„ ë£¸íƒ€ì¼ì„ ìƒì„±í•˜ë©´ ë²½ êµ¬ë¶„ì„ í•  ìˆ˜ ì—†ìœ¼ë¯€ë¡œ ë£¸íƒ€ì¼ì„ ìƒì„±í•´ì£¼ì§€ ì•ŠëŠ”ë‹¤.
                        
                     }
                     else
@@ -346,31 +347,31 @@ public class MapGenerator : MonoBehaviour
 
                 }else if(tileMap.GetTile(tilePosition) == roomTile)
                 {
-                    //¸¸¾à °°Àº À§Ä¡¿¡ ¿©·¯¹ø ·ëÅ¸ÀÏÀÌ °ãÄ£´Ù¸é
-                    //º®ÀÌ »ı±âÁö ¾ÊÀ» ¼ö ÀÖÀ¸¹Ç·Î ¹Ù±ùÅ¸ÀÏ·Î ±³Ã¼
+                    //ë§Œì•½ ê°™ì€ ìœ„ì¹˜ì— ì—¬ëŸ¬ë²ˆ ë£¸íƒ€ì¼ì´ ê²¹ì¹œë‹¤ë©´
+                    //ë²½ì´ ìƒê¸°ì§€ ì•Šì„ ìˆ˜ ìˆìœ¼ë¯€ë¡œ ë°”ê¹¥íƒ€ì¼ë¡œ êµì²´
                     tileMap.SetTile(tilePosition, outTile);
                     //miniTileMap.SetTile(tilePosition, miniOutTile);
                 }
             }
         }
 
-        //position ÇÇ¹şÀÌ Áß¾ÓÀÓ
-        //·ë ÇÏ³ª´ç ¿¡³Ê¹Ì Á¦³Ê·¹ÀÌÅÍµµ ÇÏ³ª¾¿ »ı¼º
+        //position í”¼ë²—ì´ ì¤‘ì•™ì„
+        //ë£¸ í•˜ë‚˜ë‹¹ ì—ë„ˆë¯¸ ì œë„ˆë ˆì´í„°ë„ í•˜ë‚˜ì”© ìƒì„±
         roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator);
-        // ¹Ì´Ï¸Ê - collider¿¡ ·ë À§Ä¡ Àü´Ş
+        // ë¯¸ë‹ˆë§µ - colliderì— ë£¸ ìœ„ì¹˜ ì „ë‹¬
         roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myRow = ROW;
         roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myCol = COL;
 
         temp2 = new Vector3(temp.x + (int)roomList[ROW, COL].roomRect.width, temp.y - (int)roomList[ROW, COL].roomRect.height);
-        //roomÀÇ ¸Ç ¿ŞÂÊ À§ »ç°¢Çü Ç¥½Ã
+        //roomì˜ ë§¨ ì™¼ìª½ ìœ„ ì‚¬ê°í˜• í‘œì‹œ
         //Instantiate(EnemyGenerator).transform.position = new Vector3(temp.x, temp.y);
-        //roomÀÇ ¸Ç ¿À¸¥ÂÊ ¾Æ·¡ »ç°¢Çü Ç¥½Ã
+        //roomì˜ ë§¨ ì˜¤ë¥¸ìª½ ì•„ë˜ ì‚¬ê°í˜• í‘œì‹œ
         //Instantiate(EnemyGenerator).transform.position = new Vector3(temp2.x, temp2.y); 
 
-        //EnemyGenerator Å©±â room Å©±â¿¡ ¸ÂÃß±â Á¶Á¤
+        //EnemyGenerator í¬ê¸° room í¬ê¸°ì— ë§ì¶”ê¸° ì¡°ì •
         roomList[ROW, COL].enemyGenerator.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 );
         
-        //+1 ¾ÈÇØÁÖ¸é ¾çÂÊ ¹İ Ä­ÀÌ ¸ğÀÚ¸§
+        //+1 ì•ˆí•´ì£¼ë©´ ì–‘ìª½ ë°˜ ì¹¸ì´ ëª¨ìë¦„
         roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1, (int)roomList[ROW, COL].roomRect.height + 1);
     }
 
@@ -382,8 +383,8 @@ public class MapGenerator : MonoBehaviour
         Vector2 fromCenter = new Vector2(fromRect.x + fromRect.width/2 , fromRect.y - fromRect.height/2);
         Vector2 toCenter = new Vector2(toRect.x + toRect.width/2 , toRect.y - toRect.height/2);
 
-        //°¡·Î ±æ
-        //¹Ù·Î ¿À¸¥ÂÊ, ¿ŞÂÊ ¹æ¿¡¸¸ ±æÀ» ±×¸± ¼ö ÀÖµµ·Ï ¼³Á¤ÇÏ±â
+        //ê°€ë¡œ ê¸¸
+        //ë°”ë¡œ ì˜¤ë¥¸ìª½, ì™¼ìª½ ë°©ì—ë§Œ ê¸¸ì„ ê·¸ë¦´ ìˆ˜ ìˆë„ë¡ ì„¤ì •í•˜ê¸°
         if (x == nextX+1 || x == nextX-1)
         {
 
@@ -432,8 +433,8 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        //¼¼·Î ±æ
-        //¹Ù·Î À§ÂÊ, ¾Æ·¡ÂÊ ¹æ¿¡¸¸ ±æÀ» ±×¸± ¼ö ÀÖµµ·Ï ¼³Á¤ÇÏ±â
+        //ì„¸ë¡œ ê¸¸
+        //ë°”ë¡œ ìœ„ìª½, ì•„ë˜ìª½ ë°©ì—ë§Œ ê¸¸ì„ ê·¸ë¦´ ìˆ˜ ìˆë„ë¡ ì„¤ì •í•˜ê¸°
         if (y == nextY+1 || y == nextY-1)
         {
             for (float i = Mathf.Min(fromCenter.y, toCenter.y); i <= Mathf.Max(fromCenter.y, toCenter.y); i++)
@@ -488,20 +489,20 @@ public class MapGenerator : MonoBehaviour
 
     void Divide()
     {
-        //Á¤¼ö³¢¸®ÀÇ ³ª´°¼ÀÀº ¹«Á¶°Ç Á¤¼ö·Î ³ª¿Í¼­ ºĞ¸ğor ºĞÀÚ¸¦ float Çüº¯È¯ ÇÊ¿ä
+        //ì •ìˆ˜ë¼ë¦¬ì˜ ë‚˜ëˆ—ì…ˆì€ ë¬´ì¡°ê±´ ì •ìˆ˜ë¡œ ë‚˜ì™€ì„œ ë¶„ëª¨or ë¶„ìë¥¼ float í˜•ë³€í™˜ í•„ìš”
         float horzPoint = 0-(float)mapSize.x/2, vertPoint = (0+mapSize.y) - (float)mapSize.y/2;
         float horzSize = (float)mapSize.x/5, vertSize = (float)mapSize.y/5;
        
-        //¼¼·Î
+        //ì„¸ë¡œ
         for (int i = 0; i < NUM_ROOM; i++)
         {
             horzPoint = 0 - mapSize.x/2;
-            //°¡·Î
+            //ê°€ë¡œ
             for(int j = 0; j < NUM_ROOM; j++)
             {
                 if (roomList[i, j].isCreated > 0)
                 {
-                    //¹æ Å¸ÀÏ ±×¸®±â 
+                    //ë°© íƒ€ì¼ ê·¸ë¦¬ê¸° 
                     DrawRoom(horzPoint, vertPoint, i, j);
                 }
                 horzPoint += horzSize;
@@ -509,26 +510,26 @@ public class MapGenerator : MonoBehaviour
 
             vertPoint -= vertSize;
         }
-        // ¹Ì´Ï¸Ê - ½ÃÀÛ ¹æÀÌ¸é miniRoomMesh ¹Ù·Î »ı¼º
+        // ë¯¸ë‹ˆë§µ - ì‹œì‘ ë°©ì´ë©´ miniRoomMesh ë°”ë¡œ ìƒì„±
         roomList[startY, startX].enemyGenerator.GetComponent<EnemyGenerator>().GenerateMiniRoomMesh();
 
     }
 
     void DrawWall()
     {
-        //¹üÀ§°¡ 0~mapSize.x°¡ ¾Æ´Ï¶ó -1~mapSize.x+1ÀÎ ÀÌÀ¯´Â ÀüÀÚ·Î ÇÏ¸é º® Å¸ÀÏÀÌ ¹æÀ» ÈÖ°¨Áö ¸øÇÏ´Â »çÅÂ°¡ »ı±â±â ¶§¹®
-        for (int i = -1; i < mapSize.x+1; i++) //Å¸ÀÏ ÀüÃ¼¸¦ ¼øÈ¸
+        //ë²”ìœ„ê°€ 0~mapSize.xê°€ ì•„ë‹ˆë¼ -1~mapSize.x+1ì¸ ì´ìœ ëŠ” ì „ìë¡œ í•˜ë©´ ë²½ íƒ€ì¼ì´ ë°©ì„ íœ˜ê°ì§€ ëª»í•˜ëŠ” ì‚¬íƒœê°€ ìƒê¸°ê¸° ë•Œë¬¸
+        for (int i = -1; i < mapSize.x+1; i++) //íƒ€ì¼ ì „ì²´ë¥¼ ìˆœíšŒ
         {
             for (int j = -1; j < mapSize.y+1; j++)
             {
                 if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0)) == outTile)
                 {
-                    //¹Ù±ùÅ¸ÀÏ ÀÏ °æ¿ì
+                    //ë°”ê¹¥íƒ€ì¼ ì¼ ê²½ìš°
                     for (int x = -1; x <= 1; x++)
                     {
                         for (int y = -1; y <= 1; y++)
                         {
-                            if (x == 0 && y == 0) continue;//¹Ù±ù Å¸ÀÏ ±âÁØ 8¹æÇâÀ» Å½»öÇØ¼­ room tileÀÌ ÀÖ´Ù¸é wall tile·Î ¹Ù²ãÁØ´Ù.
+                            if (x == 0 && y == 0) continue;//ë°”ê¹¥ íƒ€ì¼ ê¸°ì¤€ 8ë°©í–¥ì„ íƒìƒ‰í•´ì„œ room tileì´ ìˆë‹¤ë©´ wall tileë¡œ ë°”ê¿”ì¤€ë‹¤.
                             if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + x, j - mapSize.y / 2 + y, 0)) == roomTile)
                             {
                                 tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile);
@@ -551,22 +552,22 @@ public class MapGenerator : MonoBehaviour
         var kitchenPos = new KeyValuePair<int, int>();
         var bossPos = new KeyValuePair<int, int>();
 
-        if (!GameManager.gameManager.charData.saveFile.isMapSave) //·ÎµåµÉ ¸ÊÀÌ ÀÖÀ¸¸é ÀÌ¹Ì º¸½º¹æ, ÁÖ¹æÀÌ °áÁ¤µÇ¾î ÀÖÀ¸¹Ç·Î ½ÇÇàX
+        if (!GameManager.gameManager.charData.saveFile.isMapSave) //ë¡œë“œë  ë§µì´ ìˆìœ¼ë©´ ì´ë¯¸ ë³´ìŠ¤ë°©, ì£¼ë°©ì´ ê²°ì •ë˜ì–´ ìˆìœ¼ë¯€ë¡œ ì‹¤í–‰X
         {
             if (bossNum > 4)
             {
-                //ÁÖ¹æÀº 4~lastDepth-1 »çÀÌ¿¡
+                //ì£¼ë°©ì€ 4~lastDepth-1 ì‚¬ì´ì—
                 kitchenNum = (UnityEngine.Random.Range(4, bossNum));
             }
             else
             {
-                //lastDepth°¡ 4ÀÌ¸é
-                //ÁÖ¹æÀº 3¿¡ (4°¡ µÇ¸é °ãÄ§)
+                //lastDepthê°€ 4ì´ë©´
+                //ì£¼ë°©ì€ 3ì— (4ê°€ ë˜ë©´ ê²¹ì¹¨)
                 kitchenNum = 3;
             }
 
-            //ÁÖ¹æ ±íÀÌ¶û º¸½º¹æ ±íÀÌ°¡ °°Àº ¹æÀÌ ¿©·¯°³ ÀÏ ¼ö ÀÖÀ½.
-            //±× Áß ¹æ ÇÏ³ª¸¦ ·£´ıÀ¸·Î »Ì¾Æ¾ßÇÔ.
+            //ì£¼ë°© ê¹Šì´ë‘ ë³´ìŠ¤ë°© ê¹Šì´ê°€ ê°™ì€ ë°©ì´ ì—¬ëŸ¬ê°œ ì¼ ìˆ˜ ìˆìŒ.
+            //ê·¸ ì¤‘ ë°© í•˜ë‚˜ë¥¼ ëœë¤ìœ¼ë¡œ ë½‘ì•„ì•¼í•¨.
             for (int i = 0; i < NUM_ROOM; i++)
             {
                 for (int j = 0; j < NUM_ROOM; j++)
@@ -579,7 +580,7 @@ public class MapGenerator : MonoBehaviour
                         }
                         else if (roomList[i, j].isCreated == kitchenNum)
                         {
-                            //x,y ÇüÅÂ·Î Áı¾î ³Ö±â
+                            //x,y í˜•íƒœë¡œ ì§‘ì–´ ë„£ê¸°
                             kitchenIdxList.Add(new KeyValuePair<int, int>(j, i));
                         }
                         else if (roomList[i, j].isCreated == bossNum)
@@ -596,7 +597,7 @@ public class MapGenerator : MonoBehaviour
             roomList[kitchenPos.Value, kitchenPos.Key].roomType = RoomType.ROOM_KITCHEN;
             roomList[bossPos.Value, bossPos.Key].roomType = RoomType.ROOM_BOSS;
         }
-        else //·ÎµåµÉ ¸ÊÀÌ ÀÖÀ¸¸é ÁÖ¹æ°ú º¸½º¹æÀÇ ÀÎµ¦½º¸¦ ¹İÈ¯
+        else //ë¡œë“œë  ë§µì´ ìˆìœ¼ë©´ ì£¼ë°©ê³¼ ë³´ìŠ¤ë°©ì˜ ì¸ë±ìŠ¤ë¥¼ ë°˜í™˜
         {
             for (int i = 0; i < NUM_ROOM; i++)
             {
@@ -616,12 +617,12 @@ public class MapGenerator : MonoBehaviour
 
         }
 
-        // ¹Ì´Ï¸Ê¿¡ ÁÖ¹æ, º¸½º¹æ À§Ä¡ Ç¥½Ã
+        // ë¯¸ë‹ˆë§µì— ì£¼ë°©, ë³´ìŠ¤ë°© ìœ„ì¹˜ í‘œì‹œ
         GameObject.Find("miniKitchen").transform.position = roomList[kitchenPos.Value, kitchenPos.Key].enemyGenerator.transform.position;
         GameObject.Find("miniBoss").transform.position = roomList[bossPos.Value, bossPos.Key].enemyGenerator.transform.position;
 
-        Debug.Log("ÁÖ¹æ À§Ä¡: " + GameObject.Find("miniKitchen").transform.position);
-        Debug.Log("º¸½º¹æ À§Ä¡: " + GameObject.Find("miniBoss").transform.position);
+        Debug.Log("ì£¼ë°© ìœ„ì¹˜: " + GameObject.Find("miniKitchen").transform.position);
+        Debug.Log("ë³´ìŠ¤ë°© ìœ„ì¹˜: " + GameObject.Find("miniBoss").transform.position);
 
         for (int k = 0; k < 3; k++)
         {
@@ -629,7 +630,7 @@ public class MapGenerator : MonoBehaviour
             int ROW = 0, COL = 0;
             if (k == 0)
             {
-                // ½ÃÀÛ¹æ
+                // ì‹œì‘ë°©
                 ROW = startY;COL = startX;
                 nowTile = startRoomTile;
                 roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().nonEnemyRoom = true;
@@ -637,17 +638,18 @@ public class MapGenerator : MonoBehaviour
             }
             else if (k == 1)
             {
-                // ÁÖ¹æ
+                // ì£¼ë°©
                 ROW = kitchenPos.Value; COL = kitchenPos.Key;
                 nowTile = kitchenTile;
 
                 roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().nonEnemyRoom = true;
                 //Destroy(roomList[ROW, COL].enemyGenerator);
                 GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2), 0), Quaternion.Euler(0, 0, 0));
+                GameObject refrigerator = Instantiate(refrigeratorPrefab, createTable.transform.position + new Vector3(5, 0, 0), Quaternion.Euler(0, 0, 0));
             }
             else if (k == 2)
             {
-                // º¸½º¹æ
+                // ë³´ìŠ¤ë°©
                 ROW = bossPos.Value; COL = bossPos.Key;
                 nowTile = bossTile;
 
@@ -782,7 +784,7 @@ public class MapGenerator : MonoBehaviour
         roomList[startY, startX].isCreated = 1;
     }
 
-    // º¸½º¹æ ÁÂÇ¥ ¾Ë¸®±â
+    // ë³´ìŠ¤ë°© ì¢Œí‘œ ì•Œë¦¬ê¸°
     public KeyValuePair<int, int> BossGridNum()
     {
         var targetPos = new KeyValuePair<int, int>();
