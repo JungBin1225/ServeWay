@@ -136,13 +136,12 @@ public class EnemyController : MonoBehaviour
             if(attackType != EnemyAttackType.NOODLE)
             {
                 EnemyFire();
+                coolTime = attackCoolTime;
             }
             else
             {
                 StartCoroutine(EnemyLaser());
             }
-            
-            coolTime = attackCoolTime;
         }
     }
 
@@ -181,6 +180,7 @@ public class EnemyController : MonoBehaviour
     private IEnumerator EnemyLaser()
     {
         yield return null;
+        coolTime = attackCoolTime;
     }
 
     private void FireSoupBullet(float speed, float damage, float radius, float bulletAmount)
