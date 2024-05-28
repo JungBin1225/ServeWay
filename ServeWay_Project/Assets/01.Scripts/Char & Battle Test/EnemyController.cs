@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum EnemyAttackType
+{
+    MEAT,
+    RICE,
+    SOUP,
+    NOODLE,
+    BREAD
+};
+
 public class EnemyController : MonoBehaviour
 {
     private float hp;
@@ -14,10 +23,12 @@ public class EnemyController : MonoBehaviour
 
     public float maxHp;
     public float speed;
+    public EnemyAttackType attackType;
     public float range;
     public float attackCoolTime;
     public float damage;
     public float bulletSpeed;
+    public List<float> alphaStat;
     public GameObject bulletPrefab;
     public bool moveAble;
 
@@ -122,7 +133,15 @@ public class EnemyController : MonoBehaviour
 
         if(coolTime == 0 && dir.magnitude <= range && moveAble)
         {
-            EnemyFire();
+            if(attackType != EnemyAttackType.NOODLE)
+            {
+                EnemyFire();
+            }
+            else
+            {
+                StartCoroutine(EnemyLaser());
+            }
+            
             coolTime = attackCoolTime;
         }
     }
@@ -130,14 +149,57 @@ public class EnemyController : MonoBehaviour
     private void EnemyFire()
     {
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-        bullet.GetComponent<EnemyBullet>().SetTarget(transform.position - target.transform.position);
-        bullet.GetComponent<EnemyBullet>().SetDamage(damage);
-        bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
+
+        switch(attackType)
+        {
+            case EnemyAttackType.BREAD:
+                var breadBullet = bullet.GetComponent<EnemyExplosionBullet>();
+                breadBullet.SetTarget(transform.position - target.transform.position);
+                breadBullet.SetSpeed(bulletSpeed);
+                breadBullet.SetDamage(damage);
+                breadBullet.SetRadius(alphaStat[0]);
+                break;
+            case EnemyAttackType.MEAT:
+                var meatBullet = bullet.GetComponent<EnemyBullet>();
+                meatBullet.SetTarget(transform.position - target.transform.position);
+                meatBullet.SetSpeed(bulletSpeed);
+                meatBullet.SetDamage(damage);
+                break;
+            case EnemyAttackType.RICE:
+                var riceBullet = bullet.GetComponent<EnemyBullet>();
+                riceBullet.SetTarget(transform.position - target.transform.position);
+                riceBullet.SetSpeed(bulletSpeed);
+                riceBullet.SetDamage(damage);
+                break;
+            case EnemyAttackType.SOUP:
+                Destroy(bullet);
+                FireSoupBullet(bulletSpeed, damage, alphaStat[0], alphaStat[1]);
+                break;
+        }
+    }
+
+    private IEnumerator EnemyLaser()
+    {
+        yield return null;
+    }
+
+    private void FireSoupBullet(float speed, float damage, float radius, float bulletAmount)
+    {
+        float startAngle = (radius * 10) / 2;
+        float differAngle = (radius * 10) / (bulletAmount - 1);
+        Vector3 fromAngle = Quaternion.FromToRotation(Vector3.up, target.transform.position - transform.position).eulerAngles;
+
+        for (int i = 0; i < bulletAmount; i++)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(fromAngle + new Vector3(0, 0, startAngle - (differAngle * i))));
+            bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
+            bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
+            bullet.GetComponent<EnemyBullet>().SetDamage(damage);
+        }
     }
 
     private IEnumerator Knockback(GameObject player)
     {
-        Debug.Log("aa");
         moveAble = false;
         rigidBody.velocity = Vector2.zero;
         rigidBody.AddForce((transform.position - player.transform.position).normalized * 20, ForceMode2D.Impulse);

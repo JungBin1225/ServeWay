@@ -225,11 +225,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 10
   speed: 5
+  attackType: 0
   range: 5
   attackCoolTime: 5
   damage: 1
   bulletSpeed: 5
-  bulletPrefab: {fileID: 2490266043329067457, guid: 3ddb7db3ee5ba71488c240fe1a97bba4, type: 3}
+  alphaStat:
+  - 6
+  - 10
+  bulletPrefab: {fileID: 2490266043329067457, guid: 7c3985231223e764cba37db337ee5237, type: 3}
   moveAble: 0
   maxPos: {x: 0, y: 0}
   hpImage: {fileID: 8639196569039287002}

@@ -135,7 +135,7 @@ public class WeaponController : MonoBehaviour
                 break;
             case Food_MainIngred.SOUP:
                 Destroy(bullet);
-                GenerateSoupBullet(speed, damage, mousePos, alphaStat[0], alphaStat[1]);
+                GenerateSoupBullet(speed, damage, alphaStat[0], alphaStat[1]);
                 break;
             case Food_MainIngred.NOODLE:
                 Destroy(bullet);
@@ -151,7 +151,7 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    public void GenerateSoupBullet(float speed, float damage, Vector3 mousePos, float radius, float bulletAmount)
+    public void GenerateSoupBullet(float speed, float damage, float radius, float bulletAmount)
     {
         /*for (int j = 0; j < 4; j++)
         {
