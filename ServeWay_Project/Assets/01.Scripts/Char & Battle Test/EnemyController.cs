@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour
     private Vector2 dir;
     private Rigidbody2D rigidBody;
     private Animator anim;
+    private LineRenderer lineRenderer;
     private float coolTime;
 
     public float maxHp;
@@ -30,6 +31,7 @@ public class EnemyController : MonoBehaviour
     public float bulletSpeed;
     public List<float> alphaStat;
     public GameObject bulletPrefab;
+    public GameObject laserPrefab;
     public bool moveAble;
 
     private Vector2 minPos;
@@ -49,6 +51,9 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
         target = GameObject.FindGameObjectWithTag("Player");
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.enabled = false;
 
         StartCoroutine(EnemyMove());
     }
@@ -89,22 +94,25 @@ public class EnemyController : MonoBehaviour
 
             if(!moveAble)
             {
-                yield return null;
-            }
-
-            if (dir.magnitude > range)
-            {
-                //chase target
-                rigidBody.velocity = dir.normalized * speed;
+                rigidBody.velocity = Vector2.zero;
                 yield return null;
             }
             else
             {
-                //move & attack
-                float posX = Random.Range(minPos.x, maxPos.x);
-                float posY = Random.Range(minPos.y, maxPos.y);
-                rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed;
-                yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+                if (dir.magnitude > range)
+                {
+                    //chase target
+                    rigidBody.velocity = dir.normalized * speed;
+                    yield return null;
+                }
+                else
+                {
+                    //move & attack
+                    float posX = Random.Range(minPos.x, maxPos.x);
+                    float posY = Random.Range(minPos.y, maxPos.y);
+                    rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed;
+                    yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+                }
             }
         }
     }
@@ -179,8 +187,47 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator EnemyLaser()
     {
-        yield return null;
+        moveAble = false;
+        rigidBody.velocity = Vector2.zero;
+        lineRenderer.enabled = true;
+        GameObject laser = Instantiate(laserPrefab, this.transform);
+
+        laser.GetComponent<EnemyLaser>().SetDamage(damage);
+        laser.GetComponent<EnemyLaser>().SetCoolTime(bulletSpeed);
+
+        Ray2D ray = new Ray2D(transform.position, target.transform.position - transform.position);
+
+        lineRenderer.SetPosition(0, transform.position);
+
+        int mask = 1 << LayerMask.NameToLayer("RayTarget");
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
+        if (hit)
+        {
+            lineRenderer.SetPosition(1, hit.point);
+        }
+        else
+        {
+            lineRenderer.SetPosition(1, target.transform.position);
+        }
+
+        Vector3 start = lineRenderer.GetPosition(0);
+        Vector3 end = lineRenderer.GetPosition(1);
+
+        laser.transform.localScale = new Vector3(Vector3.Distance(start, end) * 1.25f, lineRenderer.startWidth * 1.25f, 0);
+        Vector3 pos = (start + end) / 2;
+        Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
+        laser.transform.rotation = angleAxis;
+        laser.transform.position = pos;
+
+        yield return new WaitForSeconds(alphaStat[0]);
+
+        lineRenderer.SetPosition(1, transform.position);
+        lineRenderer.enabled = false;
+        Destroy(laser);
         coolTime = attackCoolTime;
+        moveAble = true;
     }
 
     private void FireSoupBullet(float speed, float damage, float radius, float bulletAmount)

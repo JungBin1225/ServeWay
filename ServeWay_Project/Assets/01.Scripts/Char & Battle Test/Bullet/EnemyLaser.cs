@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserController : MonoBehaviour
+public class EnemyLaser : MonoBehaviour
 {
     private float damage;
     private float coolTime;
@@ -36,16 +36,11 @@ public class LaserController : MonoBehaviour
         this.coolTime = coolTime;
     }
 
-    public void SetNation(Food_Nation nation)
-    {
-        this.nation = nation;
-    }
-
     private IEnumerator FireLaser()
     {
-        while(true)
+        while (true)
         {
-            if(nowCoolTime <= 0)
+            if (nowCoolTime <= 0)
             {
                 collider.enabled = true;
                 nowCoolTime = coolTime;
@@ -62,13 +57,9 @@ public class LaserController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
+        if (collision.tag == "Player")
         {
-            collision.gameObject.GetComponent<EnemyController>().GetDamage(damage, this.transform.position);
-        }
-        else if (collision.tag == "Boss")
-        {
-            collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, nation);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
         }
     }
 }
