@@ -273,7 +273,7 @@ public class MapGenerator : MonoBehaviour
        
     }
 
-    void DrawRoom(float horz,float vert,int ROW,int COL)
+    void DrawRoom(float horz,float vert,int ROW,int COL, int index)
     {
         /**여기 좌표는 모두 좌측 상단 기준**/
         
@@ -287,6 +287,7 @@ public class MapGenerator : MonoBehaviour
         */
 
         roomList[ROW, COL].nodeRect = new Rect(horz, vert, (float)mapSize.x / 5, (float)mapSize.y / 5);
+
         Rect nodeRect = roomList[ROW, COL].nodeRect;
 
         //width 범위의 최대값을  nodeRect.width-2까지 잡아야 방끼리 겹침 문제가 안생김
@@ -294,7 +295,13 @@ public class MapGenerator : MonoBehaviour
         float height = UnityEngine.Random.Range(nodeRect.height/2, nodeRect.height - 1);
         float x = nodeRect.x + UnityEngine.Random.Range(1,nodeRect.width-width-1);
         float y = nodeRect.y - UnityEngine.Random.Range(1,nodeRect.height-height-1);
-
+        if (GameManager.gameManager.charData.saveFile.isMapSave)
+        {
+            width = GameManager.gameManager.charData.saveFile.roomList[index].roomRect.width;
+            height = GameManager.gameManager.charData.saveFile.roomList[index].roomRect.height;
+            x = GameManager.gameManager.charData.saveFile.roomList[index].roomRect.x;
+            y = GameManager.gameManager.charData.saveFile.roomList[index].roomRect.y;
+        }
         // 노드 안의 방 생성(디버그용)
         /*
         LineRenderer roomRenderer = Instantiate(room).GetComponent<LineRenderer>();
@@ -304,8 +311,8 @@ public class MapGenerator : MonoBehaviour
         roomRenderer.SetPosition(3, new Vector2(x, y)); //좌측 상단
         */
 
-
         roomList[ROW, COL].roomRect = new Rect(x, y, width, height);
+        
         Rect roomRect = roomList[ROW, COL].roomRect;
 
 
@@ -492,7 +499,8 @@ public class MapGenerator : MonoBehaviour
         //정수끼리의 나눗셈은 무조건 정수로 나와서 분모or 분자를 float 형변환 필요
         float horzPoint = 0-(float)mapSize.x/2, vertPoint = (0+mapSize.y) - (float)mapSize.y/2;
         float horzSize = (float)mapSize.x/5, vertSize = (float)mapSize.y/5;
-       
+
+        int index = 0;
         //세로
         for (int i = 0; i < NUM_ROOM; i++)
         {
@@ -503,9 +511,11 @@ public class MapGenerator : MonoBehaviour
                 if (roomList[i, j].isCreated > 0)
                 {
                     //방 타일 그리기 
-                    DrawRoom(horzPoint, vertPoint, i, j);
+                    DrawRoom(horzPoint, vertPoint, i, j, index);
                 }
                 horzPoint += horzSize;
+
+                index++;
             }
 
             vertPoint -= vertSize;
