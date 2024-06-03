@@ -15,6 +15,7 @@ public class WeaponController : MonoBehaviour
     private RaycastHit2D hit;
     private bool isClicked;
     private bool isLaser;
+    private GameObject laser;
 
     public string weaponName;
     public Food_Grade grade;
@@ -78,6 +79,20 @@ public class WeaponController : MonoBehaviour
         else if(Input.GetMouseButtonUp(0) || !player.controllAble)
         {
             isClicked = false;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if(isLaser)
+        {
+            lineRenderer.SetPosition(1, transform.position);
+            lineRenderer.enabled = false;
+            isLaser = false;
+            if (laser != null)
+            {
+                Destroy(laser);
+            }
         }
     }
 
@@ -192,7 +207,7 @@ public class WeaponController : MonoBehaviour
     {
         lineRenderer.enabled = true;
         isLaser = true;
-        GameObject laser = Instantiate(laserPrefab, this.transform);
+        laser = Instantiate(laserPrefab, this.transform);
 
         laser.GetComponent<LaserController>().SetDamage(damage);
         laser.GetComponent<LaserController>().SetCoolTime(shootDuration);

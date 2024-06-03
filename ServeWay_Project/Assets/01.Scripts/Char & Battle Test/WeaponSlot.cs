@@ -42,7 +42,7 @@ public class WeaponSlot : MonoBehaviour
 
     public void ChangeNextWeapon()
     {
-        if(weaponList.Count != 0)
+        if(weaponList.Count > 1)
         {
             weaponList[index].SetActive(false);
 

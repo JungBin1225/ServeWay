@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
     private Animator anim;
     private LineRenderer lineRenderer;
     private float coolTime;
+    private GameObject laser;
 
     public float maxHp;
     public float speed;
@@ -64,6 +65,15 @@ public class EnemyController : MonoBehaviour
         if(hp <= 0)
         {
             //generator.GetComponent<EnemyGenerator>().enemyAmount--;
+            if(lineRenderer.enabled)
+            {
+                lineRenderer.SetPosition(1, transform.position);
+                lineRenderer.enabled = false;
+                if (laser != null)
+                {
+                    Destroy(laser);
+                }
+            }
             Destroy(this.gameObject);
         }
 
@@ -190,7 +200,7 @@ public class EnemyController : MonoBehaviour
         moveAble = false;
         rigidBody.velocity = Vector2.zero;
         lineRenderer.enabled = true;
-        GameObject laser = Instantiate(laserPrefab, this.transform);
+        laser = Instantiate(laserPrefab, this.transform);
 
         laser.GetComponent<EnemyLaser>().SetDamage(damage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(bulletSpeed);
