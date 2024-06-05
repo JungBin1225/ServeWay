@@ -8,49 +8,134 @@ public class TabMenu : MonoBehaviour
     public GameObject buttonGroup;
     public List<GameObject> panel;
 
+    private Animator anim;
     private bool isOpen;
     private int index;
+    private bool interAble;
 
     void Start()
     {
+        anim = transform.GetChild(0).GetComponent<Animator>();
         isOpen = false;
+        interAble = true;
         index = 0;
     }
 
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape)) && GameManager.gameManager.menuAble)
+        if ((Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape)) && GameManager.gameManager.menuAble && interAble)
         {
             if (!isOpen)
             {
                 if (Time.timeScale == 1)
                 {
-                    Time.timeScale = 0;
-                    GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
-                    buttonGroup.SetActive(true);
-
-                    isOpen = true;
-                    index = 0;
-                    OpenPanel(index);
+                    StartCoroutine(OpenBook());
                 }
             }
             else
             {
-                isOpen = false;
-                buttonGroup.SetActive(false);
-                for(int i = 0; i < buttonGroup.transform.childCount; i++)
-                {
-                    buttonGroup.transform.GetChild(i).GetComponent<Button>().interactable = false;
-                    buttonGroup.transform.GetChild(i).GetComponent<Button>().interactable = true;
-                }
-                foreach (GameObject menu in panel)
-                {
-                    menu.SetActive(false);
-                }
-                GetComponent<Image>().color = new Color(0, 0, 0, 0);
-                Time.timeScale = 1;
+                StartCoroutine(CloseBook());
             }
         }
+    }
+
+    private IEnumerator OpenBook()
+    {
+        Time.timeScale = 0;
+        interAble = false;
+        GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
+        transform.GetChild(0).gameObject.SetActive(true);
+
+        anim.SetTrigger("Open");
+        float time = 0;
+        foreach(AnimationClip clip in anim.runtimeAnimatorController.animationClips)
+        {
+            if(clip.name.Equals("Open"))
+            {
+                time = clip.length;
+            }
+        }
+        
+        yield return new WaitForSecondsRealtime(time);
+
+        buttonGroup.SetActive(true);
+
+        isOpen = true;
+        index = 0;
+        OpenPanel(index);
+        interAble = true;
+    }
+
+    private IEnumerator CloseBook()
+    {
+        interAble = false;
+        buttonGroup.SetActive(false);
+        for (int i = 0; i < buttonGroup.transform.childCount; i++)
+        {
+            buttonGroup.transform.GetChild(i).GetComponent<Button>().interactable = false;
+            buttonGroup.transform.GetChild(i).GetComponent<Button>().interactable = true;
+        }
+        foreach (GameObject menu in panel)
+        {
+            menu.SetActive(false);
+        }
+
+        anim.SetTrigger("Close");
+        float time = 0;
+        foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name.Equals("Close"))
+            {
+                time = clip.length;
+            }
+        }
+
+        yield return new WaitForSecondsRealtime(time);
+
+        isOpen = false;
+        transform.GetChild(0).gameObject.SetActive(false);
+        GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        Time.timeScale = 1;
+        interAble = true;
+    }
+
+    private IEnumerator FlipBook(int num)
+    {
+        interAble = false;
+        foreach (GameObject menu in panel)
+        {
+            menu.SetActive(false);
+        }
+
+        float time = 0;
+        if (index > num)
+        {
+            anim.SetTrigger("FlipRight");
+            foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
+            {
+                if (clip.name.Equals("FlipRight"))
+                {
+                    time = clip.length;
+                }
+            }
+        }
+        else
+        {
+            anim.SetTrigger("FlipLeft");
+            foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
+            {
+                if (clip.name.Equals("FlipLeft"))
+                {
+                    time = clip.length;
+                }
+            }
+        }
+
+        yield return new WaitForSecondsRealtime(time);
+
+        index = num;
+        OpenPanel(num);
+        interAble = true;
     }
 
     public void OpenPanel(int index)
@@ -79,7 +164,9 @@ public class TabMenu : MonoBehaviour
 
     public void OnIndexButtonClicked(int num)
     {
-        index = num;
-        OpenPanel(num);
+        if(interAble && index != num)
+        {
+            StartCoroutine(FlipBook(num));
+        }
     }
 }
