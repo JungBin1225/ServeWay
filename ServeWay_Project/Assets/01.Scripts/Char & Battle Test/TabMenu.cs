@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TabMenu : MonoBehaviour
 {
     public GameObject buttonGroup;
     public List<GameObject> panel;
+    public bool interAble;
 
     private Animator anim;
     private bool isOpen;
     private int index;
-    private bool interAble;
 
     void Start()
     {
-        anim = transform.GetChild(0).GetComponent<Animator>();
+        anim = transform.GetChild(1).GetComponent<Animator>();
         isOpen = false;
         interAble = true;
         index = 0;
@@ -44,7 +45,7 @@ public class TabMenu : MonoBehaviour
         Time.timeScale = 0;
         interAble = false;
         GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
-        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
 
         anim.SetTrigger("Open");
         float time = 0;
@@ -93,7 +94,7 @@ public class TabMenu : MonoBehaviour
         yield return new WaitForSecondsRealtime(time);
 
         isOpen = false;
-        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
         GetComponent<Image>().color = new Color(0, 0, 0, 0);
         Time.timeScale = 1;
         interAble = true;
@@ -162,11 +163,42 @@ public class TabMenu : MonoBehaviour
         }
     }
 
+    private IEnumerator ButtonAnimation(bool isFlip, int num)
+    {
+        buttonGroup.transform.GetChild(num).GetComponent<Button>().animationTriggers.highlightedTrigger = "Normal";
+        EventSystem.current.SetSelectedGameObject(null);
+
+        float time = 0;
+        if(isFlip)
+        {
+            foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
+            {
+                if (clip.name.Equals("FlipRight"))
+                {
+                    time = clip.length;
+                }
+            }
+        }
+        else
+        {
+            time = 0.5f;
+        }
+
+        yield return new WaitForSecondsRealtime(time);
+
+        buttonGroup.transform.GetChild(num).GetComponent<Button>().animationTriggers.highlightedTrigger = "Highlighted";
+    }
+
     public void OnIndexButtonClicked(int num)
     {
+        bool isFlip = false;
+
         if(interAble && index != num)
         {
+            isFlip = true;
             StartCoroutine(FlipBook(num));
         }
+
+        StartCoroutine(ButtonAnimation(isFlip, num));
     }
 }

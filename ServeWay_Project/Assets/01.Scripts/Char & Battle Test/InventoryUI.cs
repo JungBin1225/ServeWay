@@ -20,6 +20,7 @@ public class InventoryUI : MonoBehaviour
     private List<Ingred_Name> ingredients;
     private int page;
     private bool interAble;
+    private TabMenu tabMenu;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class InventoryUI : MonoBehaviour
         itemList = FindObjectOfType<DataController>().IngredientList;
         foodInfo = FindObjectOfType<DataController>();
         weaponName = FindObjectOfType<WeaponSlot>().ReturnWeaponList();
+        tabMenu = transform.parent.GetComponent<TabMenu>();
 
         InitIngredList();
 
@@ -54,6 +56,7 @@ public class InventoryUI : MonoBehaviour
         }
 
         page = 0;
+        interAble = true;
 
         InitPage(page);
     }
@@ -157,11 +160,11 @@ public class InventoryUI : MonoBehaviour
         }
 
         int i = 0;
-        if (ingredients.Count > ((page - 1) * 6) + inventoryButtonList_0.Count)
+        if (ingredients.Count > ((page - 1) * 8) + inventoryButtonList_0.Count)
         {
             for(; i < inventoryButtonList_1.Count; i++)
             {
-                if (ingredients.Count <= ((page - 1) * 6) + inventoryButtonList_0.Count + i)
+                if (ingredients.Count <= ((page - 1) * 8) + inventoryButtonList_0.Count + i)
                 {
                     inventoryButtonList_1[i].SetActive(false);
                 }
@@ -169,8 +172,8 @@ public class InventoryUI : MonoBehaviour
                 {
                     inventoryButtonList_1[i].SetActive(true);
                     inventoryButtonList_1[i].transform.GetChild(0).gameObject.SetActive(true);
-                    inventoryButtonList_1[i].GetComponent<Image>().sprite = foodInfo.FindIngredient(ingredients[((page - 1) * 6) + inventoryButtonList_0.Count + i]).sprite;
-                    inventoryButtonList_1[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[ingredients[((page - 1) * 6) + inventoryButtonList_0.Count + i]].ToString();
+                    inventoryButtonList_1[i].GetComponent<Image>().sprite = foodInfo.FindIngredient(ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]).sprite;
+                    inventoryButtonList_1[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]].ToString();
                 }
             }
         }
@@ -202,6 +205,7 @@ public class InventoryUI : MonoBehaviour
     private IEnumerator FlipPage(int dir)
     {
         interAble = false;
+        tabMenu.interAble = false;
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
 
@@ -233,6 +237,7 @@ public class InventoryUI : MonoBehaviour
 
         InitPage(this.page);
         interAble = true;
+        tabMenu.interAble = true;
     }
 
     public void OnInfoOpenClicked(Image image)

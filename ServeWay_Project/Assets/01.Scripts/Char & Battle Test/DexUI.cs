@@ -13,12 +13,15 @@ public class DexUI : MonoBehaviour
     private List<Ingred_Name> ingredientList;
     private List<GameObject> buttonList;
     private int page;
+    private bool interAble;
+    private TabMenu tabMenu;
 
     public Sprite lockSprite;
     public GameObject buttonGruop;
     public GameObject infoWindow;
     public Material defultMaterial;
     public Material grayScale;
+    public Animator bgAnim;
 
     void Start()
     {
@@ -31,6 +34,7 @@ public class DexUI : MonoBehaviour
     {
         dataController = FindObjectOfType<DataController>();
         buttonList = new List<GameObject>();
+        tabMenu = transform.parent.GetComponent<TabMenu>();
         for(int i = 0; i < buttonGruop.transform.childCount; i++)
         {
             buttonList.Add(buttonGruop.transform.GetChild(i).gameObject);
@@ -40,10 +44,17 @@ public class DexUI : MonoBehaviour
         ingredientList = new List<Ingred_Name>();
         dexMod = 0;
         page = 0;
+        interAble = true;
 
         InitList(page);
 
         infoWindow.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        infoWindow.SetActive(false);
+        interAble = true;
     }
 
     private void InitList(int page)
@@ -121,40 +132,100 @@ public class DexUI : MonoBehaviour
 
     public void OnModChangeClicked(int index)
     {
-        dexMod = index;
-        page = 0;
+        if(interAble && dexMod != index)
+        {
+            int dir = 0;
+            if(index == 0)
+            {
+                dir = -1;
+            }
+            else
+            {
+                dir = 1;
+            }
 
-        InitList(page);
+            dexMod = index;
+            page = 0;
+
+            StartCoroutine(FlipPage(dir));
+        }
     }
 
     public void OnPageClicked(int page)
     {
-        if (page < 0)
+        if(interAble)
         {
-            if (this.page > 0)
+            if (page < 0)
             {
-                this.page -= 1;
-            }
-        }
-        else
-        {
-            if (dexMod == 0)
-            {
-                if (buttonList.Count * (this.page + 1) < foodList.Count)
+                if (this.page > 0)
                 {
-                    this.page += 1;
+                    this.page -= 1;
+                    StartCoroutine(FlipPage(-1));
                 }
             }
             else
             {
-                if (buttonList.Count * (this.page + 1) < ingredientList.Count)
+                if (dexMod == 0)
                 {
-                    this.page += 1;
+                    if (buttonList.Count * (this.page + 1) < foodList.Count)
+                    {
+                        this.page += 1;
+                        StartCoroutine(FlipPage(1));
+                    }
+                }
+                else
+                {
+                    if (buttonList.Count * (this.page + 1) < ingredientList.Count)
+                    {
+                        this.page += 1;
+                        StartCoroutine(FlipPage(1));
+                    }
+                }
+            }
+        }
+    }
+
+    private IEnumerator FlipPage(int dir)
+    {
+        interAble = false;
+        tabMenu.interAble = false;
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
+        transform.GetChild(2).gameObject.SetActive(false);
+
+        float time = 0;
+        if (dir < 0)
+        {
+            bgAnim.SetTrigger("FlipRight");
+            foreach (AnimationClip clip in bgAnim.runtimeAnimatorController.animationClips)
+            {
+                if (clip.name.Equals("FlipRight"))
+                {
+                    time = clip.length;
+                }
+            }
+        }
+        else
+        {
+            bgAnim.SetTrigger("FlipLeft");
+            foreach (AnimationClip clip in bgAnim.runtimeAnimatorController.animationClips)
+            {
+                if (clip.name.Equals("FlipLeft"))
+                {
+                    time = clip.length;
                 }
             }
         }
 
+        yield return new WaitForSecondsRealtime(time);
+
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
+        transform.GetChild(2).gameObject.SetActive(true);
+
         InitList(this.page);
+        interAble = true;
+        tabMenu.interAble = true;
     }
 
     public void OnInfoOpenClicked(Image image)
