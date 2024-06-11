@@ -106,7 +106,7 @@ public class InventoryUI : MonoBehaviour
         foreach(string name in weaponName)
         {
             foodImageList[i].SetActive(true);
-            foodImageList[i].GetComponent<Image>().sprite = foodInfo.FindFood(name).foodSprite;
+            foodImageList[i].transform.GetChild(0).GetComponent<Image>().sprite = foodInfo.FindFood(name).foodSprite;
 
             i++;
         }
@@ -127,8 +127,8 @@ public class InventoryUI : MonoBehaviour
         for (int j = 0; j < inventoryButtonList_0.Count; j++)
         {
             inventoryButtonList_0[j].SetActive(true);
-            inventoryButtonList_0[j].transform.GetChild(0).gameObject.SetActive(false);
-            inventoryButtonList_0[j].GetComponent<Image>().sprite = defaultSprite;
+            inventoryButtonList_0[j].transform.GetChild(1).gameObject.SetActive(false);
+            inventoryButtonList_0[j].transform.GetChild(0).GetComponent<Image>().sprite = defaultSprite;
         }
 
         int i = 0;
@@ -141,9 +141,9 @@ public class InventoryUI : MonoBehaviour
             else
             {
                 inventoryButtonList_0[i].SetActive(true);
-                inventoryButtonList_0[i].transform.GetChild(0).gameObject.SetActive(true);
-                inventoryButtonList_0[i].GetComponent<Image>().sprite = foodInfo.FindIngredient(ingredients[i]).sprite;
-                inventoryButtonList_0[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[ingredients[i]].ToString();
+                inventoryButtonList_0[i].transform.GetChild(1).gameObject.SetActive(true);
+                inventoryButtonList_0[i].transform.GetChild(0).GetComponent<Image>().sprite = foodInfo.FindIngredient(ingredients[i]).sprite;
+                inventoryButtonList_0[i].transform.GetChild(1).GetComponent<Text>().text = inventory.inventory[ingredients[i]].ToString();
             }
         }
     }
@@ -155,8 +155,8 @@ public class InventoryUI : MonoBehaviour
         for (int j = 0; j < inventoryButtonList_1.Count; j++)
         {
             inventoryButtonList_1[j].SetActive(true);
-            inventoryButtonList_1[j].transform.GetChild(0).gameObject.SetActive(false);
-            inventoryButtonList_1[j].GetComponent<Image>().sprite = defaultSprite;
+            inventoryButtonList_1[j].transform.GetChild(1).gameObject.SetActive(false);
+            inventoryButtonList_1[j].transform.GetChild(0).GetComponent<Image>().sprite = defaultSprite;
         }
 
         int i = 0;
@@ -171,9 +171,9 @@ public class InventoryUI : MonoBehaviour
                 else
                 {
                     inventoryButtonList_1[i].SetActive(true);
-                    inventoryButtonList_1[i].transform.GetChild(0).gameObject.SetActive(true);
-                    inventoryButtonList_1[i].GetComponent<Image>().sprite = foodInfo.FindIngredient(ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]).sprite;
-                    inventoryButtonList_1[i].transform.GetChild(0).GetComponent<Text>().text = inventory.inventory[ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]].ToString();
+                    inventoryButtonList_1[i].transform.GetChild(1).gameObject.SetActive(true);
+                    inventoryButtonList_1[i].transform.GetChild(0).GetComponent<Image>().sprite = foodInfo.FindIngredient(ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]).sprite;
+                    inventoryButtonList_1[i].transform.GetChild(1).GetComponent<Text>().text = inventory.inventory[ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]].ToString();
                 }
             }
         }
@@ -193,7 +193,7 @@ public class InventoryUI : MonoBehaviour
             }
             else
             {
-                if (this.page < ((ingredients.Count - 4) / 6 + 1) && ingredients.Count > 3)
+                if (this.page < ((ingredients.Count - 5) / 8 + 1) && ingredients.Count > 4)
                 {
                     this.page += 1;
                     StartCoroutine(FlipPage(1));
@@ -290,7 +290,7 @@ public class InventoryUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(8).GetComponent<TMP_Text>().color = color;
                 infoWindow.transform.GetChild(3).GetChild(9).GetComponent<TMP_Text>().color = color;
 
-                infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = food.foodSprite;
+                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
                 infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
                 infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
                 infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
@@ -306,7 +306,7 @@ public class InventoryUI : MonoBehaviour
             {
                 Ingredient ingred = foodInfo.FindIngredient(image.sprite);
 
-                infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = ingred.sprite;
+                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = ingred.sprite;
                 infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);
                 infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = ingred.EunmToString(ingred.grade);
                 infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);

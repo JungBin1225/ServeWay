@@ -70,7 +70,7 @@ public class DexUI : MonoBehaviour
 
             foreach(GameObject button in buttonList)
             {
-                button.GetComponent<Image>().sprite = lockSprite;
+                button.transform.GetChild(0).GetComponent<Image>().sprite = lockSprite;
             }
 
             
@@ -84,16 +84,16 @@ public class DexUI : MonoBehaviour
                 switch (dataController.FoodIngredDex.foodDex[foodList[i]])
                 {
                     case FoodDex_Status.CREATED:
-                        buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
-                        buttonList[i % buttonList.Count].GetComponent<Image>().material = defultMaterial;
+                        buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
+                        buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().material = defultMaterial;
                         break;
                     case FoodDex_Status.RECIPE:
-                        buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
-                        buttonList[i % buttonList.Count].GetComponent<Image>().material = grayScale;
+                        buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
+                        buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().material = grayScale;
                         break;
                     case FoodDex_Status.LOCKED:
-                        buttonList[i % buttonList.Count].GetComponent<Image>().sprite = lockSprite;
-                        buttonList[i % buttonList.Count].GetComponent<Image>().material = defultMaterial;
+                        buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().sprite = lockSprite;
+                        buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().material = defultMaterial;
 
                         break;
                 }
@@ -115,8 +115,8 @@ public class DexUI : MonoBehaviour
 
             foreach (GameObject button in buttonList)
             {
-                button.GetComponent<Image>().sprite = lockSprite;
-                button.GetComponent<Image>().material = defultMaterial;
+                button.transform.GetChild(0).GetComponent<Image>().sprite = lockSprite;
+                button.transform.GetChild(0).GetComponent<Image>().material = defultMaterial;
             }
 
             for (int i = buttonList.Count * page; i < ingredientList.Count; i++)
@@ -125,7 +125,7 @@ public class DexUI : MonoBehaviour
                 {
                     break;
                 }
-                buttonList[i % buttonList.Count].GetComponent<Image>().sprite = dataController.FindIngredient(ingredientList[i]).sprite;
+                buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().sprite = dataController.FindIngredient(ingredientList[i]).sprite;
             }
         }
     }
@@ -244,8 +244,8 @@ public class DexUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
                 infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
 
-                infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = food.foodSprite;
-                infoWindow.transform.GetChild(2).GetComponent<Image>().material = defultMaterial;
+                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
+                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = defultMaterial;
                 infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
                 infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
                 infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
@@ -256,7 +256,7 @@ public class DexUI : MonoBehaviour
 
                 if (dataController.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.RECIPE)
                 {
-                    infoWindow.transform.GetChild(2).GetComponent<Image>().material = grayScale;
+                    infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = grayScale;
                     infoWindow.transform.GetChild(3).GetChild(1).gameObject.SetActive(false);
                     infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
                     infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
@@ -286,8 +286,8 @@ public class DexUI : MonoBehaviour
             {
                 Ingredient ingred = dataController.FindIngredient(image.sprite);
 
-                infoWindow.transform.GetChild(2).GetComponent<Image>().sprite = ingred.sprite;
-                infoWindow.transform.GetChild(2).GetComponent<Image>().material = defultMaterial;
+                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = ingred.sprite;
+                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = defultMaterial;
                 infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);
                 infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = ingred.EunmToString(ingred.grade);
                 infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
