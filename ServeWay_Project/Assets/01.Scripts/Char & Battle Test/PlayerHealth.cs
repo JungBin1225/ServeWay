@@ -22,9 +22,6 @@ public class PlayerHealth : MonoBehaviour
 
             gameOverUI.SetActive(false);
         }
-
-        maxHp = 100;
-        nowHp = 100;
     }
 
     void Update()
