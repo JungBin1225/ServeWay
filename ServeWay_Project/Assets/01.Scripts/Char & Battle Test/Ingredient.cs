@@ -32,6 +32,7 @@ public class Ingredient
     [SerializeField] private string _SpritePath;
     [SerializeField] private string _PrefabPath;
     [SerializeField] private string _Passive;
+    private Sprite _IngredSprite;
 
     public int index { get { return _Index; } }
     public Ingred_Name name { get { return _Name; } }
@@ -40,16 +41,10 @@ public class Ingredient
     {
         get
         {
-            Sprite getSprite = null;
-            UnityEngine.Object[] sprites = AssetDatabase.LoadAllAssetsAtPath("Assets/Prefabs/MapPrefabs/Backyard - Free/backyard.png");
-            foreach (UnityEngine.Object sprite in sprites)
-            {
-                if (sprite.name.Contains(_SpritePath))
-                {
-                    getSprite = (Sprite)sprite;
-                }
-            }
-            return getSprite;
+            UnityEngine.Object[] sprites = AssetDatabase.LoadAllAssetsAtPath("Assets/08.Assets/pixel_food_icons_1.2.1/Pixel_House_Icons_1.2.1-16x.png");
+            _IngredSprite = (Sprite)sprites[int.Parse(_SpritePath) + 1];
+
+            return _IngredSprite;
         }
     }
     public GameObject prefab

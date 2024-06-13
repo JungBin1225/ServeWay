@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     private Animator anim;
+    private SpriteRenderer renderer;
     private Rigidbody2D rigidBody;
     private Vector3 mousePos;
     private float coolTime;
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
         missonTime = 0;
 
         anim = GetComponent<Animator>();
+        renderer = GetComponent<SpriteRenderer>();
         rigidBody = GetComponent<Rigidbody2D>();
         misson = FindObjectOfType<MissonManager>();
         playerHealth = gameObject.GetComponent<PlayerHealth>();
@@ -122,22 +124,24 @@ public class PlayerController : MonoBehaviour
         {
             if (transform.position.x - mouse.x < 0)
             {
-                //anim.SetInteger("direction", 2);
+                anim.SetInteger("direction", 2);
+                renderer.flipX = false;
             }
             else
             {
-                //anim.SetInteger("direction", 4);
+                anim.SetInteger("direction", 4);
+                renderer.flipX = true;
             }
         }
         else
         {
             if ((transform.position.y - (transform.localScale.y / 2)) - mouse.y < 0)
             {
-                //anim.SetInteger("direction", 1);
+                anim.SetInteger("direction", 1);
             }
             else
             {
-                //anim.SetInteger("direction", 3);
+                anim.SetInteger("direction", 3);
             }
         }
     }
@@ -152,11 +156,11 @@ public class PlayerController : MonoBehaviour
 
         if (rigidBody.velocity.magnitude == 0 && controllAble)
         {
-            //anim.SetBool("isMove", false);
+            anim.SetBool("isMove", false);
         }
         else
         {
-            //anim.SetBool("isMove", true);
+            anim.SetBool("isMove", true);
         }
     }
 
