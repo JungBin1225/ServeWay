@@ -24,7 +24,7 @@ public class TabMenu : MonoBehaviour
 
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape)) && GameManager.gameManager.menuAble && interAble)
+        if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameManager.menuAble && interAble)
         {
             if (!isOpen)
             {
@@ -37,6 +37,11 @@ public class TabMenu : MonoBehaviour
             {
                 StartCoroutine(CloseBook());
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape) && isOpen && interAble)
+        {
+            StartCoroutine(CloseBook());
         }
     }
 

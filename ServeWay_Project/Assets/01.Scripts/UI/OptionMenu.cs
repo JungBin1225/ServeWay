@@ -18,8 +18,13 @@ public class OptionMenu : MonoBehaviour
     [SerializeField] private Slider BGMSlider;
     [SerializeField] private Toggle BGMToggle;
 
+    [SerializeField] private Toggle SFXToggle;
+
     public int BGMVolume = 0;
     public int SFXVolume = 0;
+
+    public Sprite volumeOn;
+    public Sprite volumeOff;
 
     // Start is called before the first frame update
     void Start()
@@ -63,11 +68,35 @@ public class OptionMenu : MonoBehaviour
         sm.onoff(!BGMToggle.isOn);  // toggle true: mute false / toggle false: mute true
         if (!BGMToggle.isOn)    // ON
         {
-            gameObject.transform.GetChild(2).transform.GetChild(1).transform.GetChild(4).transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "OFF";
+            gameObject.transform.GetChild(2).transform.GetChild(1).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
         }
         else if (BGMToggle.isOn)    // OFF
         {
-            gameObject.transform.GetChild(2).transform.GetChild(1).transform.GetChild(4).transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "ON";
+            gameObject.transform.GetChild(2).transform.GetChild(1).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOn;
         }
+    }
+
+    public void onoffFX()
+    {
+        if (!SFXToggle.isOn)    // ON
+        {
+            gameObject.transform.GetChild(2).transform.GetChild(2).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
+        }
+        else if (SFXToggle.isOn)    // OFF
+        {
+            gameObject.transform.GetChild(2).transform.GetChild(2).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOn;
+        }
+    }
+
+    public void OnBackPressed(RectTransform text)
+    {
+        text.offsetMin -= new Vector2(0, 10);
+        text.offsetMax -= new Vector2(0, 10);
+    }
+
+    public void OnBackRelease(RectTransform text)
+    {
+        text.offsetMin += new Vector2(0, 10);
+        text.offsetMax += new Vector2(0, 10);
     }
 }

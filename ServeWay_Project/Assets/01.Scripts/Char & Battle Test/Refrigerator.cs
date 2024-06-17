@@ -13,6 +13,7 @@ public class Refrigerator : MonoBehaviour
     private InventoryManager Inventory;
     private bool isTouch;
     private InteractionWindow interaction;
+    private bool isOpen;
 
 
     void Start()
@@ -22,6 +23,7 @@ public class Refrigerator : MonoBehaviour
         refrigeUI = GameObject.Find("RefrigeratorUI");
         Inventory = FindObjectOfType<InventoryManager>();
         isTouch = false;
+        isOpen = false;
 
         imageList = new List<GameObject>();
         for(int i = 0; i < refrigeUI.transform.GetChild(0).childCount; i++)
@@ -81,7 +83,7 @@ public class Refrigerator : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0)
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0 && isOpen)
         {
             OnRefrigeClose();
         }
@@ -103,12 +105,14 @@ public class Refrigerator : MonoBehaviour
     public void OnRefrigeClicked()
     {
         Time.timeScale = 0;
+        isOpen = true;
         refrigeUI.transform.GetChild(0).gameObject.SetActive(true);
         RefreshList();
     }
 
     public void OnRefrigeClose()
     {
+        isOpen = false;
         refrigeUI.transform.GetChild(0).gameObject.SetActive(false);
         Time.timeScale = 1;
     }

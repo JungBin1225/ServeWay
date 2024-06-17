@@ -50,6 +50,7 @@ public class PauseMenu : MonoBehaviour
     void Pause()
     {
         Time.timeScale = 0;
+        Debug.Log(Time.timeScale);
 
         pauseBG.SetActive(true);
         pausePanel.SetActive(true);
@@ -130,5 +131,29 @@ public class PauseMenu : MonoBehaviour
     public void WarningCancelBtn()
     {
         warningGroup.SetActive(false);
+    }
+
+    public void OnButtonPressed(RectTransform text)
+    {
+        text.offsetMin -= new Vector2(0, 15);
+        text.offsetMax -= new Vector2(0, 15);
+    }
+
+    public void OnButtonRelease(RectTransform text)
+    {
+        text.offsetMin += new Vector2(0, 15);
+        text.offsetMax += new Vector2(0, 15);
+    }
+
+    public void OnWarningPressed(RectTransform text)
+    {
+        text.offsetMin -= new Vector2(0, 10);
+        text.offsetMax -= new Vector2(0, 10);
+    }
+
+    public void OnWarningRelease(RectTransform text)
+    {
+        text.offsetMin += new Vector2(0, 10);
+        text.offsetMax += new Vector2(0, 10);
     }
 }

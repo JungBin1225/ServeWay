@@ -16,6 +16,7 @@ public class CreateUI : MonoBehaviour
     private IngredientDataSet ingredientInfo;
     private InventoryManager inventory;
     private WeaponSlot weaponSlot;
+    public bool isOpen;
 
     public float deltaTime;
     public Create_Success success;
@@ -49,10 +50,20 @@ public class CreateUI : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && isOpen)
         {
             CloseUI();
         }
+    }
+
+    private void OnEnable()
+    {
+        isOpen = true;
+    }
+
+    private void OnDisable()
+    {
+        isOpen = false;
     }
 
     public void SetList(List<string> nameList)
