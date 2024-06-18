@@ -49,9 +49,11 @@ public class FoodData
     [SerializeField] private string _FoodPrefabPath;
     [SerializeField] private string _BulletPrefabPath;
     [SerializeField] private string _NeedIngredient;
+    [SerializeField] private string _EffectPrefabPath;
     private Sprite _FoodSprite;
     private GameObject _FoodPrefab;
     private GameObject _BulletPrefab;
+    private GameObject _EffectPrefab;
 
     public string foodName { get { return _FoodName; } }
     public Food_Grade grade { get { return _Grade; } }
@@ -106,6 +108,17 @@ public class FoodData
             return _BulletPrefab;
         }
     }
+
+    public GameObject effectPrefab
+    {
+        get
+        {
+            _EffectPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(_EffectPrefabPath, typeof(GameObject));
+
+            return _EffectPrefab;
+        }
+    }
+
     public NameAmount needIngredient
     {
         get

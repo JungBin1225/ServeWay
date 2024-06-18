@@ -121,12 +121,12 @@ public class WeaponController : MonoBehaviour
     private void GenerateBullet(float speed, float damage, Vector3 mousePos)
     {
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-        //GameObject effect = Instantiate(effectPrefab, transform);
 
         var bulletController = bullet.GetComponent<BulletController>();
         switch(mainIngred)
         {
             case Food_MainIngred.BREAD:
+                Instantiate(effectPrefab, transform);
                 var explosionbulletController = bullet.GetComponent<ExplosionBullet>();
                 explosionbulletController.SetTarget(-transform.up);
                 explosionbulletController.SetSpeed(speed);
@@ -135,6 +135,7 @@ public class WeaponController : MonoBehaviour
                 explosionbulletController.SetRadius(alphaStat[0]);
                 break;
             case Food_MainIngred.MEAT:
+                Instantiate(effectPrefab, transform);
                 bulletController = bullet.GetComponent<BulletController>();
                 bulletController.SetTarget(-transform.up);
                 bulletController.SetSpeed(speed);
@@ -142,6 +143,7 @@ public class WeaponController : MonoBehaviour
                 bulletController.SetNation(nation);
                 break;
             case Food_MainIngred.RICE:
+                Instantiate(effectPrefab, transform);
                 bulletController = bullet.GetComponent<BulletController>();
                 bulletController.SetTarget(-transform.up);
                 bulletController.SetSpeed(speed);
@@ -150,6 +152,7 @@ public class WeaponController : MonoBehaviour
                 break;
             case Food_MainIngred.SOUP:
                 Destroy(bullet);
+                Instantiate(effectPrefab, transform);
                 GenerateSoupBullet(speed, damage, alphaStat[0], alphaStat[1]);
                 break;
             case Food_MainIngred.NOODLE:
@@ -208,6 +211,7 @@ public class WeaponController : MonoBehaviour
         lineRenderer.enabled = true;
         isLaser = true;
         laser = Instantiate(laserPrefab, this.transform);
+        GameObject effect = Instantiate(effectPrefab, transform);
 
         laser.GetComponent<LaserController>().SetDamage(damage);
         laser.GetComponent<LaserController>().SetCoolTime(shootDuration);
@@ -215,6 +219,10 @@ public class WeaponController : MonoBehaviour
 
         while (isClicked)
         {
+            if(effect == null)
+            {
+                effect = Instantiate(effectPrefab, transform);
+            }
             ray = new Ray2D(transform.position, mousePos - transform.position);
 
             lineRenderer.SetPosition(0, transform.position);
@@ -262,6 +270,7 @@ public class WeaponController : MonoBehaviour
         nation = foodInfo.nation;
         alphaStat = foodInfo.alphaStat;
         bulletPrefab = foodInfo.bulletPrefab;
+        effectPrefab = foodInfo.effectPrefab;
 
         switch(success)
         {
