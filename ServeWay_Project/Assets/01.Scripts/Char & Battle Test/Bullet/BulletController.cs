@@ -9,6 +9,8 @@ public class BulletController : MonoBehaviour
     protected Vector3 target;
     protected Food_Nation nation;
 
+    public GameObject destroyEffect;
+
     protected void Start()
     {
 
@@ -59,6 +61,7 @@ public class BulletController : MonoBehaviour
 
         if (collision.tag == "Enemy" || collision.tag == "Boss" || collision.tag == "Wall")
         {
+            Instantiate(destroyEffect, transform.position, transform.rotation);
             Destroy(this.gameObject);
         }
     }

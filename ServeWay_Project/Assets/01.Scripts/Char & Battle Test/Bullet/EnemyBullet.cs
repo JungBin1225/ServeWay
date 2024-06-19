@@ -8,6 +8,8 @@ public class EnemyBullet : MonoBehaviour
     protected float damage;
     protected float speed;
 
+    public GameObject destroyEffect;
+
     protected void Start()
     {
 
@@ -49,6 +51,7 @@ public class EnemyBullet : MonoBehaviour
 
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Wall")
         {
+            Instantiate(destroyEffect, transform.position, transform.rotation);
             Destroy(this.gameObject);
         }
     }

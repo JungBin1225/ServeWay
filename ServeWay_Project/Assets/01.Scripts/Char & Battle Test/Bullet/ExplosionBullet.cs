@@ -19,13 +19,25 @@ public class ExplosionBullet : BulletController
         this.radius = radius;
     }
 
+    public void Fire()
+    {
+        if(!isExplode)
+        {
+            Fire();
+        }
+    }
+
     private IEnumerator Explosion()
     {
         isExplode = true;
+
+        GameObject effect = Instantiate(destroyEffect, transform.position, transform.rotation);
+        effect.transform.localScale = new Vector3(radius * transform.localScale.x * 5, radius * transform.localScale.y * 5);
+        
         gameObject.GetComponent<CircleCollider2D>().radius = radius;
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        //∆¯πﬂ æ÷¥œ∏ﬁ¿Ãº« Ω««‡
+        //Ìè≠Î∞ú Ïï†ÎãàÎ©îÏù¥ÏÖò Ïã§Ìñâ
         yield return new WaitForSeconds(0.2f);
 
         Destroy(this.gameObject);

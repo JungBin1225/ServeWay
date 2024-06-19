@@ -212,6 +212,7 @@ public class WeaponController : MonoBehaviour
         isLaser = true;
         laser = Instantiate(laserPrefab, this.transform);
         GameObject effect = Instantiate(effectPrefab, transform);
+        GameObject hiteffect = null;
 
         laser.GetComponent<LaserController>().SetDamage(damage);
         laser.GetComponent<LaserController>().SetCoolTime(shootDuration);
@@ -248,6 +249,11 @@ public class WeaponController : MonoBehaviour
             Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
             laser.transform.rotation = angleAxis;
             laser.transform.position = pos;
+
+            if (hiteffect == null && hit)
+            {
+                hiteffect = Instantiate(effectPrefab, hit.point, Quaternion.Euler(angleAxis.eulerAngles + new Vector3(0, 0, -90)));
+            }
 
             yield return null;
         }

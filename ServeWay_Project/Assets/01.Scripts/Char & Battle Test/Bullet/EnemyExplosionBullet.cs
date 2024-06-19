@@ -13,6 +13,15 @@ public class EnemyExplosionBullet : EnemyBullet
         isExplode = false;
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
     }
+
+    private void Update()
+    {
+        if(!isExplode)
+        {
+            Fire();
+        }
+    }
+
     public void SetRadius(float radius)
     {
         this.radius = radius;
@@ -21,6 +30,9 @@ public class EnemyExplosionBullet : EnemyBullet
     private IEnumerator Explosion()
     {
         isExplode = true;
+
+        GameObject effect = Instantiate(destroyEffect, transform.position, transform.rotation);
+        effect.transform.localScale = new Vector3(radius * transform.localScale.x * 5, radius * transform.localScale.y * 5);
 
         gameObject.GetComponent<CircleCollider2D>().radius = radius;
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
