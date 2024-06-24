@@ -40,6 +40,7 @@ public class SplitBullet : EnemyBullet
             bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
             bullet.GetComponent<EnemyBullet>().SetSpeed(this.splitSpeed);
             bullet.GetComponent<EnemyBullet>().SetDamage(this.splitDamage);
+            bullet.GetComponent<EnemyBullet>().destroyEffect = this.destroyEffect;
         }
     }
 
@@ -53,6 +54,7 @@ public class SplitBullet : EnemyBullet
         if (collision.tag == "Player" || collision.tag == "Wall")
         {
             BulletSplit();
+            Instantiate(destroyEffect, transform.position, transform.rotation);
             Destroy(this.gameObject);
         }
     }

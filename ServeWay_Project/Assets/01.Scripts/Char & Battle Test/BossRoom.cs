@@ -8,6 +8,7 @@ public class BossRoom : MonoBehaviour
     private GameObject boss;
     private BossController controller;
     private DataController data;
+    private MissonManager misson;
 
     public bool isClear;
     public GameObject intro;
@@ -33,6 +34,7 @@ public class BossRoom : MonoBehaviour
         data = FindObjectOfType<DataController>();
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
+        misson = FindObjectOfType<MissonManager>();
         bossNation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
         bossJob = GameManager.gameManager.bossJobList[GameManager.gameManager.stage - 1];
 
@@ -72,6 +74,7 @@ public class BossRoom : MonoBehaviour
         intro.SetActive(false);
         startButton.SetActive(false);
         Time.timeScale = 1;
+        StartCoroutine(misson.MissonAppear());
         SpawnBoss();
     }
 
@@ -96,7 +99,11 @@ public class BossRoom : MonoBehaviour
             float y = Mathf.Sin(angle) * radius;
             Vector3 pos = transform.position + new Vector3(x, y, 0);
             float angleDegrees = -angle * Mathf.Rad2Deg;
-            Instantiate(RandomIngredient(), pos, Quaternion.Euler(0, 0, 0));
+
+            Ingredient ingred = RandomIngredient();
+            GameObject item = Instantiate(ingred.prefab, pos, Quaternion.Euler(0, 0, 0));
+            item.GetComponent<GetIngredients>().itemName = ingred.name;
+            item.GetComponent<GetIngredients>().SetSprite(ingred.sprite);
         }
     }
 
@@ -122,7 +129,7 @@ public class BossRoom : MonoBehaviour
         }
     }
 
-    private GameObject RandomIngredient()
+    private Ingredient RandomIngredient()
     {
         int grade = Random.Range(0, 100) + 1;
 
@@ -147,7 +154,7 @@ public class BossRoom : MonoBehaviour
         List<Ingredient> ingredList = data.GetGradeList(num);
         int randomIndex = Random.Range(0, ingredList.Count);
 
-        return ingredList[randomIndex].prefab;
+        return ingredList[randomIndex];
     }
 
     public void CloseDoor()

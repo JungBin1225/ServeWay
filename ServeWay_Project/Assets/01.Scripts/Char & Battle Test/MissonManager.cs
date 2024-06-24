@@ -11,7 +11,8 @@ public class MissonManager : MonoBehaviour
     public delegate void missionDelegate(int missonID, float increase);
     public event missionDelegate missonEvent;
     public List<string> missonName;
-    public List<GameObject> missonUI;
+    public GameObject missonUI;
+    public List<GameObject> missonText;
     public int clearAmount;
 
     private List<float> targetAmount;
@@ -34,6 +35,7 @@ public class MissonManager : MonoBehaviour
             missonName[i] = missonName[i].Replace("\\n", "\n");
         }
 
+        missonUI.GetComponent<RectTransform>().localPosition = new Vector3(-1195, 240, 0);
         SetMisson(NUM_MISSON);
     }
 
@@ -83,31 +85,31 @@ public class MissonManager : MonoBehaviour
                 missonEvent += BossDamage;
                 targetAmount[index] = Random.Range(20, 50);
 
-                matchedUI.Add(index, missonUI[textIndex]);
+                matchedUI.Add(index, missonText[textIndex]);
                 Food_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
                 FoodData food = new FoodData();
-                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), food.EunmToString(nation));
+                missonText[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), food.EunmToString(nation));
                 break;
             case 1:
                 missonEvent += DashInTime;
                 targetAmount[index] = Random.Range(2, 5);
 
-                matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                matchedUI.Add(index, missonText[textIndex]);
+                missonText[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
                 break;
             case 2:
                 missonEvent += NoHitInTime;
                 targetAmount[index] = Random.Range(20, 60);
 
-                matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F1"));
+                matchedUI.Add(index, missonText[textIndex]);
+                missonText[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F1"));
                 break;
             case 3:
                 missonEvent += DamageNoDash;
                 targetAmount[index] = Random.Range(20, 50);
 
-                matchedUI.Add(index, missonUI[textIndex]);
-                missonUI[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                matchedUI.Add(index, missonText[textIndex]);
+                missonText[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
                 break;
             case 4:
                 break;
@@ -226,5 +228,16 @@ public class MissonManager : MonoBehaviour
             matchedUI[missonID].GetComponent<TMP_Text>().text = string.Format(missonName[missonID], targetAmount[missonID].ToString(), nowAmount[missonID].ToString());
             //UI에 수치 갱신 reload num in UI
         }
+    }
+
+    public IEnumerator MissonAppear()
+    {
+        while(missonUI.GetComponent<RectTransform>().localPosition.x < -735)
+        {
+            missonUI.GetComponent<RectTransform>().localPosition += new Vector3(5, 0, 0);
+            yield return null;
+        }
+
+        missonUI.GetComponent<RectTransform>().localPosition = new Vector3(-735, 240, 0);
     }
 }

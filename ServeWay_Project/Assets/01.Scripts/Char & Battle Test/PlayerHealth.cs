@@ -7,21 +7,27 @@ public class PlayerHealth : MonoBehaviour
 {
     public float maxHp;
     public float nowHp;
+    public float invincibleTime;
 
     private PlayerController playerController;
     private MissonManager misson;
     private GameObject gameOverUI;
+    private SpriteRenderer renderer;
+    private bool isInvincible;
 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
         misson = FindObjectOfType<MissonManager>();
+        renderer = GetComponent<SpriteRenderer>();
         if(!SceneManager.GetActiveScene().name.Contains("Start"))
         {
             gameOverUI = FindObjectOfType<GameOver>().gameObject;
 
             gameOverUI.SetActive(false);
         }
+
+        isInvincible = false;
     }
 
     void Update()
@@ -46,13 +52,15 @@ public class PlayerHealth : MonoBehaviour
 
     public void PlayerDamaged(float damage)
     {
-        if (!playerController.isCharge)
+        if (!playerController.isCharge && !isInvincible)
         {
             nowHp -= damage;
             if (GameManager.gameManager.isBossStage)
             {
                 misson.OccurreEvent(2, 0);
             }
+
+            StartCoroutine(Invincible());
         }
     }
 
@@ -68,5 +76,29 @@ public class PlayerHealth : MonoBehaviour
         }
 
         Debug.Log(healAmount + " Heal");
+    }
+
+    private IEnumerator Invincible()
+    {
+        isInvincible = true;
+
+        for(int i = 0; i < 5; i++)
+        {
+            if(i % 2 == 0)
+            {
+                renderer.color = new Color(1, 1, 1, 0.5f);
+            }
+            else
+            {
+                renderer.color = new Color(1, 1, 1, 1);
+            }
+
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        renderer.color = new Color(1, 1, 1, 1);
+        yield return new WaitForSeconds(0.1f);
+
+        isInvincible = false;
     }
 }
