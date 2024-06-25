@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private float missonTime;
     private PlayerHealth playerHealth;
     private DataController foodData;
+    private HoldWeapon holdWeapon;
 
     public float speed;
     public float chargeSpeed;
@@ -26,13 +27,8 @@ public class PlayerController : MonoBehaviour
 
     public WeaponSlot weaponSlot;
 
-    // weapon info panel img
-    [SerializeField] GameObject weaponInfoImg;
-    [SerializeField] Text weaponInfoName;
-
     // skill coolTime
-    [SerializeField] GameObject skillCoolTime;
-    [SerializeField] GameObject chargeCoolTime;
+    //[SerializeField] GameObject chargeCoolTime;
     
     void Start()
     {
@@ -47,6 +43,7 @@ public class PlayerController : MonoBehaviour
         misson = FindObjectOfType<MissonManager>();
         playerHealth = gameObject.GetComponent<PlayerHealth>();
         foodData = FindObjectOfType<DataController>();
+        holdWeapon = FindObjectOfType<HoldWeapon>();
 
         InitCharactor();
     }
@@ -66,15 +63,11 @@ public class PlayerController : MonoBehaviour
 
         if(coolTime > 0)
         {
-            if (!chargeCoolTime.activeSelf) { chargeCoolTime.SetActive(true); }
             coolTime -= Time.deltaTime;
-            chargeCoolTime.gameObject.transform.GetChild(0).GetComponent<Text>().text = coolTime.ToString("F1");
-
         }
         else if(coolTime < 0)
         {
             coolTime = 0;
-            chargeCoolTime.SetActive(false);
         }
 
         if(Input.GetKey(KeyCode.Space) && controllAble)
@@ -91,10 +84,6 @@ public class PlayerController : MonoBehaviour
                     misson.OccurreEvent(1, 1);
                     misson.OccurreEvent(3, 0);
                 }
-            }
-            else
-            {
-                
             }
         }
 
@@ -192,6 +181,7 @@ public class PlayerController : MonoBehaviour
 
         controllAble = true;
         coolTime = chargeCooltime;
+        StartCoroutine(holdWeapon.ChargeCoolTime(chargeCooltime));
     }
 
     public void InitCharactor()
@@ -222,14 +212,6 @@ public class PlayerController : MonoBehaviour
         {
             weaponSlot.InitSlot();
             playerHealth.nowHp = playerHealth.maxHp;
-        }
-
-        // 무기 바꾸는 부분 나오면 수정해야 함
-        if(weaponSlot.gameObject.transform.childCount != 0)
-        {
-            string nowWeaponName = weaponSlot.gameObject.transform.GetChild(weaponSlot.index).GetChild(0).GetComponent<WeaponController>().weaponName;
-            weaponInfoImg.GetComponent<Image>().sprite = FindObjectOfType<DataController>().FindFood(nowWeaponName).foodSprite;
-            weaponInfoName.GetComponent<Text>().text = FindObjectOfType<DataController>().FindFood(nowWeaponName).foodName;
         }
 
         Time.timeScale = 1;

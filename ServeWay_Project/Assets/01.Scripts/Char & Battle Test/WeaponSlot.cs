@@ -8,11 +8,13 @@ public class WeaponSlot : MonoBehaviour
     public int index;
     private float changeCooltime;
     private DataController dataController;
+    private HoldWeapon holdWeapon;
 
     void Start()
     {
         //InitSlot();
         dataController = FindObjectOfType<DataController>();
+        holdWeapon = FindObjectOfType<HoldWeapon>();
         changeCooltime = 0;
     }
 
@@ -56,6 +58,7 @@ public class WeaponSlot : MonoBehaviour
             }
 
             weaponList[index].SetActive(true);
+            holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
         }
     }
 
@@ -75,6 +78,7 @@ public class WeaponSlot : MonoBehaviour
             }
 
             weaponList[index].SetActive(true);
+            holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
         }
     }
 
@@ -150,6 +154,8 @@ public class WeaponSlot : MonoBehaviour
             weapon.transform.SetSiblingIndex(i);
             i++;
         }
+
+        holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
     }
 
     public List<string> ReturnWeaponList()
@@ -194,6 +200,8 @@ public class WeaponSlot : MonoBehaviour
                 transform.GetChild(i).gameObject.SetActive(false);
             }
         }
+
+        holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
     }
 
     public int WeaponCount()
