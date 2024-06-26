@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BossRoom : MonoBehaviour
 {
     private GameObject boss;
-    private BossController controller;
     private DataController data;
     private MissonManager misson;
 
@@ -80,11 +79,23 @@ public class BossRoom : MonoBehaviour
 
     private void SpawnBoss()
     {
-        boss = Instantiate(data.bossList.bossPrefab[0], transform.position, transform.rotation);
-        controller = boss.GetComponent<BossController>();
-        controller.room = this;
-        controller.nation = this.bossNation;
-        controller.job = this.bossJob;
+        boss = Instantiate(data.FindBoss(bossJob), transform.position, transform.rotation);
+
+        switch(bossJob)
+        {
+            case Boss_Job.JOURNAL:
+                var Jcontroller = boss.GetComponent<JournalController>();
+                Jcontroller.room = this;
+                Jcontroller.nation = this.bossNation;
+                Jcontroller.job = this.bossJob;
+                break;
+            default:
+                var controller = boss.GetComponent<BossController>();
+                controller.room = this;
+                controller.nation = this.bossNation;
+                controller.job = this.bossJob;
+                break;
+        }
     }
 
     public void DropIngredient(int min, int max)

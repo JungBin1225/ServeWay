@@ -127,4 +127,25 @@ public class DataController : MonoBehaviour
                 return null;
         }
     }
+
+    public GameObject FindBoss(Boss_Job job)
+    {
+        switch(job)
+        {
+            case Boss_Job.JOURNAL:
+                return bossList.bossPrefab[0];
+            case Boss_Job.COOKRESEARCH:
+                return bossList.bossPrefab[1];
+            case Boss_Job.CRITIC:
+                return bossList.bossPrefab[2];
+            case Boss_Job.BLOGGER:
+                return bossList.bossPrefab[3];
+            case Boss_Job.YOUTUBER:
+                return bossList.bossPrefab[4];
+            case Boss_Job.TEACHER:
+                return bossList.bossPrefab[5];
+            default:
+                return bossList.bossPrefab[0];
+        }
+    }
 }

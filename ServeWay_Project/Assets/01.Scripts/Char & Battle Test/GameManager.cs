@@ -19,7 +19,8 @@ public enum Boss_Job
     COOKRESEARCH,
     CRITIC,
     BLOGGER,
-    YOUTUBER
+    YOUTUBER,
+    TEACHER
 };
 
 public class GameManager : MonoBehaviour
@@ -150,7 +151,7 @@ public class GameManager : MonoBehaviour
 
     public Boss_Job RandomJob()
     {
-        int i = Random.Range(0, 5);
+        int i = Random.Range(0, 6);
 
         switch (i)
         {
@@ -164,6 +165,8 @@ public class GameManager : MonoBehaviour
                 return Boss_Job.BLOGGER;
             case 4:
                 return Boss_Job.YOUTUBER;
+            case 5:
+                return Boss_Job.TEACHER;
             default:
                 return Boss_Job.JOURNAL;
         }
