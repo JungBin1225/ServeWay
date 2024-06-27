@@ -90,10 +90,10 @@ public class BossRoom : MonoBehaviour
                 Jcontroller.job = this.bossJob;
                 break;
             default:
-                var controller = boss.GetComponent<BossController>();
+                /*var controller = boss.GetComponent<BossController>();
                 controller.room = this;
                 controller.nation = this.bossNation;
-                controller.job = this.bossJob;
+                controller.job = this.bossJob;*/
                 break;
         }
     }

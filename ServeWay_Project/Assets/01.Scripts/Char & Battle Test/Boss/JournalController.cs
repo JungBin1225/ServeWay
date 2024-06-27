@@ -6,25 +6,30 @@ public class JournalController : MonoBehaviour
 {
     private MissonManager misson;
     private Rigidbody2D rigidbody;
+    private BossController bossCon;
     private GameObject player;
     private Vector2 minPos;
     private Vector2 maxPos;
     private float coolTime;
     private bool isAttack;
     private bool isPicture;
+    private bool isCharge;
 
     public BossRoom room;
     public GameObject damageEffect;
     public GameObject bulletPrefab;
     public GameObject splitBulletPrefab;
+    public GameObject scoopPrefab;
     public CircleCollider2D collider;
     public float hp;
     public float speed;
+    public float chargeSpeed;
     public float attackCoolTime;
     public float bulletSpeed;
     public float bulletDamage;
     public float splitBulletDamage;
     public float pictureDamage;
+    public float chargeDamage;
     public Food_Nation nation;
     public Boss_Job job;
 
@@ -32,7 +37,12 @@ public class JournalController : MonoBehaviour
     {
         misson = FindObjectOfType<MissonManager>();
         rigidbody = GetComponent<Rigidbody2D>();
+        bossCon = GetComponent<BossController>();
         player = GameObject.FindGameObjectWithTag("Player");
+
+        bossCon.nation = this.nation;
+        bossCon.room = this.room;
+        bossCon.SetHp(hp);
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         collider.enabled = false;
@@ -40,6 +50,7 @@ public class JournalController : MonoBehaviour
         coolTime = attackCoolTime;
         isAttack = false;
         isPicture = false;
+        isCharge = false;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -49,59 +60,15 @@ public class JournalController : MonoBehaviour
 
     void Update()
     {
-        if (hp <= 0)
-        {
-            BossDie(0);
-        }
-
-        if (misson.isClear())
-        {
-            BossDie(1);
-        }
-
         if (coolTime > 0)
         {
             coolTime -= Time.deltaTime;
         }
     }
 
-    public void BossDie(int dieType)
-    {
-        room.isClear = true;
-
-        switch (dieType)
-        {
-            case 0: //Hp 소진
-                room.DropIngredient(4, 9);
-                break;
-            case 1: //미션 클리어
-                room.DropIngredient(6, 13);
-                break;
-        }
-        room.DropRecipe();
-
-        room.OpenDoor();
-        room.ActiveStair();
-        GameManager.gameManager.isBossStage = false;
-        Destroy(this.gameObject);
-    }
-
-    public void GetDamage(float damage, Vector3 effectPos, Food_Nation nation)
-    {
-        //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
-
-        hp -= damage;
-
-        if (nation.ToString() == this.nation.ToString())
-        {
-            misson.OccurreEvent(0, damage);
-        }
-        misson.OccurreEvent(3, damage);
-    }
-
     private IEnumerator EnemyMove()
     {
-        while (hp != 0 && coolTime > 0)
+        while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
             float posY = Random.Range(minPos.y, maxPos.y);
@@ -127,43 +94,18 @@ public class JournalController : MonoBehaviour
                 StartCoroutine(MachineGunPattern());
                 break;
             case 2:
-                StartCoroutine(SplitPattern());
+                StartCoroutine(ShotGunPattern());
                 break;
             case 3:
-                StartCoroutine(ShotGunPattern());
+                StartCoroutine(ChargePattern());
                 break;
         }
     }
 
-    /*private IEnumerator AroundPattern()
-    {
-        isAttack = true;
-        yield return new WaitForSeconds(0.3f);
-
-        float radius = 2.5f;
-        for (int i = 0; i < 20; i++)
-        {
-            float angle = i * Mathf.PI * 2 / 20;
-            float x = Mathf.Cos(angle) * radius;
-            float y = Mathf.Sin(angle) * radius;
-            Vector3 pos = transform.position + new Vector3(x, y, 0);
-            float angleDegrees = -angle * Mathf.Rad2Deg;
-            Quaternion rot = Quaternion.Euler(0, 0, angleDegrees);
-            GameObject bullet = Instantiate(bulletPrefab, pos, rot);
-            bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
-            bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
-            bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-        }
-        yield return new WaitForSeconds(0.3f);
-
-        isAttack = false;
-        coolTime = attackCoolTime;
-        StartCoroutine(EnemyMove());
-    }*/
-
     private IEnumerator PicturePattern()
     {
         isAttack = true;
+        transform.GetChild(0).gameObject.SetActive(true);
         //범위 표시
         yield return new WaitForSeconds(1f);
 
@@ -171,6 +113,7 @@ public class JournalController : MonoBehaviour
         collider.enabled = true;
         yield return new WaitForSeconds(0.2f);
 
+        transform.GetChild(0).gameObject.SetActive(false);
         isPicture = false;
         collider.enabled = false;
         isAttack = false;
@@ -198,55 +141,6 @@ public class JournalController : MonoBehaviour
         isAttack = false;
         rigidbody.velocity = Vector2.zero;
         coolTime = attackCoolTime;
-        StartCoroutine(EnemyMove());
-    }
-
-    private IEnumerator SplitPattern()
-    {
-        isAttack = true;
-        yield return new WaitForSeconds(0.4f);
-
-        float radius = 2.5f;
-        for (int i = 0; i < 4; i++)
-        {
-            float angle = i * Mathf.PI * 2 / 4;
-            float x = Mathf.Cos(angle) * radius;
-            float y = Mathf.Sin(angle) * radius;
-            Vector3 pos = transform.position + new Vector3(x, y, 0);
-            float angleDegrees = -angle * Mathf.Rad2Deg;
-            Quaternion rot = Quaternion.Euler(0, 0, angleDegrees);
-            GameObject bullet = Instantiate(splitBulletPrefab, pos, rot);
-            bullet.GetComponent<SplitBullet>().SetTarget(new Vector3(-x, -y, 0));
-            bullet.GetComponent<SplitBullet>().SetSpeed(bulletSpeed / 2);
-            bullet.GetComponent<SplitBullet>().SetDamage(bulletDamage * 2);
-            bullet.GetComponent<SplitBullet>().SetSplitSpeed(bulletSpeed);
-            bullet.GetComponent<SplitBullet>().SetSplitDamage(bulletDamage);
-            bullet.GetComponent<SplitBullet>().SetBigDamage(splitBulletDamage);
-        }
-        yield return new WaitForSeconds(1f);
-
-        for (int i = 0; i < 8; i++)
-        {
-            if (i % 2 == 1)
-            {
-                float angle = i * Mathf.PI * 2 / 8;
-                float x = Mathf.Cos(angle) * radius;
-                float y = Mathf.Sin(angle) * radius;
-                Vector3 pos = transform.position + new Vector3(x, y, 0);
-                float angleDegrees = -angle * Mathf.Rad2Deg;
-                Quaternion rot = Quaternion.Euler(0, 0, angleDegrees);
-                GameObject bullet = Instantiate(splitBulletPrefab, pos, rot);
-                bullet.GetComponent<SplitBullet>().SetTarget(new Vector3(-x, -y, 0));
-                bullet.GetComponent<SplitBullet>().SetSpeed(bulletSpeed / 2);
-                bullet.GetComponent<SplitBullet>().SetDamage(bulletDamage * 2);
-                bullet.GetComponent<SplitBullet>().SetSplitSpeed(bulletSpeed);
-                bullet.GetComponent<SplitBullet>().SetSplitDamage(bulletDamage);
-            }
-        }
-        yield return new WaitForSeconds(0.3f);
-
-        isAttack = false;
-        coolTime = attackCoolTime * 2;
         StartCoroutine(EnemyMove());
     }
 
@@ -284,16 +178,63 @@ public class JournalController : MonoBehaviour
         StartCoroutine(EnemyMove());
     }
 
+    private IEnumerator ChargePattern()
+    {
+        isAttack = true;
+        float posX = Random.Range(-(room.transform.localScale.x / 2) + 1, (room.transform.localScale.x / 2) - 1);
+        float posY = Random.Range(-(room.transform.localScale.y / 2) + 1, (room.transform.localScale.y / 2) - 1);
+        Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
+        GameObject scoop = Instantiate(scoopPrefab, target, Quaternion.Euler(0, 0, 0));
+        Scoop scoopCon = scoop.GetComponent<Scoop>();
+
+        yield return new WaitForSeconds(0.5f);
+
+        rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * chargeSpeed;
+        isCharge = true;
+
+        yield return new WaitUntil(() => scoopCon.GetTouch());
+
+        rigidbody.velocity = new Vector2(0, 0);
+
+        float faintTime = 0;
+        if (scoopCon.touchedObject == "Boss")
+        {
+            faintTime = 0;
+        }
+        else if (scoopCon.touchedObject == "Player")
+        {
+            faintTime = 2;
+            Debug.Log("Faint");
+            //기절 이펙트
+        }
+        Destroy(scoop);
+
+        yield return new WaitForSeconds(faintTime);
+
+        isCharge = false;
+        isAttack = false;
+        coolTime = attackCoolTime;
+        StartCoroutine(EnemyMove());
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Player" && isPicture)
+        {
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall")
         {
             rigidbody.velocity *= -1;
         }
 
-        if(collision.gameObject.tag == "Player" && isPicture)
+        if(collision.gameObject.tag == "Player" && isCharge)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage);
         }
     }
 }
