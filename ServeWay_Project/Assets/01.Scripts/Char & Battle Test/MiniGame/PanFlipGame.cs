@@ -10,6 +10,7 @@ public class PanFlipGame : MonoBehaviour
     public GameObject gamePanel;
 
     private Create_Success success;
+    private bool isStart;
     private bool isOver;
     private bool isClicked;
     private float time;
@@ -17,6 +18,7 @@ public class PanFlipGame : MonoBehaviour
     private void OnEnable()
     {
         alarm.SetActive(false);
+        isStart = false;
         isOver = false;
         isClicked = false;
         time = Time.realtimeSinceStartup;
@@ -27,7 +29,7 @@ public class PanFlipGame : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && isStart)
         {
             isClicked = true;
         }
@@ -37,6 +39,7 @@ public class PanFlipGame : MonoBehaviour
     {
         explanePanel.SetActive(false);
         gamePanel.SetActive(true);
+        isStart = true;
 
         float setTime = Random.Range(2.0f, 5.0f);
         float now = Time.realtimeSinceStartup - time;
@@ -75,6 +78,7 @@ public class PanFlipGame : MonoBehaviour
         Debug.Log(success);
         yield return new WaitForSecondsRealtime(1.0f);
 
+        isStart = false;
         createUI.success = success;
         createUI.OnGameCleared(this.gameObject);
     }
