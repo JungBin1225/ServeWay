@@ -61,6 +61,8 @@ public class BossRoom : MonoBehaviour
     {
         CloseDoor();
         intro.SetActive(true);
+        intro.transform.GetChild(0).GetComponent<Text>().text = GameManager.gameManager.JobToString(bossJob);
+        intro.transform.GetChild(1).GetComponent<Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
         Time.timeScale = 0;
 
         yield return new WaitForSecondsRealtime(2f);

@@ -15,6 +15,7 @@ public class JournalController : MonoBehaviour
     private bool isPicture;
     private bool isCharge;
 
+    public int test;
     public BossRoom room;
     public GameObject damageEffect;
     public GameObject bulletPrefab;
@@ -84,6 +85,10 @@ public class JournalController : MonoBehaviour
     private void SelectPattern()
     {
         int index = Random.Range(0, 4);
+        if(test > 0 && test < 5)
+        {
+            index = test - 1;
+        }
 
         switch (index)
         {

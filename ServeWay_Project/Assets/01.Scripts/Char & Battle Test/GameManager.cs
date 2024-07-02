@@ -171,4 +171,25 @@ public class GameManager : MonoBehaviour
                 return Boss_Job.JOURNAL;
         }
     }
+
+    public string JobToString(Boss_Job job)
+    {
+        switch(job)
+        {
+            case Boss_Job.JOURNAL:
+                return "저널리스트";
+            case Boss_Job.CRITIC:
+                return "평론가";
+            case Boss_Job.COOKRESEARCH:
+                return "요리연구가";
+            case Boss_Job.BLOGGER:
+                return "블로거";
+            case Boss_Job.YOUTUBER:
+                return "유튜버";
+            case Boss_Job.TEACHER:
+                return "사부님";
+            default:
+                return "";
+        }
+    }
 }
