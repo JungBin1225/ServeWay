@@ -93,7 +93,7 @@ public class PlayerHealth : MonoBehaviour
                 renderer.color = new Color(1, 1, 1, 1);
             }
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(invincibleTime / 5);
         }
 
         renderer.color = new Color(1, 1, 1, 1);

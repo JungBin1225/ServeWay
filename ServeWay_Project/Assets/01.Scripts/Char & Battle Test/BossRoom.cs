@@ -91,6 +91,12 @@ public class BossRoom : MonoBehaviour
                 Jcontroller.nation = this.bossNation;
                 Jcontroller.job = this.bossJob;
                 break;
+            case Boss_Job.COOKRESEARCH:
+                var Rcontroller = boss.GetComponent<ResearcherController>();
+                Rcontroller.room = this;
+                Rcontroller.nation = this.bossNation;
+                Rcontroller.job = this.bossJob;
+                break;
             default:
                 /*var controller = boss.GetComponent<BossController>();
                 controller.room = this;
