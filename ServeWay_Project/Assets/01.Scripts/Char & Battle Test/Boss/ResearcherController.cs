@@ -8,22 +8,28 @@ public class ResearcherController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private GameObject player;
+    private List<Vector3> platePos;
     private Vector2 minPos;
     private Vector2 maxPos;
     private float coolTime;
     private bool isAttack;
+    private bool isCharge;
+    private bool plateTouch;
+    private int plateIndex;
 
     public int test;
     public BossRoom room;
     public GameObject damageEffect;
     public GameObject bulletPrefab;
     public GameObject ladelPrefab;
+    public GameObject platePrefab;
     public float hp;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
     public float bulletSpeed;
     public float bulletDamage;
+    public float chargeDamage;
     public Food_Nation nation;
     public Boss_Job job;
 
@@ -39,8 +45,12 @@ public class ResearcherController : MonoBehaviour
         bossCon.SetHp(hp);
         //GameManager.gameManager.mission.boss = this.gameObject;
 
+        platePos = new List<Vector3>();
         coolTime = attackCoolTime;
         isAttack = false;
+        isCharge = false;
+        plateTouch = false;
+        plateIndex = 0;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -88,7 +98,7 @@ public class ResearcherController : MonoBehaviour
                 StartCoroutine(LadlePattern());
                 break;
             case 2:
-                
+                StartCoroutine(ChargePattern());
                 break;
             case 3:
                 
@@ -149,11 +159,94 @@ public class ResearcherController : MonoBehaviour
         StartCoroutine(EnemyMove());
     }
 
+    private IEnumerator ChargePattern()
+    {
+        isAttack = true;
+        int amount = Random.Range(2, 5);
+        RandomPlate(amount);
+
+        yield return new WaitForSeconds(0.5f);
+
+        for(int i = 0; i < platePos.Count; i++)
+        {
+            GameObject plate = Instantiate(platePrefab, platePos[i], Quaternion.Euler(0, 0, 0));
+            plate.GetComponent<Plate>().index = i;
+            yield return new WaitForSeconds(0.2f);
+        }
+        
+        for (int i = 0; i < platePos.Count; i++)
+        {
+            isCharge = true;
+            plateIndex = i;
+            rigidbody.velocity = new Vector2(platePos[i].x - transform.position.x, platePos[i].y - transform.position.y).normalized * chargeSpeed;
+
+            yield return new WaitUntil(() => plateTouch);
+            yield return new WaitForSeconds(0.1f);
+
+            plateTouch = false;
+            isCharge = false;
+            rigidbody.velocity = new Vector2(0, 0);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        yield return new WaitForSeconds(1);
+
+        platePos.Clear();
+        isCharge = false;
+        isAttack = false;
+        coolTime = attackCoolTime;
+        StartCoroutine(EnemyMove());
+    }
+
+    private void RandomPlate(int amount)
+    {
+        if(platePos.Count <= amount)
+        {
+            float posX = Random.Range(-(room.transform.localScale.x / 2) + 1, (room.transform.localScale.x / 2) - 1);
+            float posY = Random.Range(-(room.transform.localScale.y / 2) + 1, (room.transform.localScale.y / 2) - 1);
+            Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
+            Vector3 prevTarget = transform.position;
+            if(platePos.Count != 0)
+            {
+                prevTarget = platePos[platePos.Count - 1];
+            }
+            
+            if(Vector3.Distance(target, prevTarget) < 5)
+            {
+                RandomPlate(amount);
+            }
+            else
+            {
+                platePos.Add(target);
+                RandomPlate(amount);
+            }
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    public void plateTouched()
+    {
+        plateTouch = true;
+    }
+
+    public int GetIndex()
+    {
+        return plateIndex;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall")
         {
             rigidbody.velocity *= -1;
+        }
+
+        if (collision.gameObject.tag == "Player" && isCharge)
+        {
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage);
         }
     }
 }
