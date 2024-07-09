@@ -12,6 +12,7 @@ public class ResearcherController : MonoBehaviour
     private Vector2 minPos;
     private Vector2 maxPos;
     private float coolTime;
+    private float soupTime;
     private bool isAttack;
     private bool isCharge;
     private bool plateTouch;
@@ -23,13 +24,16 @@ public class ResearcherController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject ladelPrefab;
     public GameObject platePrefab;
+    public GameObject soupPrefab;
     public float hp;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
+    public float soupCoolTime;
     public float bulletSpeed;
     public float bulletDamage;
     public float chargeDamage;
+    public float soupDamage;
     public Food_Nation nation;
     public Boss_Job job;
 
@@ -47,6 +51,7 @@ public class ResearcherController : MonoBehaviour
 
         platePos = new List<Vector3>();
         coolTime = attackCoolTime;
+        soupTime = 0;
         isAttack = false;
         isCharge = false;
         plateTouch = false;
@@ -63,6 +68,11 @@ public class ResearcherController : MonoBehaviour
         if (coolTime > 0)
         {
             coolTime -= Time.deltaTime;
+        }
+
+        if(soupTime > 0)
+        {
+            soupTime -= Time.deltaTime;
         }
     }
 
@@ -84,6 +94,11 @@ public class ResearcherController : MonoBehaviour
     private void SelectPattern()
     {
         int index = Random.Range(0, 4);
+        if(soupTime > 0)
+        {
+            index = Random.Range(0, 3);
+        }
+
         if (test > 0 && test < 5)
         {
             index = test - 1;
@@ -101,7 +116,7 @@ public class ResearcherController : MonoBehaviour
                 StartCoroutine(ChargePattern());
                 break;
             case 3:
-                
+                StartCoroutine(FloorSoupPattern());
                 break;
         }
     }
@@ -167,13 +182,17 @@ public class ResearcherController : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        for(int i = 0; i < platePos.Count; i++)
+        plateIndex = 100;
+        for (int i = 0; i < platePos.Count; i++)
         {
-            GameObject plate = Instantiate(platePrefab, platePos[i], Quaternion.Euler(0, 0, 0));
+            GameObject plate = Instantiate(platePrefab, transform.position, Quaternion.Euler(0, 0, 0));
             plate.GetComponent<Plate>().index = i;
+            plate.GetComponent<Plate>().target = platePos[i];
+            plate.GetComponent<Plate>().damage = 1;
             yield return new WaitForSeconds(0.2f);
         }
-        
+
+        yield return new WaitForSeconds(0.2f);
         for (int i = 0; i < platePos.Count; i++)
         {
             isCharge = true;
@@ -196,6 +215,35 @@ public class ResearcherController : MonoBehaviour
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
+    }
+
+    private IEnumerator FloorSoupPattern()
+    {
+        isAttack = true;
+
+        if(soupTime > 0)
+        {
+            isAttack = false;
+            StartCoroutine(EnemyMove());
+        }
+        else
+        {
+            float posX = Random.Range(-(room.transform.localScale.x / 2) + 3f, (room.transform.localScale.x / 2) - 3f);
+            float posY = Random.Range(-(room.transform.localScale.y / 2) + 3f, (room.transform.localScale.y / 2) - 3f);
+            Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
+
+            yield return new WaitForSeconds(0.3f);
+
+            GameObject soup = Instantiate(soupPrefab, target, Quaternion.Euler(0, 0, 0));
+            soup.GetComponent<FloorSoup>().damage = soupDamage;
+            soup.GetComponent<FloorSoup>().durationTime = soupCoolTime;
+            yield return new WaitForSeconds(0.7f);
+
+            isAttack = false;
+            coolTime = attackCoolTime;
+            soupTime = soupCoolTime;
+            StartCoroutine(EnemyMove());
+        }
     }
 
     private void RandomPlate(int amount)
