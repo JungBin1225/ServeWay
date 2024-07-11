@@ -97,6 +97,12 @@ public class BossRoom : MonoBehaviour
                 Rcontroller.nation = this.bossNation;
                 Rcontroller.job = this.bossJob;
                 break;
+            case Boss_Job.CRITIC:
+                var Ccontroller = boss.GetComponent<CriticController>();
+                Ccontroller.room = this;
+                Ccontroller.nation = this.bossNation;
+                Ccontroller.job = this.bossJob;
+                break;
             default:
                 /*var controller = boss.GetComponent<BossController>();
                 controller.room = this;
