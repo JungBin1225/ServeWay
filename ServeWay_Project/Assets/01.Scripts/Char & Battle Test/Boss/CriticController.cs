@@ -18,6 +18,7 @@ public class CriticController : MonoBehaviour
     public BossRoom room;
     public GameObject damageEffect;
     public GameObject pen;
+    public GameObject explosionPenPrefab;
     public List<GameObject> bulletPrefab;
     public float hp;
     public float speed;
@@ -26,6 +27,7 @@ public class CriticController : MonoBehaviour
     public float bulletSpeed;
     public float bulletDamage;
     public float penDamage;
+    public float explosionDamage;
     public Food_Nation nation;
     public Boss_Job job;
 
@@ -94,7 +96,7 @@ public class CriticController : MonoBehaviour
                 StartCoroutine(MachineGunPattern());
                 break;
             case 3:
-
+                StartCoroutine(PenExplosionPattern());
                 break;
         }
     }
@@ -213,6 +215,28 @@ public class CriticController : MonoBehaviour
 
         isAttack = false;
         coolTime = attackCoolTime;
+        StartCoroutine(EnemyMove());
+    }
+
+    private IEnumerator PenExplosionPattern()
+    {
+        isAttack = true;
+        yield return new WaitForSeconds(0.5f);
+
+        for(int i = 0; i < 3; i++)
+        {
+            float posX = Random.Range(-(room.transform.localScale.x / 2) + 2f, (room.transform.localScale.x / 2) - 2f);
+            float posY = Random.Range(-(room.transform.localScale.y / 2) + 2f, (room.transform.localScale.y / 2) - 2f);
+            Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
+
+            GameObject explosionPen = Instantiate(explosionPenPrefab, target, Quaternion.Euler(0, 0, 0));
+            explosionPen.GetComponent<PenExplosion>().damage = explosionDamage;
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        isAttack = false;
+        coolTime = attackCoolTime / 4;
         StartCoroutine(EnemyMove());
     }
 
