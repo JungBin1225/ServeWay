@@ -13,7 +13,6 @@ public class BossController : MonoBehaviour
     void Start()
     {
         misson = FindObjectOfType<MissonManager>();
-
         //StartCoroutine(EnemyMove());
     }
 
