@@ -19,6 +19,8 @@ public class BloggerController : MonoBehaviour
     public GameObject damageEffect;
     public GameObject bulletPrefab;
     public GameObject commentPrefab;
+    public GameObject pictureObject;
+    public PolygonCollider2D pictureCollider;
     public float hp;
     public float speed;
     public float attackCoolTime;
@@ -26,6 +28,7 @@ public class BloggerController : MonoBehaviour
     public float bulletSpeed;
     public float bulletDamage;
     public float commentDamage;
+    public float pictureDamage;
     public Food_Nation nation;
     public Boss_Job job;
 
@@ -88,7 +91,7 @@ public class BloggerController : MonoBehaviour
                 StartCoroutine(CommentPattern());
                 break;
             case 1:
-
+                StartCoroutine(picturePattern());
                 break;
             case 2:
 
@@ -118,6 +121,36 @@ public class BloggerController : MonoBehaviour
 
         isAttack = false;
         coolTime = attackCoolTime * 1.5f;
+        StartCoroutine(EnemyMove());
+    }
+
+    private IEnumerator picturePattern()
+    {
+        isAttack = true;
+        pictureObject.SetActive(true);
+        pictureCollider.enabled = false;
+
+        Vector3 target = player.transform.position;
+
+        Vector2 dir = new Vector2(transform.position.x - target.x, transform.position.y - target.y);
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Quaternion angleAxis = Quaternion.AngleAxis(angle - 45, Vector3.forward);
+        pictureObject.GetComponent<RectTransform>().rotation = angleAxis;
+
+        while (Vector3.Distance(target, transform.position) > 2)
+        {
+            rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * 10;
+            yield return null;
+        }
+
+        rigidbody.velocity = new Vector2(0, 0);
+        pictureCollider.enabled = true;
+        yield return new WaitForSeconds(0.2f);
+
+        pictureObject.SetActive(false);
+        pictureCollider.enabled = false;
+        isAttack = false;
+        coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }
 
@@ -155,6 +188,14 @@ public class BloggerController : MonoBehaviour
         if (collision.gameObject.tag == "Wall")
         {
             rigidbody.velocity *= -1;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage);
         }
     }
 }
