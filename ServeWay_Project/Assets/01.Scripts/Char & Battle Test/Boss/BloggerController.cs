@@ -12,7 +12,10 @@ public class BloggerController : MonoBehaviour
     private Vector2 maxPos;
     private List<Vector3> commentPos;
     private float coolTime;
+    private LineRenderer line;
+    private GameObject laser;
     private bool isAttack;
+    private bool isLaser;
 
     public int test;
     public BossRoom room;
@@ -20,6 +23,7 @@ public class BloggerController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject commentPrefab;
     public GameObject pictureObject;
+    public GameObject laserPrefab;
     public PolygonCollider2D pictureCollider;
     public float hp;
     public float speed;
@@ -37,6 +41,7 @@ public class BloggerController : MonoBehaviour
         misson = FindObjectOfType<MissonManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
+        line = GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         commentPos = new List<Vector3>();
 
@@ -46,7 +51,9 @@ public class BloggerController : MonoBehaviour
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         coolTime = attackCoolTime;
+        line.enabled = false;
         isAttack = false;
+        isLaser = false;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -85,6 +92,11 @@ public class BloggerController : MonoBehaviour
             index = test - 1;
         }
 
+        if(index == 2 && isLaser)
+        {
+            index = Random.Range(0, 2);
+        }
+
         switch (index)
         {
             case 0:
@@ -94,7 +106,7 @@ public class BloggerController : MonoBehaviour
                 StartCoroutine(picturePattern());
                 break;
             case 2:
-
+                StartCoroutine(LaserPattern());
                 break;
             case 3:
 
@@ -152,6 +164,58 @@ public class BloggerController : MonoBehaviour
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
+    }
+
+    private IEnumerator LaserPattern()
+    {
+        isAttack = true;
+        isLaser = true;
+        yield return new WaitForSeconds(0.2f);
+
+        line.enabled = true;
+        laser = Instantiate(laserPrefab, this.transform);
+
+        laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
+        laser.GetComponent<EnemyLaser>().SetCoolTime(0.5f);
+
+        Vector3 target = player.transform.position;
+        Ray2D ray = new Ray2D(transform.position, target - transform.position);
+
+        line.SetPosition(0, transform.position);
+
+        int mask = 1 << LayerMask.NameToLayer("RayWall");
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
+        if (hit)
+        {
+            line.SetPosition(1, hit.point);
+            Debug.Log(hit.point);
+        }
+        else
+        {
+            line.SetPosition(1, target);
+        }
+
+        Vector3 start = line.GetPosition(0);
+        Vector3 end = line.GetPosition(1);
+
+        laser.transform.localScale = new Vector3(Vector3.Distance(start, end) * 0.5f, line.startWidth * 0.5f, 0);
+        Vector3 pos = (start + end) / 2;
+        Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
+        laser.transform.rotation = angleAxis;
+        laser.transform.position = pos;
+
+        yield return new WaitForSeconds(0.5f);
+        isAttack = false;
+        coolTime = attackCoolTime / 2;
+        StartCoroutine(EnemyMove());
+
+        yield return new WaitForSeconds(3f);
+        isLaser = false;
+        line.SetPosition(1, transform.position);
+        line.enabled = false;
+        Destroy(laser);
     }
 
     private void RandomPos(int amount)
