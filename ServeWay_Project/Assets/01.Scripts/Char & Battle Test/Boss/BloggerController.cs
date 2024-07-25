@@ -24,6 +24,7 @@ public class BloggerController : MonoBehaviour
     public GameObject commentPrefab;
     public GameObject pictureObject;
     public GameObject laserPrefab;
+    public GameObject teleportPrefab;
     public PolygonCollider2D pictureCollider;
     public float hp;
     public float speed;
@@ -92,7 +93,12 @@ public class BloggerController : MonoBehaviour
             index = test - 1;
         }
 
-        if(index == 2 && isLaser)
+        if (index == 3 && Vector3.Distance(transform.position, player.transform.position) < 5)
+        {
+            index = Random.Range(0, 3);
+        }
+
+        if (index == 2 && isLaser)
         {
             index = Random.Range(0, 2);
         }
@@ -109,7 +115,7 @@ public class BloggerController : MonoBehaviour
                 StartCoroutine(LaserPattern());
                 break;
             case 3:
-
+                StartCoroutine(TeleportPattern());
                 break;
         }
     }
@@ -216,6 +222,44 @@ public class BloggerController : MonoBehaviour
         line.SetPosition(1, transform.position);
         line.enabled = false;
         Destroy(laser);
+    }
+
+    private IEnumerator TeleportPattern()
+    {
+        isAttack = true;
+        GameObject tel1 = Instantiate(teleportPrefab, transform.position, Quaternion.Euler(0, 0, 0));
+        yield return new WaitForSeconds(1f);
+
+        Vector3 target = player.transform.position;
+        float posX = Random.Range(-1.0f, 1.0f);
+        float posY = Random.Range(-1.0f, 1.0f);
+        if(posX < 0)
+        {
+            posX = target.x - 0.5f + posX;
+        }
+        else
+        {
+            posX = target.x + 0.5f + posX;
+        }
+
+        if (posY < 0)
+        {
+            posY = target.y - 0.5f + posY;
+        }
+        else
+        {
+            posY = target.y + 0.5f + posY;
+        }
+
+        GameObject tel2 = Instantiate(teleportPrefab, new Vector3(posX, posY, 0), Quaternion.Euler(0, 0, 0));
+        yield return new WaitForSeconds(0.5f);
+
+        transform.position = new Vector3(posX, posY, 0);
+        isAttack = false;
+
+        Destroy(tel1);
+        Destroy(tel2);
+        StartCoroutine(picturePattern());
     }
 
     private void RandomPos(int amount)

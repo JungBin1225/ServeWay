@@ -109,6 +109,12 @@ public class BossRoom : MonoBehaviour
                 Bcontroller.nation = this.bossNation;
                 Bcontroller.job = this.bossJob;
                 break;
+            case Boss_Job.YOUTUBER:
+                var Ycontroller = boss.GetComponent<YoutuberController>();
+                Ycontroller.room = this;
+                Ycontroller.nation = this.bossNation;
+                Ycontroller.job = this.bossJob;
+                break;
             default:
                 /*var controller = boss.GetComponent<BossController>();
                 controller.room = this;
