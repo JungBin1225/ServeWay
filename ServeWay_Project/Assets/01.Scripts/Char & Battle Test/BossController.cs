@@ -9,6 +9,7 @@ public class BossController : MonoBehaviour
 
     public BossRoom room;
     public Food_Nation nation;
+    public Boss_Job job;
 
     void Start()
     {
@@ -54,6 +55,14 @@ public class BossController : MonoBehaviour
     public void GetDamage(float damage, Vector3 effectPos, Food_Nation nation)
     {
         //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
+
+        if(job == Boss_Job.YOUTUBER && gameObject.GetComponent<YoutuberController>().isAlgorithm)
+        {
+            if(nation.ToString() != this.nation.ToString())
+            {
+                damage *= 1.5f;
+            }
+        }
 
         hp -= damage;
         

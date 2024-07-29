@@ -48,6 +48,7 @@ public class BloggerController : MonoBehaviour
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;
+        bossCon.job = this.job;
         bossCon.SetHp(hp);
         //GameManager.gameManager.mission.boss = this.gameObject;
 
