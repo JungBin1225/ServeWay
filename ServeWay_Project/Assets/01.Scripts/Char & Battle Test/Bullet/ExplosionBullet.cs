@@ -56,7 +56,7 @@ public class ExplosionBullet : BulletController
         {
             if(isExplode)
             {
-                collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, nation);
+                collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, food);
             }
         }
 

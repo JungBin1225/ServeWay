@@ -7,15 +7,22 @@ public class Algorithm : MonoBehaviour
     public Vector3 target;
     public float speed;
     public float damage;
+    public Sprite food;
+    public GameObject boss;
 
     void Start()
     {
-        
+        transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = food;
     }
 
     void Update()
     {
         Fire();
+
+        if(boss == null)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     public void Fire()

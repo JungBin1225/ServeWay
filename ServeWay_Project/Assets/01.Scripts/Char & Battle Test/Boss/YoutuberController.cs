@@ -7,6 +7,7 @@ public class YoutuberController : MonoBehaviour
     private MissonManager misson;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
+    private DataController dataController;
     private GameObject player;
     private Vector2 minPos;
     private Vector2 maxPos;
@@ -15,6 +16,7 @@ public class YoutuberController : MonoBehaviour
     private bool isAttack;
     private bool isCharge;
     private bool isTouch;
+    private FoodData algorithmFood;
 
     public int test;
     public BossRoom room;
@@ -38,6 +40,7 @@ public class YoutuberController : MonoBehaviour
     void Start()
     {
         misson = FindObjectOfType<MissonManager>();
+        dataController = FindObjectOfType<DataController>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         line = GetComponent<LineRenderer>();
@@ -132,6 +135,15 @@ public class YoutuberController : MonoBehaviour
     private IEnumerator AlgorithmPattern()
     {
         isAttack = true;
+        List<FoodData> playerFood = new List<FoodData>();
+        List<string> foodList = player.GetComponent<PlayerController>().weaponSlot.ReturnWeaponList();
+        foreach (string food in foodList)
+        {
+            playerFood.Add(dataController.FindFood(food));
+        }
+        int index = Random.Range(0, playerFood.Count);
+        algorithmFood = playerFood[index];
+
         yield return new WaitForSeconds(0.1f);
 
         Vector3 target = room.transform.position;
@@ -156,6 +168,8 @@ public class YoutuberController : MonoBehaviour
             algorithm.GetComponent<Algorithm>().target = algorithm.transform.position - transform.position;
             algorithm.GetComponent<Algorithm>().speed = bulletSpeed;
             algorithm.GetComponent<Algorithm>().damage = bulletDamage;
+            algorithm.GetComponent<Algorithm>().food = algorithmFood.foodSprite;
+            algorithm.GetComponent<Algorithm>().boss = this.gameObject;
 
             yield return new WaitForSeconds(0.3f);
         }
@@ -257,6 +271,11 @@ public class YoutuberController : MonoBehaviour
         }
 
         return result;
+    }
+
+    public FoodData GetAlgorithmFood()
+    {
+        return algorithmFood;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -16,6 +16,8 @@ public class WeaponController : MonoBehaviour
     private bool isClicked;
     private bool isLaser;
     private GameObject laser;
+    private FoodData foodData;
+    private DataController data;
 
     public string weaponName;
     public Food_Grade grade;
@@ -34,6 +36,7 @@ public class WeaponController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        data = FindObjectOfType<DataController>();
         playerSprite = player.GetComponent<SpriteRenderer>();
         weaponSprite = GetComponent<SpriteRenderer>();
         lineRenderer = GetComponent<LineRenderer>();
@@ -44,6 +47,7 @@ public class WeaponController : MonoBehaviour
         shootAble = true;
         isClicked = false;
         isLaser = false;
+        foodData = data.FindFood(weaponName);
     }
 
 
@@ -131,7 +135,7 @@ public class WeaponController : MonoBehaviour
                 explosionbulletController.SetTarget(-transform.up);
                 explosionbulletController.SetSpeed(speed);
                 explosionbulletController.SetDamage(damage);
-                explosionbulletController.SetNation(nation);
+                explosionbulletController.SetFood(foodData);
                 explosionbulletController.SetRadius(alphaStat[0]);
                 break;
             case Food_MainIngred.MEAT:
@@ -140,7 +144,7 @@ public class WeaponController : MonoBehaviour
                 bulletController.SetTarget(-transform.up);
                 bulletController.SetSpeed(speed);
                 bulletController.SetDamage(damage);
-                bulletController.SetNation(nation);
+                bulletController.SetFood(foodData);
                 break;
             case Food_MainIngred.RICE:
                 Instantiate(effectPrefab, transform);
@@ -148,7 +152,7 @@ public class WeaponController : MonoBehaviour
                 bulletController.SetTarget(-transform.up);
                 bulletController.SetSpeed(speed);
                 bulletController.SetDamage(damage);
-                bulletController.SetNation(nation);
+                bulletController.SetFood(foodData);
                 break;
             case Food_MainIngred.SOUP:
                 Destroy(bullet);
@@ -202,7 +206,7 @@ public class WeaponController : MonoBehaviour
             bullet.GetComponent<BulletController>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<BulletController>().SetSpeed(speed);
             bullet.GetComponent<BulletController>().SetDamage(damage);
-            bullet.GetComponent<BulletController>().SetNation(nation);
+            bullet.GetComponent<BulletController>().SetFood(foodData);
         }
     }
 
@@ -216,7 +220,7 @@ public class WeaponController : MonoBehaviour
 
         laser.GetComponent<LaserController>().SetDamage(damage);
         laser.GetComponent<LaserController>().SetCoolTime(shootDuration);
-        laser.GetComponent<LaserController>().SetNation(nation);
+        laser.GetComponent<LaserController>().SetFood(foodData);
 
         while (isClicked)
         {

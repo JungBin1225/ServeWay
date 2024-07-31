@@ -7,7 +7,7 @@ public class BulletController : MonoBehaviour
     protected float speed;
     protected float damage;
     protected Vector3 target;
-    protected Food_Nation nation;
+    protected FoodData food;
 
     public GameObject destroyEffect;
 
@@ -36,9 +36,9 @@ public class BulletController : MonoBehaviour
         this.target = target;
     }
 
-    public void SetNation(Food_Nation nation)
+    public void SetFood(FoodData food)
     {
-        this.nation = nation;
+        this.food = food;
     }
 
     public void Fire()
@@ -56,7 +56,7 @@ public class BulletController : MonoBehaviour
         }
         else if (collision.tag == "Boss")
         {
-            collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, nation);
+            collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, food);
         }
 
         if (collision.tag == "Enemy" || collision.tag == "Boss" || collision.tag == "Wall")

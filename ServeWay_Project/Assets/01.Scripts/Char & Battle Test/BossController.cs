@@ -52,21 +52,28 @@ public class BossController : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void GetDamage(float damage, Vector3 effectPos, Food_Nation nation)
+    public void GetDamage(float damage, Vector3 effectPos, FoodData food)
     {
         //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
 
         if(job == Boss_Job.YOUTUBER && gameObject.GetComponent<YoutuberController>().isAlgorithm)
         {
-            if(nation.ToString() != this.nation.ToString())
+            if(food != gameObject.GetComponent<YoutuberController>().GetAlgorithmFood())
             {
-                damage *= 1.5f;
+                Debug.Log("Critical");
+                damage *= 1.2f;
             }
+        }
+
+        if(job == Boss_Job.TEACHER && gameObject.GetComponent<TeacherController>().isCounter)
+        {
+            gameObject.GetComponent<TeacherController>().AddAmount();
+            damage = 0;
         }
 
         hp -= damage;
         
-        if(nation.ToString() == this.nation.ToString())
+        if(food.nation.ToString() == this.nation.ToString())
         {
             misson.OccurreEvent(0, damage);
         }

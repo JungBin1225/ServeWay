@@ -6,7 +6,7 @@ public class LaserController : MonoBehaviour
 {
     private float damage;
     private float coolTime;
-    private Food_Nation nation;
+    private FoodData food;
     private float nowCoolTime;
     private BoxCollider2D collider;
     private bool isClicked;
@@ -36,9 +36,9 @@ public class LaserController : MonoBehaviour
         this.coolTime = coolTime;
     }
 
-    public void SetNation(Food_Nation nation)
+    public void SetFood(FoodData food)
     {
-        this.nation = nation;
+        this.food = food;
     }
 
     private IEnumerator FireLaser()
@@ -68,7 +68,7 @@ public class LaserController : MonoBehaviour
         }
         else if (collision.tag == "Boss")
         {
-            collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, nation);
+            collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, food);
         }
     }
 }

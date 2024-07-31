@@ -18,6 +18,7 @@ public class TeacherController : MonoBehaviour
     private GameObject laser;
     private bool isAttack;
     private bool isLaser;
+    private int counterAmount;
 
     public int test;
     public BossRoom room;
@@ -25,11 +26,17 @@ public class TeacherController : MonoBehaviour
     public SpriteRenderer weaponObject;
     public GameObject bulletPrefab;
     public GameObject laserPrefab;
+    public GameObject explosionPrefab;
     public float hp;
     public float speed;
     public float attackCoolTime;
     public float bulletSpeed;
     public float bulletDamage;
+    public float explosionSpeed;
+    public float explosionDamage;
+    public float explosionRadius;
+    public float counterDamage;
+    public bool isCounter;
     public Food_Nation nation;
     public Boss_Job job;
 
@@ -57,7 +64,9 @@ public class TeacherController : MonoBehaviour
         }
 
         coolTime = attackCoolTime;
+        counterAmount = 0;
         line.enabled = false;
+        isCounter = false;
         isAttack = false;
         isLaser = false;
 
@@ -126,10 +135,10 @@ public class TeacherController : MonoBehaviour
                 StartCoroutine(ShotGunPattern());
                 break;
             case 2:
-                
+                StartCoroutine(ExplosionPattern());
                 break;
             case 3:
-                
+                StartCoroutine(CounterPattern());
                 break;
         }
     }
@@ -190,6 +199,7 @@ public class TeacherController : MonoBehaviour
     private IEnumerator ShotGunPattern()
     {
         isAttack = true;
+        SetSprite(Food_MainIngred.SOUP);
         yield return new WaitForSeconds(0.35f);
 
         float radius = 10;
@@ -215,6 +225,84 @@ public class TeacherController : MonoBehaviour
         StartCoroutine(EnemyMove());
     }
 
+    private IEnumerator ExplosionPattern()
+    {
+        isAttack = true;
+        SetSprite(Food_MainIngred.BREAD);
+        yield return new WaitForSeconds(0.3f);
+        
+        for(int i = 0; i < 6; i++)
+        {
+            float posX = Random.Range(-(room.transform.localScale.x / 2), (room.transform.localScale.x / 2));
+            float posY = Random.Range(-(room.transform.localScale.y / 2), (room.transform.localScale.y / 2));
+            Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
+            if(i == 5)
+            {
+                target = player.transform.position;
+            }
+
+
+            GameObject explosionBullet = Instantiate(explosionPrefab, transform.position, transform.rotation);
+            var breadBullet = explosionBullet.GetComponent<EnemyExplosionBullet>();
+            breadBullet.SetTarget(transform.position - target);
+            breadBullet.SetSpeed(explosionSpeed);
+            breadBullet.SetDamage(explosionDamage);
+            breadBullet.SetRadius(explosionRadius);
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        yield return new WaitForSeconds(0.4f);
+        isAttack = false;
+        coolTime = attackCoolTime;
+        StartCoroutine(EnemyMove());
+    }
+
+    private IEnumerator CounterPattern()
+    {
+        isAttack = true;
+        yield return new WaitForSeconds(0.2f);
+
+        float time = 0;
+        float colorTime = 0;
+        isCounter = true;
+        while(time < 5)
+        {
+            if(counterAmount >= 3)
+            {
+                //effect
+                player.GetComponent<PlayerHealth>().PlayerDamaged(counterDamage);
+                break;
+            }
+
+            if(colorTime % 1 > 0.5f)
+            {
+                charSprite.color = new Color(1, 1, 1);
+            }
+            else
+            {
+                charSprite.color = new Color(1, 0, 0);
+            }
+
+            time += Time.deltaTime;
+            colorTime += Time.deltaTime;
+            yield return null;
+        }
+
+        charSprite.color = new Color(1, 1, 1);
+        isCounter = false;
+        counterAmount = 0;
+        yield return new WaitForSeconds(0.3f);
+        isAttack = false;
+        coolTime = attackCoolTime;
+        StartCoroutine(EnemyMove());
+    }
+
+    public void AddAmount()
+    {
+        counterAmount++;
+    }
+
     private void SetSprite(Food_MainIngred ingred)
     {
         foreach(FoodData food in playerFood)
@@ -222,6 +310,16 @@ public class TeacherController : MonoBehaviour
             if(food.mainIngred == ingred)
             {
                 weaponObject.sprite = food.foodSprite;
+                return;
+            }
+        }
+
+        foreach(FoodData food in dataController.foodData.FoodDatas)
+        {
+            if (food.mainIngred == ingred)
+            {
+                weaponObject.sprite = food.foodSprite;
+                return;
             }
         }
     }
