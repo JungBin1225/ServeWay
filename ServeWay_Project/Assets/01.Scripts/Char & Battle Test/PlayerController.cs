@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -186,7 +187,7 @@ public class PlayerController : MonoBehaviour
 
     public void InitCharactor()
     {
-        if(GameManager.gameManager.charData.saveFile.weaponList.Count != 0)
+        if(GameManager.gameManager.charData.saveFile.weaponList.Count != 0 && !SceneManager.GetActiveScene().name.Contains("Tutorial"))
         {
             weaponSlot.InitSlot();
             for (int i = 0; i < weaponSlot.gameObject.transform.childCount; i++)

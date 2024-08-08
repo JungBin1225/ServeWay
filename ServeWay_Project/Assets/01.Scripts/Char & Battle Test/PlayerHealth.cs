@@ -37,7 +37,7 @@ public class PlayerHealth : MonoBehaviour
             misson.OccurreEvent(2, Time.deltaTime);
         }
 
-        if(nowHp <= 0)
+        if(nowHp <= 0 && !SceneManager.GetActiveScene().name.Contains("Start"))
         {
             Time.timeScale = 0;
             gameOverUI.SetActive(true);

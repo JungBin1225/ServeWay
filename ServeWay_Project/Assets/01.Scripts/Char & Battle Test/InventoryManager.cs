@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -17,7 +18,10 @@ public class InventoryManager : MonoBehaviour
 
         if (inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
         {
-            LoadInventory();
+            if(!SceneManager.GetActiveScene().name.Contains("Tutorial"))
+            {
+                LoadInventory();
+            }
         }
     }
 

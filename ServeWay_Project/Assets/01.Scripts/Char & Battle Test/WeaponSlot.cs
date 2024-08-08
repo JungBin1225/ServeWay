@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WeaponSlot : MonoBehaviour
 {
@@ -91,14 +92,13 @@ public class WeaponSlot : MonoBehaviour
             weapon.GetComponentInChildren<WeaponController>().weaponName = name;
             weapon.GetComponentInChildren<WeaponController>().InitWeapon();
             weaponList.Add(weapon);
-            if(!weaponList[index].Equals(weapon))
-            {
-                weapon.SetActive(false);
-            }
-            else
-            {
-                weapon.SetActive(true);
-            }
+
+            weapon.SetActive(false);
+            weaponList[index].SetActive(false);
+
+            index = weaponList.Count - 1;
+            weaponList[index].SetActive(true);
+            holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
         }
         else
         {
@@ -116,6 +116,7 @@ public class WeaponSlot : MonoBehaviour
             {
                 weapon.SetActive(true);
             }
+            holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
         }
 
         dataController.FoodIngredDex.UpdateFoodDex(name, FoodDex_Status.CREATED);
@@ -201,7 +202,10 @@ public class WeaponSlot : MonoBehaviour
             }
         }
 
-        holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
+        if(weaponList.Count != 0 && !SceneManager.GetActiveScene().name.Contains("Tutorial"))
+        {
+            holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
+        }
     }
 
     public int WeaponCount()

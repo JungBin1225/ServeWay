@@ -40,7 +40,7 @@ public class MoveStage : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            if(GameManager.gameManager.stage < 7)
+            if(GameManager.gameManager.stage < 7 && player.weaponSlot.WeaponCount() != 0)
             {
                 MoveNextStage(nextStage);
             }

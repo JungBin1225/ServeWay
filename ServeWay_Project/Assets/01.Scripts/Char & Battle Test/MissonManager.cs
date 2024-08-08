@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class MissonManager : MonoBehaviour
@@ -73,12 +74,17 @@ public class MissonManager : MonoBehaviour
             index = 0;
         }
 
+        if(SceneManager.GetActiveScene().name.Contains("Tutorial"))
+        {
+            index = textIndex;
+        }
 
         if (targetAmount[index] != 0)
         {
             RandomMisson(textIndex);
             return;
         }
+
         switch (index)
         {
             case 0:
