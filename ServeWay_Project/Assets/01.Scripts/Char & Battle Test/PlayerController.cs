@@ -61,6 +61,10 @@ public class PlayerController : MonoBehaviour
 
             Move();
         }
+        else
+        {
+            rigidBody.velocity = new Vector2(0, 0);
+        }
 
         if(coolTime > 0)
         {
@@ -221,5 +225,10 @@ public class PlayerController : MonoBehaviour
     public float GetnowHp()
     {
         return playerHealth.nowHp;
+    }
+
+    public float GetPlayerVel()
+    {
+        return rigidBody.velocity.magnitude;
     }
 }
