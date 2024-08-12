@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
             Move();
         }
-        else
+        else if(!controllAble && !isCharge)
         {
             rigidBody.velocity = new Vector2(0, 0);
         }
