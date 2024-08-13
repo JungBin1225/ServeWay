@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CookTutorial : MonoBehaviour
+public class BossTutorial : MonoBehaviour
 {
     public GameObject playerBox;
     public GameObject teacherBox;
@@ -13,22 +13,29 @@ public class CookTutorial : MonoBehaviour
     public TextAsset textFile;
     public TextAsset clearText;
     public GameObject door;
+    public TutorialBoss boss;
 
     private PlayerController player;
+    private DataController data;
+    private MissonManager misson;
     private bool isTalking;
     private bool isClicked;
     private bool isMission;
     private bool isClear;
-    private bool maked;
+    private bool kiiled;
+    private float time;
 
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
+        data = FindObjectOfType<DataController>();
+        misson = FindObjectOfType<MissonManager>();
         isTalking = false;
         isClicked = false;
         isClear = false;
         isMission = false;
-        maked = false;
+        kiiled = false;
+        time = 0;
 
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
@@ -44,13 +51,22 @@ public class CookTutorial : MonoBehaviour
 
         if (!isTalking && isMission && !isClear)
         {
-            if(player.weaponSlot.ReturnWeaponList().Count > 0)
+            if (boss == null)
             {
-                maked = true;
+                player.controllAble = false;
+
+                if (time < 2)
+                {
+                    time += Time.deltaTime;
+                }
+                else
+                {
+                    kiiled = true;
+                }
             }
         }
 
-        if (maked && !isClear)
+        if (kiiled && !isClear)
         {
             isClear = true;
             door.SetActive(false);
@@ -115,16 +131,34 @@ public class CookTutorial : MonoBehaviour
         player.controllAble = true;
     }
 
+    public void DropIngredient(int min, int max)
+    {
+        int dropAmount = Random.Range(min, max + 1);
+        float radius = 5f;
+
+        for (int i = 0; i < dropAmount; i++)
+        {
+            float angle = i * Mathf.PI * 2 / dropAmount;
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+            Vector3 pos = transform.position + new Vector3(x, y, 0);
+            float angleDegrees = -angle * Mathf.Rad2Deg;
+
+            Ingredient ingred = data.IngredientList.IngredientList[i];
+            GameObject item = Instantiate(ingred.prefab, pos, Quaternion.Euler(0, 0, 0));
+            item.GetComponent<GetIngredients>().itemName = ingred.name;
+            item.GetComponent<GetIngredients>().SetSprite(ingred.sprite);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
             StartCoroutine(StartDialog(textFile));
             door.SetActive(true);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Kimchi, 1);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Rice, 3);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Oil, 1);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Egg, 1);
+            GameManager.gameManager.isBossStage = true;
+            StartCoroutine(misson.MissonAppear());
         }
     }
 }

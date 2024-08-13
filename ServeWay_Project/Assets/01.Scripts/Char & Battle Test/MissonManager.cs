@@ -93,6 +93,10 @@ public class MissonManager : MonoBehaviour
 
                 matchedUI.Add(index, missonText[textIndex]);
                 Food_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+                if(SceneManager.GetActiveScene().name.Contains("Tutorial"))
+                {
+                    nation = Food_Nation.KOREA;
+                }
                 FoodData food = new FoodData();
                 missonText[textIndex].GetComponent<TMP_Text>().text = string.Format(missonName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), food.EunmToString(nation));
                 break;
@@ -241,6 +245,7 @@ public class MissonManager : MonoBehaviour
         while(missonUI.GetComponent<RectTransform>().localPosition.x < -735)
         {
             missonUI.GetComponent<RectTransform>().localPosition += new Vector3(5, 0, 0);
+            Debug.Log("asd");
             yield return null;
         }
 

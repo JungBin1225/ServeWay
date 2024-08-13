@@ -81,7 +81,7 @@ public class ChargingTutorial : MonoBehaviour
             }
             else
             {
-                Destroy(enemy);
+                Destroy(enemy.gameObject);
                 isClear = true;
                 door.SetActive(false);
                 StartCoroutine(StartDialog(clearText2));
@@ -129,6 +129,7 @@ public class ChargingTutorial : MonoBehaviour
                 {
                     currentText.text += message[i][num];
                 }
+                player.controllAble = false;
                 yield return new WaitForSeconds(0.05f);
             }
 

@@ -36,11 +36,24 @@ public class MoveStage : MonoBehaviour
         }
     }
 
+    private void EndTutorial()
+    {
+        GameManager.gameManager.inventory.inventory.Clear();
+        SceneManager.LoadScene("StartMap");
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
-            if(GameManager.gameManager.stage < 7 && player.weaponSlot.WeaponCount() != 0)
+            if(SceneManager.GetActiveScene().name.Contains("Tutorial"))
+            {
+                if(player.controllAble)
+                {
+                    EndTutorial();
+                }
+            }
+            else if(GameManager.gameManager.stage < 7 && player.weaponSlot.WeaponCount() != 0)
             {
                 MoveNextStage(nextStage);
             }

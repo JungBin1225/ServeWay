@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialEnemy : MonoBehaviour
 {
+    public float maxHp;
     public GameObject bulletPrefab;
     public float bulletDamage;
     public float bulletSpeed;
     public bool attackAble;
     public ChargingTutorial tutorial;
+    public Image hpImage;
+    public GameObject damageEffect;
 
+    private float hp;
     private GameObject target;
     private bool moveAble;
     private Rigidbody2D rigidBody;
 
     private void Start()
     {
+        hp = maxHp;
         moveAble = true;
         attackAble = false;
         target = GameObject.FindGameObjectWithTag("Player");
@@ -28,6 +34,11 @@ public class TutorialEnemy : MonoBehaviour
         {
             StartCoroutine(Fire());
             attackAble = false;
+        }
+
+        if (hp <= 0)
+        {
+            Destroy(this.gameObject);
         }
     }
 
@@ -68,6 +79,26 @@ public class TutorialEnemy : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         moveAble = true;
+    }
+
+    public void GetDamage(float damage, Vector3 effectPos)
+    {
+        GameObject effect = Instantiate(damageEffect, transform.position, transform.rotation);
+
+        hp -= damage;
+        if (hp <= 0)
+        {
+            hpImage.fillAmount = 0;
+        }
+        else
+        {
+            hpImage.fillAmount = hp / maxHp;
+        }
+    }
+
+    public float GetNowHp()
+    {
+        return hp;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

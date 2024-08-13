@@ -4,31 +4,39 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CookTutorial : MonoBehaviour
+public class AttackTutorial : MonoBehaviour
 {
     public GameObject playerBox;
     public GameObject teacherBox;
     public TMP_Text playerText;
     public TMP_Text teacherText;
     public TextAsset textFile;
-    public TextAsset clearText;
+    public TextAsset clearText1;
+    public TextAsset clearText2;
     public GameObject door;
+    public TutorialEnemy enemy;
 
     private PlayerController player;
+    private DataController data;
     private bool isTalking;
     private bool isClicked;
     private bool isMission;
+    private bool isDamaged;
     private bool isClear;
-    private bool maked;
+    private bool isKill;
+    private float missionAmount;
 
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
+        data = FindObjectOfType<DataController>();
         isTalking = false;
         isClicked = false;
         isClear = false;
         isMission = false;
-        maked = false;
+        isDamaged = false;
+        isKill = false;
+        missionAmount = 0;
 
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
@@ -44,17 +52,41 @@ public class CookTutorial : MonoBehaviour
 
         if (!isTalking && isMission && !isClear)
         {
-            if(player.weaponSlot.ReturnWeaponList().Count > 0)
+            if (!isDamaged) //enemy attack
             {
-                maked = true;
+                if(enemy.GetNowHp() < enemy.maxHp / 2)
+                {
+                    missionAmount = 10;
+                }
+            }
+            else //charge
+            {
+                if (!isKill)
+                {
+                    if (enemy == null)
+                    {
+                        missionAmount = 10;
+                    }
+                }
             }
         }
 
-        if (maked && !isClear)
+        if (missionAmount > 5 && !isClear)
         {
-            isClear = true;
-            door.SetActive(false);
-            StartCoroutine(StartDialog(clearText));
+            if (!isDamaged)
+            {
+                isDamaged = true;
+                enemy.attackAble = false;
+                missionAmount = 0;
+                StartCoroutine(StartDialog(clearText1));
+            }
+            else
+            {
+                DropIngredient(4, 4);
+                isClear = true;
+                door.SetActive(false);
+                StartCoroutine(StartDialog(clearText2));
+            }
         }
     }
 
@@ -98,6 +130,7 @@ public class CookTutorial : MonoBehaviour
                 {
                     currentText.text += message[i][num];
                 }
+
                 player.controllAble = false;
                 yield return new WaitForSeconds(0.05f);
             }
@@ -115,16 +148,32 @@ public class CookTutorial : MonoBehaviour
         player.controllAble = true;
     }
 
+    private void DropIngredient(int min, int max)
+    {
+        int dropAmount = Random.Range(min, max + 1);
+        float radius = 2.5f;
+
+        for (int i = 0; i < dropAmount; i++)
+        {
+            float angle = i * Mathf.PI * 2 / dropAmount;
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+            Vector3 pos = transform.position + new Vector3(x, y, 0);
+            float angleDegrees = -angle * Mathf.Rad2Deg;
+
+            Ingredient ingredient = data.IngredientList.IngredientList[i];
+            GameObject item = Instantiate(ingredient.prefab, pos, Quaternion.Euler(0, 0, 0));
+            item.GetComponent<GetIngredients>().itemName = ingredient.name;
+            item.GetComponent<GetIngredients>().SetSprite(ingredient.sprite);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
             StartCoroutine(StartDialog(textFile));
             door.SetActive(true);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Kimchi, 1);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Rice, 3);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Oil, 1);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Egg, 1);
         }
     }
 }

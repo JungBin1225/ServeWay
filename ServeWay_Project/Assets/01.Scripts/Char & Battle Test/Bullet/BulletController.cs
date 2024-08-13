@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BulletController : MonoBehaviour
 {
@@ -52,11 +53,25 @@ public class BulletController : MonoBehaviour
     {
         if (collision.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<EnemyController>().GetDamage(damage, this.transform.position);
+            if(SceneManager.GetActiveScene().name.Contains("Tutorial"))
+            {
+                collision.gameObject.GetComponent<TutorialEnemy>().GetDamage(damage, this.transform.position);
+            }
+            else
+            {
+                collision.gameObject.GetComponent<EnemyController>().GetDamage(damage, this.transform.position);
+            }
         }
         else if (collision.tag == "Boss")
         {
-            collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, food);
+            if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+            {
+                collision.gameObject.GetComponent<TutorialBoss>().GetDamage(damage, this.transform.position, food);
+            }
+            else
+            {
+                collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, food);
+            }  
         }
 
         if (collision.tag == "Enemy" || collision.tag == "Boss" || collision.tag == "Wall")

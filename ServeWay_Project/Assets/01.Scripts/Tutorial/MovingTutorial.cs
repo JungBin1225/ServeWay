@@ -98,6 +98,7 @@ public class MovingTutorial : MonoBehaviour
                 {
                     currentText.text += message[i][num];
                 }
+                player.controllAble = false;
                 yield return new WaitForSeconds(0.05f);
             }
 
