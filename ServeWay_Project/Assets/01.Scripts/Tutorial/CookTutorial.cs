@@ -32,7 +32,6 @@ public class CookTutorial : MonoBehaviour
 
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
-        door.SetActive(false);
     }
 
     void Update()
@@ -53,7 +52,10 @@ public class CookTutorial : MonoBehaviour
         if (maked && !isClear)
         {
             isClear = true;
-            door.SetActive(false);
+            for (int i = 0; i < door.transform.childCount; i++)
+            {
+                door.transform.GetChild(i).GetComponent<DoorAnimation>().OpenDoor();
+            }
             StartCoroutine(StartDialog(clearText));
         }
     }
@@ -120,7 +122,10 @@ public class CookTutorial : MonoBehaviour
         if (collision.gameObject.tag == "Player" && !isClear)
         {
             StartCoroutine(StartDialog(textFile));
-            door.SetActive(true);
+            for (int i = 0; i < door.transform.childCount; i++)
+            {
+                door.transform.GetChild(i).GetComponent<DoorAnimation>().CloseDoor();
+            }
             GameManager.gameManager.inventory.GetItem(Ingred_Name.Kimchi, 1);
             GameManager.gameManager.inventory.GetItem(Ingred_Name.Rice, 3);
             GameManager.gameManager.inventory.GetItem(Ingred_Name.Oil, 1);

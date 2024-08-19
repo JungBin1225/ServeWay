@@ -56,7 +56,10 @@ public class EnemyGenerator : MonoBehaviour
                 //StopCoroutine(SelectEnamy());
                 foreach (GameObject door in doorList)
                 {
-                    door.SetActive(false);
+                    for (int i = 0; i < door.transform.childCount; i++)
+                    {
+                        door.GetComponent<DoorAnimation>().OpenDoor();
+                    }
                 }
 
                 DropIngredient(1, 4);
@@ -172,7 +175,10 @@ public class EnemyGenerator : MonoBehaviour
                 // 일반 방 작동
                 foreach (GameObject door in doorList)
                 {
-                    door.SetActive(true);
+                    for (int i = 0; i < door.transform.childCount; i++)
+                    {
+                        door.GetComponent<DoorAnimation>().CloseDoor();
+                    }
                 }
 
                 if (!isSpawn)
