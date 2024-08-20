@@ -111,7 +111,7 @@ public class InventoryUI : MonoBehaviour
             i++;
         }
 
-        if(i < foodImageList.Count - 1)
+        if(i < foodImageList.Count)
         {
             for(; i < foodImageList.Count; i++)
             {
