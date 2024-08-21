@@ -8,6 +8,7 @@ public class PanFlipGame : MonoBehaviour
     public CreateUI createUI;
     public GameObject explanePanel;
     public GameObject gamePanel;
+    public Animator explaneAnim;
 
     private Create_Success success;
     private bool isStart;
@@ -25,6 +26,7 @@ public class PanFlipGame : MonoBehaviour
 
         explanePanel.SetActive(true);
         gamePanel.SetActive(false);
+        StartCoroutine(ExplaneAnim());
     }
 
     void Update()
@@ -81,6 +83,15 @@ public class PanFlipGame : MonoBehaviour
         isStart = false;
         createUI.success = success;
         createUI.OnGameCleared(this.gameObject);
+    }
+
+    public IEnumerator ExplaneAnim()
+    {
+        while(explanePanel.activeSelf)
+        {
+            yield return new WaitForSecondsRealtime(5f);
+            explaneAnim.SetTrigger("Flip");
+        }
     }
 
     public void CloseWindow()
