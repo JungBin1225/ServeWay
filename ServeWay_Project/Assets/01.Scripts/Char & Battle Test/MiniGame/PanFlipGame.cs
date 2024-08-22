@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PanFlipGame : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class PanFlipGame : MonoBehaviour
     public GameObject explanePanel;
     public GameObject gamePanel;
     public Animator explaneAnim;
+    public Animator gameAnim;
+    public GameObject warning;
+    public GameObject click;
+    public GameObject spaceBar;
 
     private Create_Success success;
     private bool isStart;
@@ -33,6 +38,7 @@ public class PanFlipGame : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space) && isStart)
         {
+            gameAnim.SetTrigger("Flip");
             isClicked = true;
         }
     }
@@ -61,6 +67,7 @@ public class PanFlipGame : MonoBehaviour
             yield return null;
         }
         alarm.SetActive(false);
+        isStart = false;
 
         float result = (Time.realtimeSinceStartup - time) - now - setTime;
         if(result >= 0 && result <= 0.5f)
@@ -78,7 +85,7 @@ public class PanFlipGame : MonoBehaviour
 
         //show result
         Debug.Log(success);
-        yield return new WaitForSecondsRealtime(1.0f);
+        yield return new WaitForSecondsRealtime(2.0f);
 
         isStart = false;
         createUI.success = success;
@@ -90,7 +97,17 @@ public class PanFlipGame : MonoBehaviour
         while(explanePanel.activeSelf)
         {
             yield return new WaitForSecondsRealtime(5f);
+            warning.SetActive(true);
+            yield return new WaitForSecondsRealtime(0.4f);
+            click.SetActive(true);
+            spaceBar.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f);
+
+            yield return new WaitForSecondsRealtime(0.1f);
             explaneAnim.SetTrigger("Flip");
+            yield return new WaitForSecondsRealtime(0.5f);
+            warning.SetActive(false);
+            click.SetActive(false);
+            spaceBar.GetComponent<Image>().color = new Color(1, 1, 1);
         }
     }
 
