@@ -62,7 +62,7 @@ public class SoupGame : MonoBehaviour
         float targetDegree = Random.Range(3.0f, 5.5f);
         List<float> degreeList = new List<float>();
 
-        targetSpeed.GetComponent<RectTransform>().anchoredPosition = new Vector3(-200 + (targetDegree * 40), 300, 0);
+        targetSpeed.GetComponent<RectTransform>().anchoredPosition = new Vector3(-170 + (targetDegree * 34), 270, 0);
 
         while ((Time.realtimeSinceStartup - time) - now < 40)
         {
@@ -87,7 +87,11 @@ public class SoupGame : MonoBehaviour
                     degree /= zeroCount;
                 }
 
-                nowSpeed.GetComponent<RectTransform>().anchoredPosition = new Vector3(-200 + (degree * 40), 300, 0);
+                if(degree > 10)
+                {
+                    degree = 10;
+                }
+                nowSpeed.GetComponent<RectTransform>().anchoredPosition = new Vector3(-170 + (degree * 34), 270, 0);
                 if(degree <= targetDegree - 1.5f)
                 {
                     Debug.Log("Late");

@@ -10,7 +10,10 @@ public class ArrowGame : MonoBehaviour
     public GameObject explanePanel;
     public GameObject gamePanel;
     public List<GameObject> arrowList;
+    public List<GameObject> answerList;
     public GameObject timer;
+    public Sprite answer_O;
+    public Sprite answer_X;
 
     private Create_Success success;
     private List<KeyCode> arrows;
@@ -88,6 +91,7 @@ public class ArrowGame : MonoBehaviour
             for(int j = 0; j < 5; j++)
             {
                 arrowList[j].SetActive(true);
+                answerList[j].SetActive(false);
                 arrowList[j].GetComponent<TMP_Text>().text = ArrowToString(arrows[j]);
             }
 
@@ -104,15 +108,25 @@ public class ArrowGame : MonoBehaviour
                 if(arrows[j] == pressedKey)
                 {
                     successAmount++;
+                    answerList[j].GetComponent<Image>().sprite = answer_O;
+                    answerList[j].GetComponent<Image>().color = new Color(0, 1, 0);
                 }
-                arrowList[j].SetActive(false);
+                else
+                {
+                    answerList[j].GetComponent<Image>().sprite = answer_X;
+                    answerList[j].GetComponent<Image>().color = new Color(1, 0, 0);
+                }
+                answerList[j].SetActive(true);
 
                 isPressed = false;
             }
 
+            yield return new WaitForSecondsRealtime(0.2f);
+
             for (int j = 0; j < 5; j++)
             {
                 arrowList[j].SetActive(false);
+                answerList[j].SetActive(false);
             }
         }
 
@@ -161,15 +175,15 @@ public class ArrowGame : MonoBehaviour
         switch(key)
         {
             case KeyCode.UpArrow:
-                return "¡è";
+                return "â†‘";
             case KeyCode.DownArrow:
-                return "¡é";
+                return "â†“";
             case KeyCode.LeftArrow:
-                return "¡ç";
+                return "â†";
             case KeyCode.RightArrow:
-                return "¡æ";
+                return "â†’";
             default:
-                return "¡è";
+                return "â†‘";
         }
     }
 

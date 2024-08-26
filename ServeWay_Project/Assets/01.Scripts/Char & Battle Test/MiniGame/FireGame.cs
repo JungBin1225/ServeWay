@@ -51,7 +51,7 @@ public class FireGame : MonoBehaviour
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
 
         float barTime = Random.Range(4.0f, 7.0f);
-        float barLoc = Random.Range(0.0f, 530.0f);
+        float barLoc = Random.Range(0.0f, 580.0f);
 
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
 
