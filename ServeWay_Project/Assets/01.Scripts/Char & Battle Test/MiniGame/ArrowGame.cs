@@ -91,7 +91,6 @@ public class ArrowGame : MonoBehaviour
             for(int j = 0; j < 5; j++)
             {
                 arrowList[j].SetActive(true);
-                answerList[j].SetActive(false);
                 arrowList[j].GetComponent<TMP_Text>().text = ArrowToString(arrows[j]);
             }
 
@@ -108,15 +107,12 @@ public class ArrowGame : MonoBehaviour
                 if(arrows[j] == pressedKey)
                 {
                     successAmount++;
-                    answerList[j].GetComponent<Image>().sprite = answer_O;
-                    answerList[j].GetComponent<Image>().color = new Color(0, 1, 0);
+                    arrowList[j].GetComponent<Animator>().SetTrigger("Correct");
                 }
                 else
                 {
-                    answerList[j].GetComponent<Image>().sprite = answer_X;
-                    answerList[j].GetComponent<Image>().color = new Color(1, 0, 0);
+                    arrowList[j].GetComponent<Animator>().SetTrigger("False");
                 }
-                answerList[j].SetActive(true);
 
                 isPressed = false;
             }
@@ -126,8 +122,8 @@ public class ArrowGame : MonoBehaviour
             for (int j = 0; j < 5; j++)
             {
                 arrowList[j].SetActive(false);
-                answerList[j].SetActive(false);
             }
+
         }
 
         if(successAmount >= 20)
