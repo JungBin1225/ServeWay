@@ -9,6 +9,7 @@ public class FireGame : MonoBehaviour
     public GameObject gamePanel;
     public GameObject targetBar;
     public GameObject spaceBar;
+    public GameObject rangeButton;
 
     private Create_Success success;
     private float time;
@@ -51,7 +52,7 @@ public class FireGame : MonoBehaviour
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
 
         float barTime = Random.Range(4.0f, 7.0f);
-        float barLoc = Random.Range(0.0f, 580.0f);
+        float barLoc = Random.Range(0.0f, 530.0f);
 
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
 
@@ -59,28 +60,30 @@ public class FireGame : MonoBehaviour
         {
             if(isPress)
             {
-                if (spaceBar.GetComponent<RectTransform>().anchoredPosition.x < 580.0f)
+                if (spaceBar.GetComponent<RectTransform>().anchoredPosition.x < 575.0f)
                 {
-                    spaceBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(2.5f, 0);
+                    spaceBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(1.5f, 0);
                 }
                 else
                 {
-                    spaceBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(580.0f, 0, 0);
+                    spaceBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(575.0f, 0, 0);
                 }
             }
             else
             {
                 if(spaceBar.GetComponent<RectTransform>().anchoredPosition.x > 0)
                 {
-                    spaceBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(3f, 0);
+                    spaceBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(2.5f, 0);
                 }
                 else
                 {
                     spaceBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
                 }
             }
+            rangeButton.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 180 - spaceBar.GetComponent<RectTransform>().anchoredPosition.x * 0.21f);
 
             float degree = spaceBar.GetComponent<RectTransform>().anchoredPosition.x - targetBar.GetComponent<RectTransform>().anchoredPosition.x;
+            Debug.Log(targetBar.GetComponent<RectTransform>().sizeDelta.x);
             if(degree > 0 && degree < targetBar.GetComponent<RectTransform>().sizeDelta.x)
             {
                 score += Time.realtimeSinceStartup - frameTime;
