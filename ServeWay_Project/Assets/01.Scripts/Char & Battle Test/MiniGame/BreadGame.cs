@@ -9,6 +9,8 @@ public class BreadGame : MonoBehaviour
     public CreateUI createUI;
     public GameObject explanePanel;
     public GameObject gamePanel;
+    public List<Sprite> keyboardList;
+    public List<Sprite> pressList;
 
     private Create_Success success;
     private KeyCode targetKey;
@@ -41,25 +43,45 @@ public class BreadGame : MonoBehaviour
         explanePanel.SetActive(false);
         gamePanel.SetActive(true);
 
+        int index = 0;
         float now = Time.realtimeSinceStartup - time;
         float keyNow = Time.realtimeSinceStartup - time;
         float KeyTime = Random.Range(2.0f, 6.0f);
 
-        targetKey = RandomKey();
-        gamePanel.transform.GetChild(0).GetComponent<TMP_Text>().text = targetKey.ToString();
+        int targetNum = Random.Range(0, 27);
+        targetKey = IntToKey(targetNum);
+
+        if(index % 2 == 0)
+        {
+            gamePanel.transform.GetChild(1).GetComponent<Image>().sprite = keyboardList[targetNum];
+        }
+        else
+        {
+            gamePanel.transform.GetChild(1).GetComponent<Image>().sprite = pressList[targetNum];
+        }
         isPlaying = true;
 
         while ((Time.realtimeSinceStartup - time) - now < 20)
         {
             if((Time.realtimeSinceStartup - time) - keyNow > KeyTime)
             {
+                index = 0;
                 keyNow = Time.realtimeSinceStartup - time;
                 KeyTime = Random.Range(2.0f, 6.0f);
-                targetKey = RandomKey();
-                gamePanel.transform.GetChild(0).GetComponent<TMP_Text>().text = targetKey.ToString();
+                targetNum = Random.Range(0, 27);
+                targetKey = IntToKey(targetNum);
             }
 
-            yield return null;
+            if (index % 2 == 0)
+            {
+                gamePanel.transform.GetChild(1).GetComponent<Image>().sprite = keyboardList[targetNum];
+            }
+            else
+            {
+                gamePanel.transform.GetChild(1).GetComponent<Image>().sprite = pressList[targetNum];
+            }
+            index++;
+            yield return new WaitForSecondsRealtime(0.2f);
         }
 
         isPlaying = false;
@@ -83,11 +105,9 @@ public class BreadGame : MonoBehaviour
         createUI.OnGameCleared(this.gameObject);
     }
 
-    public KeyCode RandomKey()
+    public KeyCode IntToKey(int num)
     {
-        int index = Random.Range(0, 27);
-
-        switch(index)
+        switch(num)
         {
             case 0: return KeyCode.A;
             case 1: return KeyCode.B;
