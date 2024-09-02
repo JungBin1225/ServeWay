@@ -11,6 +11,7 @@ public class BreadGame : MonoBehaviour
     public GameObject gamePanel;
     public List<Sprite> keyboardList;
     public List<Sprite> pressList;
+    public Animator anim;
 
     private Create_Success success;
     private KeyCode targetKey;
@@ -33,6 +34,7 @@ public class BreadGame : MonoBehaviour
     {
         if(isPlaying && Input.GetKeyDown(targetKey))
         {
+            anim.SetTrigger(Random.Range(1, 4).ToString());
             score++;
             Debug.Log(score);
         }
@@ -48,10 +50,21 @@ public class BreadGame : MonoBehaviour
         float keyNow = Time.realtimeSinceStartup - time;
         float KeyTime = Random.Range(2.0f, 6.0f);
 
-        int targetNum = Random.Range(0, 27);
+        int targetNum = 26;
+        //int targetNum = Random.Range(0, 27);
         targetKey = IntToKey(targetNum);
+        if (targetKey == KeyCode.Space)
+        {
+            gamePanel.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(200, 50);
+            anim.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-120, 50, 0);
+        }
+        else
+        {
+            gamePanel.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(75, 75);
+            anim.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-60, 60, 0);
+        }
 
-        if(index % 2 == 0)
+        if (index % 2 == 0)
         {
             gamePanel.transform.GetChild(1).GetComponent<Image>().sprite = keyboardList[targetNum];
         }
@@ -70,6 +83,17 @@ public class BreadGame : MonoBehaviour
                 KeyTime = Random.Range(2.0f, 6.0f);
                 targetNum = Random.Range(0, 27);
                 targetKey = IntToKey(targetNum);
+
+                if(targetKey == KeyCode.Space)
+                {
+                    gamePanel.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(200, 50);
+                    anim.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-120, 50, 0);
+                }
+                else
+                {
+                    gamePanel.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(75, 75);
+                    anim.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-60, 60, 0);
+                }
             }
 
             if (index % 2 == 0)
