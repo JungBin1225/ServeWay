@@ -17,6 +17,11 @@ public class FireExplane : MonoBehaviour
     private bool isMove;
     void Start()
     {
+        
+    }
+
+    private void OnEnable()
+    {
         isMove = false;
         key.sprite = space;
         effect.SetActive(false);

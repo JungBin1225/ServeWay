@@ -94,7 +94,11 @@ public class PanFlipGame : MonoBehaviour
 
     public IEnumerator ExplaneAnim()
     {
-        while(explanePanel.activeSelf)
+        warning.SetActive(false);
+        click.SetActive(false);
+        spaceBar.GetComponent<Image>().color = new Color(1, 1, 1);
+
+        while (explanePanel.activeSelf)
         {
             yield return new WaitForSecondsRealtime(5f);
             warning.SetActive(true);

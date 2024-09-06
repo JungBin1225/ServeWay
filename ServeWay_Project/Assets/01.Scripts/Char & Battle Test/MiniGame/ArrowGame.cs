@@ -10,10 +10,7 @@ public class ArrowGame : MonoBehaviour
     public GameObject explanePanel;
     public GameObject gamePanel;
     public List<GameObject> arrowList;
-    public List<GameObject> answerList;
     public GameObject timer;
-    public Sprite answer_O;
-    public Sprite answer_X;
 
     private Create_Success success;
     private List<KeyCode> arrows;
