@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SoupGame : MonoBehaviour
 {
@@ -9,29 +10,33 @@ public class SoupGame : MonoBehaviour
     public GameObject gamePanel;
     public GameObject pot;
     public GameObject spoon;
-    public GameObject nowSpeed;
-    public GameObject targetSpeed;
+    public GameObject way;
+    public GameObject timer;
+    public Texture2D cursorInvisible;
 
     private Create_Success success;
     private bool spoonDown;
     private float time;
     private float score;
-
-    private float minX;
-    private float maxX;
-    private float minY;
-    private float maxY;
+    private int lastIndex;
+    private List<string> wayPoint;
+    private Texture2D cursorImage;
 
     private void OnEnable()
     {
         score = 0;
+        lastIndex = 0;
         spoonDown = false;
+        cursorImage = GameManager.gameManager.cursorImage;
         time = Time.realtimeSinceStartup;
 
-        minX = pot.GetComponent<RectTransform>().transform.position.x - (pot.GetComponent<RectTransform>().sizeDelta.x / 2);
-        maxX = pot.GetComponent<RectTransform>().transform.position.x + (pot.GetComponent<RectTransform>().sizeDelta.x / 2);
-        minY = pot.GetComponent<RectTransform>().transform.position.y - (pot.GetComponent<RectTransform>().sizeDelta.y / 2);
-        maxY = pot.GetComponent<RectTransform>().transform.position.y + (pot.GetComponent<RectTransform>().sizeDelta.y / 2);
+        wayPoint = new List<string>();
+        for(int i = 0; i < way.transform.childCount; i++)
+        {
+            wayPoint.Add(way.transform.GetChild(i).gameObject.name);
+        }
+
+        spoon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-120, -50, 0);
 
         explanePanel.SetActive(true);
         gamePanel.SetActive(false);
@@ -43,10 +48,16 @@ public class SoupGame : MonoBehaviour
         {
             Vector3 mousePos = Input.mousePosition;
 
-            if(mousePos.x >= minX && mousePos.x <= maxX && mousePos.y >= minY && mousePos.y <= maxY)
-            {
-                spoon.GetComponent<RectTransform>().transform.position = mousePos;
-            }
+            spoon.GetComponent<RectTransform>().transform.position = mousePos;
+        }
+
+        if (Time.realtimeSinceStartup - time <= 30)
+        {
+            timer.GetComponent<TMP_Text>().text = (30 - (Time.realtimeSinceStartup - time)).ToString("F1");
+        }
+        else
+        {
+            timer.GetComponent<TMP_Text>().text = "0.0";
         }
     }
 
@@ -54,74 +65,15 @@ public class SoupGame : MonoBehaviour
     {
         explanePanel.SetActive(false);
         gamePanel.SetActive(true);
+        time = Time.realtimeSinceStartup;
 
-        float now = Time.realtimeSinceStartup - time;
-        Vector3 prevLocation = spoon.GetComponent<RectTransform>().transform.position;
-        float degree = 0;
-        float zeroCount = 0;
-        float targetDegree = Random.Range(3.0f, 5.5f);
-        List<float> degreeList = new List<float>();
+        yield return new WaitUntil(() => (score >= wayPoint.Count || Time.realtimeSinceStartup - time > 30));
 
-        targetSpeed.GetComponent<RectTransform>().anchoredPosition = new Vector3(-170 + (targetDegree * 34), 270, 0);
-
-        while ((Time.realtimeSinceStartup - time) - now < 40)
-        {
-            degreeList.Add((prevLocation - spoon.GetComponent<RectTransform>().transform.position).magnitude);
-            if(degreeList.Count == 5)
-            {
-                if(degreeList.TrueForAll(isZero))
-                {
-                    degree = 0;
-                }
-                else
-                {
-                    foreach(float num in degreeList)
-                    {
-                        if(num != 0)
-                        {
-                            degree += num;
-                            zeroCount++;
-                        }
-                    }
-
-                    degree /= zeroCount;
-                }
-
-                if(degree > 10)
-                {
-                    degree = 10;
-                }
-                nowSpeed.GetComponent<RectTransform>().anchoredPosition = new Vector3(-170 + (degree * 34), 270, 0);
-                if(degree <= targetDegree - 1.5f)
-                {
-                    Debug.Log("Late");
-                    //타는 이펙트
-                }
-                else if(degree >= targetDegree + 1.5f)
-                {
-                    Debug.Log("Fast");
-                    //튀는 이펙트
-                }
-                else
-                {
-                    score++;
-                    Debug.Log(score);
-                }
-
-                degreeList.Clear();
-                zeroCount = 0;
-                degree = 0;
-            }
-            
-            prevLocation = spoon.GetComponent<RectTransform>().transform.position;
-            yield return null;
-        }
-
-        if (score >= 1200)
+        if (score >= wayPoint.Count - 5)
         {
             success = Create_Success.GREAT;
         }
-        else if (score >= 800)
+        else if (score >= wayPoint.Count - 15)
         {
             success = Create_Success.SUCCESS;
         }
@@ -129,25 +81,22 @@ public class SoupGame : MonoBehaviour
         {
             success = Create_Success.FAIL;
         }
-
+        Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
         yield return new WaitForSecondsRealtime(1.0f);
 
         createUI.success = success;
         createUI.OnGameCleared(this.gameObject);
     }
 
-    private bool isZero(float num)
-    {
-        return num == 0;
-    }
-
     public void OnPointerDown()
     {
+        Cursor.SetCursor(cursorInvisible, new Vector2(0.13f, 0.87f), CursorMode.Auto);
         spoonDown = true;
     }
 
     public void OnPointerUp()
     {
+        Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
         spoonDown = false;
     }
 
@@ -159,5 +108,32 @@ public class SoupGame : MonoBehaviour
     public void CloseWindow()
     {
         this.gameObject.SetActive(false);
+    }
+
+    public void TriggerPoint(string name)
+    {
+        int index = 0;
+        if(wayPoint.Contains(name))
+        {
+            index = wayPoint.FindIndex(0, x => x.Equals(name));
+            if(index > lastIndex - 1)
+            {
+                if(lastIndex == 0)
+                {
+                    if(index == 0)
+                    {
+                        score++;
+                        lastIndex = index + 1;
+                        Debug.Log(score);
+                    }
+                }
+                else
+                {
+                    score++;
+                    lastIndex = index + 1;
+                    Debug.Log(score);
+                }
+            }
+        }
     }
 }
