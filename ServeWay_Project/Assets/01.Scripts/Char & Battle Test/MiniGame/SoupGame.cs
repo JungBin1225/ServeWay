@@ -48,7 +48,10 @@ public class SoupGame : MonoBehaviour
         {
             Vector3 mousePos = Input.mousePosition;
 
-            spoon.GetComponent<RectTransform>().transform.position = mousePos;
+            if(mousePos.x < 1115 && mousePos.x > 825 && mousePos.y < 540 && mousePos.y > 305)
+            {
+                spoon.GetComponent<RectTransform>().transform.position = mousePos;
+            }
         }
 
         if (Time.realtimeSinceStartup - time <= 30)
