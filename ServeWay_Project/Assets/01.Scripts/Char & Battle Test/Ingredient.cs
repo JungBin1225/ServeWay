@@ -20,7 +20,7 @@ public enum Ingred_Name
     Fruit, Greenonion, Carrot, Beansprout, Seaweed, Vanilla,
     Coriander, Kimchi, Vinegar, Tofu, Wine, Salary, Radish,
     Redbean, Eggplant, Olive, Cream, Nuts, Cucumber, Honey,
-    Ginger
+    Ginger, Corn, Coconut
 };
 
 [Serializable]
@@ -151,6 +151,10 @@ public class Ingredient
                 return "꿀";
             case Ingred_Name.Ginger:
                 return "생강";
+            case Ingred_Name.Corn:
+                return "옥수수";
+            case Ingred_Name.Coconut:
+                return "코코넛";
             default:
                 return "";
         }
