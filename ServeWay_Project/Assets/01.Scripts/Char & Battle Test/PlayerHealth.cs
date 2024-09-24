@@ -8,10 +8,10 @@ public class PlayerHealth : MonoBehaviour
     public float maxHp;
     public float nowHp;
     public float invincibleTime;
+    public GameObject gameOverUI;
 
     private PlayerController playerController;
     private MissonManager misson;
-    private GameObject gameOverUI;
     private SpriteRenderer renderer;
     private bool isInvincible;
 
@@ -20,12 +20,6 @@ public class PlayerHealth : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         misson = FindObjectOfType<MissonManager>();
         renderer = GetComponent<SpriteRenderer>();
-        if(!SceneManager.GetActiveScene().name.Contains("Start"))
-        {
-            gameOverUI = FindObjectOfType<GameOver>().gameObject;
-
-            gameOverUI.SetActive(false);
-        }
 
         isInvincible = false;
     }
