@@ -119,30 +119,60 @@ public class InventoryManager : MonoBehaviour
         return amount;
     }
 
-    public List<Ingredient> GetTopIngred()
+    public List<Sprite> GetTopIngred()
     {
-        List<Ingredient> topList = new List<Ingredient>();
+        List<Sprite> topList = new List<Sprite>();
 
-        foreach (Ingred_Name ingred in inventory.Keys)
+        if(inventory.Count < 5)
         {
-            Ingredient nowIngred = dataController.FindIngredient(ingred);
+            foreach(Ingred_Name ingred in inventory.Keys)
+            {
+                topList.Add(dataController.FindIngredient(ingred).sprite);
+            }
+        }
+        else
+        {
+            foreach (Ingred_Name ingred in inventory.Keys)
+            {
+                if(topList.Count < 5 && dataController.FindIngredient(ingred).grade == Ingred_Grade.STAR_4)
+                {
+                    topList.Add(dataController.FindIngredient(ingred).sprite);
+                }
+            }
+
+            if(topList.Count < 5)
+            {
+                foreach (Ingred_Name ingred in inventory.Keys)
+                {
+                    if (topList.Count < 5 && dataController.FindIngredient(ingred).grade == Ingred_Grade.STAR_3)
+                    {
+                        topList.Add(dataController.FindIngredient(ingred).sprite);
+                    }
+                }
+            }
+
             if (topList.Count < 5)
             {
-                topList.Add(nowIngred);
-            }
-            else
-            {
-                foreach (Ingredient ingredient in topList)
+                foreach (Ingred_Name ingred in inventory.Keys)
                 {
-                    if(ingredient.grade < nowIngred.grade)
+                    if (topList.Count < 5 && dataController.FindIngredient(ingred).grade == Ingred_Grade.STAR_2)
                     {
-                        topList[topList.IndexOf(ingredient)] = nowIngred;
-                        break;
+                        topList.Add(dataController.FindIngredient(ingred).sprite);
+                    }
+                }
+            }
+
+            if (topList.Count < 5)
+            {
+                foreach (Ingred_Name ingred in inventory.Keys)
+                {
+                    if (topList.Count < 5 && dataController.FindIngredient(ingred).grade == Ingred_Grade.STAR_1)
+                    {
+                        topList.Add(dataController.FindIngredient(ingred).sprite);
                     }
                 }
             }
         }
-
         return topList;
     }
 }

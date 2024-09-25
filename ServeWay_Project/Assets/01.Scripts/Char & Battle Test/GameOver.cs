@@ -54,12 +54,12 @@ public class GameOver : MonoBehaviour
             foodList.transform.GetChild(i).gameObject.SetActive(false);
         }
 
-        List<Ingredient> topIngred = GameManager.gameManager.inventory.GetTopIngred();
+        List<Sprite> topIngred = GameManager.gameManager.inventory.GetTopIngred();
         i = 0;
-        foreach(Ingredient ingred in topIngred)
+        foreach(Sprite ingred in topIngred)
         {
             ingredList.transform.GetChild(i).gameObject.SetActive(true);
-            ingredList.transform.GetChild(i).GetComponent<Image>().sprite = ingred.sprite;
+            ingredList.transform.GetChild(i).GetComponent<Image>().sprite = ingred;
             i++;
         }
         for (; i < ingredList.transform.childCount; i++)

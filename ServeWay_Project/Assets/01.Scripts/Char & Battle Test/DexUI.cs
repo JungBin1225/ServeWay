@@ -128,6 +128,7 @@ public class DexUI : MonoBehaviour
                 buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().sprite = dataController.FindIngredient(ingredientList[i]).sprite;
             }
         }
+        Debug.Log(dexMod);
     }
 
     public void OnModChangeClicked(int index)
@@ -233,7 +234,7 @@ public class DexUI : MonoBehaviour
         if (image.sprite != lockSprite)
         {
             infoWindow.SetActive(true);
-            if (dataController.FindFood(image.sprite) != null)
+            if (dexMod == 0)
             {
                 FoodData food = dataController.FindFood(image.sprite);
 

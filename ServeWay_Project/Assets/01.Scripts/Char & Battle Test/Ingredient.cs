@@ -42,6 +42,7 @@ public class Ingredient
         get
         {
             UnityEngine.Object[] sprites = AssetDatabase.LoadAllAssetsAtPath("Assets/08.Assets/pixel_food_icons_1.2.1/Pixel_House_Icons_1.2.1-16x.png");
+            //Sprite[] sprites = Resources.LoadAll<Sprite>("Assets/Prefabs/MapPrefabs/Backyard - Free/backyard.png");
             _IngredSprite = (Sprite)sprites[int.Parse(_SpritePath) + 1];
 
             return _IngredSprite;
