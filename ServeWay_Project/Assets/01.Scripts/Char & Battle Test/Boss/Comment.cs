@@ -11,6 +11,7 @@ public class Comment : MonoBehaviour
     public GameObject box;
     public BoxCollider2D collider;
     public float damage;
+    public Sprite sprite;
 
     void Start()
     {
@@ -79,7 +80,7 @@ public class Comment : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
         }
     }
 }

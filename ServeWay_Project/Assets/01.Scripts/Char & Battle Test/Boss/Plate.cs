@@ -7,6 +7,7 @@ public class Plate : MonoBehaviour
     public int index;
     public Vector3 target;
     public float damage;
+    public Sprite sprite;
 
     private bool isMoving;
     void Start()
@@ -36,7 +37,7 @@ public class Plate : MonoBehaviour
 
         if(collision.tag == "Player" && isMoving)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
         }
     }
 }

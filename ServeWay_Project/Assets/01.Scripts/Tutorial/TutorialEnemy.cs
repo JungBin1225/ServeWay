@@ -64,6 +64,7 @@ public class TutorialEnemy : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
             bullet.GetComponent<EnemyBullet>().SetDamage(damage);
+            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
         }
     }
 

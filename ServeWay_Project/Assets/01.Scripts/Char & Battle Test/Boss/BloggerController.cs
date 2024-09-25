@@ -134,6 +134,7 @@ public class BloggerController : MonoBehaviour
             float rot = Random.Range(0, 360);
             GameObject comment = Instantiate(commentPrefab, pos, Quaternion.Euler(0, 0, rot));
             comment.GetComponent<Comment>().damage = commentDamage;
+            comment.GetComponent<Comment>().sprite = GetComponent<SpriteRenderer>().sprite;
             yield return null;
         }
         yield return new WaitForSeconds(0.5f);
@@ -184,6 +185,7 @@ public class BloggerController : MonoBehaviour
 
         laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(0.5f);
+        laser.GetComponent<EnemyLaser>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         Vector3 target = player.transform.position;
         Ray2D ray = new Ray2D(transform.position, target - transform.position);
@@ -304,7 +306,7 @@ public class BloggerController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage, GetComponent<SpriteRenderer>().sprite);
         }
     }
 }

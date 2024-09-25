@@ -145,6 +145,7 @@ public class ResearcherController : MonoBehaviour
                     bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
                     bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
                     bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+                    bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
                 }
             }
             yield return new WaitForSeconds(0.3f);
@@ -166,6 +167,7 @@ public class ResearcherController : MonoBehaviour
         ladle.GetComponent<Ladle>().target = player.transform.position - transform.position;
         ladle.GetComponent<Ladle>().length = 5;
         ladle.GetComponent<Ladle>().damage = bulletDamage;
+        ladle.GetComponent<Ladle>().sprite = GetComponent<SpriteRenderer>().sprite;
 
 
         yield return new WaitForSeconds(1);
@@ -190,6 +192,7 @@ public class ResearcherController : MonoBehaviour
             plate.GetComponent<Plate>().index = i;
             plate.GetComponent<Plate>().target = platePos[i];
             plate.GetComponent<Plate>().damage = 1;
+            plate.GetComponent<Plate>().sprite = GetComponent<SpriteRenderer>().sprite;
             yield return new WaitForSeconds(0.2f);
         }
 
@@ -238,6 +241,7 @@ public class ResearcherController : MonoBehaviour
             GameObject soup = Instantiate(soupPrefab, target, Quaternion.Euler(0, 0, 0));
             soup.GetComponent<FloorSoup>().damage = soupDamage;
             soup.GetComponent<FloorSoup>().durationTime = soupCoolTime;
+            soup.GetComponent<FloorSoup>().sprite = GetComponent<SpriteRenderer>().sprite;
             yield return new WaitForSeconds(0.7f);
 
             isAttack = false;
@@ -295,7 +299,7 @@ public class ResearcherController : MonoBehaviour
 
         if (collision.gameObject.tag == "Player" && isCharge)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage, GetComponent<SpriteRenderer>().sprite);
         }
     }
 }

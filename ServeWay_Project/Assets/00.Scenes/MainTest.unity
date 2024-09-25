@@ -28702,7 +28702,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBCF4\uC720\uD55C \uC74C\uC2DD\t\t3\t"
+  m_text: "\uBCF4\uC720\uD55C \uC74C\uC2DD\t\t3"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c92b445cfcb80544f9a7888f7dff4972, type: 2}
   m_sharedMaterial: {fileID: -5099964216612987970, guid: c92b445cfcb80544f9a7888f7dff4972, type: 2}
@@ -41285,6 +41285,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9da5b74185cd7cc43873cf53d81a82cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floor: {fileID: 1764201851}
+  time: {fileID: 238926226}
+  food: {fileID: 889150628}
+  ingred: {fileID: 2027526854}
+  foodList: {fileID: 692252680}
+  ingredList: {fileID: 1927760964}
+  deathImage: {fileID: 1871050657}
 --- !u!114 &1370072398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46126,6 +46133,7 @@ MonoBehaviour:
   stageThemes: 
   bossJobList: 
   menuAble: 0
+  playTime: 0
 --- !u!4 &1493189979
 Transform:
   m_ObjectHideFlags: 0

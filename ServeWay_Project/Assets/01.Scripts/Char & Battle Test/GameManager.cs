@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     public List<Stage_Theme> stageThemes;
     public List<Boss_Job> bossJobList;
     public bool menuAble;
+    public float playTime;
 
     private void Awake()
     {
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        playTime = 0;
         bossNations = new List<Food_Nation>();
         stageThemes = new List<Stage_Theme>();
         bossJobList = new List<Boss_Job>();

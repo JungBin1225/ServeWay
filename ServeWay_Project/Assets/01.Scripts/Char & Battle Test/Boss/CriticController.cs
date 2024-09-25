@@ -118,6 +118,7 @@ public class CriticController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -164,6 +165,7 @@ public class CriticController : MonoBehaviour
                     bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
                     bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
                     bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+                    bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
 
                     rateTemp++;
                 }

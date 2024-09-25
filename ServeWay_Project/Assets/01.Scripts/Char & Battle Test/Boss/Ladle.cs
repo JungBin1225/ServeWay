@@ -12,6 +12,7 @@ public class Ladle : MonoBehaviour
     public Vector3 target;
     public float length;
     public float damage;
+    public Sprite sprite;
     public List<BoxCollider2D> colliders;
 
     void Start()
@@ -124,7 +125,7 @@ public class Ladle : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            collision.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
         }
     }
 

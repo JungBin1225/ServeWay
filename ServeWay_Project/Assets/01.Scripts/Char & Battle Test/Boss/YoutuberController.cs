@@ -124,6 +124,7 @@ public class YoutuberController : MonoBehaviour
         breadBullet.SetSpeed(explosionSpeed);
         breadBullet.SetDamage(explosionDamage);
         breadBullet.SetRadius(explosionRadius);
+        breadBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         yield return new WaitForSeconds(0.3f);
 
@@ -170,6 +171,7 @@ public class YoutuberController : MonoBehaviour
             algorithm.GetComponent<Algorithm>().damage = bulletDamage;
             algorithm.GetComponent<Algorithm>().food = algorithmFood.foodSprite;
             algorithm.GetComponent<Algorithm>().boss = this.gameObject;
+            algorithm.GetComponent<Algorithm>().sprite = GetComponent<SpriteRenderer>().sprite;
 
             yield return new WaitForSeconds(0.3f);
         }
@@ -195,6 +197,7 @@ public class YoutuberController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -294,7 +297,7 @@ public class YoutuberController : MonoBehaviour
 
         if(collision.gameObject.tag == "Player" && isCharge)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(bulletDamage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(bulletDamage, GetComponent<SpriteRenderer>().sprite);
         }
     }
 }

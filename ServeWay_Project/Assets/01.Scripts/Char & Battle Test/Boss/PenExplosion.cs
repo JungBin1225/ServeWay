@@ -8,6 +8,7 @@ public class PenExplosion : MonoBehaviour
     public GameObject explosionEffect;
     public CircleCollider2D collider;
     public float damage;
+    public Sprite sprite;
 
     void Start()
     {
@@ -48,7 +49,7 @@ public class PenExplosion : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
         }
     }
 }

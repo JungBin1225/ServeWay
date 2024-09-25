@@ -155,6 +155,7 @@ public class TeacherController : MonoBehaviour
 
         laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(0.5f);
+        laser.GetComponent<EnemyLaser>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         Vector3 target = player.transform.position;
         Ray2D ray = new Ray2D(transform.position, target - transform.position);
@@ -215,6 +216,7 @@ public class TeacherController : MonoBehaviour
                 bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
                 bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
                 bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+                bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
             }
             yield return new WaitForSeconds(0.3f);
         }
@@ -248,6 +250,7 @@ public class TeacherController : MonoBehaviour
             breadBullet.SetSpeed(explosionSpeed);
             breadBullet.SetDamage(explosionDamage);
             breadBullet.SetRadius(explosionRadius);
+            breadBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
 
             yield return new WaitForSeconds(0.3f);
         }
@@ -271,7 +274,7 @@ public class TeacherController : MonoBehaviour
             if(counterAmount >= 3)
             {
                 //effect
-                player.GetComponent<PlayerHealth>().PlayerDamaged(counterDamage);
+                player.GetComponent<PlayerHealth>().PlayerDamaged(counterDamage, GetComponent<SpriteRenderer>().sprite);
                 break;
             }
 

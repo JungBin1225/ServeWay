@@ -139,6 +139,7 @@ public class JournalController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -171,6 +172,7 @@ public class JournalController : MonoBehaviour
                     bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
                     bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
                     bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+                    bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
                 }
             }
             yield return new WaitForSeconds(0.3f);
@@ -225,7 +227,7 @@ public class JournalController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player" && isPicture)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage, GetComponent<SpriteRenderer>().sprite);
         }
     }
 
@@ -238,7 +240,7 @@ public class JournalController : MonoBehaviour
 
         if(collision.gameObject.tag == "Player" && isCharge)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage, GetComponent<SpriteRenderer>().sprite);
         }
     }
 }

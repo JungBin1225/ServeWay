@@ -8,6 +8,7 @@ public class FloorSoup : MonoBehaviour
 
     public float damage;
     public float durationTime;
+    public Sprite sprite;
 
     void Start()
     {
@@ -38,7 +39,7 @@ public class FloorSoup : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
         }
     }
 }

@@ -49,7 +49,7 @@ public class EnemyExplosionBullet : EnemyBullet
         {
             if (isExplode)
             {
-                collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+                collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
             }
         }
 

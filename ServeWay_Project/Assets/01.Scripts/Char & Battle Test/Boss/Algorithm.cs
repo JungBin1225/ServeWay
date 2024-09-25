@@ -7,6 +7,7 @@ public class Algorithm : MonoBehaviour
     public Vector3 target;
     public float speed;
     public float damage;
+    public Sprite sprite;
     public Sprite food;
     public GameObject boss;
 
@@ -36,7 +37,7 @@ public class Algorithm : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
             Destroy(this.gameObject);
         }
 

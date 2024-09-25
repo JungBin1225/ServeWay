@@ -7,6 +7,7 @@ public class EnemyLaser : MonoBehaviour
     private float damage;
     private float coolTime;
     private Food_Nation nation;
+    private Sprite sprite;
     private float nowCoolTime;
     private BoxCollider2D collider;
     private bool isClicked;
@@ -36,6 +37,11 @@ public class EnemyLaser : MonoBehaviour
         this.coolTime = coolTime;
     }
 
+    public void SetSprite(Sprite sprite)
+    {
+        this.sprite = sprite;
+    }
+
     private IEnumerator FireLaser()
     {
         while (true)
@@ -59,7 +65,7 @@ public class EnemyLaser : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
         }
     }
 }

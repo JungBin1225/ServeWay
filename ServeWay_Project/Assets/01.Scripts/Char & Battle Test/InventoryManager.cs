@@ -106,4 +106,43 @@ public class InventoryManager : MonoBehaviour
                 break;
         }
     }
+
+    public int GetInventoryAmount()
+    {
+        int amount = 0;
+
+        foreach(Ingred_Name ingred in inventory.Keys)
+        {
+            amount += inventory[ingred];
+        }
+
+        return amount;
+    }
+
+    public List<Ingredient> GetTopIngred()
+    {
+        List<Ingredient> topList = new List<Ingredient>();
+
+        foreach (Ingred_Name ingred in inventory.Keys)
+        {
+            Ingredient nowIngred = dataController.FindIngredient(ingred);
+            if (topList.Count < 5)
+            {
+                topList.Add(nowIngred);
+            }
+            else
+            {
+                foreach (Ingredient ingredient in topList)
+                {
+                    if(ingredient.grade < nowIngred.grade)
+                    {
+                        topList[topList.IndexOf(ingredient)] = nowIngred;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return topList;
+    }
 }

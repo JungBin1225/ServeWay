@@ -175,18 +175,21 @@ public class EnemyController : MonoBehaviour
                 breadBullet.SetSpeed(bulletSpeed);
                 breadBullet.SetDamage(damage);
                 breadBullet.SetRadius(alphaStat[0]);
+                breadBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
                 break;
             case EnemyAttackType.MEAT:
                 var meatBullet = bullet.GetComponent<EnemyBullet>();
                 meatBullet.SetTarget(transform.position - target.transform.position);
                 meatBullet.SetSpeed(bulletSpeed);
                 meatBullet.SetDamage(damage);
+                meatBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
                 break;
             case EnemyAttackType.RICE:
                 var riceBullet = bullet.GetComponent<EnemyBullet>();
                 riceBullet.SetTarget(transform.position - target.transform.position);
                 riceBullet.SetSpeed(bulletSpeed);
                 riceBullet.SetDamage(damage);
+                riceBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
                 break;
             case EnemyAttackType.SOUP:
                 Destroy(bullet);
@@ -204,6 +207,7 @@ public class EnemyController : MonoBehaviour
 
         laser.GetComponent<EnemyLaser>().SetDamage(damage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(bulletSpeed);
+        laser.GetComponent<EnemyLaser>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         Ray2D ray = new Ray2D(transform.position, target.transform.position - transform.position);
 
@@ -252,6 +256,7 @@ public class EnemyController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
             bullet.GetComponent<EnemyBullet>().SetDamage(damage);
+            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
         }
     }
 

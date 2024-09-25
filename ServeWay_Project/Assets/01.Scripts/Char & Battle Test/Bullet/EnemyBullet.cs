@@ -7,6 +7,7 @@ public class EnemyBullet : MonoBehaviour
     protected Vector3 target;
     protected float damage;
     protected float speed;
+    protected Sprite sprite;
 
     public GameObject destroyEffect;
 
@@ -35,6 +36,11 @@ public class EnemyBullet : MonoBehaviour
         this.speed = speed;
     }
 
+    public void SetSprite(Sprite sprite)
+    {
+        this.sprite = sprite;
+    }
+
     public void Fire()
     {
         Vector3 dir = new Vector3(target.x, target.y, 0);
@@ -46,7 +52,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
         }
 
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Wall")

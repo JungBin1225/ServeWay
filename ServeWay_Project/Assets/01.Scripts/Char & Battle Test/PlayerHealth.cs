@@ -14,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
     private MissonManager misson;
     private SpriteRenderer renderer;
     private bool isInvincible;
+    private Sprite damagedObject;
 
     void Start()
     {
@@ -44,11 +45,12 @@ public class PlayerHealth : MonoBehaviour
         }*/
     }
 
-    public void PlayerDamaged(float damage)
+    public void PlayerDamaged(float damage, Sprite sprite)
     {
         if (!playerController.isCharge && !isInvincible)
         {
             nowHp -= damage;
+            damagedObject = sprite;
             if (GameManager.gameManager.isBossStage)
             {
                 misson.OccurreEvent(2, 0);
@@ -70,6 +72,11 @@ public class PlayerHealth : MonoBehaviour
         }
 
         Debug.Log(healAmount + " Heal");
+    }
+
+    public Sprite getDeathImage()
+    {
+        return damagedObject;
     }
 
     private IEnumerator Invincible()

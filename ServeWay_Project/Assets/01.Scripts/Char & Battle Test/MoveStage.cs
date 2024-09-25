@@ -55,6 +55,10 @@ public class MoveStage : MonoBehaviour
             }
             else if(GameManager.gameManager.stage < 7 && player.weaponSlot.WeaponCount() != 0)
             {
+                if(!SceneManager.GetActiveScene().name.Contains("Start"))
+                {
+                    GameManager.gameManager.playTime += Time.timeSinceLevelLoad;
+                }
                 MoveNextStage(nextStage);
             }
         }
