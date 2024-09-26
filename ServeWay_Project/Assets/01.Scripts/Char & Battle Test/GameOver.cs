@@ -14,10 +14,13 @@ public class GameOver : MonoBehaviour
     [SerializeField] private GameObject foodList;
     [SerializeField] private GameObject ingredList;
     [SerializeField] private Image deathImage;
+    [SerializeField] private GameObject textGroup;
+    [SerializeField] private GameObject button;
 
     private WeaponSlot getFood;
     private DataController data;
     private PlayerHealth hp;
+    private int clickCount;
 
     void Start()
     {
@@ -26,15 +29,32 @@ public class GameOver : MonoBehaviour
 
     void Update()
     {
-        
+        if(Input.GetMouseButtonDown(0))
+        {
+            clickCount++;
+        }
     }
 
     private void OnEnable()
     {
-        int playTime = (int)(GameManager.gameManager.playTime + Time.timeSinceLevelLoad);
         getFood = FindObjectOfType<WeaponSlot>();
         data = FindObjectOfType<DataController>();
         hp = FindObjectOfType<PlayerHealth>();
+        clickCount = 0;
+
+        InitText();
+        for(int i = 1; i < textGroup.transform.childCount; i++)
+        {
+            textGroup.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        button.SetActive(false);
+
+        StartCoroutine(ShowText());
+    }
+
+    private void InitText()
+    {
+        int playTime = (int)(GameManager.gameManager.playTime + Time.timeSinceLevelLoad);
 
         floor.text = string.Format("주소: {0}층", GameManager.gameManager.stage);
         time.text = string.Format("플레이 시간\t\t1\t{0}:{1}", playTime / 60, playTime % 60);
@@ -43,23 +63,23 @@ public class GameOver : MonoBehaviour
 
         List<string> foodName = getFood.ReturnWeaponList();
         int i = 0;
-        foreach(string food in foodName)
+        foreach (string food in foodName)
         {
             foodList.transform.GetChild(i).gameObject.SetActive(true);
             foodList.transform.GetChild(i).GetComponent<Image>().sprite = data.FindFood(food).foodSprite;
             i++;
         }
-        for(; i < foodList.transform.childCount; i++)
+        for (; i < foodList.transform.childCount; i++)
         {
             foodList.transform.GetChild(i).gameObject.SetActive(false);
         }
 
-        List<Sprite> topIngred = GameManager.gameManager.inventory.GetTopIngred();
+        List<Ingredient> topIngred = GameManager.gameManager.inventory.GetTopIngred();
         i = 0;
-        foreach(Sprite ingred in topIngred)
+        foreach (Ingredient ingred in topIngred)
         {
             ingredList.transform.GetChild(i).gameObject.SetActive(true);
-            ingredList.transform.GetChild(i).GetComponent<Image>().sprite = ingred;
+            ingredList.transform.GetChild(i).GetComponent<Image>().sprite = ingred.sprite;
             i++;
         }
         for (; i < ingredList.transform.childCount; i++)
@@ -68,6 +88,23 @@ public class GameOver : MonoBehaviour
         }
 
         deathImage.sprite = hp.getDeathImage();
+    }
+
+    private IEnumerator ShowText()
+    {
+        float time = 0.5f;
+
+        for (int i = 1; i < textGroup.transform.childCount; i++)
+        {
+            if(clickCount >= 2)
+            {
+                time = 0;
+            }
+            yield return new WaitForSecondsRealtime(time);
+            textGroup.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        yield return new WaitForSecondsRealtime(time);
+        button.SetActive(true);
     }
 
     public void OnConfirm()

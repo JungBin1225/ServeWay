@@ -69,9 +69,8 @@ public class FoodData
     {
         get
         {
-            UnityEngine.Object[] sprites = AssetDatabase.LoadAllAssetsAtPath("Assets/08.Assets/pixel_food_icons_1.2.1/Pixel_House_Icons_1.2.1-32x.png");
-            //Sprite[] sprites = Resources.LoadAll<Sprite>("Assets/Prefabs/MapPrefabs/Backyard - Free/backyard.png");
-            _FoodSprite = (Sprite)sprites[int.Parse(_FoodSpriteIndex) + 1];
+            Sprite[] sprites = Resources.LoadAll<Sprite>("Pixel_House_Icons_1.2.1-32x");
+            _FoodSprite = sprites[int.Parse(_FoodSpriteIndex)] as Sprite;
 
             return _FoodSprite;
         }
