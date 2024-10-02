@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     public float invincibleTime;
     public GameObject gameOverUI;
 
+    private Animator anim;
     private PlayerController playerController;
     private MissonManager misson;
     private SpriteRenderer renderer;
@@ -18,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
+        anim = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         misson = FindObjectOfType<MissonManager>();
         renderer = GetComponent<SpriteRenderer>();
@@ -34,8 +36,7 @@ public class PlayerHealth : MonoBehaviour
 
         if(nowHp <= 0 && !SceneManager.GetActiveScene().name.Contains("Start"))
         {
-            Time.timeScale = 0;
-            gameOverUI.SetActive(true);
+            StartCoroutine(GameOver());
         }
 
         // UI test
@@ -56,7 +57,10 @@ public class PlayerHealth : MonoBehaviour
                 misson.OccurreEvent(2, 0);
             }
 
-            StartCoroutine(Invincible());
+            if(nowHp > 0)
+            {
+                StartCoroutine(Invincible());
+            }
         }
     }
 
@@ -101,5 +105,26 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         isInvincible = false;
+    }
+
+    private IEnumerator GameOver()
+    {
+        playerController.controllAble = false;
+        float time = 0;
+        anim.SetBool("isDead", true);
+
+        while(time < 10)
+        {
+            if (Time.timeScale > 0.5f)
+            {
+                Time.timeScale -= 0.1f;
+            }
+
+            time += 0.1f;
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+        
+        Time.timeScale = 0;
+        gameOverUI.SetActive(true);
     }
 }
