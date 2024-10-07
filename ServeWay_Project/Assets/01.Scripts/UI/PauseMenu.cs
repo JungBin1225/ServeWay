@@ -17,6 +17,9 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] private GameObject warningGroup;
 
+    [SerializeField] private AudioSource menuOpen;
+    [SerializeField] private AudioSource menuClick;
+
     private int warningType;  // 0: init, 1: to title, 2: quit game
 
     // Start is called before the first frame update
@@ -57,6 +60,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuBtns.SetActive(true);
 
         isPaused = true;
+        menuOpen.Play();
     }
 
     void Resume()
@@ -80,10 +84,12 @@ public class PauseMenu : MonoBehaviour
     public void ResumeBtn() // ����ϱ�
     {
         Resume();
+        menuClick.Play();
     }
 
     public void OptionBtn() // ����
     {
+        menuClick.Play();
         Debug.Log("���� ��ư Ŭ��");
 
         pauseMenuBtns.SetActive(false);
@@ -93,10 +99,12 @@ public class PauseMenu : MonoBehaviour
         optionBG.SetActive(true);
         optionPanel.SetActive(true);
         optionMenuBtns.SetActive(true);
+        menuOpen.Play();
     }
 
     public void ToTitleSceneBtn()   // Ÿ��Ʋȭ������
     {
+        menuClick.Play();
         Debug.Log("Ÿ��Ʋȭ������ ��ư Ŭ��");
         warningType = 1;
         popWarningPanel();
@@ -104,6 +112,7 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGameBtn()   // ��������
     {
+        menuClick.Play();
         Debug.Log("�������� ��ư Ŭ��");
         warningType = 2;
         popWarningPanel();
@@ -112,6 +121,7 @@ public class PauseMenu : MonoBehaviour
     private void popWarningPanel()
     {
         warningGroup.SetActive(true);
+        menuOpen.Play();
     }
 
     public void WarningConfirmBtn()
@@ -126,34 +136,41 @@ public class PauseMenu : MonoBehaviour
             warningType = 0;
             Application.Quit();
         }
+
+        menuClick.Play();
     }
 
     public void WarningCancelBtn()
     {
         warningGroup.SetActive(false);
+        menuClick.Play();
     }
 
     public void OnButtonPressed(RectTransform text)
     {
         text.offsetMin -= new Vector2(0, 15);
         text.offsetMax -= new Vector2(0, 15);
+        menuClick.Play();
     }
 
     public void OnButtonRelease(RectTransform text)
     {
         text.offsetMin += new Vector2(0, 15);
         text.offsetMax += new Vector2(0, 15);
+        menuClick.Play();
     }
 
     public void OnWarningPressed(RectTransform text)
     {
         text.offsetMin -= new Vector2(0, 10);
         text.offsetMax -= new Vector2(0, 10);
+        menuClick.Play();
     }
 
     public void OnWarningRelease(RectTransform text)
     {
         text.offsetMin += new Vector2(0, 10);
         text.offsetMax += new Vector2(0, 10);
+        menuClick.Play();
     }
 }

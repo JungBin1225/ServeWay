@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public bool isCharge;
 
     public WeaponSlot weaponSlot;
+    public AudioSource chargeSound;
 
     // skill coolTime
     //[SerializeField] GameObject chargeCoolTime;
@@ -168,8 +169,8 @@ public class PlayerController : MonoBehaviour
             chargeVel = new Vector2(1, 0).normalized;
         }*/
 
-        rigidBody.velocity = chargeVel * -2;
-
+        rigidBody.velocity = Vector2.zero;
+        chargeSound.Play();
         yield return new WaitForSeconds(0.25f); //선딜
 
         isCharge = true;

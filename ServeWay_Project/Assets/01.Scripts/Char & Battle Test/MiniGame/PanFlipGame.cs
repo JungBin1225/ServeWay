@@ -118,10 +118,12 @@ public class PanFlipGame : MonoBehaviour
     public void CloseWindow()
     {
         this.gameObject.SetActive(false);
+        createUI.menuClick.Play();
     }
 
     public void OnStartClicked()
     {
         StartCoroutine(GameStart());
+        createUI.menuClick.Play();
     }
 }

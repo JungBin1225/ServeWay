@@ -9,6 +9,9 @@ public class EnemyGenerator : MonoBehaviour
     public List<GameObject> doorList;
     public int enemyAmount;
     public GameObject itemPrefab;
+    public AudioSource bellSound;
+    public AudioSource doorOpenSound;
+    public AudioSource doorCloseSound;
 
     // 미니맵
     [SerializeField] GameObject miniRoomMesh;
@@ -60,6 +63,7 @@ public class EnemyGenerator : MonoBehaviour
                     {
                         door.GetComponent<DoorAnimation>().OpenDoor();
                     }
+                    doorOpenSound.Play();
                 }
 
                 DropIngredient(1, 4);
@@ -77,6 +81,7 @@ public class EnemyGenerator : MonoBehaviour
     private IEnumerator SelectEnamy()
     {
         isSpawn = true;
+        bellSound.Play();
 
         yield return new WaitForSeconds(0.3f);
 
@@ -179,6 +184,7 @@ public class EnemyGenerator : MonoBehaviour
                     {
                         door.GetComponent<DoorAnimation>().CloseDoor();
                     }
+                    doorCloseSound.Play();
                 }
 
                 if (!isSpawn)

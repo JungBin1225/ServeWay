@@ -12,6 +12,8 @@ public class BreadGame : MonoBehaviour
     public List<Sprite> keyboardList;
     public List<Sprite> pressList;
     public Animator anim;
+    public AudioSource audio;
+    public List<AudioClip> audioList;
 
     private Create_Success success;
     private KeyCode targetKey;
@@ -35,6 +37,9 @@ public class BreadGame : MonoBehaviour
         if(isPlaying && Input.GetKeyDown(targetKey))
         {
             anim.SetTrigger(Random.Range(1, 4).ToString());
+            audio.clip = audioList[Random.Range(0, 4)];
+            audio.Play();
+
             score++;
             Debug.Log(score);
         }
@@ -167,10 +172,12 @@ public class BreadGame : MonoBehaviour
     public void OnStartClicked()
     {
         StartCoroutine(GameStart());
+        createUI.menuClick.Play();
     }
 
     public void CloseWindow()
     {
         this.gameObject.SetActive(false);
+        createUI.menuClick.Play();
     }
 }

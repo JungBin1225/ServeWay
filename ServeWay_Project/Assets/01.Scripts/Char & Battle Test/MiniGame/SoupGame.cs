@@ -106,11 +106,13 @@ public class SoupGame : MonoBehaviour
     public void OnStartClicked()
     {
         StartCoroutine(GameStart());
+        createUI.menuClick.Play();
     }
 
     public void CloseWindow()
     {
         this.gameObject.SetActive(false);
+        createUI.menuClick.Play();
     }
 
     public void TriggerPoint(string name)

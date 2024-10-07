@@ -7,11 +7,13 @@ public class ExplosionBullet : BulletController
     private float radius;
 
     private bool isExplode;
+    private AudioSource audio;
 
     private void Start()
     {
         isExplode = false;
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        audio = gameObject.GetComponent<AudioSource>();
     }
 
     public void SetRadius(float radius)
@@ -33,11 +35,11 @@ public class ExplosionBullet : BulletController
 
         GameObject effect = Instantiate(destroyEffect, transform.position, transform.rotation);
         effect.transform.localScale = new Vector3(radius * transform.localScale.x * 5, radius * transform.localScale.y * 5);
-        
+        audio.Play();
+
         gameObject.GetComponent<CircleCollider2D>().radius = radius;
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        //폭발 애니메이션 실행
         yield return new WaitForSeconds(0.2f);
 
         Destroy(this.gameObject);

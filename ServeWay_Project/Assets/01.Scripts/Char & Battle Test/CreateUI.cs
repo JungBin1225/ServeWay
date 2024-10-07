@@ -16,6 +16,7 @@ public class CreateUI : MonoBehaviour
     private IngredientDataSet ingredientInfo;
     private InventoryManager inventory;
     private WeaponSlot weaponSlot;
+    private bool isFirst;
     public bool isOpen;
 
     public float deltaTime;
@@ -25,6 +26,8 @@ public class CreateUI : MonoBehaviour
     public GameObject ingredientUI;
     public List<GameObject> minigameUI;
     public GameObject weaponPrefab;
+    public AudioSource menuOpen;
+    public AudioSource menuClick;
 
     void Start()
     {
@@ -46,6 +49,7 @@ public class CreateUI : MonoBehaviour
         {
             ingredientList.Add(ingredientUI.transform.GetChild(i).gameObject);
         }
+
     }
 
     void Update()
@@ -59,6 +63,14 @@ public class CreateUI : MonoBehaviour
     private void OnEnable()
     {
         isOpen = true;
+        if(!isFirst)
+        {
+            isFirst = true;
+        }
+        else
+        {
+            menuOpen.Play();
+        }
     }
 
     private void OnDisable()
@@ -98,7 +110,8 @@ public class CreateUI : MonoBehaviour
         {
             list = foodInfo.FoodDatas;
         }
-        
+
+        menuClick.Play();
 
         foreach(FoodData food in list)
         {
@@ -156,6 +169,7 @@ public class CreateUI : MonoBehaviour
     public void OnCreateClicked(int index)
     {
         minigameUI[index].SetActive(true);
+        menuClick.Play();
     }
 
     public void OnGameCleared(GameObject gameUI)

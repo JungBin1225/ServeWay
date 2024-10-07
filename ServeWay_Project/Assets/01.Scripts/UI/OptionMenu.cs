@@ -20,6 +20,9 @@ public class OptionMenu : MonoBehaviour
 
     [SerializeField] private Toggle SFXToggle;
 
+    [SerializeField] private AudioSource menuOpen;
+    [SerializeField] private AudioSource menuClick;
+
     public int BGMVolume = 0;
     public int SFXVolume = 0;
 
@@ -56,6 +59,8 @@ public class OptionMenu : MonoBehaviour
         pauseBG.SetActive(true);
         pausePanel.SetActive(true);
         pauseMenuBtns.SetActive(true);
+
+        menuOpen.Play();
     }
 
     public void setBGMVolume()
@@ -65,6 +70,7 @@ public class OptionMenu : MonoBehaviour
 
     public void onoffBGM()
     {
+        menuClick.Play();
         sm.onoff(!BGMToggle.isOn);  // toggle true: mute false / toggle false: mute true
         if (!BGMToggle.isOn)    // ON
         {
@@ -78,6 +84,7 @@ public class OptionMenu : MonoBehaviour
 
     public void onoffFX()
     {
+        menuClick.Play();
         if (!SFXToggle.isOn)    // ON
         {
             gameObject.transform.GetChild(2).transform.GetChild(2).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
@@ -92,11 +99,13 @@ public class OptionMenu : MonoBehaviour
     {
         text.offsetMin -= new Vector2(0, 10);
         text.offsetMax -= new Vector2(0, 10);
+        menuClick.Play();
     }
 
     public void OnBackRelease(RectTransform text)
     {
         text.offsetMin += new Vector2(0, 10);
         text.offsetMax += new Vector2(0, 10);
+        menuClick.Play();
     }
 }

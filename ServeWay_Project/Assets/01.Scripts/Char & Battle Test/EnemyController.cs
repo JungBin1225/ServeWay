@@ -42,6 +42,7 @@ public class EnemyController : MonoBehaviour
     public Image hpImage;
 
     public GameObject damageEffect;
+    public GameObject eatSound;
 
     void Start()
     {
@@ -83,6 +84,7 @@ public class EnemyController : MonoBehaviour
     public void GetDamage(float damage, Vector3 effectPos)
     {
         GameObject effect = Instantiate(damageEffect, transform.position, transform.rotation);
+        GameObject sound = Instantiate(eatSound, transform.position, transform.rotation);
 
         hp -= damage;
         if(hp <= 0)
