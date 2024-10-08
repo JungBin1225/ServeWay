@@ -15,6 +15,7 @@ public class DexUI : MonoBehaviour
     private int page;
     private bool interAble;
     private TabMenu tabMenu;
+    private AudioSource clickAudio;
 
     public Sprite lockSprite;
     public GameObject buttonGruop;
@@ -22,6 +23,7 @@ public class DexUI : MonoBehaviour
     public Material defultMaterial;
     public Material grayScale;
     public Animator bgAnim;
+    public AudioSource flipAudio;
 
     void Start()
     {
@@ -35,6 +37,7 @@ public class DexUI : MonoBehaviour
         dataController = FindObjectOfType<DataController>();
         buttonList = new List<GameObject>();
         tabMenu = transform.parent.GetComponent<TabMenu>();
+        clickAudio = GetComponent<AudioSource>();
         for(int i = 0; i < buttonGruop.transform.childCount; i++)
         {
             buttonList.Add(buttonGruop.transform.GetChild(i).gameObject);
@@ -198,6 +201,7 @@ public class DexUI : MonoBehaviour
         if (dir < 0)
         {
             bgAnim.SetTrigger("FlipRight");
+            flipAudio.Play();
             foreach (AnimationClip clip in bgAnim.runtimeAnimatorController.animationClips)
             {
                 if (clip.name.Equals("FlipRight"))
@@ -209,6 +213,7 @@ public class DexUI : MonoBehaviour
         else
         {
             bgAnim.SetTrigger("FlipLeft");
+            flipAudio.Play();
             foreach (AnimationClip clip in bgAnim.runtimeAnimatorController.animationClips)
             {
                 if (clip.name.Equals("FlipLeft"))
@@ -231,6 +236,7 @@ public class DexUI : MonoBehaviour
 
     public void OnInfoOpenClicked(Image image)
     {
+        clickAudio.Play();
         if (image.sprite != lockSprite)
         {
             infoWindow.SetActive(true);
@@ -308,6 +314,7 @@ public class DexUI : MonoBehaviour
 
     public void OnInfoCloseClicked()
     {
+        clickAudio.Play();
         infoWindow.SetActive(false);
     }
 }

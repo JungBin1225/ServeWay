@@ -10,6 +10,7 @@ public class FireGame : MonoBehaviour
     public GameObject targetBar;
     public GameObject spaceBar;
     public GameObject rangeButton;
+    public AudioSource audio;
 
     private Create_Success success;
     private float time;
@@ -95,6 +96,12 @@ public class FireGame : MonoBehaviour
                 barTime = Random.Range(4.0f, 7.0f);
                 barLoc = Random.Range(0.0f, 530.0f);
                 targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
+            }
+
+            audio.volume = spaceBar.GetComponent<RectTransform>().anchoredPosition.x / 600;
+            if(audio.volume < 0.1f)
+            {
+                audio.volume = 0.1f;
             }
 
             frameTime = Time.realtimeSinceStartup;

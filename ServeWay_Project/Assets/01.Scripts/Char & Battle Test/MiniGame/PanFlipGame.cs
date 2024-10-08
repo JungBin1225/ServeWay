@@ -14,6 +14,7 @@ public class PanFlipGame : MonoBehaviour
     public GameObject warning;
     public GameObject click;
     public GameObject spaceBar;
+    public AudioSource audio;
 
     private Create_Success success;
     private bool isStart;
@@ -40,6 +41,21 @@ public class PanFlipGame : MonoBehaviour
         {
             gameAnim.SetTrigger("Flip");
             isClicked = true;
+        }
+
+        if(gameAnim.GetCurrentAnimatorStateInfo(0).IsName("PanFlip"))
+        {
+            if(audio.volume == 1)
+            {
+                audio.volume = 0.3f;
+            }
+        }
+        else
+        {
+            if(audio.volume != 1)
+            {
+                audio.volume = 1;
+            }
         }
     }
 

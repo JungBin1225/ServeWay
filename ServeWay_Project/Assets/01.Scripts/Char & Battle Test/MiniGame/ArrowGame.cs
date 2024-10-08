@@ -11,6 +11,8 @@ public class ArrowGame : MonoBehaviour
     public GameObject gamePanel;
     public List<GameObject> arrowList;
     public GameObject timer;
+    public AudioSource audio;
+    public List<AudioClip> souundList;
 
     private Create_Success success;
     private List<KeyCode> arrows;
@@ -105,6 +107,8 @@ public class ArrowGame : MonoBehaviour
                 {
                     successAmount++;
                     arrowList[j].GetComponent<Animator>().SetTrigger("Correct");
+                    audio.clip = souundList[Random.Range(0, 2)];
+                    audio.Play();
                 }
                 else
                 {

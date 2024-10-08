@@ -18,6 +18,7 @@ public class WeaponController : MonoBehaviour
     private GameObject laser;
     private FoodData foodData;
     private DataController data;
+    private AudioSource audio;
 
     public string weaponName;
     public Food_Grade grade;
@@ -39,6 +40,7 @@ public class WeaponController : MonoBehaviour
         data = FindObjectOfType<DataController>();
         playerSprite = player.GetComponent<SpriteRenderer>();
         weaponSprite = GetComponent<SpriteRenderer>();
+        audio = GetComponent<AudioSource>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.enabled = false;
@@ -227,6 +229,7 @@ public class WeaponController : MonoBehaviour
             if(effect == null)
             {
                 effect = Instantiate(effectPrefab, transform);
+                audio.Play();
             }
             ray = new Ray2D(transform.position, mousePos - transform.position);
 

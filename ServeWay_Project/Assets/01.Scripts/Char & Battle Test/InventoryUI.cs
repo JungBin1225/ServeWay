@@ -9,6 +9,7 @@ public class InventoryUI : MonoBehaviour
     public Sprite defaultSprite;
     public GameObject infoWindow;
     public Animator bgAnim;
+    public AudioSource flipAudio;
 
     private List<GameObject> inventoryButtonList_0;
     private List<GameObject> inventoryButtonList_1;
@@ -21,6 +22,7 @@ public class InventoryUI : MonoBehaviour
     private int page;
     private bool interAble;
     private TabMenu tabMenu;
+    private AudioSource clickAudio;
 
     void Start()
     {
@@ -34,6 +36,7 @@ public class InventoryUI : MonoBehaviour
         foodInfo = FindObjectOfType<DataController>();
         weaponName = FindObjectOfType<WeaponSlot>().ReturnWeaponList();
         tabMenu = transform.parent.GetComponent<TabMenu>();
+        clickAudio = GetComponent<AudioSource>();
 
         InitIngredList();
 
@@ -213,6 +216,7 @@ public class InventoryUI : MonoBehaviour
         if (dir < 0)
         {
             bgAnim.SetTrigger("FlipRight");
+            flipAudio.Play();
             foreach (AnimationClip clip in bgAnim.runtimeAnimatorController.animationClips)
             {
                 if (clip.name.Equals("FlipRight"))
@@ -224,6 +228,7 @@ public class InventoryUI : MonoBehaviour
         else
         {
             bgAnim.SetTrigger("FlipLeft");
+            flipAudio.Play();
             foreach (AnimationClip clip in bgAnim.runtimeAnimatorController.animationClips)
             {
                 if (clip.name.Equals("FlipLeft"))
@@ -242,7 +247,8 @@ public class InventoryUI : MonoBehaviour
 
     public void OnInfoOpenClicked(Image image)
     {
-        if(image.sprite != defaultSprite)
+        clickAudio.Play();
+        if (image.sprite != defaultSprite)
         {
             infoWindow.SetActive(true);
 
@@ -323,6 +329,7 @@ public class InventoryUI : MonoBehaviour
 
     public void OnInfoCloseClicked()
     {
+        clickAudio.Play();
         infoWindow.SetActive(false);
     }
 

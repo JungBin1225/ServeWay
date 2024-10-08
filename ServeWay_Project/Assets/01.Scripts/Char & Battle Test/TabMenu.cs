@@ -13,10 +13,12 @@ public class TabMenu : MonoBehaviour
     private Animator anim;
     private bool isOpen;
     private int index;
+    private AudioSource audio;
 
     void Start()
     {
         anim = transform.GetChild(1).GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
         isOpen = false;
         interAble = true;
         index = 0;
@@ -53,6 +55,7 @@ public class TabMenu : MonoBehaviour
         transform.GetChild(1).gameObject.SetActive(true);
 
         anim.SetTrigger("Open");
+        audio.Play();
         float time = 0;
         foreach(AnimationClip clip in anim.runtimeAnimatorController.animationClips)
         {
@@ -87,6 +90,7 @@ public class TabMenu : MonoBehaviour
         }
 
         anim.SetTrigger("Close");
+        audio.Play();
         float time = 0;
         foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
         {
@@ -117,6 +121,7 @@ public class TabMenu : MonoBehaviour
         if (index > num)
         {
             anim.SetTrigger("FlipRight");
+            audio.Play();
             foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
             {
                 if (clip.name.Equals("FlipRight"))
@@ -128,6 +133,7 @@ public class TabMenu : MonoBehaviour
         else
         {
             anim.SetTrigger("FlipLeft");
+            audio.Play();
             foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
             {
                 if (clip.name.Equals("FlipLeft"))

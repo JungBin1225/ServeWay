@@ -70,7 +70,7 @@ public class SoupGame : MonoBehaviour
         gamePanel.SetActive(true);
         time = Time.realtimeSinceStartup;
 
-        yield return new WaitUntil(() => (score >= wayPoint.Count || Time.realtimeSinceStartup - time > 30));
+        yield return new WaitUntil(() => (lastIndex >= wayPoint.Count || Time.realtimeSinceStartup - time > 30));
 
         if (score >= wayPoint.Count - 5)
         {

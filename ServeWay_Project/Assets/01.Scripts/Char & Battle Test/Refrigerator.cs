@@ -14,6 +14,7 @@ public class Refrigerator : MonoBehaviour
     private bool isTouch;
     private InteractionWindow interaction;
     private bool isOpen;
+    private AudioSource audio;
 
 
     void Start()
@@ -22,6 +23,7 @@ public class Refrigerator : MonoBehaviour
         interaction = FindObjectOfType<InteractionWindow>();
         refrigeUI = GameObject.Find("RefrigeratorUI");
         Inventory = FindObjectOfType<InventoryManager>();
+        audio = GetComponent<AudioSource>();
         isTouch = false;
         isOpen = false;
 
@@ -107,6 +109,7 @@ public class Refrigerator : MonoBehaviour
         Time.timeScale = 0;
         isOpen = true;
         refrigeUI.transform.GetChild(0).gameObject.SetActive(true);
+        audio.Play();
         RefreshList();
     }
 
