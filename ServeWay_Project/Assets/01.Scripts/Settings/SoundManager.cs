@@ -1,23 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioMixer mixer;
+    [SerializeField] AudioSource bgmAudio;
+    [SerializeField] AudioSource sfxAudio;
+    [SerializeField] List<AudioClip> sfxList;
+    private float sfxCycle;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        sfxCycle = (bgmAudio.clip.length / 12);
+        StartCoroutine(BackGroundSFX());
     }
 
-    public void setVolume(float value)
+    public void setBGM(float volume)
     {
-        audioSource.volume = value;
+        mixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
     }
-    public void onoff(bool value)
+
+    public void setSFX(float volume)
     {
-        audioSource.mute = value;
+        mixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+    }
+
+
+    public void BGMonoff(bool value, float volume)
+    {
+        if(value)
+        {
+            mixer.SetFloat("BGM", Mathf.Log10(0.001f) * 20);
+        }
+        else
+        {
+            mixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        }
+    }
+
+    public void SFXonoff(bool value, float volume)
+    {
+        if (value)
+        {
+            mixer.SetFloat("SFX", Mathf.Log10(0.001f) * 20);
+        }
+        else
+        {
+            mixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        }
+    }
+
+    private IEnumerator BackGroundSFX()
+    {
+        while(true)
+        {
+            yield return new WaitForSecondsRealtime(sfxCycle - 0.2f);
+
+            sfxAudio.clip = sfxList[Random.Range(0, sfxList.Count)];
+            sfxAudio.Play();
+            yield return new WaitForSecondsRealtime(0.2f);
+            sfxAudio.Play();
+        }
     }
 }

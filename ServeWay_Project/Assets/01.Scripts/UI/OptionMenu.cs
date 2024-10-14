@@ -18,6 +18,7 @@ public class OptionMenu : MonoBehaviour
     [SerializeField] private Slider BGMSlider;
     [SerializeField] private Toggle BGMToggle;
 
+    [SerializeField] private Slider SFXSlider;
     [SerializeField] private Toggle SFXToggle;
 
     [SerializeField] private AudioSource menuOpen;
@@ -65,13 +66,26 @@ public class OptionMenu : MonoBehaviour
 
     public void setBGMVolume()
     {
-        sm.setVolume(BGMSlider.value);
+        sm.setBGM(BGMSlider.value);
+        if(!BGMToggle.isOn)
+        {
+            BGMToggle.isOn = true;
+        }
+    }
+
+    public void setSFXVolume()
+    {
+        sm.setSFX(SFXSlider.value);
+        if (!SFXToggle.isOn)
+        {
+            SFXToggle.isOn = true;
+        }
     }
 
     public void onoffBGM()
     {
         menuClick.Play();
-        sm.onoff(!BGMToggle.isOn);  // toggle true: mute false / toggle false: mute true
+        sm.BGMonoff(!BGMToggle.isOn, BGMSlider.value);  // toggle true: mute false / toggle false: mute true
         if (!BGMToggle.isOn)    // ON
         {
             gameObject.transform.GetChild(2).transform.GetChild(1).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
@@ -85,6 +99,7 @@ public class OptionMenu : MonoBehaviour
     public void onoffFX()
     {
         menuClick.Play();
+        sm.SFXonoff(!SFXToggle.isOn, SFXSlider.value);
         if (!SFXToggle.isOn)    // ON
         {
             gameObject.transform.GetChild(2).transform.GetChild(2).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
