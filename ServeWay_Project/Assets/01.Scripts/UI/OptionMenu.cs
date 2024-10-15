@@ -24,19 +24,14 @@ public class OptionMenu : MonoBehaviour
     [SerializeField] private AudioSource menuOpen;
     [SerializeField] private AudioSource menuClick;
 
-    public int BGMVolume = 0;
-    public int SFXVolume = 0;
-
     public Sprite volumeOn;
     public Sprite volumeOff;
 
     // Start is called before the first frame update
     void Start()
     {
-        BGMVolume = 0;
-        SFXVolume = 0;
-
         sm = sm.GetComponent<SoundManager>();
+        InitValue();
     }
 
     // Update is called once per frame
@@ -61,6 +56,12 @@ public class OptionMenu : MonoBehaviour
         pausePanel.SetActive(true);
         pauseMenuBtns.SetActive(true);
 
+        sm.soundSave.bgmMute = !BGMToggle.isOn;
+        sm.soundSave.bgmSound = BGMSlider.value;
+        sm.soundSave.sfxMute = !SFXToggle.isOn;
+        sm.soundSave.sfxSound = SFXSlider.value;
+        UnityEditor.EditorUtility.SetDirty(sm.soundSave);
+
         menuOpen.Play();
     }
 
@@ -84,7 +85,11 @@ public class OptionMenu : MonoBehaviour
 
     public void onoffBGM()
     {
-        menuClick.Play();
+        if(optionMenuBtns.activeSelf)
+        {
+            menuClick.Play();
+        }
+
         sm.BGMonoff(!BGMToggle.isOn, BGMSlider.value);  // toggle true: mute false / toggle false: mute true
         if (!BGMToggle.isOn)    // ON
         {
@@ -98,7 +103,11 @@ public class OptionMenu : MonoBehaviour
 
     public void onoffFX()
     {
-        menuClick.Play();
+        if (optionMenuBtns.activeSelf)
+        {
+            menuClick.Play();
+        }
+            
         sm.SFXonoff(!SFXToggle.isOn, SFXSlider.value);
         if (!SFXToggle.isOn)    // ON
         {
@@ -122,5 +131,13 @@ public class OptionMenu : MonoBehaviour
         text.offsetMin += new Vector2(0, 10);
         text.offsetMax += new Vector2(0, 10);
         menuClick.Play();
+    }
+
+    public void InitValue()
+    {
+        BGMSlider.value = sm.soundSave.bgmSound;
+        SFXSlider.value = sm.soundSave.sfxSound;
+        BGMToggle.isOn = !sm.soundSave.bgmMute;
+        SFXToggle.isOn = !sm.soundSave.sfxMute;
     }
 }

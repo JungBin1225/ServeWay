@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioSource bgmAudio;
     [SerializeField] AudioSource sfxAudio;
     [SerializeField] List<AudioClip> sfxList;
+    public SoundOptionSave soundSave;
     private float sfxCycle;
 
 
@@ -17,6 +18,7 @@ public class SoundManager : MonoBehaviour
     {
         sfxCycle = (bgmAudio.clip.length / 12);
         StartCoroutine(BackGroundSFX());
+        InitOption();
     }
 
     public void setBGM(float volume)
@@ -65,5 +67,11 @@ public class SoundManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.2f);
             sfxAudio.Play();
         }
+    }
+
+    private void InitOption()
+    {
+        BGMonoff(soundSave.bgmMute, soundSave.bgmSound);
+        SFXonoff(soundSave.sfxMute, soundSave.sfxSound);
     }
 }
