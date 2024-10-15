@@ -55,9 +55,9 @@ public class OpeningSignal: MonoBehaviour
 
         if (PlayerTalkIndex < 2)
             PlayerText[0].text = talkData;
-        else if (PlayerTalkIndex < 7)
+        else if (PlayerTalkIndex < 6)
             PlayerText[1].text = talkData;
-        else if (PlayerTalkIndex < 8)
+        else if (PlayerTalkIndex < 7)
             PlayerText[2].text = talkData;
         else if (PlayerTalkIndex < 11)
             PlayerText[3].text = talkData;
@@ -176,7 +176,7 @@ public class OpeningSignal: MonoBehaviour
     public void OpeningATTalkSingal()
     {
         int id = 6000;
-        string talkData = talkManager.GetTalk(id, AlienSonTalkIndex);
+        string talkData = talkManager.GetTalk(id, OpeningATTalkIndex);
 
         if (talkData == null)
         {
