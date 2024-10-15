@@ -22,6 +22,7 @@ public class EnemyController : MonoBehaviour
     private LineRenderer lineRenderer;
     private float coolTime;
     private GameObject laser;
+    private InventoryManager inventory;
 
     public float maxHp;
     public float speed;
@@ -52,6 +53,7 @@ public class EnemyController : MonoBehaviour
 
         anim = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
+        inventory = GameManager.gameManager.inventory;
         target = GameObject.FindGameObjectWithTag("Player");
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -122,7 +124,7 @@ public class EnemyController : MonoBehaviour
                     //move & attack
                     float posX = Random.Range(minPos.x, maxPos.x);
                     float posY = Random.Range(minPos.y, maxPos.y);
-                    rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed;
+                    rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
                     yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
                 }
             }
@@ -151,12 +153,12 @@ public class EnemyController : MonoBehaviour
             coolTime = 0;
         }
 
-        if(coolTime == 0 && dir.magnitude <= range && moveAble)
+        if(coolTime == 0 && dir.magnitude <= range * inventory.decrease_EnemyAttackRange && moveAble)
         {
             if(attackType != EnemyAttackType.NOODLE)
             {
                 EnemyFire();
-                coolTime = attackCoolTime;
+                coolTime = attackCoolTime * inventory.decrease_EnemyAttackTime;
             }
             else
             {

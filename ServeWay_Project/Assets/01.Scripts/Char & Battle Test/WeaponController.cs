@@ -18,6 +18,7 @@ public class WeaponController : MonoBehaviour
     private GameObject laser;
     private FoodData foodData;
     private DataController data;
+    private InventoryManager inventory;
     private AudioSource audio;
 
     public string weaponName;
@@ -40,6 +41,7 @@ public class WeaponController : MonoBehaviour
         data = FindObjectOfType<DataController>();
         playerSprite = player.GetComponent<SpriteRenderer>();
         weaponSprite = GetComponent<SpriteRenderer>();
+        inventory = GameManager.gameManager.inventory;
         audio = GetComponent<AudioSource>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -75,7 +77,7 @@ public class WeaponController : MonoBehaviour
             if (shootAble && mainIngred != Food_MainIngred.NOODLE)
             {
                 GenerateBullet(speed, damage, mousePos);
-                coolTime = shootDuration;
+                coolTime = shootDuration * inventory.increase_BulletCoolTime;
             }
             else if(player.controllAble && mainIngred == Food_MainIngred.NOODLE && !isLaser)
             {
@@ -135,8 +137,8 @@ public class WeaponController : MonoBehaviour
                 Instantiate(effectPrefab, transform);
                 var explosionbulletController = bullet.GetComponent<ExplosionBullet>();
                 explosionbulletController.SetTarget(-transform.up);
-                explosionbulletController.SetSpeed(speed);
-                explosionbulletController.SetDamage(damage);
+                explosionbulletController.SetSpeed(speed * inventory.increase_BulletSpeed);
+                explosionbulletController.SetDamage(damage * inventory.increase_Damage);
                 explosionbulletController.SetFood(foodData);
                 explosionbulletController.SetRadius(alphaStat[0]);
                 break;
@@ -144,22 +146,22 @@ public class WeaponController : MonoBehaviour
                 Instantiate(effectPrefab, transform);
                 bulletController = bullet.GetComponent<BulletController>();
                 bulletController.SetTarget(-transform.up);
-                bulletController.SetSpeed(speed);
-                bulletController.SetDamage(damage);
+                bulletController.SetSpeed(speed * inventory.increase_BulletSpeed);
+                bulletController.SetDamage(damage * inventory.increase_Damage);
                 bulletController.SetFood(foodData);
                 break;
             case Food_MainIngred.RICE:
                 Instantiate(effectPrefab, transform);
                 bulletController = bullet.GetComponent<BulletController>();
                 bulletController.SetTarget(-transform.up);
-                bulletController.SetSpeed(speed);
-                bulletController.SetDamage(damage);
+                bulletController.SetSpeed(speed * inventory.increase_BulletSpeed);
+                bulletController.SetDamage(damage * inventory.increase_Damage);
                 bulletController.SetFood(foodData);
                 break;
             case Food_MainIngred.SOUP:
                 Destroy(bullet);
                 Instantiate(effectPrefab, transform);
-                GenerateSoupBullet(speed, damage, alphaStat[0], alphaStat[1]);
+                GenerateSoupBullet(speed * inventory.increase_BulletSpeed, damage * inventory.increase_Damage, alphaStat[0], alphaStat[1]);
                 break;
             case Food_MainIngred.NOODLE:
                 Destroy(bullet);
@@ -220,8 +222,8 @@ public class WeaponController : MonoBehaviour
         GameObject effect = Instantiate(effectPrefab, transform);
         GameObject hiteffect = null;
 
-        laser.GetComponent<LaserController>().SetDamage(damage);
-        laser.GetComponent<LaserController>().SetCoolTime(shootDuration);
+        laser.GetComponent<LaserController>().SetDamage(damage * inventory.increase_Damage);
+        laser.GetComponent<LaserController>().SetCoolTime(shootDuration * inventory.increase_BulletCoolTime);
         laser.GetComponent<LaserController>().SetFood(foodData);
 
         while (isClicked)

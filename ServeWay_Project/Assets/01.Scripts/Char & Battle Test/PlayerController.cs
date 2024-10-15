@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private PlayerHealth playerHealth;
     private DataController foodData;
     private HoldWeapon holdWeapon;
+    private InventoryManager inventory;
 
     public float speed;
     public float chargeSpeed;
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour
         playerHealth = gameObject.GetComponent<PlayerHealth>();
         foodData = FindObjectOfType<DataController>();
         holdWeapon = FindObjectOfType<HoldWeapon>();
+        inventory = GameManager.gameManager.inventory;
 
         InitCharactor();
     }
@@ -146,7 +148,7 @@ public class PlayerController : MonoBehaviour
         float xMove = Input.GetAxisRaw("Horizontal");
         float yMove = Input.GetAxisRaw("Vertical");
 
-        moveVel = new Vector2(xMove, yMove) * speed;
+        moveVel = new Vector2(xMove, yMove) * speed * inventory.increase_Speed;
         rigidBody.velocity = moveVel;
 
         if (rigidBody.velocity.magnitude == 0 && controllAble)
@@ -176,7 +178,7 @@ public class PlayerController : MonoBehaviour
         isCharge = true;
 
         //rigidbody.velocity = chargeVel;
-        rigidBody.AddForce(chargeVel * chargeSpeed * 0.2f, ForceMode2D.Impulse);
+        rigidBody.AddForce(chargeVel * chargeSpeed * inventory.increase_ChargeSpeed * 0.2f, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(chargeLength); //돌진
 
@@ -186,8 +188,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.25f); //후딜
 
         controllAble = true;
-        coolTime = chargeCooltime;
-        StartCoroutine(holdWeapon.ChargeCoolTime(chargeCooltime));
+        coolTime = chargeCooltime * inventory.increase_ChargeCoolTime;
+        StartCoroutine(holdWeapon.ChargeCoolTime(chargeCooltime * inventory.increase_ChargeCoolTime));
     }
 
     public void InitCharactor()

@@ -10,11 +10,23 @@ public class InventoryManager : MonoBehaviour
 
     public NameAmount inventory;
 
+    public float increase_Speed;
+    public float increase_ChargeSpeed;
+    public float increase_ChargeCoolTime;
+    public float increase_Damage;
+    public float increase_BulletSpeed;
+    public float increase_BulletCoolTime;
+    public float decrease_EnemySpeed;
+    public float decrease_EnemyAttackRange;
+    public float decrease_EnemyAttackTime;
+
     void Start()
     {
         inventory = new NameAmount();
         player = FindObjectOfType<PlayerController>();
         dataController = FindObjectOfType<DataController>();
+
+        InitIncrease();
 
         if (inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
         {
@@ -145,4 +157,17 @@ public class InventoryManager : MonoBehaviour
 
         return topList;
     }
+
+    private void InitIncrease()
+    {
+        increase_Speed = 1.0f;
+        increase_ChargeSpeed = 1.0f;
+        increase_ChargeCoolTime = 1.0f;
+        increase_Damage = 1.0f;
+        increase_BulletSpeed = 1.0f;
+        increase_BulletCoolTime = 1.0f;
+        decrease_EnemySpeed = 1.0f;
+        decrease_EnemyAttackRange = 1.0f;
+        decrease_EnemyAttackTime = 1.0f;
+}
 }
