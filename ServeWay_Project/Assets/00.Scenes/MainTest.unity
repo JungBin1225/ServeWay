@@ -6193,7 +6193,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -1998417349668151757, guid: 6fb4c38b18e699945878c59b54cd107e, type: 2}
   m_audioClip: {fileID: 8300000, guid: dec849c15e150b346af9b53e35d4cf2c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -47098,6 +47098,15 @@ MonoBehaviour:
   inventory:
     m_keys: 
     m_values: 
+  increase_Speed: 1
+  increase_ChargeSpeed: 1
+  increase_ChargeCoolTime: 1
+  increase_Damage: 1
+  increase_BulletSpeed: 1
+  increase_BulletCoolTime: 1
+  decrease_EnemySpeed: 1
+  decrease_EnemyAttackRange: 1
+  decrease_EnemyAttackTime: 1
 --- !u!1 &1494706821
 GameObject:
   m_ObjectHideFlags: 0
@@ -60472,7 +60481,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ee429bdaa70204b438c4006ba5235ca4, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

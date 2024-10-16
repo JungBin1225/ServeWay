@@ -110,11 +110,137 @@ public class InventoryManager : MonoBehaviour
 
         switch(itemName)
         {
-            case Ingred_Name.Pumpkin:
-                player.speed += amount * 1;
+            case Ingred_Name.Meat:
+                decrease_EnemyAttackTime -= 0.03f * amount;
                 break;
-            case Ingred_Name.Strawberrie:
-                player.chargeLength += amount * 0.1f;
+            case Ingred_Name.Spice:
+                decrease_EnemySpeed -= 0.03f * amount;
+                break;
+            case Ingred_Name.Onion:
+                increase_ChargeSpeed += 0.03f * amount;
+                break;
+            case Ingred_Name.Water:
+                increase_Speed += 0.03f * amount;
+                break;
+            case Ingred_Name.Sugar:
+                increase_BulletSpeed += 0.03f * amount;
+                break;
+            case Ingred_Name.Egg:
+                increase_Damage += 0.03f * amount;
+                break;
+            case Ingred_Name.Rice:
+                increase_Damage += 0.05f * amount;
+                break;
+            case Ingred_Name.Fish:
+                increase_Damage += 0.05f * amount;
+                break;
+            case Ingred_Name.Oil:
+                increase_ChargeSpeed += 0.05f * amount;
+                break;
+            case Ingred_Name.Flour:
+                decrease_EnemyAttackRange -= 0.05f * amount;
+                break;
+            case Ingred_Name.Salt:
+                decrease_EnemySpeed -= 0.05f * amount;
+                break;
+            case Ingred_Name.Tomato:
+                increase_ChargeCoolTime -= 0.05f * amount;
+                break;
+            case Ingred_Name.Sauce:
+                decrease_EnemySpeed -= 0.05f * amount;
+                break;
+            case Ingred_Name.Noodle:
+                increase_BulletSpeed += 0.05f * amount;
+                break;
+            case Ingred_Name.Mushroom:
+                increase_BulletCoolTime -= 0.05f * amount;
+                break;
+            case Ingred_Name.Milk:
+                increase_Speed += 0.05f * amount;
+                break;
+            case Ingred_Name.Garlic:
+                decrease_EnemyAttackTime -= 0.05f * amount;
+                break;
+            case Ingred_Name.Butter:
+                ;
+                break;
+            case Ingred_Name.Cheese:
+                ;
+                break;
+            case Ingred_Name.Fruit:
+                ;
+                break;
+            case Ingred_Name.Greenonion:
+                ;
+                break;
+            case Ingred_Name.Carrot:
+                ;
+                break;
+            case Ingred_Name.Beansprout:
+                ;
+                break;
+            case Ingred_Name.Seaweed:
+                ;
+                break;
+            case Ingred_Name.Vanilla:
+                ;
+                break;
+            case Ingred_Name.Coriander:
+                ;
+                break;
+            case Ingred_Name.Kimchi:
+                ;
+                break;
+            case Ingred_Name.Vinegar:
+                ;
+                break;
+            case Ingred_Name.Tofu:
+                ;
+                break;
+            case Ingred_Name.Wine:
+                ;
+                break;
+            case Ingred_Name.Salary:
+                ;
+                break;
+            case Ingred_Name.Honey:
+                ;
+                break;
+            case Ingred_Name.Ginger:
+                ;
+                break;
+            case Ingred_Name.Radish:
+                ;
+                break;
+            case Ingred_Name.Redbean:
+                ;
+                break;
+            case Ingred_Name.Pumpkin:
+                ;
+                break;
+            case Ingred_Name.Eggplant:
+                ;
+                break;
+            case Ingred_Name.Olive:
+                ;
+                break;
+            case Ingred_Name.Lettuce:
+                ;
+                break;
+            case Ingred_Name.Cream:
+                ;
+                break;
+            case Ingred_Name.Nuts:
+                ;
+                break;
+            case Ingred_Name.Cucumber:
+                ;
+                break;
+            case Ingred_Name.Corn:
+                ;
+                break;
+            case Ingred_Name.Coconut:
+                ;
                 break;
         }
     }

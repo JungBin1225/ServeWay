@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
         isCharge = true;
 
         //rigidbody.velocity = chargeVel;
-        rigidBody.AddForce(chargeVel * chargeSpeed * inventory.increase_ChargeSpeed * 0.2f, ForceMode2D.Impulse);
+        rigidBody.AddForce(chargeVel * chargeSpeed * inventory.increase_ChargeSpeed * 0.15f, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(chargeLength); //돌진
 
