@@ -64,7 +64,7 @@ public class LaserController : MonoBehaviour
     {
         if (collision.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<EnemyController>().GetDamage(damage, this.transform.position);
+            collision.gameObject.GetComponent<EnemyController>().GetDamage(damage);
         }
         else if (collision.tag == "Boss")
         {

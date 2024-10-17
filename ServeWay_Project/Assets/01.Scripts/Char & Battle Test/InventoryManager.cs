@@ -20,6 +20,12 @@ public class InventoryManager : MonoBehaviour
     public float decrease_EnemyAttackRange;
     public float decrease_EnemyAttackTime;
 
+    public bool isKimchi;
+    public bool isTofu;
+    public bool isGinger;
+    public bool isCream;
+    public bool isNuts;
+
     void Start()
     {
         inventory = new NameAmount();
@@ -111,7 +117,7 @@ public class InventoryManager : MonoBehaviour
         switch(itemName)
         {
             case Ingred_Name.Meat:
-                decrease_EnemyAttackTime -= 0.03f * amount;
+                decrease_EnemyAttackTime += 0.03f * amount;
                 break;
             case Ingred_Name.Spice:
                 decrease_EnemySpeed -= 0.03f * amount;
@@ -159,88 +165,96 @@ public class InventoryManager : MonoBehaviour
                 increase_Speed += 0.05f * amount;
                 break;
             case Ingred_Name.Garlic:
-                decrease_EnemyAttackTime -= 0.05f * amount;
+                decrease_EnemyAttackTime += 0.05f * amount;
                 break;
             case Ingred_Name.Butter:
-                ;
+                decrease_EnemyAttackTime += 0.08f * amount;
                 break;
             case Ingred_Name.Cheese:
-                ;
+                decrease_EnemyAttackRange -= 0.08f * amount;
                 break;
             case Ingred_Name.Fruit:
-                ;
+                increase_Damage += 0.08f * amount;
                 break;
             case Ingred_Name.Greenonion:
-                ;
+                increase_ChargeCoolTime -= 0.08f * amount;
                 break;
             case Ingred_Name.Carrot:
-                ;
+                increase_ChargeSpeed += 0.08f * amount;
                 break;
             case Ingred_Name.Beansprout:
-                ;
+                increase_BulletCoolTime -= 0.08f * amount;
                 break;
             case Ingred_Name.Seaweed:
-                ;
+                increase_BulletSpeed += 0.08f * amount;
                 break;
             case Ingred_Name.Vanilla:
-                ;
+                increase_Speed += 0.08f * amount;
                 break;
             case Ingred_Name.Coriander:
-                ;
+                decrease_EnemySpeed -= 0.08f * amount;
                 break;
             case Ingred_Name.Kimchi:
-                ;
+                isKimchi = increase;
                 break;
             case Ingred_Name.Vinegar:
-                ;
+                increase_Speed += 0.07f * amount;
+                increase_ChargeSpeed += 0.07f * amount;
                 break;
             case Ingred_Name.Tofu:
-                ;
+                isTofu = increase;
                 break;
             case Ingred_Name.Wine:
-                ;
+                increase_Speed += 0.08f * amount;
+                decrease_EnemySpeed += 0.08f * amount;
                 break;
             case Ingred_Name.Salary:
-                ;
+                increase_ChargeSpeed += 0.12f * amount;
                 break;
             case Ingred_Name.Honey:
-                ;
+                increase_Speed -= 0.1f * amount;
+                decrease_EnemySpeed -= 0.1f * amount;
                 break;
             case Ingred_Name.Ginger:
-                ;
+                isGinger = increase;
                 break;
             case Ingred_Name.Radish:
-                ;
+                increase_BulletCoolTime += 0.1f * amount;
+                increase_Damage += 0.05f * amount;
                 break;
             case Ingred_Name.Redbean:
-                ;
+                decrease_EnemySpeed -= 0.12f * amount;
                 break;
             case Ingred_Name.Pumpkin:
-                ;
+                increase_Damage += 0.12f * amount;
                 break;
             case Ingred_Name.Eggplant:
-                ;
+                decrease_EnemyAttackRange -= 0.12f * amount;
                 break;
             case Ingred_Name.Olive:
-                ;
+                increase_ChargeCoolTime -= 0.12f * amount;
                 break;
             case Ingred_Name.Lettuce:
-                ;
+                increase_BulletCoolTime -= 0.12f;
                 break;
             case Ingred_Name.Cream:
-                ;
+                isCream = increase;
+                increase_Speed -= 0.15f * amount;
+                increase_ChargeCoolTime += 0.1f * amount;
                 break;
             case Ingred_Name.Nuts:
-                ;
+                isNuts = increase;
+                increase_ChargeCoolTime += 0.1f * amount;
                 break;
             case Ingred_Name.Cucumber:
-                ;
+                increase_Speed += 0.12f * amount;
                 break;
             case Ingred_Name.Corn:
-                ;
+                increase_BulletSpeed += 0.12f * amount;
                 break;
             case Ingred_Name.Coconut:
-                ;
+                increase_Damage -= 0.15f * amount;
+                decrease_EnemyAttackTime += 0.1f * amount;
                 break;
         }
     }
@@ -295,5 +309,11 @@ public class InventoryManager : MonoBehaviour
         decrease_EnemySpeed = 1.0f;
         decrease_EnemyAttackRange = 1.0f;
         decrease_EnemyAttackTime = 1.0f;
-}
+
+        isKimchi = false;
+        isTofu = false;
+        isGinger = false;
+        isCream = false;
+        isNuts = false;
+    }
 }

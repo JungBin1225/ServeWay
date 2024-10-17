@@ -265,21 +265,21 @@ public class InventoryUI : MonoBehaviour
                 switch (success)
                 {
                     case Create_Success.FAIL:
-                        success_D = "- " + food.successDamage.ToString();
-                        success_S = "- " + food.successSpeed.ToString();
-                        success_C = "+ " + food.successCoolTime.ToString();
+                        success_D = "-" + food.successDamage.ToString();
+                        success_S = "-" + food.successSpeed.ToString();
+                        success_C = "+" + food.successCoolTime.ToString();
                         color = new Color(1, 0, 0);
                         break;
                     case Create_Success.SUCCESS:
-                        success_D = "+ 0";
-                        success_S = "+ 0";
-                        success_C = "- 0";
+                        success_D = "+0";
+                        success_S = "+0";
+                        success_C = "-0";
                         color = new Color(1, 1, 1);
                         break;
                     case Create_Success.GREAT:
-                        success_D = "+ " + food.successDamage.ToString();
-                        success_S = "+ " + food.successSpeed.ToString();
-                        success_C = "- " + food.successCoolTime.ToString();
+                        success_D = "+" + food.successDamage.ToString();
+                        success_S = "+" + food.successSpeed.ToString();
+                        success_C = "-" + food.successCoolTime.ToString();
                         color = new Color(0, 1, 0);
                         break;
                 }
@@ -323,6 +323,18 @@ public class InventoryUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(7).gameObject.SetActive(false);
                 infoWindow.transform.GetChild(3).GetChild(8).gameObject.SetActive(false);
                 infoWindow.transform.GetChild(3).GetChild(9).gameObject.SetActive(false);
+
+                if (ingred.name == Ingred_Name.Cream)
+                {
+                    string[] passive = ingred.passive.Split('\n');
+                    string text1 = passive[0];
+                    string text2 = passive[1] + "\n" + passive[2];
+
+                    infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
+                    infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = text1;
+                    infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
+                    infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = text2;
+                }
             }
         }
     }

@@ -129,6 +129,15 @@ public class WeaponController : MonoBehaviour
     private void GenerateBullet(float speed, float damage, Vector3 mousePos)
     {
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        int tofuDamage = 1;
+
+        if(inventory.isTofu)
+        {
+            if(Random.Range(1, 101) <= 20)
+            {
+                tofuDamage = 2;
+            }
+        }
 
         var bulletController = bullet.GetComponent<BulletController>();
         switch(mainIngred)
@@ -138,7 +147,7 @@ public class WeaponController : MonoBehaviour
                 var explosionbulletController = bullet.GetComponent<ExplosionBullet>();
                 explosionbulletController.SetTarget(-transform.up);
                 explosionbulletController.SetSpeed(speed * inventory.increase_BulletSpeed);
-                explosionbulletController.SetDamage(damage * inventory.increase_Damage);
+                explosionbulletController.SetDamage(damage * inventory.increase_Damage * tofuDamage);
                 explosionbulletController.SetFood(foodData);
                 explosionbulletController.SetRadius(alphaStat[0]);
                 break;
@@ -147,7 +156,7 @@ public class WeaponController : MonoBehaviour
                 bulletController = bullet.GetComponent<BulletController>();
                 bulletController.SetTarget(-transform.up);
                 bulletController.SetSpeed(speed * inventory.increase_BulletSpeed);
-                bulletController.SetDamage(damage * inventory.increase_Damage);
+                bulletController.SetDamage(damage * inventory.increase_Damage * tofuDamage);
                 bulletController.SetFood(foodData);
                 break;
             case Food_MainIngred.RICE:
@@ -155,7 +164,7 @@ public class WeaponController : MonoBehaviour
                 bulletController = bullet.GetComponent<BulletController>();
                 bulletController.SetTarget(-transform.up);
                 bulletController.SetSpeed(speed * inventory.increase_BulletSpeed);
-                bulletController.SetDamage(damage * inventory.increase_Damage);
+                bulletController.SetDamage(damage * inventory.increase_Damage * tofuDamage);
                 bulletController.SetFood(foodData);
                 break;
             case Food_MainIngred.SOUP:
@@ -206,10 +215,20 @@ public class WeaponController : MonoBehaviour
 
         for(int i = 0; i < bulletAmount; i++)
         {
+            int tofuDamage = 1;
+
+            if (inventory.isTofu)
+            {
+                if (Random.Range(1, 101) <= 20)
+                {
+                    tofuDamage = 2;
+                }
+            }
+
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
             bullet.GetComponent<BulletController>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<BulletController>().SetSpeed(speed);
-            bullet.GetComponent<BulletController>().SetDamage(damage);
+            bullet.GetComponent<BulletController>().SetDamage(damage * tofuDamage);
             bullet.GetComponent<BulletController>().SetFood(foodData);
         }
     }

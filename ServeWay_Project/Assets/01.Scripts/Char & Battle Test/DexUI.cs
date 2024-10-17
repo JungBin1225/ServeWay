@@ -304,6 +304,18 @@ public class DexUI : MonoBehaviour
                 infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
                 infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
 
+                if(ingred.name == Ingred_Name.Cream)
+                {
+                    string[] passive = ingred.passive.Split('\n');
+                    string text1 = passive[0];
+                    string text2 = passive[1] + "\n" + passive[2];
+
+                    infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
+                    infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = text1;
+                    infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
+                    infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = text2;
+                }
+
                 for(int i = 0; i < 6; i++)
                 {
                     infoWindow.transform.GetChild(4).GetChild(i).gameObject.SetActive(false);

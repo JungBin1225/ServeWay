@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
     private Animator anim;
     private PlayerController playerController;
     private MissonManager misson;
+    private InventoryManager inventory;
     private SpriteRenderer renderer;
     private bool isInvincible;
     private Sprite damagedObject;
@@ -22,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
         anim = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         misson = FindObjectOfType<MissonManager>();
+        inventory = GameManager.gameManager.inventory;
         renderer = GetComponent<SpriteRenderer>();
 
         isInvincible = false;
@@ -48,7 +50,16 @@ public class PlayerHealth : MonoBehaviour
 
     public void PlayerDamaged(float damage, Sprite sprite)
     {
-        if (!playerController.isCharge && !isInvincible)
+        bool isMiss = false;
+        if(inventory.isCream)
+        {
+            if(Random.Range(1, 101) <= 5)
+            {
+                isMiss = true;
+            }
+        }
+
+        if (!playerController.isCharge && !isInvincible && !isMiss)
         {
             nowHp -= damage;
             damagedObject = sprite;
@@ -86,8 +97,13 @@ public class PlayerHealth : MonoBehaviour
     private IEnumerator Invincible()
     {
         isInvincible = true;
+        int repeatInvincible = 5;
+        if(inventory.isGinger)
+        {
+            repeatInvincible = 7;
+        }
 
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < repeatInvincible; i++)
         {
             if(i % 2 == 0)
             {

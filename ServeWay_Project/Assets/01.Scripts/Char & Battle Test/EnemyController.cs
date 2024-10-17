@@ -83,7 +83,7 @@ public class EnemyController : MonoBehaviour
         EnemyAttack();
     }
 
-    public void GetDamage(float damage, Vector3 effectPos)
+    public void GetDamage(float damage)
     {
         GameObject effect = Instantiate(damageEffect, transform.position, transform.rotation);
         GameObject sound = Instantiate(eatSound, transform.position, transform.rotation);
@@ -295,6 +295,10 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<PlayerController>().isCharge)
         {
             StartCoroutine(Knockback(collision.gameObject));
+            if(inventory.isNuts)
+            {
+                GetDamage(5);
+            }
         }
         else if (!moveAble && collision.gameObject.tag == "Wall")
         {

@@ -189,6 +189,13 @@ public class PlayerController : MonoBehaviour
 
         controllAble = true;
         coolTime = chargeCooltime * inventory.increase_ChargeCoolTime;
+        if(inventory.isKimchi)
+        {
+            if(Random.Range(1, 101) <= 30)
+            {
+                coolTime = 0.1f;
+            }
+        }
         StartCoroutine(holdWeapon.ChargeCoolTime(chargeCooltime * inventory.increase_ChargeCoolTime));
     }
 

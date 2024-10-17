@@ -14,8 +14,8 @@ public enum Ingred_Grade
 
 public enum Ingred_Name
 {
-    Pumpkin, Strawberrie, Water, Meat, Flour, Noodle, Onion,
-    Lettuce, Garlic, Pepper, Rice, Salt, Sugar, Spice, Egg,
+    Pumpkin, Water, Meat, Flour, Noodle, Onion,
+    Lettuce, Garlic, Rice, Salt, Sugar, Spice, Egg,
     Fish, Oil, Tomato, Sauce, Mushroom, Milk, Butter, Cheese,
     Fruit, Greenonion, Carrot, Beansprout, Seaweed, Vanilla,
     Coriander, Kimchi, Vinegar, Tofu, Wine, Salary, Radish,
@@ -65,8 +65,6 @@ public class Ingredient
         {
             case Ingred_Name.Pumpkin:
                 return "호박";
-            case Ingred_Name.Strawberrie:
-                return "딸기";
             case Ingred_Name.Water:
                 return "물";
             case Ingred_Name.Meat:
@@ -81,8 +79,6 @@ public class Ingredient
                 return "양배추";
             case Ingred_Name.Garlic:
                 return "마늘";
-            case Ingred_Name.Pepper:
-                return "피망";
             case Ingred_Name.Rice:
                 return "쌀";
             case Ingred_Name.Salt:
