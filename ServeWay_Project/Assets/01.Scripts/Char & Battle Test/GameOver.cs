@@ -95,7 +95,7 @@ public class GameOver : MonoBehaviour
             deathImage.gameObject.SetActive(false);
             deathImageGroup.SetActive(true);
 
-            for(int num = 0; num < enemySprite.Count; i++)
+            for(int num = 0; num < enemySprite.Count; num++)
             {
                 deathImageGroup.transform.GetChild(num).GetComponent<Image>().sprite = enemySprite[num];
             }
