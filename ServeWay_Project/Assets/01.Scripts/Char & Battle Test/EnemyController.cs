@@ -18,7 +18,6 @@ public class EnemyController : MonoBehaviour
     private GameObject target;
     private Vector2 dir;
     private Rigidbody2D rigidBody;
-    private Animator anim;
     private LineRenderer lineRenderer;
     private float coolTime;
     private GameObject laser;
@@ -39,6 +38,7 @@ public class EnemyController : MonoBehaviour
     private Vector2 minPos;
     public Vector2 maxPos;
     private GameObject generator;
+    private EnemySprite anim;
 
     public Image hpImage;
 
@@ -50,8 +50,8 @@ public class EnemyController : MonoBehaviour
         hp = maxHp;
         moveAble = true;
         coolTime = attackCoolTime;
+        anim = GetComponent<EnemySprite>();
 
-        anim = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
         inventory = GameManager.gameManager.inventory;
         target = GameObject.FindGameObjectWithTag("Player");
@@ -77,6 +77,7 @@ public class EnemyController : MonoBehaviour
                     Destroy(laser);
                 }
             }
+            anim.state = EnemyState.dead;
             Destroy(this.gameObject);
         }
 
@@ -104,11 +105,11 @@ public class EnemyController : MonoBehaviour
         while(hp != 0)
         {
             dir = target.transform.position - transform.position;
-            //anim.SetBool("move", true);
 
             if(!moveAble)
             {
                 rigidBody.velocity = Vector2.zero;
+                anim.state = EnemyState.idle;
                 yield return null;
             }
             else
@@ -117,6 +118,14 @@ public class EnemyController : MonoBehaviour
                 {
                     //chase target
                     rigidBody.velocity = dir.normalized * speed;
+                    if(dir.normalized.x > 0)
+                    {
+                        anim.state = EnemyState.moveRight;
+                    }
+                    else
+                    {
+                        anim.state = EnemyState.moveLeft;
+                    }
                     yield return null;
                 }
                 else
@@ -125,6 +134,15 @@ public class EnemyController : MonoBehaviour
                     float posX = Random.Range(minPos.x, maxPos.x);
                     float posY = Random.Range(minPos.y, maxPos.y);
                     rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
+
+                    if (posX - transform.position.x > 0)
+                    {
+                        anim.state = EnemyState.moveRight;
+                    }
+                    else
+                    {
+                        anim.state = EnemyState.moveLeft;
+                    }
                     yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
                 }
             }
@@ -179,21 +197,21 @@ public class EnemyController : MonoBehaviour
                 breadBullet.SetSpeed(bulletSpeed);
                 breadBullet.SetDamage(damage);
                 breadBullet.SetRadius(alphaStat[0]);
-                breadBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+                breadBullet.SetSprite(anim.getEnemySprite());
                 break;
             case EnemyAttackType.MEAT:
                 var meatBullet = bullet.GetComponent<EnemyBullet>();
                 meatBullet.SetTarget(transform.position - target.transform.position);
                 meatBullet.SetSpeed(bulletSpeed);
                 meatBullet.SetDamage(damage);
-                meatBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+                meatBullet.SetSprite(anim.getEnemySprite());
                 break;
             case EnemyAttackType.RICE:
                 var riceBullet = bullet.GetComponent<EnemyBullet>();
                 riceBullet.SetTarget(transform.position - target.transform.position);
                 riceBullet.SetSpeed(bulletSpeed);
                 riceBullet.SetDamage(damage);
-                riceBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+                riceBullet.SetSprite(anim.getEnemySprite());
                 break;
             case EnemyAttackType.SOUP:
                 Destroy(bullet);
@@ -211,7 +229,7 @@ public class EnemyController : MonoBehaviour
 
         laser.GetComponent<EnemyLaser>().SetDamage(damage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(bulletSpeed);
-        laser.GetComponent<EnemyLaser>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+        laser.GetComponent<EnemyLaser>().SetSprite(anim.getEnemySprite());
 
         Ray2D ray = new Ray2D(transform.position, target.transform.position - transform.position);
 
@@ -260,7 +278,7 @@ public class EnemyController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
             bullet.GetComponent<EnemyBullet>().SetDamage(damage);
-            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+            bullet.GetComponent<EnemyBullet>().SetSprite(anim.getEnemySprite());
         }
     }
 

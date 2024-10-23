@@ -14,12 +14,14 @@ public class GameOver : MonoBehaviour
     [SerializeField] private GameObject foodList;
     [SerializeField] private GameObject ingredList;
     [SerializeField] private Image deathImage;
+    [SerializeField] private GameObject deathImageGroup;
     [SerializeField] private GameObject textGroup;
     [SerializeField] private GameObject button;
 
     private WeaponSlot getFood;
     private DataController data;
     private PlayerHealth hp;
+    private List<Sprite> enemySprite;
     private int clickCount;
 
     void Start()
@@ -87,7 +89,46 @@ public class GameOver : MonoBehaviour
             ingredList.transform.GetChild(i).gameObject.SetActive(false);
         }
 
-        deathImage.sprite = hp.getDeathImage();
+        enemySprite = hp.getDeathImage();
+        if(enemySprite.Count == 4)
+        {
+            deathImage.gameObject.SetActive(false);
+            deathImageGroup.SetActive(true);
+
+            for(int num = 0; num < enemySprite.Count; i++)
+            {
+                deathImageGroup.transform.GetChild(num).GetComponent<Image>().sprite = enemySprite[num];
+            }
+
+            if(enemySprite[1].name.Contains("어1"))
+            {
+                deathImageGroup.transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector3(-7.5f, 24, 0);
+                deathImageGroup.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(63, 63);
+            }
+            else if(enemySprite[1].name.Contains("어2"))
+            {
+                deathImageGroup.transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector3(-7.5f, 25.5f, 0);
+                deathImageGroup.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(63, 60);
+            }
+            else if (enemySprite[1].name.Contains("어3"))
+            {
+                deathImageGroup.transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector3(-12, 24, 0);
+                deathImageGroup.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(72, 63);
+            }
+            else if (enemySprite[1].name.Contains("어4"))
+            {
+                deathImageGroup.transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector3(-9, 25.5f, 0);
+                deathImageGroup.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(66, 66);
+            }
+        }
+        else
+        {
+            deathImage.gameObject.SetActive(true);
+            deathImageGroup.SetActive(false);
+
+            deathImage.sprite = enemySprite[0];
+        }
+        
     }
 
     private IEnumerator ShowText()

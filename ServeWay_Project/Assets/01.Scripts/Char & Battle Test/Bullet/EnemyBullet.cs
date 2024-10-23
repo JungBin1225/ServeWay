@@ -7,7 +7,7 @@ public class EnemyBullet : MonoBehaviour
     protected Vector3 target;
     protected float damage;
     protected float speed;
-    protected Sprite sprite;
+    protected List<Sprite> sprite;
 
     public GameObject destroyEffect;
 
@@ -36,7 +36,7 @@ public class EnemyBullet : MonoBehaviour
         this.speed = speed;
     }
 
-    public void SetSprite(Sprite sprite)
+    public void SetSprite(List<Sprite> sprite)
     {
         this.sprite = sprite;
     }

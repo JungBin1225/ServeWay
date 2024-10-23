@@ -18,12 +18,15 @@ public class TutorialEnemy : MonoBehaviour
     private GameObject target;
     private bool moveAble;
     private Rigidbody2D rigidBody;
+    private List<Sprite> sprites;
 
     private void Start()
     {
         hp = maxHp;
         moveAble = true;
         attackAble = false;
+        sprites = new List<Sprite>();
+        sprites.Add(GetComponent<SpriteRenderer>().sprite);
         target = GameObject.FindGameObjectWithTag("Player");
         rigidBody = GetComponent<Rigidbody2D>();
     }
@@ -64,7 +67,7 @@ public class TutorialEnemy : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
             bullet.GetComponent<EnemyBullet>().SetDamage(damage);
-            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+            bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
         }
     }
 

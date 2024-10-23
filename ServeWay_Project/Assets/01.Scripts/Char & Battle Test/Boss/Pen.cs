@@ -21,7 +21,9 @@ public class Pen : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
+            List<Sprite> sprites = new List<Sprite>();
+            sprites.Add(sprite);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprites);
         }
     }
 }

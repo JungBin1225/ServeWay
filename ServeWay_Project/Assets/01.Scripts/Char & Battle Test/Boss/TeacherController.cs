@@ -13,6 +13,7 @@ public class TeacherController : MonoBehaviour
     private List<FoodData> playerFood;
     private Vector2 minPos;
     private Vector2 maxPos;
+    private List<Sprite> sprites;
     private float coolTime;
     private LineRenderer line;
     private GameObject laser;
@@ -49,6 +50,8 @@ public class TeacherController : MonoBehaviour
         line = GetComponent<LineRenderer>();
         charSprite = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        sprites = new List<Sprite>();
+        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;
@@ -155,7 +158,7 @@ public class TeacherController : MonoBehaviour
 
         laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(0.5f);
-        laser.GetComponent<EnemyLaser>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+        laser.GetComponent<EnemyLaser>().SetSprite(sprites);
 
         Vector3 target = player.transform.position;
         Ray2D ray = new Ray2D(transform.position, target - transform.position);
@@ -216,7 +219,7 @@ public class TeacherController : MonoBehaviour
                 bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
                 bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
                 bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-                bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+                bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
             }
             yield return new WaitForSeconds(0.3f);
         }
@@ -250,7 +253,7 @@ public class TeacherController : MonoBehaviour
             breadBullet.SetSpeed(explosionSpeed);
             breadBullet.SetDamage(explosionDamage);
             breadBullet.SetRadius(explosionRadius);
-            breadBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+            breadBullet.SetSprite(sprites);
 
             yield return new WaitForSeconds(0.3f);
         }
@@ -274,7 +277,7 @@ public class TeacherController : MonoBehaviour
             if(counterAmount >= 3)
             {
                 //effect
-                player.GetComponent<PlayerHealth>().PlayerDamaged(counterDamage, GetComponent<SpriteRenderer>().sprite);
+                player.GetComponent<PlayerHealth>().PlayerDamaged(counterDamage, sprites);
                 break;
             }
 

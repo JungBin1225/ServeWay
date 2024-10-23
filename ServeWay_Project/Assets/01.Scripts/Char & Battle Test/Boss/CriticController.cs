@@ -11,6 +11,7 @@ public class CriticController : MonoBehaviour
     private Vector2 minPos;
     private Vector2 maxPos;
     private float coolTime;
+    private List<Sprite> sprites;
     private bool isAttack;
     private bool isCharge;
 
@@ -37,6 +38,8 @@ public class CriticController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         player = GameObject.FindGameObjectWithTag("Player");
+        sprites = new List<Sprite>();
+        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;
@@ -118,7 +121,7 @@ public class CriticController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+            bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -165,7 +168,7 @@ public class CriticController : MonoBehaviour
                     bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
                     bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
                     bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-                    bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+                    bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
 
                     rateTemp++;
                 }

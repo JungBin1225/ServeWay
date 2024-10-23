@@ -7,7 +7,7 @@ public class EnemyLaser : MonoBehaviour
     private float damage;
     private float coolTime;
     private Food_Nation nation;
-    private Sprite sprite;
+    private List<Sprite> sprite;
     private float nowCoolTime;
     private BoxCollider2D collider;
     private bool isClicked;
@@ -37,7 +37,7 @@ public class EnemyLaser : MonoBehaviour
         this.coolTime = coolTime;
     }
 
-    public void SetSprite(Sprite sprite)
+    public void SetSprite(List<Sprite> sprite)
     {
         this.sprite = sprite;
     }

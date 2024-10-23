@@ -10,6 +10,7 @@ public class BloggerController : MonoBehaviour
     private GameObject player;
     private Vector2 minPos;
     private Vector2 maxPos;
+    private List<Sprite> sprites;
     private List<Vector3> commentPos;
     private float coolTime;
     private LineRenderer line;
@@ -45,6 +46,8 @@ public class BloggerController : MonoBehaviour
         line = GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         commentPos = new List<Vector3>();
+        sprites = new List<Sprite>();
+        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;
@@ -185,7 +188,7 @@ public class BloggerController : MonoBehaviour
 
         laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(0.5f);
-        laser.GetComponent<EnemyLaser>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+        laser.GetComponent<EnemyLaser>().SetSprite(sprites);
 
         Vector3 target = player.transform.position;
         Ray2D ray = new Ray2D(transform.position, target - transform.position);
@@ -306,7 +309,7 @@ public class BloggerController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage, GetComponent<SpriteRenderer>().sprite);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage, sprites);
         }
     }
 }

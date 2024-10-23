@@ -125,7 +125,9 @@ public class Ladle : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            collision.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
+            List<Sprite> sprites = new List<Sprite>();
+            sprites.Add(sprite);
+            collision.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprites);
         }
     }
 

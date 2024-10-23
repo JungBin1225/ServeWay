@@ -37,7 +37,9 @@ public class Plate : MonoBehaviour
 
         if(collision.tag == "Player" && isMoving)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
+            List<Sprite> sprites = new List<Sprite>();
+            sprites.Add(sprite);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprites);
         }
     }
 }

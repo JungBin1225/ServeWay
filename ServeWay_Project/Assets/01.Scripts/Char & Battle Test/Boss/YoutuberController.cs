@@ -11,6 +11,7 @@ public class YoutuberController : MonoBehaviour
     private GameObject player;
     private Vector2 minPos;
     private Vector2 maxPos;
+    private List<Sprite> sprites;
     private LineRenderer line;
     private float coolTime;
     private bool isAttack;
@@ -45,6 +46,8 @@ public class YoutuberController : MonoBehaviour
         bossCon = GetComponent<BossController>();
         line = GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        sprites = new List<Sprite>();
+        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;
@@ -124,7 +127,7 @@ public class YoutuberController : MonoBehaviour
         breadBullet.SetSpeed(explosionSpeed);
         breadBullet.SetDamage(explosionDamage);
         breadBullet.SetRadius(explosionRadius);
-        breadBullet.SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+        breadBullet.SetSprite(sprites);
 
         yield return new WaitForSeconds(0.3f);
 
@@ -197,7 +200,7 @@ public class YoutuberController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-            bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+            bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -297,7 +300,7 @@ public class YoutuberController : MonoBehaviour
 
         if(collision.gameObject.tag == "Player" && isCharge)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(bulletDamage, GetComponent<SpriteRenderer>().sprite);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(bulletDamage, sprites);
         }
     }
 }

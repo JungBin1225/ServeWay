@@ -278,7 +278,7 @@ public class InventoryManager : MonoBehaviour
         foreach (Ingred_Name ingred in inventory.Keys)
         {
             Ingredient nowIngred = dataController.FindIngredient(ingred);
-            if (topList.Count < 5)
+            if (topList.Count < 3)
             {
                 topList.Add(nowIngred);
             }

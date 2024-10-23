@@ -11,6 +11,7 @@ public class ResearcherController : MonoBehaviour
     private List<Vector3> platePos;
     private Vector2 minPos;
     private Vector2 maxPos;
+    private List<Sprite> sprites;
     private float coolTime;
     private float soupTime;
     private bool isAttack;
@@ -43,6 +44,8 @@ public class ResearcherController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         player = GameObject.FindGameObjectWithTag("Player");
+        sprites = new List<Sprite>();
+        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;
@@ -145,7 +148,7 @@ public class ResearcherController : MonoBehaviour
                     bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
                     bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
                     bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-                    bullet.GetComponent<EnemyBullet>().SetSprite(gameObject.GetComponent<SpriteRenderer>().sprite);
+                    bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
                 }
             }
             yield return new WaitForSeconds(0.3f);
@@ -299,7 +302,7 @@ public class ResearcherController : MonoBehaviour
 
         if (collision.gameObject.tag == "Player" && isCharge)
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage, GetComponent<SpriteRenderer>().sprite);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage, sprites);
         }
     }
 }

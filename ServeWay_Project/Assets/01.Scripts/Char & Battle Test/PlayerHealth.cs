@@ -16,7 +16,7 @@ public class PlayerHealth : MonoBehaviour
     private InventoryManager inventory;
     private SpriteRenderer renderer;
     private bool isInvincible;
-    private Sprite damagedObject;
+    private List<Sprite> damagedObject;
 
     void Start()
     {
@@ -48,7 +48,7 @@ public class PlayerHealth : MonoBehaviour
         }*/
     }
 
-    public void PlayerDamaged(float damage, Sprite sprite)
+    public void PlayerDamaged(float damage, List<Sprite> sprite)
     {
         bool isMiss = false;
         if(inventory.isCream)
@@ -89,7 +89,7 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log(healAmount + " Heal");
     }
 
-    public Sprite getDeathImage()
+    public List<Sprite> getDeathImage()
     {
         return damagedObject;
     }
