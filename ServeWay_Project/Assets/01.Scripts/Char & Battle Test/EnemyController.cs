@@ -22,6 +22,7 @@ public class EnemyController : MonoBehaviour
     private float coolTime;
     private GameObject laser;
     private InventoryManager inventory;
+    private BoxCollider2D collider;
 
     public float maxHp;
     public float speed;
@@ -51,7 +52,7 @@ public class EnemyController : MonoBehaviour
         moveAble = true;
         coolTime = attackCoolTime;
         anim = GetComponent<EnemySprite>();
-
+        collider = GetComponent<BoxCollider2D>();
         rigidBody = GetComponent<Rigidbody2D>();
         inventory = GameManager.gameManager.inventory;
         target = GameObject.FindGameObjectWithTag("Player");
@@ -78,7 +79,11 @@ public class EnemyController : MonoBehaviour
                 }
             }
             anim.state = EnemyState.dead;
-            Destroy(this.gameObject);
+            collider.enabled = false;
+            if(anim.layerOrder[1].color.a == 0)
+            {
+                Destroy(this.gameObject);
+            }
         }
 
         EnemyAttack();
@@ -102,7 +107,7 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator EnemyMove()
     {
-        while(hp != 0)
+        while(hp > 0)
         {
             dir = target.transform.position - transform.position;
 
@@ -147,6 +152,8 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
+
+        rigidBody.velocity = Vector2.zero;
     }
 
     private void EnemyAttack()
