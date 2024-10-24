@@ -102,6 +102,8 @@ public class EnemySprite : MonoBehaviour
 
     public EnemyState state = EnemyState.idle;
 
+    public List<SpriteRenderer> layerOrder;
+
     void Start()
     {
         enemyAnim = GetComponent<Animator>();
@@ -109,6 +111,8 @@ public class EnemySprite : MonoBehaviour
         flipObject = transform.Find("Enemy Set").gameObject; //최상위 오브젝트 직후 하위 오브젝트 미리 불러오기
 
         enemyEyeColorCategory = "eye1_red"; //변수 값 초기화 (필요없을 것 같긴 함)
+
+        RandomAppear();
 
         StartCoroutine(BlinkEyes()); //눈 깜빡임 코루틴 실행
     }
@@ -121,7 +125,105 @@ public class EnemySprite : MonoBehaviour
 
     void Update()
     {
-        switch(enemyHairType) //헤어 종류 밑 색 선택
+        switch (state) //운동 애니메이션 변경, '반드시 Update문 안에 있어야 함', 별도 조건문으로 움직임 조작 시 (ex: 키보드 입력 발생 시 위치 이동하면서 같이 변경) case문 속 1~4줄 스크립트 전부 실행 필요
+        {
+            case EnemyState.idle: //정지
+                enemyAnim.SetInteger("state", 0); //애니메이션 판별용
+                break;
+            case EnemyState.moveLeft: //왼쪽 방향
+                enemyAnim.SetInteger("state", 1);
+                flipObject.transform.localScale=new Vector3(-1f, 1f, 1f); //오브젝트 방향 뒤집기, 최상위 오브젝트 X
+                enemyAnim.SetBool("isLeft", true); //퇴장 시 사라지는 방향 판별용
+                break;
+            case EnemyState.moveRight: //오른쪽 방향
+                enemyAnim.SetInteger("state", 1);
+                flipObject.transform.localScale = new Vector3(1f, 1f, 1f);
+                enemyAnim.SetBool("isLeft", false);
+                break;
+            case EnemyState.dead: //퇴장
+                enemyAnim.SetInteger("state", 2);
+                StopCoroutine(BlinkEyes()); //눈 깜빡임 정지
+                eyeSpriteResolver.SetCategoryAndLabel(enemyEyeColorCategory, "closed"); //웃는 눈으로 변경
+                eyeSpriteResolver.ResolveSpriteToSpriteRenderer();
+                break;
+        }
+    }
+
+    public void RandomAppear()
+    {
+        enemyHairColor = (EnemyHairColor)Random.Range(0, 4);
+        enemyHairType = (EnemyHairType)Random.Range(0, 4);
+        enemyBodyColor = (EnemyBodyColor)Random.Range(0, 4);
+        enemyEyeColor = (EnemyEyeColor)Random.Range(0, 8);
+
+        switch(GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1])
+        {
+            case Stage_Theme.BAR:
+                if(Random.Range(0, 2) == 0)
+                {
+                    enemyBodyType = EnemyBodyType.club1;
+                }
+                else
+                {
+                    enemyBodyType = EnemyBodyType.club2;
+                }
+                break;
+            case Stage_Theme.CAFE:
+                if (Random.Range(0, 2) == 0)
+                {
+                    enemyBodyType = EnemyBodyType.cafe1;
+                }
+                else
+                {
+                    enemyBodyType = EnemyBodyType.cafe2;
+                }
+                break;
+            case Stage_Theme.CAMPING:
+                if (Random.Range(0, 2) == 0)
+                {
+                    enemyBodyType = EnemyBodyType.camping1;
+                }
+                else
+                {
+                    enemyBodyType = EnemyBodyType.camping2;
+                }
+                break;
+            case Stage_Theme.NORMAL:
+                if (Random.Range(0, 2) == 0)
+                {
+                    enemyBodyType = EnemyBodyType.normal1;
+                }
+                else
+                {
+                    enemyBodyType = EnemyBodyType.normal2;
+                }
+                break;
+            case Stage_Theme.RESTORANT:
+                if (Random.Range(0, 2) == 0)
+                {
+                    enemyBodyType = EnemyBodyType.suit;
+                }
+                else
+                {
+                    enemyBodyType = EnemyBodyType.dress;
+                }
+                break;
+            case Stage_Theme.SCHOOL:
+                if (Random.Range(0, 2) == 0)
+                {
+                    enemyBodyType = EnemyBodyType.student1;
+                }
+                else
+                {
+                    enemyBodyType = EnemyBodyType.student2;
+                }
+                break;
+            case Stage_Theme.STREET:
+                enemyBodyType = (EnemyBodyType)Random.Range(0, 12);
+                break;
+        }
+
+        switch (enemyHairType) //헤어 종류 밑 색 선택
         {
             case EnemyHairType.hair1:
                 if (enemyHairColor == EnemyHairColor.black)
@@ -165,33 +267,10 @@ public class EnemySprite : MonoBehaviour
                 break;
         }
 
-        switch (state) //운동 애니메이션 변경, '반드시 Update문 안에 있어야 함', 별도 조건문으로 움직임 조작 시 (ex: 키보드 입력 발생 시 위치 이동하면서 같이 변경) case문 속 1~4줄 스크립트 전부 실행 필요
-        {
-            case EnemyState.idle: //정지
-                enemyAnim.SetInteger("state", 0); //애니메이션 판별용
-                break;
-            case EnemyState.moveLeft: //왼쪽 방향
-                enemyAnim.SetInteger("state", 1);
-                flipObject.transform.localScale=new Vector3(-1f, 1f, 1f); //오브젝트 방향 뒤집기, 최상위 오브젝트 X
-                enemyAnim.SetBool("isLeft", true); //퇴장 시 사라지는 방향 판별용
-                break;
-            case EnemyState.moveRight: //오른쪽 방향
-                enemyAnim.SetInteger("state", 1);
-                flipObject.transform.localScale = new Vector3(1f, 1f, 1f);
-                enemyAnim.SetBool("isLeft", false);
-                break;
-            case EnemyState.dead: //퇴장
-                enemyAnim.SetInteger("state", 2);
-                StopCoroutine(BlinkEyes()); //눈 깜빡임 정지
-                eyeSpriteResolver.SetCategoryAndLabel(enemyEyeColorCategory, "closed"); //웃는 눈으로 변경
-                eyeSpriteResolver.ResolveSpriteToSpriteRenderer();
-                break;
-        }
-
-        switch(enemyBodyType) //몸통 색상&스타일 변경
+        switch (enemyBodyType) //몸통 색상&스타일 변경
         {
             case EnemyBodyType.cafe1:
-                if(enemyBodyColor==EnemyBodyColor.blue)
+                if (enemyBodyColor == EnemyBodyColor.blue)
                     bodySpriteLib.spriteLibraryAsset = blueBodySpriteLibraryAssets[0];
                 else if (enemyBodyColor == EnemyBodyColor.green)
                     bodySpriteLib.spriteLibraryAsset = greenBodySpriteLibraryAssets[0];
@@ -312,7 +391,7 @@ public class EnemySprite : MonoBehaviour
                 break;
         }
 
-        switch(enemyBodyColor) //머리 피부색 변경, 몸통 피부색과 동기화
+        switch (enemyBodyColor) //머리 피부색 변경, 몸통 피부색과 동기화
         {
             case EnemyBodyColor.green:
                 headSpriteResolver.SetCategoryAndLabel("head", "head1");
@@ -359,7 +438,6 @@ public class EnemySprite : MonoBehaviour
                 enemyEyeColorCategory = "eye2_skyblue";
                 break;
         }
-
     }
 
     IEnumerator BlinkEyes() //눈 깜빡임 코루틴, 적 많아져서 작동 코루틴 개수 많아지면 성능 저하 되려나 모르겠음, 저하 시 그냥 time으로 조건문 만들어서 update 안에 집어넣어야 함
@@ -391,5 +469,13 @@ public class EnemySprite : MonoBehaviour
         result.Add(bodySpriteLib.gameObject.GetComponent<SpriteRenderer>().sprite);
 
         return result;
+    }
+
+    public void SetLayerOrder(int order)
+    {
+        foreach(SpriteRenderer renderer in layerOrder)
+        {
+            renderer.sortingOrder += 5 * order;
+        }
     }
 }

@@ -28,6 +28,7 @@ public class EnemyGenerator : MonoBehaviour
     private bool isClear;
     private bool isSpawn;
     private bool isStarted = false;
+    private int enemyCount;
     //Start() 함수가 끝까지 실행된 이후에 true로 바뀜
     //해주는 이유 : spawnlist를 초기화해주는 Start() 함수가 불리기 이전에 spawnlist를 참조하는 OnTriggerEnter2D()가 불릴 수 있기 때문이다.
 
@@ -43,6 +44,7 @@ public class EnemyGenerator : MonoBehaviour
         isVisited = false;
 
         wave = 0;
+        enemyCount = 0;
         InitEnemy();
 
         // 미니맵
@@ -115,6 +117,8 @@ public class EnemyGenerator : MonoBehaviour
         GameObject enemy = Instantiate(enemyPrefab, new Vector3(posX, posY, 0), rot);
         enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
         enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
+        enemy.GetComponent<EnemySprite>().SetLayerOrder(enemyCount);
+        enemyCount++;
     }
 
     private void DropIngredient(int min, int max)
