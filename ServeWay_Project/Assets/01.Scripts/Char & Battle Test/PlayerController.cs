@@ -173,8 +173,12 @@ public class PlayerController : MonoBehaviour
 
         rigidBody.velocity = Vector2.zero;
         chargeSound.Play();
-        yield return new WaitForSeconds(0.25f); //선딜
+        anim.SetBool("isDash", true);
+        yield return new WaitForSeconds(0.1f);
 
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).length < anim.GetCurrentAnimatorStateInfo(0).normalizedTime); //선딜
+
+        anim.SetTrigger("DashStart");
         isCharge = true;
 
         //rigidbody.velocity = chargeVel;
@@ -183,9 +187,13 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(chargeLength); //돌진
 
         isCharge = false;
+        anim.SetTrigger("DashFinish");
+        anim.SetBool("isDash", false);
 
         rigidBody.velocity = Vector2.zero;
-        yield return new WaitForSeconds(0.25f); //후딜
+        yield return new WaitForSeconds(0.1f);
+
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).length < anim.GetCurrentAnimatorStateInfo(0).normalizedTime); //후딜
 
         controllAble = true;
         coolTime = chargeCooltime * inventory.increase_ChargeCoolTime;
@@ -231,6 +239,7 @@ public class PlayerController : MonoBehaviour
 
         Time.timeScale = 1;
     }
+
 
     public float GetnowHp()
     {
