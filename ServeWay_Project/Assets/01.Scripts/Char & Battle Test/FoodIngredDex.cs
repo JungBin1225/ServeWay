@@ -54,10 +54,22 @@ public class FoodIngredDex : ScriptableObject
         UnityEditor.EditorUtility.SetDirty(this);
     }
 
+    public void ClearFoodDex()
+    {
+        foodDex.Clear();
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+
     public void AddIngredDex(Ingred_Name name)
     {
-        ingredDex.Add(name, false);
+        ingredDex.Add(name, true);
 
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+
+    public void ClearIngredDex()
+    {
+        ingredDex.Clear();
         UnityEditor.EditorUtility.SetDirty(this);
     }
 }

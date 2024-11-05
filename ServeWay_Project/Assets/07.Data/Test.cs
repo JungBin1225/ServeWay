@@ -59,27 +59,21 @@ public class Test : MonoBehaviour
 
     private void RefreshDex()
     {
+        dex.ClearFoodDex();
+        dex.ClearIngredDex();
+
         foreach(FoodData food in foodData.FoodDatas)
         {
-            if(!dex.foodDex.ContainsKey(food.foodName))
-            {
-                dex.AddFoodDex(food.foodName, FoodDex_Status.RECIPE);
-            }
+            dex.AddFoodDex(food.foodName, FoodDex_Status.CREATED);
         }
         foreach (FoodData food in startFoodData.StartFoodDatas)
         {
-            if (!dex.foodDex.ContainsKey(food.foodName))
-            {
-                dex.AddFoodDex(food.foodName, FoodDex_Status.RECIPE);
-            }
+            dex.AddFoodDex(food.foodName, FoodDex_Status.CREATED);
         }
 
         foreach(Ingredient ingred in ingredientData.IngredientList)
         {
-            if(!dex.ingredDex.ContainsKey(ingred.name))
-            {
-                dex.AddIngredDex(ingred.name);
-            }
+            dex.AddIngredDex(ingred.name);
         }
 
         Debug.Log("Refresh Success");

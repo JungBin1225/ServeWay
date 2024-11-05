@@ -72,6 +72,12 @@ public class FoodData
             Sprite[] sprites = Resources.LoadAll<Sprite>("Food_Sprite");
             _FoodSprite = sprites[int.Parse(_FoodSpriteIndex)] as Sprite;
 
+            if(_NeedIngredient == "")
+            {
+                sprites = Resources.LoadAll<Sprite>("Pixel_House_Icons_1.2.1-32x");
+                _FoodSprite = sprites[int.Parse(_FoodSpriteIndex)] as Sprite;
+            }
+
             return _FoodSprite;
         }
     }
