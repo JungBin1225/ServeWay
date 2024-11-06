@@ -68,6 +68,7 @@ public class EnemyController : MonoBehaviour
     {
         if(hp <= 0)
         {
+            rigidBody.velocity = Vector2.zero;
             //generator.GetComponent<EnemyGenerator>().enemyAmount--;
             if(lineRenderer.enabled)
             {
