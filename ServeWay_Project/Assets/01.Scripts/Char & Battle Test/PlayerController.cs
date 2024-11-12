@@ -177,6 +177,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).length < anim.GetCurrentAnimatorStateInfo(0).normalizedTime); //선딜
+        if(GetnowHp() <= 0)
+        {
+            yield break;
+        }
 
         anim.SetTrigger("DashStart");
         isCharge = true;
