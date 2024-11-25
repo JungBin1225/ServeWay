@@ -41,7 +41,7 @@ public class Ingredient
     {
         get
         {
-            Sprite[] sprites = Resources.LoadAll<Sprite>("Pixel_House_Icons_1.2.1-16x");
+            Sprite[] sprites = Resources.LoadAll<Sprite>("Ingerd_Sprite");
             _IngredSprite = sprites[int.Parse(_SpritePath)] as Sprite;
 
             return _IngredSprite;
