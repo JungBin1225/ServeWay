@@ -171,7 +171,10 @@ public class PlayerController : MonoBehaviour
             chargeVel = new Vector2(1, 0).normalized;
         }*/
 
-        weaponSlot.GetWeaponInfo(weaponSlot.GetHoldWeapon()).FoodInvisible();
+        if(weaponSlot.GetHoldWeapon() != null)
+        {
+            weaponSlot.GetWeaponInfo(weaponSlot.GetHoldWeapon()).FoodInvisible();
+        }
 
         rigidBody.velocity = Vector2.zero;
         chargeSound.Play();
@@ -201,7 +204,11 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).length < anim.GetCurrentAnimatorStateInfo(0).normalizedTime); //후딜
 
-        weaponSlot.GetWeaponInfo(weaponSlot.GetHoldWeapon()).FoodVisible();
+        if (weaponSlot.GetHoldWeapon() != null)
+        {
+            weaponSlot.GetWeaponInfo(weaponSlot.GetHoldWeapon()).FoodVisible();
+        }
+            
         controllAble = true;
         coolTime = chargeCooltime * inventory.increase_ChargeCoolTime;
         if(inventory.isKimchi)

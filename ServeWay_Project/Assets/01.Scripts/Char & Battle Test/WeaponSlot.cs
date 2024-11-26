@@ -186,7 +186,14 @@ public class WeaponSlot : MonoBehaviour
 
     public string GetHoldWeapon()
     {
-        return weaponList[index].GetComponentInChildren<WeaponController>().weaponName;
+        if(weaponList.Count == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return weaponList[index].GetComponentInChildren<WeaponController>().weaponName;
+        }
     }
 
     public void InitSlot()
