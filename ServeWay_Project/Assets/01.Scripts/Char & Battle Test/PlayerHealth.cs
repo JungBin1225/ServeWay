@@ -125,6 +125,8 @@ public class PlayerHealth : MonoBehaviour
 
     private IEnumerator GameOver()
     {
+        
+        playerController.weaponSlot.GetWeaponInfo(playerController.weaponSlot.GetHoldWeapon()).FoodInvisible();
         playerController.controllAble = false;
         float time = 0;
         anim.SetBool("isDead", true);

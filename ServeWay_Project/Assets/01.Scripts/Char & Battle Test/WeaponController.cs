@@ -325,4 +325,14 @@ public class WeaponController : MonoBehaviour
                 break;
         }
     }
+
+    public void FoodInvisible()
+    {
+        weaponSprite.color = new Color(1, 1, 1, 0);
+    }
+
+    public void FoodVisible()
+    {
+        weaponSprite.color = new Color(1, 1, 1, 1);
+    }
 }

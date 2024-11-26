@@ -184,6 +184,11 @@ public class WeaponSlot : MonoBehaviour
         return null;
     }
 
+    public string GetHoldWeapon()
+    {
+        return weaponList[index].GetComponentInChildren<WeaponController>().weaponName;
+    }
+
     public void InitSlot()
     {
         weaponList = new List<GameObject>();
@@ -205,6 +210,10 @@ public class WeaponSlot : MonoBehaviour
         if(weaponList.Count != 0 && !SceneManager.GetActiveScene().name.Contains("Tutorial"))
         {
             holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
+        }
+        else
+        {
+            holdWeapon.UpdateHoldWeapon_Null();
         }
     }
 

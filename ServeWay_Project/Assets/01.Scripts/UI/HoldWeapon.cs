@@ -24,6 +24,12 @@ public class HoldWeapon : MonoBehaviour
         holdWeapon.transform.GetChild(2).GetComponent<Text>().text = food.foodName;
     }
 
+    public void UpdateHoldWeapon_Null()
+    {
+        holdWeapon.transform.GetChild(1).GetComponent<Image>().sprite = null;
+        holdWeapon.transform.GetChild(2).GetComponent<Text>().text = "";
+    }
+
     public IEnumerator ChargeCoolTime(float time)
     {
         chargeCoolTime.SetActive(true);
