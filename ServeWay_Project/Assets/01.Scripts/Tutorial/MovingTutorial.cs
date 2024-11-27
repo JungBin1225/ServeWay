@@ -13,8 +13,10 @@ public class MovingTutorial : MonoBehaviour
     public TextAsset textFile;
     public TextAsset clearText;
     public GameObject door;
+    public string missionText;
 
     private PlayerController player;
+    private TutorialMissionUI mission;
     private bool isTalking;
     private bool isClicked;
     private bool isMission;
@@ -24,12 +26,14 @@ public class MovingTutorial : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
+        mission = FindObjectOfType<TutorialMissionUI>();
         isTalking = false;
         isClicked = false;
         isClear = false;
         isMission = false;
         missionAmount = 0;
 
+        missionText = missionText.Replace("\\n", "\n");
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
     }
@@ -43,9 +47,15 @@ public class MovingTutorial : MonoBehaviour
 
         if(!isTalking && isMission && !isClear)
         {
+            if(!mission.isAppear)
+            {
+                StartCoroutine(mission.MissonAppear());
+            }
+
             if(player.GetPlayerVel() > 0)
             {
                 missionAmount += Time.deltaTime;
+                mission.UpdateMission(missionText, missionAmount, false);
             }
         }
 
@@ -121,6 +131,9 @@ public class MovingTutorial : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player" && !isClear)
         {
+            mission.MissonDisappear();
+            mission.SetMission(missionText, 5);
+
             StartCoroutine(StartDialog(textFile));
             for (int i = 0; i < door.transform.childCount; i++)
             {

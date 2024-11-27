@@ -15,8 +15,10 @@ public class ChargingTutorial : MonoBehaviour
     public TextAsset clearText2;
     public GameObject door;
     public TutorialEnemy enemy;
+    public string missionText;
 
     private PlayerController player;
+    private TutorialMissionUI mission;
     private bool isTalking;
     private bool isClicked;
     private bool isMission;
@@ -28,6 +30,7 @@ public class ChargingTutorial : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
+        mission = FindObjectOfType<TutorialMissionUI>();
         isTalking = false;
         isClicked = false;
         isClear = false;
@@ -36,6 +39,7 @@ public class ChargingTutorial : MonoBehaviour
         isCharge = false;
         missionAmount = 0;
 
+        missionText = missionText.Replace("\\n", "\n");
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
     }
@@ -49,7 +53,7 @@ public class ChargingTutorial : MonoBehaviour
 
         if (!isTalking && isMission && !isClear)
         {
-            if(!isDamaged) //enemy attack
+            if (!isDamaged) //enemy attack
             {
                 if(missionAmount == 0)
                 {
@@ -58,18 +62,24 @@ public class ChargingTutorial : MonoBehaviour
             }
             else //charge
             {
-                if(!isCharge)
+                if (!mission.isAppear)
+                {
+                    StartCoroutine(mission.MissonAppear());
+                }
+
+                if (!isCharge)
                 {
                     if(player.isCharge)
                     {
                         missionAmount++;
+                        mission.UpdateMission(missionText, missionAmount, true);
                     }
                 }
                 isCharge = player.isCharge;
             }
         }
 
-        if (missionAmount > 5 && !isClear)
+        if (missionAmount >= 5 && !isClear)
         {
             if(!isDamaged)
             {
@@ -158,6 +168,9 @@ public class ChargingTutorial : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
+            mission.MissonDisappear();
+            mission.SetMission(missionText, 5);
+
             StartCoroutine(StartDialog(textFile));
             for (int i = 0; i < door.transform.childCount; i++)
             {

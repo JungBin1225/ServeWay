@@ -18,6 +18,7 @@ public class BossTutorial : MonoBehaviour
     private PlayerController player;
     private DataController data;
     private MissonManager misson;
+    private TutorialMissionUI tuto_mission;
     private bool isTalking;
     private bool isClicked;
     private bool isMission;
@@ -30,6 +31,7 @@ public class BossTutorial : MonoBehaviour
         player = FindObjectOfType<PlayerController>();
         data = FindObjectOfType<DataController>();
         misson = FindObjectOfType<MissonManager>();
+        tuto_mission = FindObjectOfType<TutorialMissionUI>();
         isTalking = false;
         isClicked = false;
         isClear = false;
@@ -157,6 +159,8 @@ public class BossTutorial : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
+            tuto_mission.MissonDisappear();
+
             StartCoroutine(StartDialog(textFile));
             for (int i = 0; i < door.transform.childCount; i++)
             {

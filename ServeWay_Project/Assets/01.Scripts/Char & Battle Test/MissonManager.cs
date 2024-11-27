@@ -245,7 +245,6 @@ public class MissonManager : MonoBehaviour
         while(missonUI.GetComponent<RectTransform>().localPosition.x < -735)
         {
             missonUI.GetComponent<RectTransform>().localPosition += new Vector3(5, 0, 0);
-            Debug.Log("asd");
             yield return null;
         }
 

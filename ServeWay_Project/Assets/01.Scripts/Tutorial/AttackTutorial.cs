@@ -15,8 +15,10 @@ public class AttackTutorial : MonoBehaviour
     public TextAsset clearText2;
     public GameObject door;
     public TutorialEnemy enemy;
+    public string missionText;
 
     private PlayerController player;
+    private TutorialMissionUI mission;
     private DataController data;
     private bool isTalking;
     private bool isClicked;
@@ -30,6 +32,7 @@ public class AttackTutorial : MonoBehaviour
     {
         player = FindObjectOfType<PlayerController>();
         data = FindObjectOfType<DataController>();
+        mission = FindObjectOfType<TutorialMissionUI>();
         isTalking = false;
         isClicked = false;
         isClear = false;
@@ -38,6 +41,7 @@ public class AttackTutorial : MonoBehaviour
         isKill = false;
         missionAmount = 0;
 
+        missionText = missionText.Replace("\\n", "\n");
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
     }
@@ -51,6 +55,11 @@ public class AttackTutorial : MonoBehaviour
 
         if (!isTalking && isMission && !isClear)
         {
+            if (!mission.isAppear)
+            {
+                StartCoroutine(mission.MissonAppear());
+            }
+
             if (!isDamaged) //enemy attack
             {
                 if(enemy.GetNowHp() < enemy.maxHp / 2)
@@ -65,6 +74,7 @@ public class AttackTutorial : MonoBehaviour
                     if (enemy == null)
                     {
                         missionAmount = 10;
+                        mission.UpdateMission(missionText, 1, true);
                     }
                 }
             }
@@ -174,6 +184,9 @@ public class AttackTutorial : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
+            mission.MissonDisappear();
+            mission.SetMission(missionText, 1);
+
             StartCoroutine(StartDialog(textFile));
             for (int i = 0; i < door.transform.childCount; i++)
             {

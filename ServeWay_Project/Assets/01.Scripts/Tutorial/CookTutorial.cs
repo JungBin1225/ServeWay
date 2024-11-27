@@ -13,8 +13,10 @@ public class CookTutorial : MonoBehaviour
     public TextAsset textFile;
     public TextAsset clearText;
     public GameObject door;
+    public string missionText;
 
     private PlayerController player;
+    private TutorialMissionUI mission;
     private bool isTalking;
     private bool isClicked;
     private bool isMission;
@@ -24,12 +26,14 @@ public class CookTutorial : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
+        mission = FindObjectOfType<TutorialMissionUI>();
         isTalking = false;
         isClicked = false;
         isClear = false;
         isMission = false;
         maked = false;
 
+        missionText = missionText.Replace("\\n", "\n");
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
     }
@@ -43,9 +47,15 @@ public class CookTutorial : MonoBehaviour
 
         if (!isTalking && isMission && !isClear)
         {
-            if(player.weaponSlot.ReturnWeaponList().Count > 0)
+            if (!mission.isAppear)
+            {
+                StartCoroutine(mission.MissonAppear());
+            }
+
+            if (player.weaponSlot.ReturnWeaponList().Count > 0)
             {
                 maked = true;
+                mission.UpdateMission(missionText, 1, true);
             }
         }
 
@@ -121,6 +131,9 @@ public class CookTutorial : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && !isClear)
         {
+            mission.MissonDisappear();
+            mission.SetMission(missionText, 1);
+
             StartCoroutine(StartDialog(textFile));
             for (int i = 0; i < door.transform.childCount; i++)
             {
