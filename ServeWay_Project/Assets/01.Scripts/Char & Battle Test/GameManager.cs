@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     public bool menuAble;
     public float playTime;
 
+    private string nextStage;
+
     private void Awake()
     {
         if (gameManager == null)
@@ -60,6 +62,7 @@ public class GameManager : MonoBehaviour
         isBossStage = false;
         menuAble = true;
         Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
+        nextStage = "";
 
         if(charData.saveFile.weaponList.Count != 0)
         {
@@ -193,5 +196,15 @@ public class GameManager : MonoBehaviour
             default:
                 return "";
         }
+    }
+
+    public void SetNextStage(string name)
+    {
+        nextStage = name;
+    }
+
+    public string GetNextStage()
+    {
+        return nextStage;
     }
 }
