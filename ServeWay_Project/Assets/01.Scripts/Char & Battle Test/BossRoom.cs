@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,10 +61,23 @@ public class BossRoom : MonoBehaviour
     private IEnumerator BossIntro()
     {
         CloseDoor();
+
+        string email = "";
+        int num = UnityEngine.Random.Range(5, 13);
+        for (int i = 0; i < num; i++)
+        {
+            email += RandomChar();
+        }
+
         intro.SetActive(true);
-        intro.transform.GetChild(0).GetComponent<Text>().text = GameManager.gameManager.JobToString(bossJob);
-        intro.transform.GetChild(1).GetComponent<Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
+        intro.transform.GetChild(1).GetComponent<Text>().text = GameManager.gameManager.JobToString(bossJob);
+        intro.transform.GetChild(2).GetComponent<Text>().text = "OOO"; //name
+        intro.transform.GetChild(4).GetComponent<Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
+        intro.transform.GetChild(6).GetComponent<Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
+        intro.transform.GetChild(8).GetComponent<Text>().text = email + "@space.com"; //email
+        
         Time.timeScale = 0;
+        intro.GetComponent<Animator>().SetTrigger("Start");
 
         yield return new WaitForSecondsRealtime(2f);
 
@@ -132,7 +146,7 @@ public class BossRoom : MonoBehaviour
 
     public void DropIngredient(int min, int max)
     {
-        int dropAmount = Random.Range(min, max + 1);
+        int dropAmount = UnityEngine.Random.Range(min, max + 1);
         float radius = 5f;
 
         for (int i = 0; i < dropAmount; i++)
@@ -152,7 +166,7 @@ public class BossRoom : MonoBehaviour
 
     public void DropRecipe()
     {
-        int dropAmount = Random.Range(0, 2);
+        int dropAmount = UnityEngine.Random.Range(0, 2);
         List<string> lockedFood = new List<string>();
         foreach(FoodData food in data.foodData.FoodDatas)
         {
@@ -162,7 +176,7 @@ public class BossRoom : MonoBehaviour
             }
         }
 
-        string foodName = lockedFood[Random.Range(0, lockedFood.Count)];
+        string foodName = lockedFood[UnityEngine.Random.Range(0, lockedFood.Count)];
 
         if(dropAmount == 1)
         {
@@ -174,7 +188,7 @@ public class BossRoom : MonoBehaviour
 
     private Ingredient RandomIngredient()
     {
-        int grade = Random.Range(0, 100) + 1;
+        int grade = UnityEngine.Random.Range(0, 100) + 1;
 
         int num = 0;
         if (grade <= 55)
@@ -195,7 +209,7 @@ public class BossRoom : MonoBehaviour
         }
 
         List<Ingredient> ingredList = data.GetGradeList(num);
-        int randomIndex = Random.Range(0, ingredList.Count);
+        int randomIndex = UnityEngine.Random.Range(0, ingredList.Count);
 
         return ingredList[randomIndex];
     }
@@ -233,6 +247,14 @@ public class BossRoom : MonoBehaviour
         KeyValuePair<int, int> bossPos = mapGen.BossGridNum();
         myCol = bossPos.Key;    // x
         myRow = bossPos.Value;  // y
+    }
+
+    private string RandomChar()
+    {
+        string list = "1234567890abcdefghijklmnopqrstuvwxyz";
+        int index = UnityEngine.Random.Range(0, list.Length);
+
+        return list[index].ToString();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
