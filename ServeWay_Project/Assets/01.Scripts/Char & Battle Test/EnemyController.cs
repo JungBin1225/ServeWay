@@ -23,9 +23,11 @@ public class EnemyController : MonoBehaviour
     private GameObject laser;
     private InventoryManager inventory;
     private BoxCollider2D collider;
+    private bool isWall;
 
     public float maxHp;
     public float speed;
+    public Vector2 roomCenter;
     public EnemyAttackType attackType;
     public float range;
     public float attackCoolTime;
@@ -50,6 +52,7 @@ public class EnemyController : MonoBehaviour
     {
         hp = maxHp;
         moveAble = true;
+        isWall = false;
         coolTime = attackCoolTime;
         anim = GetComponent<EnemySprite>();
         collider = GetComponent<BoxCollider2D>();
@@ -112,46 +115,49 @@ public class EnemyController : MonoBehaviour
         {
             dir = target.transform.position - transform.position;
 
-            if(!moveAble)
+            if(!isWall)
             {
-                rigidBody.velocity = Vector2.zero;
-                anim.state = EnemyState.idle;
-                yield return null;
-            }
-            else
-            {
-                if (dir.magnitude > range)
+                if (!moveAble)
                 {
-                    //chase target
-                    rigidBody.velocity = dir.normalized * speed;
-                    if(dir.normalized.x > 0)
-                    {
-                        anim.state = EnemyState.moveRight;
-                    }
-                    else
-                    {
-                        anim.state = EnemyState.moveLeft;
-                    }
-                    yield return null;
+                    rigidBody.velocity = Vector2.zero;
+                    anim.state = EnemyState.idle;
                 }
                 else
                 {
-                    //move & attack
-                    float posX = Random.Range(minPos.x, maxPos.x);
-                    float posY = Random.Range(minPos.y, maxPos.y);
-                    rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
-
-                    if (posX - transform.position.x > 0)
+                    if (dir.magnitude > range)
                     {
-                        anim.state = EnemyState.moveRight;
+                        //chase target
+                        rigidBody.velocity = dir.normalized * speed;
+                        if (dir.normalized.x > 0)
+                        {
+                            anim.state = EnemyState.moveRight;
+                        }
+                        else
+                        {
+                            anim.state = EnemyState.moveLeft;
+                        }
+                        yield return null;
                     }
                     else
                     {
-                        anim.state = EnemyState.moveLeft;
+                        //move & attack
+                        float posX = Random.Range(minPos.x, maxPos.x);
+                        float posY = Random.Range(minPos.y, maxPos.y);
+                        rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
+
+                        if (posX - transform.position.x > 0)
+                        {
+                            anim.state = EnemyState.moveRight;
+                        }
+                        else
+                        {
+                            anim.state = EnemyState.moveLeft;
+                        }
+                        yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
                     }
-                    yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
                 }
             }
+            yield return null;
         }
 
         rigidBody.velocity = Vector2.zero;
@@ -332,7 +338,24 @@ public class EnemyController : MonoBehaviour
         }
         else if(moveAble && collision.gameObject.tag == "Wall")
         {
+            isWall = true;
             rigidBody.velocity *= -1;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Wall")
+        {
+            rigidBody.velocity = new Vector2(roomCenter.x - transform.position.x, roomCenter.y - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Wall" && isWall)
+        {
+            isWall = false;
         }
     }
 }

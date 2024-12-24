@@ -10,11 +10,14 @@ public class BulletController : MonoBehaviour
     protected Vector3 target;
     protected FoodData food;
 
+    private Animator anim;
+    private bool isCollide;
     public GameObject destroyEffect;
 
     protected void Start()
     {
-
+        anim = GetComponent<Animator>();
+        isCollide = false;
     }
 
     protected void Update()
@@ -42,42 +45,54 @@ public class BulletController : MonoBehaviour
         this.food = food;
     }
 
+    public void SetColor(Color32 color)
+    {
+        GetComponent<SpriteRenderer>().color = color;
+    }
+
     public void Fire()
     {
-        Vector3 dir = new Vector3(target.x, target.y, 0);
+        if(!isCollide)
+        {
+            Vector3 dir = new Vector3(target.x, target.y, 0);
 
-        transform.position -= dir * Time.deltaTime * speed;
+            transform.position -= dir * Time.deltaTime * speed;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
+        if(!isCollide)
         {
-            if(SceneManager.GetActiveScene().name.Contains("Tutorial"))
+            if (collision.tag == "Enemy")
             {
-                collision.gameObject.GetComponent<TutorialEnemy>().GetDamage(damage, this.transform.position);
+                if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+                {
+                    collision.gameObject.GetComponent<TutorialEnemy>().GetDamage(damage, this.transform.position);
+                }
+                else
+                {
+                    collision.gameObject.GetComponent<EnemyController>().GetDamage(damage);
+                }
             }
-            else
+            else if (collision.tag == "Boss")
             {
-                collision.gameObject.GetComponent<EnemyController>().GetDamage(damage);
+                if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+                {
+                    collision.gameObject.GetComponent<TutorialBoss>().GetDamage(damage, this.transform.position, food);
+                }
+                else
+                {
+                    collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, food);
+                }
             }
-        }
-        else if (collision.tag == "Boss")
-        {
-            if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
-            {
-                collision.gameObject.GetComponent<TutorialBoss>().GetDamage(damage, this.transform.position, food);
-            }
-            else
-            {
-                collision.gameObject.GetComponent<BossController>().GetDamage(damage, this.transform.position, food);
-            }  
-        }
 
-        if (collision.tag == "Enemy" || collision.tag == "Boss" || collision.tag == "Wall")
-        {
-            Instantiate(destroyEffect, transform.position, transform.rotation);
-            Destroy(this.gameObject);
+            if (collision.tag == "Enemy" || collision.tag == "Boss" || collision.tag == "Wall")
+            {
+                Instantiate(destroyEffect, transform.position, transform.rotation);
+                isCollide = true;
+                Destroy(this.gameObject);
+            }
         }
     }
 }

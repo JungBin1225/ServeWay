@@ -34,6 +34,7 @@ public class WeaponController : MonoBehaviour
     public GameObject effectPrefab;
     public GameObject dropPrefab;
     public List<float> alphaStat;
+    public Color32 bulletColor;
 
     void Start()
     {
@@ -158,6 +159,7 @@ public class WeaponController : MonoBehaviour
                 bulletController.SetSpeed(speed * inventory.increase_BulletSpeed);
                 bulletController.SetDamage(damage * inventory.increase_Damage * tofuDamage);
                 bulletController.SetFood(foodData);
+                bulletController.SetColor(bulletColor);
                 break;
             case Food_MainIngred.RICE:
                 Instantiate(effectPrefab, transform);
@@ -166,6 +168,7 @@ public class WeaponController : MonoBehaviour
                 bulletController.SetSpeed(speed * inventory.increase_BulletSpeed);
                 bulletController.SetDamage(damage * inventory.increase_Damage * tofuDamage);
                 bulletController.SetFood(foodData);
+                bulletController.SetColor(bulletColor);
                 break;
             case Food_MainIngred.SOUP:
                 Destroy(bullet);
@@ -225,11 +228,12 @@ public class WeaponController : MonoBehaviour
                 }
             }
 
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+            GameObject bullet = Instantiate(bulletPrefab, transform.position + (mousePos - transform.position).normalized, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
             bullet.GetComponent<BulletController>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<BulletController>().SetSpeed(speed);
             bullet.GetComponent<BulletController>().SetDamage(damage * tofuDamage);
             bullet.GetComponent<BulletController>().SetFood(foodData);
+            bullet.GetComponent<BulletController>().SetColor(bulletColor);
         }
     }
 
@@ -305,6 +309,7 @@ public class WeaponController : MonoBehaviour
         alphaStat = foodInfo.alphaStat;
         bulletPrefab = foodInfo.bulletPrefab;
         effectPrefab = foodInfo.effectPrefab;
+        bulletColor = foodInfo.bulletColor;
 
         switch(success)
         {

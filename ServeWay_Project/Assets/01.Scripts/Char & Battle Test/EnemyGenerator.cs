@@ -117,6 +117,7 @@ public class EnemyGenerator : MonoBehaviour
         GameObject enemy = Instantiate(enemyPrefab, new Vector3(posX, posY, 0), rot);
         enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
         enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
+        enemy.GetComponent<EnemyController>().roomCenter = transform.position;
         enemy.GetComponent<EnemySprite>().SetLayerOrder(enemyCount);
         enemyCount++;
     }
@@ -204,7 +205,8 @@ public class EnemyGenerator : MonoBehaviour
         if(collision.gameObject.tag == "Enemy")
         {
             enemyAmount--;
-        }else if(collision.gameObject.tag == "Player")
+        }
+        else if(collision.gameObject.tag == "Player")
         {
             //StopCoroutine(SelectEnamy());
         }

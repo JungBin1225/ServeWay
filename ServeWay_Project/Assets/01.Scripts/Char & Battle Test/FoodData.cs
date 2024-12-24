@@ -50,10 +50,14 @@ public class FoodData
     [SerializeField] private string _BulletPrefabPath;
     [SerializeField] private string _NeedIngredient;
     [SerializeField] private string _EffectPrefabPath;
+    [SerializeField] private byte _BulletColor_r;
+    [SerializeField] private byte _BulletColor_g;
+    [SerializeField] private byte _BulletColor_b;
     private Sprite _FoodSprite;
     private GameObject _FoodPrefab;
     private GameObject _BulletPrefab;
     private GameObject _EffectPrefab;
+    private Color32 _BulletColor;
 
     public string foodName { get { return _FoodName; } }
     public Food_Grade grade { get { return _Grade; } }
@@ -65,6 +69,17 @@ public class FoodData
     public float successDamage { get { return _SuccessDamage; } }
     public float successSpeed { get { return _SuccessSpeed; } }
     public float successCoolTime { get { return _SuccessCoolTime; } }
+
+    public Color bulletColor
+    {
+        get
+        {
+            _BulletColor = new Color32(_BulletColor_r, _BulletColor_g, _BulletColor_b, 255);
+
+            return _BulletColor;
+        }
+    }
+
     public Sprite foodSprite
     {
         get
