@@ -240,6 +240,8 @@ public class WeaponController : MonoBehaviour
     public IEnumerator GenerateLaser()
     {
         lineRenderer.enabled = true;
+        lineRenderer.startColor = bulletColor;
+        lineRenderer.endColor = bulletColor;
         isLaser = true;
         laser = Instantiate(laserPrefab, this.transform);
         GameObject effect = Instantiate(effectPrefab, transform);

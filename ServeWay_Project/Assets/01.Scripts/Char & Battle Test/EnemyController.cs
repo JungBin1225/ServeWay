@@ -322,6 +322,18 @@ public class EnemyController : MonoBehaviour
         this.generator = generator;
     }
 
+    public void SetAttackType(DataController data)
+    {
+        //attackType = (EnemyAttackType)Random.Range(0, 5);
+
+        switch(attackType)
+        {
+            case EnemyAttackType.MEAT:
+                bulletPrefab = data.enemyBullet.meatBullet[Random.Range(0, data.enemyBullet.meatBullet.Count)];
+                break;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<PlayerController>().isCharge)

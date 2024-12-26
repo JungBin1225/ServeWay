@@ -118,6 +118,7 @@ public class EnemyGenerator : MonoBehaviour
         enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
         enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
         enemy.GetComponent<EnemyController>().roomCenter = transform.position;
+        enemy.GetComponent<EnemyController>().SetAttackType(data);
         enemy.GetComponent<EnemySprite>().SetLayerOrder(enemyCount);
         enemyCount++;
     }

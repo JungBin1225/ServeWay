@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class EnemyBullet : MonoBehaviour
 {
@@ -10,10 +11,16 @@ public class EnemyBullet : MonoBehaviour
     protected List<Sprite> sprite;
 
     public GameObject destroyEffect;
+    public bool isRotate;
 
     protected void Start()
     {
-
+        if(GetComponent<SpriteLibrary>() != null)
+        {
+            int ran = Random.Range(0, 3);
+            string index = string.Format("trash_{0}", ran);
+            GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteLibrary>().GetSprite("sprite", index);
+        }
     }
 
     protected void Update()
@@ -46,6 +53,11 @@ public class EnemyBullet : MonoBehaviour
         Vector3 dir = new Vector3(target.x, target.y, 0);
 
         transform.position -= dir.normalized * Time.deltaTime * speed;
+
+        if(isRotate)
+        {
+            transform.eulerAngles += new Vector3(0, 0, 180 * Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
