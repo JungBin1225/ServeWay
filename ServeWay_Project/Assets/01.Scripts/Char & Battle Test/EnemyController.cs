@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public enum EnemyAttackType
 {
     MEAT,
@@ -64,6 +64,7 @@ public class EnemyController : MonoBehaviour
         lineRenderer.enabled = false;
 
         StartCoroutine(EnemyMove());
+        StartCoroutine(EnemyAttack());
     }
 
     
@@ -89,8 +90,20 @@ public class EnemyController : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-
-        EnemyAttack();
+        else
+        {
+            if (target.transform.position.x > transform.position.x)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                hpImage.gameObject.transform.parent.parent.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+                hpImage.gameObject.transform.parent.parent.localRotation = Quaternion.Euler(0, 180, 0);
+            }
+        }
+        
     }
 
     public void GetDamage(float damage)
@@ -163,40 +176,45 @@ public class EnemyController : MonoBehaviour
         rigidBody.velocity = Vector2.zero;
     }
 
-    private void EnemyAttack()
+    private IEnumerator EnemyAttack()
     {
-        if(target.transform.position.x > transform.position.x)
+        while (hp > 0)
         {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-            hpImage.gameObject.transform.parent.parent.localRotation = Quaternion.Euler(0, 0, 0);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-            hpImage.gameObject.transform.parent.parent.localRotation = Quaternion.Euler(0, 180, 0);
-        }
-
-        if(coolTime > 0)
-        {
-            coolTime -= Time.deltaTime;
-        }
-        else
-        {
-            coolTime = 0;
-        }
-
-        if(coolTime == 0 && dir.magnitude <= range * inventory.decrease_EnemyAttackRange && moveAble)
-        {
-            if(attackType != EnemyAttackType.NOODLE)
+            if (coolTime > 0)
             {
-                EnemyFire();
-                coolTime = attackCoolTime * inventory.decrease_EnemyAttackTime;
+                coolTime -= Time.deltaTime;
+                yield return null;
             }
             else
             {
-                StartCoroutine(EnemyLaser());
+                if (dir.magnitude <= range * inventory.decrease_EnemyAttackRange && moveAble)
+                {
+                    switch(attackType)
+                    {
+                        case EnemyAttackType.NOODLE:
+                            StartCoroutine(EnemyLaser());
+                            break;
+                        case EnemyAttackType.RICE:
+                            StartCoroutine(EnemyRice());
+                            break;
+                        default:
+                            moveAble = false;
+                            rigidBody.velocity = Vector2.zero;
+                            yield return new WaitForSeconds(0.2f);
+                            EnemyFire();
+                            yield return new WaitForSeconds(0.3f);
+                            coolTime = attackCoolTime * inventory.decrease_EnemyAttackTime;
+                            moveAble = true;
+                            break;
+                    }
+                }
+                else
+                {
+                    coolTime = 0;
+                    yield return null;
+                }
             }
-        }
+        } 
     }
 
     private void EnemyFire()
@@ -219,19 +237,74 @@ public class EnemyController : MonoBehaviour
                 meatBullet.SetSpeed(bulletSpeed);
                 meatBullet.SetDamage(damage);
                 meatBullet.SetSprite(anim.getEnemySprite());
+                SetBulletSprite(attackType, bullet);
                 break;
-            case EnemyAttackType.RICE:
+            /*case EnemyAttackType.RICE:
                 var riceBullet = bullet.GetComponent<EnemyBullet>();
                 riceBullet.SetTarget(transform.position - target.transform.position);
                 riceBullet.SetSpeed(bulletSpeed);
                 riceBullet.SetDamage(damage);
                 riceBullet.SetSprite(anim.getEnemySprite());
-                break;
+                break;*/
             case EnemyAttackType.SOUP:
                 Destroy(bullet);
                 FireSoupBullet(bulletSpeed, damage, alphaStat[0], alphaStat[1]);
                 break;
         }
+    }
+
+    private IEnumerator EnemyRice()
+    {
+        moveAble = false;
+        rigidBody.velocity = Vector2.zero;
+        yield return new WaitForSeconds(0.2f);
+
+        Vector3 targetTemp = transform.position - target.transform.position;
+        bool isleft = (transform.position.x > target.transform.position.x);
+        string link = "";
+        if(bulletPrefab.transform.childCount == 1)
+        {
+            link = bulletPrefab.transform.GetChild(0).GetChild(0).gameObject.name;
+            alphaStat[0] = link.Length;
+        }
+
+
+        for (int i = 0; i < alphaStat[0]; i++)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0, 0, 0));
+
+            EnemyBullet riceBullet = bullet.GetComponent<EnemyBullet>();
+            riceBullet.SetTarget(targetTemp);
+            riceBullet.SetSpeed(bulletSpeed);
+            riceBullet.SetDamage(damage);
+            riceBullet.SetSprite(anim.getEnemySprite());
+
+            if(link != "")
+            {
+                int index = i;
+                if (!isleft)
+                {
+                    index = link.Length - i - 1;
+                }
+
+                if (link[index] == 'a')
+                {
+                    string format = "abcdefghijklmnopqrstuvwxyz";
+                    riceBullet.transform.GetChild(0).GetChild(0).gameObject.GetComponent<TMP_Text>().text = format[Random.Range(0, format.Length)].ToString();
+                }
+                else
+                {
+                    
+                    riceBullet.transform.GetChild(0).GetChild(0).gameObject.GetComponent<TMP_Text>().text = link[index].ToString();
+                }
+            }
+            
+            yield return new WaitForSeconds(0.15f);
+        }
+        yield return new WaitForSeconds(0.1f);
+
+        coolTime = attackCoolTime * inventory.decrease_EnemyAttackTime;
+        moveAble = true;
     }
 
     private IEnumerator EnemyLaser()
@@ -276,7 +349,7 @@ public class EnemyController : MonoBehaviour
         lineRenderer.SetPosition(1, transform.position);
         lineRenderer.enabled = false;
         Destroy(laser);
-        coolTime = attackCoolTime;
+        coolTime = attackCoolTime * inventory.decrease_EnemyAttackTime;
         moveAble = true;
     }
 
@@ -293,6 +366,11 @@ public class EnemyController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
             bullet.GetComponent<EnemyBullet>().SetDamage(damage);
             bullet.GetComponent<EnemyBullet>().SetSprite(anim.getEnemySprite());
+
+            if (i == bulletAmount - 1 && bullet.GetComponent<UnityEngine.U2D.Animation.SpriteLibrary>() != null)
+            {
+                bullet.GetComponent<SpriteRenderer>().sprite = bullet.GetComponent<UnityEngine.U2D.Animation.SpriteLibrary>().GetSprite("sprite", "Star_1");
+            }
         }
     }
 
@@ -325,11 +403,33 @@ public class EnemyController : MonoBehaviour
     public void SetAttackType(DataController data)
     {
         //attackType = (EnemyAttackType)Random.Range(0, 5);
+        attackType = EnemyAttackType.RICE;
 
         switch(attackType)
         {
             case EnemyAttackType.MEAT:
                 bulletPrefab = data.enemyBullet.meatBullet[Random.Range(0, data.enemyBullet.meatBullet.Count)];
+                break;
+            case EnemyAttackType.SOUP:
+                bulletPrefab = data.enemyBullet.soupBullet[Random.Range(0, data.enemyBullet.soupBullet.Count)];
+                break;
+            case EnemyAttackType.RICE:
+                bulletPrefab = data.enemyBullet.riceBullet[Random.Range(0, data.enemyBullet.riceBullet.Count)];
+                break;
+        }
+    }
+
+    private void SetBulletSprite(EnemyAttackType attackType, GameObject bullet)
+    {
+        switch(attackType)
+        {
+            case EnemyAttackType.MEAT:
+                if (bullet.GetComponent<UnityEngine.U2D.Animation.SpriteLibrary>() != null)
+                {
+                    int ran = Random.Range(0, 3);
+                    string index = string.Format("trash_{0}", ran);
+                    bullet.GetComponent<SpriteRenderer>().sprite = bullet.GetComponent<UnityEngine.U2D.Animation.SpriteLibrary>().GetSprite("sprite", index);
+                }
                 break;
         }
     }

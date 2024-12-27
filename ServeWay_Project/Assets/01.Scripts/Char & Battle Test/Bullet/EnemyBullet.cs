@@ -15,12 +15,7 @@ public class EnemyBullet : MonoBehaviour
 
     protected void Start()
     {
-        if(GetComponent<SpriteLibrary>() != null)
-        {
-            int ran = Random.Range(0, 3);
-            string index = string.Format("trash_{0}", ran);
-            GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteLibrary>().GetSprite("sprite", index);
-        }
+        
     }
 
     protected void Update()
