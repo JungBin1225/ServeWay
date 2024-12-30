@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
     private LineRenderer lineRenderer;
     private float coolTime;
     private GameObject laser;
+    private int laserMat;
     private InventoryManager inventory;
     private BoxCollider2D collider;
     private bool isWall;
@@ -59,8 +60,9 @@ public class EnemyController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         inventory = GameManager.gameManager.inventory;
         target = GameObject.FindGameObjectWithTag("Player");
-        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer = transform.GetChild(2).gameObject.GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.gameObject.GetComponent<Animator>().SetInteger("Index", laserMat);
         lineRenderer.enabled = false;
 
         StartCoroutine(EnemyMove());
@@ -312,7 +314,7 @@ public class EnemyController : MonoBehaviour
         moveAble = false;
         rigidBody.velocity = Vector2.zero;
         lineRenderer.enabled = true;
-        laser = Instantiate(laserPrefab, this.transform);
+        laser = Instantiate(laserPrefab, this.transform.position, Quaternion.Euler(0, 0, 0));
 
         laser.GetComponent<EnemyLaser>().SetDamage(damage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(bulletSpeed);
@@ -322,7 +324,7 @@ public class EnemyController : MonoBehaviour
 
         lineRenderer.SetPosition(0, transform.position);
 
-        int mask = 1 << LayerMask.NameToLayer("RayTarget") | 1 << LayerMask.NameToLayer("RayWall");
+        int mask = 1 << LayerMask.NameToLayer("RayTarget_P") | 1 << LayerMask.NameToLayer("RayWall");
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
         if (hit)
         {
@@ -336,7 +338,7 @@ public class EnemyController : MonoBehaviour
         Vector3 start = lineRenderer.GetPosition(0);
         Vector3 end = lineRenderer.GetPosition(1);
 
-        laser.transform.localScale = new Vector3(Vector3.Distance(start, end) * 1.25f, lineRenderer.startWidth * 1.25f, 0);
+        laser.transform.localScale = new Vector3(Vector3.Distance(start, end) * 1.25f, lineRenderer.transform.lossyScale.y * 1.25f, 0);
         Vector3 pos = (start + end) / 2;
         Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -403,7 +405,7 @@ public class EnemyController : MonoBehaviour
     public void SetAttackType(DataController data)
     {
         //attackType = (EnemyAttackType)Random.Range(0, 5);
-        attackType = EnemyAttackType.RICE;
+        attackType = EnemyAttackType.NOODLE;
 
         switch(attackType)
         {
@@ -415,6 +417,11 @@ public class EnemyController : MonoBehaviour
                 break;
             case EnemyAttackType.RICE:
                 bulletPrefab = data.enemyBullet.riceBullet[Random.Range(0, data.enemyBullet.riceBullet.Count)];
+                break;
+            case EnemyAttackType.NOODLE:
+                laserMat = Random.Range(0, data.enemyBullet.noodleBullet.Count) + 1;
+                alphaStat[0] = 1;
+                bulletSpeed = 0.1f;
                 break;
         }
     }

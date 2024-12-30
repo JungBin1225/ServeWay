@@ -7,7 +7,7 @@ public class EnemyBulletList : ScriptableObject
 {
     [SerializeField] public List<GameObject> meatBullet;
     [SerializeField] public List<GameObject> soupBullet;
-    [SerializeField] public List<GameObject> noodleBullet;
+    [SerializeField] public List<Material> noodleBullet;
     [SerializeField] public List<GameObject> riceBullet;
     [SerializeField] public List<GameObject> breadBullet;
 }
