@@ -405,7 +405,7 @@ public class EnemyController : MonoBehaviour
     public void SetAttackType(DataController data)
     {
         //attackType = (EnemyAttackType)Random.Range(0, 5);
-        attackType = EnemyAttackType.NOODLE;
+        //attackType = EnemyAttackType.NOODLE;
 
         switch(attackType)
         {
@@ -422,6 +422,9 @@ public class EnemyController : MonoBehaviour
                 laserMat = Random.Range(0, data.enemyBullet.noodleBullet.Count) + 1;
                 alphaStat[0] = 1;
                 bulletSpeed = 0.1f;
+                break;
+            case EnemyAttackType.BREAD:
+                bulletPrefab = data.enemyBullet.breadBullet[Random.Range(0, data.enemyBullet.breadBullet.Count)];
                 break;
         }
     }

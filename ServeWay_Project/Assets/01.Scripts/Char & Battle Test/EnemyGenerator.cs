@@ -246,8 +246,8 @@ public class EnemyGenerator : MonoBehaviour
                 if (wave == 0) wave = 4;
                 break;
         }
-        int num = enemyAmount;
-
+        //int num = enemyAmount;
+        int num = 5;
         enemyPrefab.Clear();
         amountList.Clear();
         spawnlist.Clear();
