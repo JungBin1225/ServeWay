@@ -24,6 +24,8 @@ public class SaveFile : ScriptableObject
     public int startX;
     public int startY;
 
+    public bool isTuto;
+
     public void Reset()
     {
         inventory = new NameAmount();

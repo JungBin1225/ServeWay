@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandler
+public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHandler
 {
     public BTNType currentType;
     public Transform buttonScale;
@@ -14,6 +15,9 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandle
     public CanvasGroup optionGroup;
     public CanvasGroup startGroup;
 
+    public AudioSource menuOpen;
+    public AudioSource menuClick;
+
     bool isSound;
 
     private void Start()
@@ -22,52 +26,79 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandle
     }
     public void OnBtnClick()
     {
+        menuClick.Play();
         switch(currentType)
         {
             case BTNType.Opening:
-                Debug.Log("������ ����");
-                SceneManager.LoadScene("OpeningCutScene");
+                GameManager.gameManager.charData.saveFile.Reset();
+                GameManager.gameManager.ClearInventory();
+
+                UnityEditor.EditorUtility.SetDirty(GameManager.gameManager.charData.saveFile);
+
+                GameManager.gameManager.SetNextStage("1_OpeningCutScene");
+                SceneManager.LoadScene("Loading");
                 break;
             case BTNType.Start:
-                Debug.Log("���� ����");
-                CanvasGroupOn(startGroup);
-                mainGroup.interactable = false;
-                mainGroup.blocksRaycasts = false;
+                if(GameManager.gameManager.charData.saveFile.weaponList.Count == 0)
+                {
+                    GameManager.gameManager.charData.saveFile.Reset();
+                    GameManager.gameManager.ClearInventory();
+
+                    UnityEditor.EditorUtility.SetDirty(GameManager.gameManager.charData.saveFile);
+
+                    if (GameManager.gameManager.charData.saveFile.isTuto)
+                    {
+                        GameManager.gameManager.SetNextStage("StartMap");
+                    }
+                    else
+                    {
+                        GameManager.gameManager.SetNextStage("1_OpeningCutScene");
+                    }
+                    SceneManager.LoadScene("Loading");
+                }
+                else
+                {
+                    CanvasGroupOn(startGroup);
+                    menuOpen.Play();
+                    mainGroup.interactable = false;
+                    mainGroup.blocksRaycasts = false;
+                }
                 break;
             case BTNType.Option:
                 CanvasGroupOff(mainGroup);
                 CanvasGroupOn(optionGroup);
-                Debug.Log("����");
+                menuOpen.Play();
                 break;
             case BTNType.Sound:
-                Debug.Log("����_�Ҹ�");
-                if (isSound)
-                {
-                    Debug.Log("���� OFF");
-                } else
-                {
-                    Debug.Log("���� ON");
-                }
-                isSound = !isSound;
                 break;
             case BTNType.OptionBack:
-                Debug.Log("���� ȭ�� ������");
                 CanvasGroupOff(optionGroup);
                 CanvasGroupOn(mainGroup);
                 break;
             case BTNType.New:
-                Debug.Log("�����ϱ�");
-                SceneManager.LoadScene("Test");
+                GameManager.gameManager.charData.saveFile.Reset();
+                GameManager.gameManager.ClearInventory();
+
+                UnityEditor.EditorUtility.SetDirty(GameManager.gameManager.charData.saveFile);
+                
+                if(GameManager.gameManager.charData.saveFile.isTuto)
+                {
+                    GameManager.gameManager.SetNextStage("StartMap");
+                }
+                else
+                {
+                    GameManager.gameManager.SetNextStage("1_OpeningCutScene");
+                }
+                SceneManager.LoadScene("Loading");
                 break;
             case BTNType.Continue:
-                Debug.Log("�̾��ϱ�");
+                GameManager.gameManager.SetNextStage("MainTest");
+                SceneManager.LoadScene("Loading");
                 break;
             case BTNType.Quit:
-                Debug.Log("���� ����");
                 Application.Quit();
                 break;
             case BTNType.CloseStart:
-                Debug.Log("���� ȭ�� �ݱ�");
                 CanvasGroupOff(startGroup);
                 mainGroup.interactable = true;
                 mainGroup.blocksRaycasts = true;
@@ -80,11 +111,11 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandle
         switch (currentType)
         {
             case BTNType.Start:
-                EventSystem.current.SetSelectedGameObject(cg.transform.Find("CloseBtn").GetChild(0).gameObject);
+                //EventSystem.current.SetSelectedGameObject(cg.transform.Find("CloseBtn").GetChild(0).gameObject);
                 break;
-            case BTNType.Option:
+            /*case BTNType.Option:
                 EventSystem.current.SetSelectedGameObject(cg.transform.Find("BackBtn").GetChild(0).gameObject);
-                break;
+                break;*/
         }
         cg.alpha = 1;
         cg.interactable = true;
@@ -95,13 +126,13 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandle
         cg.alpha = 0;
         cg.interactable = false;
         cg.blocksRaycasts = false;
-        EventSystem.current.SetSelectedGameObject(GameObject.Find("Canvas").transform.Find("MainMenu").Find("StartBtn").GetChild(0).gameObject);
+        //EventSystem.current.SetSelectedGameObject(GameObject.Find("Canvas").transform.Find("MainMenu").Find("StartBtn").GetChild(0).gameObject);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    /*public void OnPointerEnter(PointerEventData eventData)
     {
         EventSystem.current.SetSelectedGameObject(gameObject);
-    }
+    }*/
     /*
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -110,12 +141,12 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandle
     */
     private void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject == gameObject)
+        /*if (EventSystem.current.currentSelectedGameObject == gameObject)
         {
             buttonScale.localScale = defaultScale * 1.2f;
         } else
         {
             buttonScale.localScale = defaultScale;
-        }
+        }*/
     }
 }

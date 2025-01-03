@@ -48,13 +48,16 @@ public class OptionMenu : MonoBehaviour
 
     public void GoBack()
     {
-        optionMenuBtns.SetActive(false);
-        optionPanel.SetActive(false);
-        optionBG.SetActive(false);
+        if(pauseBG != null)
+        {
+            optionMenuBtns.SetActive(false);
+            optionPanel.SetActive(false);
+            optionBG.SetActive(false);
 
-        pauseBG.SetActive(true);
-        pausePanel.SetActive(true);
-        pauseMenuBtns.SetActive(true);
+            pauseBG.SetActive(true);
+            pausePanel.SetActive(true);
+            pauseMenuBtns.SetActive(true);
+        }
 
         sm.soundSave.bgmMute = !BGMToggle.isOn;
         sm.soundSave.bgmSound = BGMSlider.value;
@@ -93,11 +96,11 @@ public class OptionMenu : MonoBehaviour
         sm.BGMonoff(!BGMToggle.isOn, BGMSlider.value);  // toggle true: mute false / toggle false: mute true
         if (!BGMToggle.isOn)    // ON
         {
-            gameObject.transform.GetChild(2).transform.GetChild(1).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
+            BGMToggle.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
         }
         else if (BGMToggle.isOn)    // OFF
         {
-            gameObject.transform.GetChild(2).transform.GetChild(1).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOn;
+            BGMToggle.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = volumeOn;
         }
     }
 
@@ -111,11 +114,11 @@ public class OptionMenu : MonoBehaviour
         sm.SFXonoff(!SFXToggle.isOn, SFXSlider.value);
         if (!SFXToggle.isOn)    // ON
         {
-            gameObject.transform.GetChild(2).transform.GetChild(2).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
+            SFXToggle.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = volumeOff;
         }
         else if (SFXToggle.isOn)    // OFF
         {
-            gameObject.transform.GetChild(2).transform.GetChild(2).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = volumeOn;
+            SFXToggle.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = volumeOn;
         }
     }
 

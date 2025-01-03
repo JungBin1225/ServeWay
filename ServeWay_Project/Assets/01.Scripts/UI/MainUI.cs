@@ -18,6 +18,13 @@ public enum BTNType
 
 public class MainUI : MonoBehaviour
 {
+    public GameObject openingButton;
 
-
+    private void Start()
+    {
+        if(!GameManager.gameManager.charData.saveFile.isTuto)
+        {
+            openingButton.SetActive(false);
+        }
+    }
 }

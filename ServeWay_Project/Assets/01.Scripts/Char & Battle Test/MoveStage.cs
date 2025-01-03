@@ -42,7 +42,7 @@ public class MoveStage : MonoBehaviour
     private void EndTutorial()
     {
         GameManager.gameManager.inventory.inventory.Clear();
-        GameManager.gameManager.SetNextStage("StartMap");
+        GameManager.gameManager.SetNextStage("2_OpeningCutScene");
         SceneManager.LoadScene("Loading");
     }
 

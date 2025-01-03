@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class OpeningSignal: MonoBehaviour
@@ -13,6 +16,12 @@ public class OpeningSignal: MonoBehaviour
     private int DadTalkIndex;
     private int AlienMomTalkIndex;
     private int AlienSonTalkIndex;
+    private int MasterTalkIndex;
+
+    private float clickCoolTime;
+
+    private PlayableDirector director;
+    private List<double> signalTimeList;
 
     private int OpeningATTalkIndex;
 
@@ -23,9 +32,13 @@ public class OpeningSignal: MonoBehaviour
     public TextMeshProUGUI DadText;
     public TextMeshProUGUI AlienMomText;
     public TextMeshProUGUI AlienSonText;
+    public TextMeshProUGUI MasterText;
 
     public TextMeshProUGUI ATPlayerText;
     public TextMeshProUGUI ATMasterText;
+
+    public GameObject Fade_black;
+    public GameObject Fade_white;
 
     void Start()
     {
@@ -36,8 +49,52 @@ public class OpeningSignal: MonoBehaviour
         DadTalkIndex = 0;
         AlienMomTalkIndex = 0;
         AlienSonTalkIndex = 0;
+        MasterTalkIndex = 0;
 
         OpeningATTalkIndex = 0;
+
+        clickCoolTime = 0;
+
+        signalTimeList = new List<double>();
+
+        director = GetComponent<PlayableDirector>();
+        TimelineAsset timeline = (TimelineAsset)director.playableAsset;
+        Debug.Log(timeline.GetRootTrack(1).GetMarkerCount());
+
+        TrackAsset track = timeline.GetRootTrack(1);
+        for (int i = 0; i < track.GetMarkerCount(); i++)
+        {
+            IMarker marker = track.GetMarker(i);
+            signalTimeList.Add(marker.time);
+        }
+
+        signalTimeList.Sort();
+    }
+
+    private void Update()
+    {
+        if(clickCoolTime > 0)
+        {
+            clickCoolTime -= Time.deltaTime;
+        }
+        else
+        {
+            clickCoolTime = 0;
+        }
+
+        if(Input.GetMouseButtonDown(0) && (!Fade_black.activeSelf && !Fade_white.activeSelf) && clickCoolTime <= 0)
+        {
+            foreach(double signalTime in signalTimeList)
+            {
+                if(director.time < signalTime && signalTime - director.time > 0.2f)
+                {
+                    director.time = signalTime - 0.2f;
+                    break;
+                }
+            }
+
+            clickCoolTime = 0.5f;
+        }
     }
 
     /* run when this received Timeline Signal */
@@ -172,10 +229,25 @@ public class OpeningSignal: MonoBehaviour
         AlienSonTalkIndex++;
     }
 
+    public void MasterTalkSingal()
+    {
+        int id = 6000;
+        string talkData = talkManager.GetTalk(id, MasterTalkIndex);
+
+        if (talkData == null)
+        {
+            return;
+        }
+
+        MasterText.text = talkData;
+
+        MasterTalkIndex++;
+    }
+
     // Opening - After Tutorial: 6000
     public void OpeningATTalkSingal()
     {
-        int id = 6000;
+        int id = 7000;
         string talkData = talkManager.GetTalk(id, OpeningATTalkIndex);
 
         if (talkData == null)
@@ -189,5 +261,11 @@ public class OpeningSignal: MonoBehaviour
             ATMasterText.text = talkData;
 
         OpeningATTalkIndex++;
+    }
+
+    public void StartTutorial()
+    {
+        GameManager.gameManager.SetNextStage("Tutorial");
+        SceneManager.LoadScene("Loading");
     }
 }
