@@ -12836,6 +12836,8 @@ RectTransform:
   - {fileID: 366660995}
   - {fileID: 1570166527}
   - {fileID: 1367682060}
+  - {fileID: 2090744752}
+  - {fileID: 1689390391}
   m_Father: {fileID: 469502327}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -36839,6 +36841,7 @@ MonoBehaviour:
   enemyList: {fileID: 11400000, guid: 528f1fd0fa7519445a6089625fffca0c, type: 2}
   FoodIngredDex: {fileID: 11400000, guid: 49ef0c16f4fdb044abde3b4dceb650f6, type: 2}
   bossList: {fileID: 11400000, guid: e058c62bc361ee14bbbb28b38824ee1d, type: 2}
+  enemyBullet: {fileID: 0}
 --- !u!4 &1133875891
 Transform:
   m_ObjectHideFlags: 0
@@ -43916,7 +43919,6 @@ RectTransform:
   - {fileID: 2050333961}
   - {fileID: 1306956675}
   - {fileID: 45465452}
-  - {fileID: 1689390391}
   m_Father: {fileID: 384000104}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50386,7 +50388,6 @@ RectTransform:
   - {fileID: 1809073367}
   - {fileID: 269841484}
   - {fileID: 626314700}
-  - {fileID: 2090744752}
   m_Father: {fileID: 384000104}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -54658,7 +54659,7 @@ GameObject:
   - component: {fileID: 1689390391}
   - component: {fileID: 1689390392}
   m_Layer: 5
-  m_Name: OnOffToggle
+  m_Name: SFXOnOffToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54677,12 +54678,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 94191426}
-  m_Father: {fileID: 1367682060}
+  m_Father: {fileID: 384000104}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 125, y: 75}
+  m_AnchoredPosition: {x: 125, y: 25}
   m_SizeDelta: {x: 250, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1689390392
@@ -130324,7 +130325,7 @@ GameObject:
   - component: {fileID: 2090744752}
   - component: {fileID: 2090744751}
   m_Layer: 5
-  m_Name: OnOffToggle
+  m_Name: BGMOnOffToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130403,12 +130404,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1747773885}
-  m_Father: {fileID: 1570166527}
-  m_RootOrder: 4
+  m_Father: {fileID: 384000104}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 125, y: 75}
+  m_AnchoredPosition: {x: 125, y: 225}
   m_SizeDelta: {x: 250, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2092312243

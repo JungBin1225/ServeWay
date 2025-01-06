@@ -1256,7 +1256,6 @@ RectTransform:
   - {fileID: 303543433}
   - {fileID: 1073274064}
   - {fileID: 614708054}
-  - {fileID: 657655695}
   m_Father: {fileID: 1124818474}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17410,7 +17409,6 @@ RectTransform:
   - {fileID: 345985757}
   - {fileID: 1113469175}
   - {fileID: 1973641110}
-  - {fileID: 695640544}
   m_Father: {fileID: 1124818474}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20826,7 +20824,7 @@ GameObject:
   - component: {fileID: 657655695}
   - component: {fileID: 657655696}
   m_Layer: 5
-  m_Name: OnOffToggle
+  m_Name: BGMOnOffToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20845,12 +20843,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2116435735}
-  m_Father: {fileID: 29083250}
-  m_RootOrder: 4
+  m_Father: {fileID: 1124818474}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 70, y: 75}
+  m_AnchoredPosition: {x: 70, y: 225}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &657655696
@@ -22384,7 +22382,7 @@ GameObject:
   - component: {fileID: 695640544}
   - component: {fileID: 695640545}
   m_Layer: 5
-  m_Name: OnOffToggle
+  m_Name: SFXOnOffToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22403,12 +22401,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1473364904}
-  m_Father: {fileID: 539397048}
+  m_Father: {fileID: 1124818474}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 70, y: 75}
+  m_AnchoredPosition: {x: 70, y: 25}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &695640545
@@ -37017,6 +37015,8 @@ RectTransform:
   - {fileID: 770072168}
   - {fileID: 29083250}
   - {fileID: 539397048}
+  - {fileID: 657655695}
+  - {fileID: 695640544}
   m_Father: {fileID: 1907991528}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
