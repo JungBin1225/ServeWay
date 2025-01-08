@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
-    private MissonManager misson;
+    private MissionManager misson;
     private float hp;
 
     public BossRoom room;
@@ -13,7 +13,7 @@ public class BossController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
         //StartCoroutine(EnemyMove());
     }
 
@@ -77,7 +77,13 @@ public class BossController : MonoBehaviour
         {
             misson.OccurreEvent(0, damage);
         }
+        else
+        {
+            misson.OccurreEvent(5, damage);
+        }
+
         misson.OccurreEvent(3, damage);
+        misson.OccurreEvent(6, damage, food.foodName);
     }
 
     public void SetHp(float hp)

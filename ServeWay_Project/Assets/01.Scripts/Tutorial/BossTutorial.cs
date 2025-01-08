@@ -17,7 +17,7 @@ public class BossTutorial : MonoBehaviour
 
     private PlayerController player;
     private DataController data;
-    private MissonManager misson;
+    private MissionManager misson;
     private TutorialMissionUI tuto_mission;
     private bool isTalking;
     private bool isClicked;
@@ -30,7 +30,7 @@ public class BossTutorial : MonoBehaviour
     {
         player = FindObjectOfType<PlayerController>();
         data = FindObjectOfType<DataController>();
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
         tuto_mission = FindObjectOfType<TutorialMissionUI>();
         isTalking = false;
         isClicked = false;
@@ -167,7 +167,7 @@ public class BossTutorial : MonoBehaviour
                 door.transform.GetChild(i).GetComponent<DoorAnimation>().CloseDoor();
             }
             GameManager.gameManager.isBossStage = true;
-            StartCoroutine(misson.MissonAppear());
+            StartCoroutine(misson.MissionAppear());
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TutorialBoss : MonoBehaviour
 {
-    private MissonManager misson;
+    private MissionManager misson;
     private float hp;
 
     public BossTutorial room;
@@ -13,7 +13,7 @@ public class TutorialBoss : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
 
         SetHp(500);
         nation = Food_Nation.KOREA;

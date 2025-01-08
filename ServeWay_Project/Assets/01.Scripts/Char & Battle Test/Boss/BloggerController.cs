@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BloggerController : MonoBehaviour
 {
-    private MissonManager misson;
+    private MissionManager misson;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private GameObject player;
@@ -40,7 +40,7 @@ public class BloggerController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         line = GetComponent<LineRenderer>();

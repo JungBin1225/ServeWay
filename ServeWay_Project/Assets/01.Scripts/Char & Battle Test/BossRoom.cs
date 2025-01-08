@@ -8,7 +8,7 @@ public class BossRoom : MonoBehaviour
 {
     private GameObject boss;
     private DataController data;
-    private MissonManager misson;
+    private MissionManager misson;
 
     public bool isClear;
     public GameObject intro;
@@ -34,7 +34,7 @@ public class BossRoom : MonoBehaviour
         data = FindObjectOfType<DataController>();
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
         bossNation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
         bossJob = GameManager.gameManager.bossJobList[GameManager.gameManager.stage - 1];
 
@@ -89,7 +89,7 @@ public class BossRoom : MonoBehaviour
         intro.SetActive(false);
         startButton.SetActive(false);
         Time.timeScale = 1;
-        StartCoroutine(misson.MissonAppear());
+        StartCoroutine(misson.MissionAppear());
         SpawnBoss();
     }
 
@@ -176,13 +176,16 @@ public class BossRoom : MonoBehaviour
             }
         }
 
-        string foodName = lockedFood[UnityEngine.Random.Range(0, lockedFood.Count)];
-
-        if(dropAmount == 1)
+        if(lockedFood.Count != 0)
         {
-            Vector3 pos = transform.position + new Vector3(0, -6f, 0);
-            GameObject recipe = Instantiate(recipePrefab, pos, Quaternion.Euler(0, 0, 0));
-            recipe.GetComponent<GetRecipe>().foodName = foodName;
+            string foodName = lockedFood[UnityEngine.Random.Range(0, lockedFood.Count)];
+
+            if (dropAmount == 1)
+            {
+                Vector3 pos = transform.position + new Vector3(0, -6f, 0);
+                GameObject recipe = Instantiate(recipePrefab, pos, Quaternion.Euler(0, 0, 0));
+                recipe.GetComponent<GetRecipe>().foodName = foodName;
+            }
         }
     }
 

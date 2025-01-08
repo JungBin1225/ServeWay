@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
 
     private Animator anim;
     private PlayerController playerController;
-    private MissonManager misson;
+    private MissionManager misson;
     private InventoryManager inventory;
     private SpriteRenderer renderer;
     private bool isInvincible;
@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
         inventory = GameManager.gameManager.inventory;
         renderer = GetComponent<SpriteRenderer>();
 
@@ -72,6 +72,11 @@ public class PlayerHealth : MonoBehaviour
             {
                 StartCoroutine(Invincible());
             }
+        }
+
+        if(playerController.isCharge && GameManager.gameManager.isBossStage)
+        {
+            misson.OccurreEvent(4, 1);
         }
     }
 

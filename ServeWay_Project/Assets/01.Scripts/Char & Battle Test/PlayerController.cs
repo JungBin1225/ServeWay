@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 mousePos;
     private float coolTime;
     private Vector2 moveVel;
-    private MissonManager misson;
+    private MissionManager misson;
     private float missonTime;
     private PlayerHealth playerHealth;
     private DataController foodData;
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
         rigidBody = GetComponent<Rigidbody2D>();
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
         playerHealth = gameObject.GetComponent<PlayerHealth>();
         foodData = FindObjectOfType<DataController>();
         holdWeapon = FindObjectOfType<HoldWeapon>();
@@ -104,6 +104,15 @@ public class PlayerController : MonoBehaviour
             else
             {
                 misson.OccurreEvent(1, 0);
+            }
+
+            if(rigidBody.velocity == Vector2.zero)
+            {
+                misson.OccurreEvent(7, 0);
+            }
+            else
+            {
+                misson.OccurreEvent(7, Time.deltaTime);
             }
         }
     }
@@ -263,5 +272,13 @@ public class PlayerController : MonoBehaviour
     public float GetPlayerVel()
     {
         return rigidBody.velocity.magnitude;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Boss" && isCharge)
+        {
+            misson.OccurreEvent(8, 1);
+        }
     }
 }

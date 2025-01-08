@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TeacherController : MonoBehaviour
 {
-    private MissonManager misson;
+    private MissionManager misson;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private DataController dataController;
@@ -43,7 +43,7 @@ public class TeacherController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
         dataController = FindObjectOfType<DataController>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();

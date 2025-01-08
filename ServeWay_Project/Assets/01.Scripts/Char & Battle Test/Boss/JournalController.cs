@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JournalController : MonoBehaviour
 {
-    private MissonManager misson;
+    private MissionManager misson;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private GameObject player;
@@ -35,7 +35,7 @@ public class JournalController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissonManager>();
+        misson = FindObjectOfType<MissionManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -214,6 +214,7 @@ public class JournalController : MonoBehaviour
         {
             faintTime = 2;
             Debug.Log("Faint");
+            misson.OccurreEvent(9, 1);
             //기절 이펙트
         }
         Destroy(scoop);
