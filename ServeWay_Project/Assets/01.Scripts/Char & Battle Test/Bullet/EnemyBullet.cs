@@ -59,7 +59,10 @@ public class EnemyBullet : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
+            if(GetComponent<FullStarBullet>() == null)
+            {
+                collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
+            }
         }
 
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Wall")

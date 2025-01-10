@@ -7,7 +7,7 @@ using TMPro;
 
 public class MissionManager : MonoBehaviour
 {
-    const int NUM_MISSION = 2;
+    const int NUM_MISSION = 3;
 
     public delegate void missionDelegate(int missionID, float increase);
     public event missionDelegate missionEvent;
@@ -94,10 +94,10 @@ public class MissionManager : MonoBehaviour
     public void RandomMission(int textIndex, List<int> missionIndex)
     {
         int index = missionIndex[textIndex];
-        if (textIndex == 1) //test
+        /*if (textIndex == 1) //test
         {
             index = 9;
-        }
+        }*/
 
         if (index == 9)
         {
@@ -105,6 +105,21 @@ public class MissionManager : MonoBehaviour
             {
                 case Boss_Job.JOURNAL:
                     index = 9;
+                    break;
+                case Boss_Job.COOKRESEARCH:
+                    index = 10;
+                    break;
+                case Boss_Job.CRITIC:
+                    index = 11;
+                    break;
+                case Boss_Job.BLOGGER:
+                    index = 12;
+                    break;
+                case Boss_Job.YOUTUBER:
+                    index = 13;
+                    break;
+                case Boss_Job.TEACHER:
+                    index = 14;
                     break;
             }
         }
@@ -190,6 +205,46 @@ public class MissionManager : MonoBehaviour
             case 9:
                 missionEvent += JournalBossMission;
                 targetAmount[index] = 3;
+
+                matchedUI.Add(index, missionText[textIndex]);
+                missionText[textIndex].GetComponent<TMP_Text>().color = new Color(1, 0, 0);
+                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                break;
+            case 10:
+                missionEvent += ResearchBossMission;
+                targetAmount[index] = 1;
+
+                matchedUI.Add(index, missionText[textIndex]);
+                missionText[textIndex].GetComponent<TMP_Text>().color = new Color(1, 0, 0);
+                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                break;
+            case 11:
+                missionEvent += CriticBossMission;
+                targetAmount[index] = 5;
+
+                matchedUI.Add(index, missionText[textIndex]);
+                missionText[textIndex].GetComponent<TMP_Text>().color = new Color(1, 0, 0);
+                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                break;
+            case 12:
+                missionEvent += BloggerBossMission;
+                targetAmount[index] = 2;
+
+                matchedUI.Add(index, missionText[textIndex]);
+                missionText[textIndex].GetComponent<TMP_Text>().color = new Color(1, 0, 0);
+                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                break;
+            case 13:
+                missionEvent += YoutuberBossMission;
+                targetAmount[index] = Random.Range(20, 50);
+
+                matchedUI.Add(index, missionText[textIndex]);
+                missionText[textIndex].GetComponent<TMP_Text>().color = new Color(1, 0, 0);
+                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F0"));
+                break;
+            case 14:
+                missionEvent += TeacherBossMission;
+                targetAmount[index] = 2;
 
                 matchedUI.Add(index, missionText[textIndex]);
                 missionText[textIndex].GetComponent<TMP_Text>().color = new Color(1, 0, 0);
@@ -470,6 +525,133 @@ public class MissionManager : MonoBehaviour
     public void JournalBossMission(int missionID, float increase)
     {
         if (missionID == 9)
+        {
+            bool isClear = (nowAmount[missionID] >= targetAmount[missionID]);
+
+            if (!isClear)
+            {
+                nowAmount[missionID] += increase;
+            }
+
+            if (isClear != (nowAmount[missionID] >= targetAmount[missionID]))
+            {
+                matchedUI[missionID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
+                matchedUI[missionID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
+                //완료했으면 UI에 완료한 표시 if success, show in UI
+            }
+
+            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString());
+            //UI에 수치 갱신 reload num in UI
+        }
+    }
+
+    public void ResearchBossMission(int missionID, float increase)
+    {
+        if (missionID == 10)
+        {
+            bool isClear = (nowAmount[missionID] >= targetAmount[missionID]);
+
+            if (!isClear)
+            {
+                nowAmount[missionID] += increase;
+            }
+
+            if (isClear != (nowAmount[missionID] >= targetAmount[missionID]))
+            {
+                matchedUI[missionID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
+                matchedUI[missionID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
+                //완료했으면 UI에 완료한 표시 if success, show in UI
+            }
+
+            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString());
+            //UI에 수치 갱신 reload num in UI
+        }
+    }
+
+    public void CriticBossMission(int missionID, float increase)
+    {
+        if (missionID == 11)
+        {
+            bool isClear = (nowAmount[missionID] >= targetAmount[missionID]);
+
+            if (!isClear)
+            {
+                nowAmount[missionID] += increase;
+            }
+
+            if (isClear != (nowAmount[missionID] >= targetAmount[missionID]))
+            {
+                matchedUI[missionID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
+                matchedUI[missionID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
+                //완료했으면 UI에 완료한 표시 if success, show in UI
+            }
+
+            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString());
+            //UI에 수치 갱신 reload num in UI
+        }
+    }
+
+    public void BloggerBossMission(int missionID, float increase)
+    {
+        if (missionID == 12)
+        {
+            bool isClear = (nowAmount[missionID] >= targetAmount[missionID]);
+
+            if (!isClear)
+            {
+                nowAmount[missionID] += increase;
+            }
+
+            if (isClear != (nowAmount[missionID] >= targetAmount[missionID]))
+            {
+                matchedUI[missionID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
+                matchedUI[missionID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
+                //완료했으면 UI에 완료한 표시 if success, show in UI
+            }
+
+            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString());
+            //UI에 수치 갱신 reload num in UI
+        }
+    }
+
+    public void YoutuberBossMission(int missionID, float increase)
+    {
+        if (missionID == 13)
+        {
+            bool isClear = (nowAmount[missionID] >= targetAmount[missionID]);
+
+            if (increase == 0 && !isClear)
+            {
+                if (nowAmount[missionID] != 0)
+                {
+                    nowAmount[missionID] = 0;
+                }
+            }
+            else if (!isClear)
+            {
+                nowAmount[missionID] += increase;
+            }
+
+            if (isClear != (nowAmount[missionID] >= targetAmount[missionID]))
+            {
+                matchedUI[missionID].GetComponent<TMP_Text>().color = new Color(0, 1, 0);
+                matchedUI[missionID].transform.GetChild(1).gameObject.SetActive(true);
+                clearAmount++;
+                //완료했으면 UI에 완료한 표시 if success, show in UI
+            }
+
+            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString("F0"));
+            //UI에 수치 갱신 reload num in UI
+        }
+    }
+
+    public void TeacherBossMission(int missionID, float increase)
+    {
+        if (missionID == 14)
         {
             bool isClear = (nowAmount[missionID] >= targetAmount[missionID]);
 

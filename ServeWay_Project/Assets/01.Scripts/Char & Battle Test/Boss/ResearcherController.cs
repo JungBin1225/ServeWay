@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ResearcherController : MonoBehaviour
 {
-    private MissionManager misson;
+    private MissionManager mission;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private GameObject player;
@@ -40,7 +40,7 @@ public class ResearcherController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissionManager>();
+        mission = FindObjectOfType<MissionManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -77,6 +77,11 @@ public class ResearcherController : MonoBehaviour
         if(soupTime > 0)
         {
             soupTime -= Time.deltaTime;
+        }
+
+        if(isAttack)
+        {
+            rigidbody.velocity = Vector2.zero;
         }
     }
 
@@ -167,13 +172,12 @@ public class ResearcherController : MonoBehaviour
 
         GameObject ladle = Instantiate(ladelPrefab, transform.position, Quaternion.Euler(0, 0, 0));
         ladle.GetComponent<Ladle>().start = transform.position;
-        ladle.GetComponent<Ladle>().target = player.transform.position - transform.position;
-        ladle.GetComponent<Ladle>().length = 5;
+        ladle.GetComponent<Ladle>().target = player;
         ladle.GetComponent<Ladle>().damage = bulletDamage;
         ladle.GetComponent<Ladle>().sprite = GetComponent<SpriteRenderer>().sprite;
 
-
-        yield return new WaitForSeconds(1);
+        yield return new WaitUntil(() => FindObjectOfType<Ladle>() == null);
+        yield return new WaitForSeconds(0.5f);
 
         isAttack = false;
         coolTime = attackCoolTime;

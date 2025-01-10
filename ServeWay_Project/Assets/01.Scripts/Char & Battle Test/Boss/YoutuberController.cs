@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class YoutuberController : MonoBehaviour
 {
-    private MissionManager misson;
+    private MissionManager mission;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private DataController dataController;
@@ -17,6 +17,7 @@ public class YoutuberController : MonoBehaviour
     private bool isAttack;
     private bool isCharge;
     private bool isTouch;
+    private bool playerDamaged;
     private FoodData algorithmFood;
 
     public int test;
@@ -40,7 +41,7 @@ public class YoutuberController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissionManager>();
+        mission = FindObjectOfType<MissionManager>();
         dataController = FindObjectOfType<DataController>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
@@ -61,6 +62,7 @@ public class YoutuberController : MonoBehaviour
         isAlgorithm = false;
         isCharge = false;
         isTouch = false;
+        playerDamaged = false;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -73,6 +75,20 @@ public class YoutuberController : MonoBehaviour
         if (coolTime > 0)
         {
             coolTime -= Time.deltaTime;
+        }
+
+        if(isAlgorithm)
+        {
+            if(playerDamaged)
+            {
+                mission.OccurreEvent(13, 0);
+                playerDamaged = false;
+            }
+        }
+
+        if (isAttack)
+        {
+            rigidbody.velocity = Vector2.zero;
         }
     }
 
@@ -181,6 +197,7 @@ public class YoutuberController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         isAlgorithm = false;
+        playerDamaged = false;
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
@@ -282,6 +299,11 @@ public class YoutuberController : MonoBehaviour
     public FoodData GetAlgorithmFood()
     {
         return algorithmFood;
+    }
+
+    public void PlayerAlgorithmDamage()
+    {
+        playerDamaged = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

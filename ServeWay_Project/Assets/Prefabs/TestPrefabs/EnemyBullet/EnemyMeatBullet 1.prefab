@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2490266043329067486}
   - component: {fileID: 6164575123064967272}
   - component: {fileID: -8020203593270121057}
+  - component: {fileID: -5408139023254451326}
   m_Layer: 0
   m_Name: EnemyMeatBullet 1
   m_TagString: Untagged
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffect: {fileID: 1967835574231978638, guid: 3e196c9e632c76841a71cb6e2dc6d010, type: 3}
+  isRotate: 0
 --- !u!212 &2490266043329067486
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -147,3 +149,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-5408139023254451326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2490266043329067457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5a719c30e0471745b7984a377f8941f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

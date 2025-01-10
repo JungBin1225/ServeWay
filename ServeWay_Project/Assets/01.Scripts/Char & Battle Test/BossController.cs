@@ -63,6 +63,7 @@ public class BossController : MonoBehaviour
                 Debug.Log("Critical");
                 damage *= 1.2f;
             }
+            misson.OccurreEvent(13, damage);
         }
 
         if(job == Boss_Job.TEACHER && gameObject.GetComponent<TeacherController>().isCounter)

@@ -40,6 +40,7 @@ public class Algorithm : MonoBehaviour
             List<Sprite> sprites = new List<Sprite>();
             sprites.Add(sprite);
             collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprites);
+            FindObjectOfType<YoutuberController>().PlayerAlgorithmDamage();
             Destroy(this.gameObject);
         }
 

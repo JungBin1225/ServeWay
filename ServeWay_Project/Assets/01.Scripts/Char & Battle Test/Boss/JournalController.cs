@@ -67,6 +67,11 @@ public class JournalController : MonoBehaviour
         {
             coolTime -= Time.deltaTime;
         }
+
+        if (isAttack)
+        {
+            rigidbody.velocity = Vector2.zero;
+        }
     }
 
     private IEnumerator EnemyMove()

@@ -49,14 +49,14 @@ public class Comment : MonoBehaviour
             {
                 isWall = true;
                 line.SetPosition(1, hit.point);
-                start += new Vector3(ray.direction.x, ray.direction.y, 0) * Time.deltaTime * 7;
+                start += new Vector3(ray.direction.x, ray.direction.y, 0) * Time.deltaTime * 15;
             }
             else
             {
                 Vector3 pos = line.GetPosition(0) + (new Vector3(ray.direction.x, ray.direction.y, 0) * length);
                 line.SetPosition(1, pos);
 
-                length += Time.deltaTime * 7;
+                length += Time.deltaTime * 15;
             }
 
             collider.size = new Vector2(Vector3.Distance(line.GetPosition(0), line.GetPosition(1)), line.startWidth);
@@ -83,6 +83,7 @@ public class Comment : MonoBehaviour
             List<Sprite> sprites = new List<Sprite>();
             sprites.Add(sprite);
             collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprites);
+            FindObjectOfType<BloggerController>().PlayerCommentDamage();
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TeacherController : MonoBehaviour
 {
-    private MissionManager misson;
+    private MissionManager mission;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private DataController dataController;
@@ -20,6 +20,7 @@ public class TeacherController : MonoBehaviour
     private bool isAttack;
     private bool isLaser;
     private int counterAmount;
+    private bool playerDamaged;
 
     public int test;
     public BossRoom room;
@@ -43,7 +44,7 @@ public class TeacherController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissionManager>();
+        mission = FindObjectOfType<MissionManager>();
         dataController = FindObjectOfType<DataController>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
@@ -72,6 +73,7 @@ public class TeacherController : MonoBehaviour
         isCounter = false;
         isAttack = false;
         isLaser = false;
+        playerDamaged = false;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -98,6 +100,11 @@ public class TeacherController : MonoBehaviour
         else
         {
             weaponObject.sortingOrder = charSprite.sortingOrder + 1;
+        }
+
+        if (isAttack)
+        {
+            rigidbody.velocity = Vector2.zero;
         }
     }
 
@@ -274,10 +281,11 @@ public class TeacherController : MonoBehaviour
         isCounter = true;
         while(time < 5)
         {
-            if(counterAmount >= 3)
+            if(counterAmount >= 4)
             {
                 //effect
                 player.GetComponent<PlayerHealth>().PlayerDamaged(counterDamage, sprites);
+                playerDamaged = true;
                 break;
             }
 
@@ -298,6 +306,12 @@ public class TeacherController : MonoBehaviour
         charSprite.color = new Color(1, 1, 1);
         isCounter = false;
         counterAmount = 0;
+
+        if(!playerDamaged)
+        {
+            mission.OccurreEvent(14, 1);
+        }
+        playerDamaged = false;
         yield return new WaitForSeconds(0.3f);
         isAttack = false;
         coolTime = attackCoolTime;

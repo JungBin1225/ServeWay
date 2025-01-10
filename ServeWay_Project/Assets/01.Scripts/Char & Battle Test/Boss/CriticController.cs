@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CriticController : MonoBehaviour
 {
-    private MissionManager misson;
+    private MissionManager mission;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private GameObject player;
@@ -34,7 +34,7 @@ public class CriticController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissionManager>();
+        mission = FindObjectOfType<MissionManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -62,6 +62,11 @@ public class CriticController : MonoBehaviour
         if (coolTime > 0)
         {
             coolTime -= Time.deltaTime;
+        }
+
+        if (isAttack)
+        {
+            rigidbody.velocity = Vector2.zero;
         }
     }
 

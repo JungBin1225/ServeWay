@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BloggerController : MonoBehaviour
 {
-    private MissionManager misson;
+    private MissionManager mission;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private GameObject player;
@@ -17,6 +17,9 @@ public class BloggerController : MonoBehaviour
     private GameObject laser;
     private bool isAttack;
     private bool isLaser;
+    private bool isComment;
+    private bool playerCharge;
+    private bool playerDamage;
 
     public int test;
     public BossRoom room;
@@ -40,7 +43,7 @@ public class BloggerController : MonoBehaviour
 
     void Start()
     {
-        misson = FindObjectOfType<MissionManager>();
+        mission = FindObjectOfType<MissionManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         line = GetComponent<LineRenderer>();
@@ -59,6 +62,9 @@ public class BloggerController : MonoBehaviour
         line.enabled = false;
         isAttack = false;
         isLaser = false;
+        isComment = false;
+        playerCharge = false;
+        playerDamage = false;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -71,6 +77,19 @@ public class BloggerController : MonoBehaviour
         if (coolTime > 0)
         {
             coolTime -= Time.deltaTime;
+        }
+
+        if(isComment)
+        {
+            if(player.GetComponent<PlayerController>().isCharge)
+            {
+                playerCharge = true;
+            }
+        }
+
+        if (isAttack)
+        {
+            rigidbody.velocity = Vector2.zero;
         }
     }
 
@@ -140,10 +159,21 @@ public class BloggerController : MonoBehaviour
             comment.GetComponent<Comment>().sprite = GetComponent<SpriteRenderer>().sprite;
             yield return null;
         }
-        yield return new WaitForSeconds(0.5f);
+
+        isComment = true;
+
+        yield return new WaitUntil(() => FindObjectOfType<Comment>() == null);
+        isComment = false;
+        if(!playerCharge && !playerDamage)
+        {
+            mission.OccurreEvent(12, 1);
+        }
+        playerCharge = false;
+        playerDamage = false;
+        yield return new WaitForSeconds(0.2f);
 
         isAttack = false;
-        coolTime = attackCoolTime * 1.5f;
+        coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }
 
@@ -295,6 +325,11 @@ public class BloggerController : MonoBehaviour
         {
             return;
         }
+    }
+
+    public void PlayerCommentDamage()
+    {
+        playerDamage = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
