@@ -24,12 +24,12 @@ public class BloggerController : MonoBehaviour
     public int test;
     public BossRoom room;
     public GameObject damageEffect;
-    public GameObject bulletPrefab;
     public GameObject commentPrefab;
     public GameObject pictureObject;
     public GameObject laserPrefab;
     public GameObject teleportPrefab;
     public PolygonCollider2D pictureCollider;
+    public Animator pictureAnim;
     public float hp;
     public float speed;
     public float attackCoolTime;
@@ -180,7 +180,7 @@ public class BloggerController : MonoBehaviour
     private IEnumerator picturePattern()
     {
         isAttack = true;
-        pictureObject.SetActive(true);
+        pictureObject.transform.GetChild(0).gameObject.SetActive(true);
         pictureCollider.enabled = false;
 
         Vector3 target = player.transform.position;
@@ -198,9 +198,10 @@ public class BloggerController : MonoBehaviour
 
         rigidbody.velocity = new Vector2(0, 0);
         pictureCollider.enabled = true;
+        pictureAnim.SetTrigger("picture");
         yield return new WaitForSeconds(0.2f);
 
-        pictureObject.SetActive(false);
+        pictureObject.transform.GetChild(0).gameObject.SetActive(false);
         pictureCollider.enabled = false;
         isAttack = false;
         coolTime = attackCoolTime;
@@ -241,6 +242,8 @@ public class BloggerController : MonoBehaviour
         Vector3 end = line.GetPosition(1);
 
         laser.transform.localScale = new Vector3(Vector3.Distance(start, end) * 0.5f, line.startWidth * 0.5f, 0);
+        laser.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta = laser.transform.localScale;
+        laser.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(1 / laser.transform.localScale.x, 1 / laser.transform.localScale.y, 1);
         Vector3 pos = (start + end) / 2;
         Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;

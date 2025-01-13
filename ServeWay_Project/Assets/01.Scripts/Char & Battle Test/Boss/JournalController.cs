@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class JournalController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class JournalController : MonoBehaviour
     private Vector2 minPos;
     private Vector2 maxPos;
     private List<Sprite> sprites;
+    private List<string> soupMents;
     private float coolTime;
     private bool isAttack;
     private bool isPicture;
@@ -19,9 +21,11 @@ public class JournalController : MonoBehaviour
     public int test;
     public BossRoom room;
     public GameObject damageEffect;
-    public GameObject bulletPrefab;
+    public GameObject riceBulletPrefab;
+    public GameObject soupBulletPrefab;
     public GameObject scoopPrefab;
     public CircleCollider2D collider;
+    public Animator pictureAnim;
     public float hp;
     public float speed;
     public float chargeSpeed;
@@ -41,6 +45,11 @@ public class JournalController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
+        soupMents = new List<string>();
+        soupMents.Add("단독보도");
+        soupMents.Add("긴급속보");
+        soupMents.Add("특별취재");
+        soupMents.Add("LIVE");
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;
@@ -121,6 +130,7 @@ public class JournalController : MonoBehaviour
         //범위 표시
         yield return new WaitForSeconds(1f);
 
+        pictureAnim.SetTrigger("picture");
         isPicture = true;
         collider.enabled = true;
         yield return new WaitForSeconds(0.2f);
@@ -138,12 +148,16 @@ public class JournalController : MonoBehaviour
         isAttack = true;
         yield return new WaitForSeconds(0.3f);
 
+        string ment = riceBulletPrefab.transform.GetChild(0).GetChild(1).gameObject.name;
+        ment = ment.Replace(" ", "");
+        Debug.Log(ment);
         rigidbody.velocity = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized * (speed / 3);
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < ment.Length; i++)
         {
             Vector2 direction = player.transform.position - transform.position;
             Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, rot);
+            GameObject bullet = Instantiate(riceBulletPrefab, transform.position, rot);
+            bullet.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = ment[i].ToString();
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
@@ -162,26 +176,22 @@ public class JournalController : MonoBehaviour
         isAttack = true;
         yield return new WaitForSeconds(0.35f);
 
-        float radius = 2.5f;
-        for (int j = 0; j < 4; j++)
+        float radius = 7;
+        float bulletAmount = 4;
+        for (int j = 0; j < 6; j++)
         {
-            for (int i = 0; i < 25; i++)
-            {
-                float angle = i * Mathf.PI * 2 / 25;
-                float x = Mathf.Cos(angle) * radius;
-                float y = Mathf.Sin(angle) * radius;
-                Vector3 pos = transform.position + new Vector3(x, y, 0);
+            float startAngle = (radius * 10) / 2;
+            float differAngle = (radius * 10) / (bulletAmount - 1);
+            string ment = soupMents[Random.Range(0, soupMents.Count)];
 
-                if (Mathf.Abs(Vector2.SignedAngle(pos - transform.position, player.transform.position - transform.position)) < 45)
-                {
-                    float angleDegrees = -angle * Mathf.Rad2Deg;
-                    Quaternion rot = Quaternion.Euler(0, 0, angleDegrees);
-                    GameObject bullet = Instantiate(bulletPrefab, pos, rot);
-                    bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
-                    bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
-                    bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-                    bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
-                }
+            for (int i = 0; i < bulletAmount; i++)
+            {
+                GameObject bullet = Instantiate(soupBulletPrefab, transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+                bullet.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = ment[i].ToString();
+                bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
+                bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
+                bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+                bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
             }
             yield return new WaitForSeconds(0.3f);
         }

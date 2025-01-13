@@ -140,43 +140,36 @@ public class CriticController : MonoBehaviour
     {
         isAttack = true;
         yield return new WaitForSeconds(0.35f);
-        
-        float radius = 2.5f;
-        for (int j = 0; j < 4; j++)
+
+        float radius = 7;
+        float bulletAmount = 5;
+        for (int j = 0; j < 5; j++)
         {
+            float startAngle = (radius * 10) / 2;
+            float differAngle = (radius * 10) / (bulletAmount - 1);
             int rate = Random.Range(0, 6);
             int rateTemp = 0;
 
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < bulletAmount; i++)
             {
-                float angle = i * Mathf.PI * 2 / 25;
-                float x = Mathf.Cos(angle) * radius;
-                float y = Mathf.Sin(angle) * radius;
-                Vector3 pos = transform.position + new Vector3(x, y, 0);
-
-                if (Mathf.Abs(Vector2.SignedAngle(pos - transform.position, player.transform.position - transform.position)) < 45)
+                float speed = Random.Range(bulletSpeed - 0.5f, bulletSpeed + 1.5f);
+                int index;
+                if (rateTemp == rate)
                 {
-                    float angleDegrees = -angle * Mathf.Rad2Deg;
-                    Quaternion rot = Quaternion.Euler(0, 0, angleDegrees);
-
-                    float speed = Random.Range(bulletSpeed - 0.5f, bulletSpeed + 1.5f);
-                    int index = 0;
-                    if(rateTemp < rate)
-                    {
-                        index = 0; //full
-                    }
-                    else
-                    {
-                        index = 1; //empty
-                    }
-                    GameObject bullet = Instantiate(bulletPrefab[index], pos, rot);
-                    bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
-                    bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
-                    bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-                    bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
-
-                    rateTemp++;
+                    index = 0; //full
                 }
+                else
+                {
+                    index = 1; //empty
+                }
+
+                GameObject bullet = Instantiate(bulletPrefab[index], transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+                bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
+                bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
+                bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+                bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
+
+                rateTemp++;
             }
             yield return new WaitForSeconds(0.3f);
         }

@@ -22,7 +22,7 @@ public class ResearcherController : MonoBehaviour
     public int test;
     public BossRoom room;
     public GameObject damageEffect;
-    public GameObject bulletPrefab;
+    public GameObject soupBulletPrefab;
     public GameObject ladelPrefab;
     public GameObject platePrefab;
     public GameObject soupPrefab;
@@ -135,26 +135,20 @@ public class ResearcherController : MonoBehaviour
         isAttack = true;
         yield return new WaitForSeconds(0.35f);
 
-        float radius = 2.5f;
+        float radius = 10;
+        float bulletAmount = 7;
         for (int j = 0; j < 4; j++)
         {
-            for (int i = 0; i < 25; i++)
-            {
-                float angle = i * Mathf.PI * 2 / 25;
-                float x = Mathf.Cos(angle) * radius;
-                float y = Mathf.Sin(angle) * radius;
-                Vector3 pos = transform.position + new Vector3(x, y, 0);
+            float startAngle = (radius * 10) / 2;
+            float differAngle = (radius * 10) / (bulletAmount - 1);
 
-                if (Mathf.Abs(Vector2.SignedAngle(pos - transform.position, player.transform.position - transform.position)) < 45)
-                {
-                    float angleDegrees = -angle * Mathf.Rad2Deg;
-                    Quaternion rot = Quaternion.Euler(0, 0, angleDegrees);
-                    GameObject bullet = Instantiate(bulletPrefab, pos, rot);
-                    bullet.GetComponent<EnemyBullet>().SetTarget(new Vector3(-x, -y, 0));
-                    bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
-                    bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-                    bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
-                }
+            for (int i = 0; i < bulletAmount; i++)
+            {
+                GameObject bullet = Instantiate(soupBulletPrefab, transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+                bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
+                bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
+                bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
+                bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
             }
             yield return new WaitForSeconds(0.3f);
         }
