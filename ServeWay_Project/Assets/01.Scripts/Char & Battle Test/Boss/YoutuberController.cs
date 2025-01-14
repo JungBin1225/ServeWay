@@ -23,7 +23,7 @@ public class YoutuberController : MonoBehaviour
     public int test;
     public BossRoom room;
     public GameObject damageEffect;
-    public GameObject bulletPrefab;
+    public GameObject riceBulletPrefab;
     public GameObject explosionPrefab;
     public GameObject algorithmPrefab;
     public float hp;
@@ -209,16 +209,17 @@ public class YoutuberController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         rigidbody.velocity = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized * (speed / 3);
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 20; i++)
         {
             Vector2 direction = player.transform.position - transform.position;
-            Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, rot);
-            bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
+            Vector3 spawnPos = direction.normalized * 2.6f;
+            Quaternion rot = Quaternion.FromToRotation(-Vector3.up, direction);
+            GameObject bullet = Instantiate(riceBulletPrefab, transform.position + spawnPos, rot);
+            bullet.GetComponent<EnemyBullet>().SetTarget(bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
             bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.3f);
         }
 
         isAttack = false;

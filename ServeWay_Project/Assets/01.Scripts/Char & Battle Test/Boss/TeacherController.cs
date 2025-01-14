@@ -21,6 +21,7 @@ public class TeacherController : MonoBehaviour
     private bool isLaser;
     private int counterAmount;
     private bool playerDamaged;
+    private FoodData nowFood;
 
     public int test;
     public BossRoom room;
@@ -79,6 +80,7 @@ public class TeacherController : MonoBehaviour
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
 
         weaponObject.sprite = playerFood[0].foodSprite;
+        nowFood = playerFood[0];
 
         StartCoroutine(EnemyMove());
     }
@@ -227,6 +229,7 @@ public class TeacherController : MonoBehaviour
                 bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
                 bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
                 bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
+                bullet.GetComponent<EnemyBullet>().SetColor(nowFood.bulletColor);
             }
             yield return new WaitForSeconds(0.3f);
         }
@@ -330,6 +333,7 @@ public class TeacherController : MonoBehaviour
             if(food.mainIngred == ingred)
             {
                 weaponObject.sprite = food.foodSprite;
+                nowFood = food;
                 return;
             }
         }
@@ -339,6 +343,7 @@ public class TeacherController : MonoBehaviour
             if (food.mainIngred == ingred)
             {
                 weaponObject.sprite = food.foodSprite;
+                nowFood = food;
                 return;
             }
         }

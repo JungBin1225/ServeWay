@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (missonTime <= 0)
                     {
-                        missonTime = 30;
+                        missonTime = 15;
                     }
                     misson.OccurreEvent(1, 1);
                     misson.OccurreEvent(3, 0);
