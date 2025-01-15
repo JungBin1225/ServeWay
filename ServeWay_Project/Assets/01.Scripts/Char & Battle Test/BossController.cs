@@ -6,6 +6,7 @@ public class BossController : MonoBehaviour
 {
     private MissionManager misson;
     private float hp;
+    private float maxHp;
 
     public BossRoom room;
     public Food_Nation nation;
@@ -97,6 +98,16 @@ public class BossController : MonoBehaviour
         return hp;
     }
 
+    public void SetMaxHp(float hp)
+    {
+        this.maxHp = hp;
+    }
+
+    public float GetMaxHp()
+    {
+        return maxHp;
+    }
+
     /*private IEnumerator AroundPattern()
     {
         isAttack = true;
@@ -123,7 +134,7 @@ public class BossController : MonoBehaviour
         StartCoroutine(EnemyMove());
     }*/
 
-    
+
     /*private IEnumerator SplitPattern()
     {
         isAttack = true;

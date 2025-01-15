@@ -9,11 +9,13 @@ public class InteractionWindow : MonoBehaviour
     public GameObject cookInteraction;
     public GameObject refrigeratorOpen;
     public GameObject time;
+    public GameObject moveStage;
 
     private bool foodGetAble;
     private bool ingredGetAble;
     private bool cookAble;
     private bool refrigeAble;
+    private bool moveStageAble;
 
     void Start()
     {
@@ -21,18 +23,20 @@ public class InteractionWindow : MonoBehaviour
         ingredGetAble = false;
         cookAble = false;
         refrigeAble = false;
+        moveStageAble = false;
 
         foodGet.SetActive(false);
         ingredGet.SetActive(false);
         cookInteraction.SetActive(false);
         refrigeratorOpen.SetActive(false);
+        moveStage.SetActive(false);
     }
 
     void Update()
     {
         if(foodGetAble)
         {
-            if(!ingredGetAble && !cookAble && !refrigeAble)
+            if(!ingredGetAble && !cookAble && !refrigeAble && !moveStageAble)
             {
                 foodGet.SetActive(true);
             }
@@ -44,7 +48,7 @@ public class InteractionWindow : MonoBehaviour
 
         if(ingredGetAble)
         {
-            if(!foodGetAble && !cookAble && !refrigeAble)
+            if(!foodGetAble && !cookAble && !refrigeAble && !moveStageAble)
             {
                 ingredGet.SetActive(true);
             }
@@ -56,7 +60,7 @@ public class InteractionWindow : MonoBehaviour
 
         if (cookAble)
         {
-            if (!foodGetAble && !ingredGetAble && !refrigeAble)
+            if (!foodGetAble && !ingredGetAble && !refrigeAble && !moveStageAble)
             {
                 cookInteraction.SetActive(true);
             }
@@ -68,7 +72,7 @@ public class InteractionWindow : MonoBehaviour
 
         if(refrigeAble)
         {
-            if (!foodGetAble && !ingredGetAble && !cookAble)
+            if (!foodGetAble && !ingredGetAble && !cookAble && !moveStageAble)
             {
                 refrigeratorOpen.SetActive(true);
             }
@@ -76,6 +80,18 @@ public class InteractionWindow : MonoBehaviour
         else
         {
             refrigeratorOpen.SetActive(false);
+        }
+
+        if(moveStageAble)
+        {
+            if(!foodGetAble && !ingredGetAble && !cookAble && !refrigeAble)
+            {
+                moveStage.SetActive(true);
+            }
+        }
+        else
+        {
+            moveStage.SetActive(false);
         }
     }
 
@@ -97,5 +113,10 @@ public class InteractionWindow : MonoBehaviour
     public void SetRefrigeAble(bool able)
     {
         refrigeAble = able;
+    }
+
+    public void SetMoveStageAble(bool able)
+    {
+        moveStageAble = able;
     }
 }

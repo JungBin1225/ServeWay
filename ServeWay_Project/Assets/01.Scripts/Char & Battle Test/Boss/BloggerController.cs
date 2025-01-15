@@ -56,6 +56,7 @@ public class BloggerController : MonoBehaviour
         bossCon.room = this.room;
         bossCon.job = this.job;
         bossCon.SetHp(hp);
+        bossCon.SetMaxHp(hp);
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         coolTime = attackCoolTime;

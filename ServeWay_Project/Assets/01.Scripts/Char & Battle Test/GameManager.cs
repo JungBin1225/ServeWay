@@ -85,12 +85,9 @@ public class GameManager : MonoBehaviour
 
     public void InitList()
     {
-        for(int i = 0; i < 7; i++)
-        {
-            bossNations.Add(RandomNation());
-            stageThemes.Add(RandomTheme());
-            bossJobList.Add(RandomJob());
-        }
+        bossNations = RandomNation();
+        stageThemes = RandomTheme();
+        bossJobList = RandomJob();
     }
 
     public void ClearInventory()
@@ -98,83 +95,52 @@ public class GameManager : MonoBehaviour
         inventory.inventory.Clear();
     }
 
-    public Food_Nation RandomNation()
+    public List<Food_Nation> RandomNation()
     {
-        int i = Random.Range(0, 10);
+        List<int> list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        List<Food_Nation> nationList = new List<Food_Nation>();
 
-        switch(i)
+        for(int i = 0; i < 7; i++)
         {
-            case 0:
-                return Food_Nation.KOREA;
-            case 1:
-                return Food_Nation.JAPAN;
-            case 2:
-                return Food_Nation.CHINA;
-            case 3:
-                return Food_Nation.USA;
-            case 4:
-                return Food_Nation.FRANCE;
-            case 5:
-                return Food_Nation.ITALY;
-            case 6:
-                return Food_Nation.INDONESIA;
-            case 7:
-                return Food_Nation.THAILAND;
-            case 8:
-                return Food_Nation.GERMANY;
-            case 9:
-                return Food_Nation.SPAIN;
-            default:
-                return Food_Nation.KOREA;
+            int index = Random.Range(0, list.Count);
+            nationList.Add((Food_Nation)list[index]);
+            list.RemoveAt(index);
         }
+
+        return nationList;
     }
 
-    public Stage_Theme RandomTheme()
+    public List<Stage_Theme> RandomTheme()
     {
-        int i = Random.Range(0, 7);
+        List<int> list = new List<int> { 0, 1, 2, 3, 4, 5, 6 };
+        List<Stage_Theme> themeList = new List<Stage_Theme>();
 
-        switch(i)
+        for (int i = 0; i < 7; i++)
         {
-            case 0:
-                return Stage_Theme.STREET;
-            case 1:
-                return Stage_Theme.NORMAL;
-            case 2:
-                return Stage_Theme.CAFE;
-            case 3:
-                return Stage_Theme.CAMPING;
-            case 4:
-                return Stage_Theme.BAR;
-            case 5:
-                return Stage_Theme.RESTORANT;
-            case 6:
-                return Stage_Theme.SCHOOL;
-            default:
-                return Stage_Theme.NORMAL;
+            int index = Random.Range(0, list.Count);
+            themeList.Add((Stage_Theme)list[index]);
+            list.RemoveAt(index);
         }
+
+        return themeList;
     }
 
-    public Boss_Job RandomJob()
+    public List<Boss_Job> RandomJob()
     {
-        int i = Random.Range(0, 6);
+        List<int> list = new List<int> { 0, 1, 2, 3, 4 };
+        List<Boss_Job> jobList = new List<Boss_Job>();
 
-        switch (i)
+        for (int i = 0; i < 5; i++)
         {
-            case 0:
-                return Boss_Job.JOURNAL;
-            case 1:
-                return Boss_Job.COOKRESEARCH;
-            case 2:
-                return Boss_Job.CRITIC;
-            case 3:
-                return Boss_Job.BLOGGER;
-            case 4:
-                return Boss_Job.YOUTUBER;
-            case 5:
-                return Boss_Job.TEACHER;
-            default:
-                return Boss_Job.JOURNAL;
+            int index = Random.Range(0, list.Count);
+            jobList.Add((Boss_Job)list[index]);
+            list.RemoveAt(index);
         }
+
+        jobList.Add(jobList[0]);
+        jobList.Add(Boss_Job.TEACHER);
+
+        return jobList;
     }
 
     public string JobToString(Boss_Job job)

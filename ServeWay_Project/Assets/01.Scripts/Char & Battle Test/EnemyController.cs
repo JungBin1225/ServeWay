@@ -116,11 +116,11 @@ public class EnemyController : MonoBehaviour
         hp -= damage;
         if(hp <= 0)
         {
-            hpImage.fillAmount = 0;
+            hpImage.fillAmount = 1;
         }
         else
         {
-            hpImage.fillAmount = hp / maxHp;
+            hpImage.fillAmount = 1 - (hp / maxHp);
         }
     }
 

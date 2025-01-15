@@ -9,6 +9,10 @@ public class BossRoom : MonoBehaviour
     private GameObject boss;
     private DataController data;
     private MissionManager misson;
+    private BossController bossCon;
+    private GameObject bossHp;
+    private Image bossNowHp;
+
 
     public bool isClear;
     public GameObject intro;
@@ -34,6 +38,8 @@ public class BossRoom : MonoBehaviour
         data = FindObjectOfType<DataController>();
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
+        bossHp = GameObject.Find("BossHp");
+        bossNowHp = bossHp.transform.GetChild(0).GetComponent<Image>();
         misson = FindObjectOfType<MissionManager>();
         bossNation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
         bossJob = GameManager.gameManager.bossJobList[GameManager.gameManager.stage - 1];
@@ -41,6 +47,7 @@ public class BossRoom : MonoBehaviour
 
         intro.SetActive(false);
         startButton.SetActive(false);
+        bossHp.SetActive(false);
 
         startButton.GetComponent<Button>().onClick.AddListener(OnStartClicked);
 
@@ -55,7 +62,13 @@ public class BossRoom : MonoBehaviour
 
     void Update()
     {
-
+        if(GameManager.gameManager.isBossStage)
+        {
+            if(boss != null)
+            {
+                bossNowHp.fillAmount = 1 - (bossCon.GetHp() / bossCon.GetMaxHp());
+            }
+        }
     }
 
     private IEnumerator BossIntro()
@@ -96,6 +109,8 @@ public class BossRoom : MonoBehaviour
     private void SpawnBoss()
     {
         boss = Instantiate(data.FindBoss(bossJob), transform.position, transform.rotation);
+        bossCon = boss.GetComponent<BossController>();
+        bossHp.SetActive(true);
 
         switch(bossJob)
         {

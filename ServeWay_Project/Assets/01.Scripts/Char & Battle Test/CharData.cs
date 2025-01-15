@@ -33,6 +33,7 @@ public class CharData : MonoBehaviour
         InventoryManager inventory = GameManager.gameManager.inventory;
 
         saveFile.weaponList.Clear();
+        saveFile.weaponSuccess.Clear();
 
         for (int i = 0; i < plInfo.weaponSlot.gameObject.transform.childCount; i++)
         {
