@@ -831,7 +831,7 @@ GameObject:
   - component: {fileID: -8351777299475663080}
   - component: {fileID: 8192541286103037007}
   m_Layer: 6
-  m_Name: Human Enemy
+  m_Name: NoodleEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -888,10 +888,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f3d0c4f9d7823d4aba9b5524b46c776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 10
+  maxHp: 20
   speed: 5
   roomCenter: {x: 0, y: 0}
-  attackType: 4
+  attackType: 3
   range: 5
   attackCoolTime: 5
   damage: 1

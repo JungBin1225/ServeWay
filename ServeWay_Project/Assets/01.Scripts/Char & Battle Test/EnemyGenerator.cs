@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
-    public List<GameObject> enemyPrefab;
-    public List<int> amountList;
     public List<GameObject> doorList;
     public int enemyAmount;
     public GameObject itemPrefab;
     public AudioSource bellSound;
     public AudioSource doorOpenSound;
     public AudioSource doorCloseSound;
+    public GameObject enemyAppear;
 
     // 미니맵
     [SerializeField] GameObject miniRoomMesh;
@@ -21,12 +20,15 @@ public class EnemyGenerator : MonoBehaviour
     public int myCol;
     [SerializeField] MinimapManager minimapMG;
 
-    private Dictionary<GameObject, int> spawnlist;
+    private List<GameObject> spawnList;
+    private List<GameObject> followSpawnList;
     private BoxCollider2D boxCollider;
     private DataController data;
     private int wave;
+    private int followUp;
     private bool isClear;
     private bool isSpawn;
+    private int noodleOrBread;
     private bool isStarted = false;
     private int enemyCount;
     //Start() 함수가 끝까지 실행된 이후에 true로 바뀜
@@ -35,7 +37,8 @@ public class EnemyGenerator : MonoBehaviour
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
-        spawnlist = new Dictionary<GameObject, int>();
+        spawnList = new List<GameObject>();
+        followSpawnList = new List<GameObject>();
         data = FindObjectOfType<DataController>();
         isClear = false;
         isSpawn = false;
@@ -44,7 +47,9 @@ public class EnemyGenerator : MonoBehaviour
         isVisited = false;
 
         wave = 0;
+        followUp = 0;
         enemyCount = 0;
+        noodleOrBread = 0;
         InitEnemy();
 
         // 미니맵
@@ -84,22 +89,19 @@ public class EnemyGenerator : MonoBehaviour
     {
         isSpawn = true;
         bellSound.Play();
-
+        Debug.Log(enemyAmount);
         yield return new WaitForSeconds(0.3f);
 
-        foreach(GameObject enemy in spawnlist.Keys)
+        foreach(GameObject enemy in spawnList)
         {
-            for(int i = 0; i < spawnlist[enemy]; i++)
-            {
-                spawnEnemy(enemy);
-                yield return new WaitForSeconds(0.3f);
-            }
+            StartCoroutine(spawnEnemy(enemy));
+            yield return new WaitForSeconds(0.1f);
         }
 
         wave -= 1;
     }
 
-    private void spawnEnemy(GameObject enemyPrefab)
+    private IEnumerator spawnEnemy(GameObject enemyPrefab)
     {
         float minX = transform.position.x - (transform.localScale.x / 2) + 2;
         float maxX = transform.position.x + (transform.localScale.x / 2) - 2;
@@ -111,8 +113,12 @@ public class EnemyGenerator : MonoBehaviour
 
         Quaternion rot = Quaternion.Euler(0, 0, 0);
 
-        UnityEngine.Debug.LogFormat("boxCollider.size.x : {0} boxCollider.size.y : {1}", transform.localScale.x, transform.localScale.y);
-        UnityEngine.Debug.LogFormat("minX : {0} maxX : {1} posX : {2} posY : {3}", minX, maxX, posX,posY);
+        GameObject appear = Instantiate(enemyAppear, new Vector3(posX, posY, 0), rot);
+        yield return new WaitForSeconds(0.3f);
+
+        /*UnityEngine.Debug.LogFormat("boxCollider.size.x : {0} boxCollider.size.y : {1}", transform.localScale.x, transform.localScale.y);
+        UnityEngine.Debug.LogFormat("minX : {0} maxX : {1} posX : {2} posY : {3}", minX, maxX, posX,posY);*/
+        Destroy(appear);
 
         GameObject enemy = Instantiate(enemyPrefab, new Vector3(posX, posY, 0), rot);
         enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
@@ -203,14 +209,14 @@ public class EnemyGenerator : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Enemy")
+        /*if(collision.gameObject.tag == "Enemy")
         {
             enemyAmount--;
         }
         else if(collision.gameObject.tag == "Player")
         {
             //StopCoroutine(SelectEnamy());
-        }
+        }*/
     }
 
     private void InitEnemy()
@@ -218,68 +224,112 @@ public class EnemyGenerator : MonoBehaviour
         switch(GameManager.gameManager.stage)
         {
             case 1:
-                enemyAmount = Random.Range(7, 12);
+                enemyAmount = Random.Range(8, 11);
+                followUp = 0;
                 if(wave == 0) wave = 1;
                 break;
             case 2:
-                enemyAmount = Random.Range(7, 12) + 5;
+                enemyAmount = Random.Range(11, 15);
+                followUp = 0;
                 if (wave == 0) wave = 1;
                 break;
             case 3:
-                enemyAmount = Random.Range(7, 12) + 5;
-                if (wave == 0) wave = 2;
+                enemyAmount = Random.Range(11, 15);
+                followUp = 5;
+                if (wave == 0) wave = 1;
                 break;
             case 4:
-                enemyAmount = Random.Range(7, 12) + 10;
-                if (wave == 0) wave = 2;
+                enemyAmount = Random.Range(11, 15);
+                followUp = 10;
+                if (wave == 0) wave = 1;
                 break;
             case 5:
-                enemyAmount = Random.Range(7, 12) + 5;
-                if (wave == 0) wave = 3;
+                enemyAmount = Random.Range(11, 15);
+                followUp = 0;
+                if (wave == 0) wave = 2;
                 break;
             case 6:
-                enemyAmount = Random.Range(7, 12) + 10;
-                if (wave == 0) wave = 3;
+                enemyAmount = Random.Range(11, 15);
+                followUp = 5;
+                if (wave == 0) wave = 2;
                 break;
             case 7:
-                enemyAmount = Random.Range(7, 12) + 10;
-                if (wave == 0) wave = 4;
+                enemyAmount = Random.Range(11, 15);
+                followUp = 10;
+                if (wave == 0) wave = 3;
                 break;
         }
-        int num = enemyAmount;
-        num = 5;//test
-        enemyPrefab.Clear();
-        amountList.Clear();
-        spawnlist.Clear();
-        while(num != 0)
+        spawnList.Clear();
+        followSpawnList.Clear();
+
+        for(int i = 0; i < enemyAmount; i++)
         {
-            int amount = Random.Range(2, 6);
-            if(num < amount)
+            if(i == enemyAmount - 1)
             {
-                amount = num;
-            }
-
-            GameObject enemy = data.enemyList.RandomEnemy();
-
-            if(enemyPrefab.Contains(enemy))
-            {
-                amountList[enemyPrefab.FindIndex(o => o == enemy)] += amount;
+                noodleOrBread = Random.Range(0, 2);
+                switch (noodleOrBread)
+                {
+                    case 0:
+                        spawnList.Add(data.enemyList.noodleEnemy);
+                        break;
+                    case 1:
+                        spawnList.Add(data.enemyList.breadEnemy);
+                        break;
+                }
             }
             else
             {
-                enemyPrefab.Add(enemy);
-                amountList.Add(amount);
+                int index = Random.Range(0, 3);
+                switch (index)
+                {
+                    case 0:
+                        spawnList.Add(data.enemyList.meatEnemy);
+                        break;
+                    case 1:
+                        spawnList.Add(data.enemyList.riceEnemy);
+                        break;
+                    case 2:
+                        spawnList.Add(data.enemyList.soupEnemy);
+                        break;
+                }
             }
-
-
-            num -= amount;
         }
 
-        int n = 0;
-        foreach (GameObject enemy in enemyPrefab)
+        for(int i = 0; i < followUp; i++)
         {
-            spawnlist.Add(enemy, amountList[n]);
-            n++;
+            if (i == followUp - 1)
+            {
+                if(GameManager.gameManager.stage >= 5)
+                {
+                    noodleOrBread = Random.Range(0, 2);
+                }
+                
+                switch (noodleOrBread)
+                {
+                    case 0:
+                        followSpawnList.Add(data.enemyList.noodleEnemy);
+                        break;
+                    case 1:
+                        followSpawnList.Add(data.enemyList.breadEnemy);
+                        break;
+                }
+            }
+            else
+            {
+                int index = Random.Range(0, 3);
+                switch (index)
+                {
+                    case 0:
+                        followSpawnList.Add(data.enemyList.meatEnemy);
+                        break;
+                    case 1:
+                        followSpawnList.Add(data.enemyList.riceEnemy);
+                        break;
+                    case 2:
+                        followSpawnList.Add(data.enemyList.soupEnemy);
+                        break;
+                }
+            }
         }
     }
 
@@ -299,6 +349,26 @@ public class EnemyGenerator : MonoBehaviour
                 minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
             }
             minimapMG.PutMesh(tmp, myCol, myRow);
+        }
+    }
+
+    public void EnemyDie()
+    {
+        if (wave == 0)
+        {
+            if (followSpawnList.Count != 0)
+            {
+                StartCoroutine(spawnEnemy(followSpawnList[0]));
+                followSpawnList.RemoveAt(0);
+            }
+            else
+            {
+                enemyAmount--;
+            }
+        }
+        else
+        {
+            enemyAmount--;
         }
     }
 }

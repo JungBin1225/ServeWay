@@ -89,6 +89,8 @@ public class EnemyController : MonoBehaviour
             collider.enabled = false;
             if(anim.layerOrder[1].color.a == 0)
             {
+                generator.GetComponent<EnemyGenerator>().EnemyDie();
+                Debug.Log("die");
                 Destroy(this.gameObject);
             }
         }
@@ -442,6 +444,12 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void SetMaxHp(float max)
+    {
+        maxHp = max;
+        hp = maxHp;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
