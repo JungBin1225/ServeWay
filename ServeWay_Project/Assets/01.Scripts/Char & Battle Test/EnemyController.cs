@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 public enum EnemyAttackType
 {
     MEAT,
@@ -14,6 +15,7 @@ public enum EnemyAttackType
 
 public class EnemyController : MonoBehaviour
 {
+    private float maxHp;
     private float hp;
     private GameObject target;
     private Vector2 dir;
@@ -26,7 +28,12 @@ public class EnemyController : MonoBehaviour
     private BoxCollider2D collider;
     private bool isWall;
 
-    public float maxHp;
+    private int soupAmount;
+    private int soupRadius;
+    private int riceAmount;
+    private float laserTime;
+    private float breadRadius;
+
     public float speed;
     public Vector2 roomCenter;
     public EnemyAttackType attackType;
@@ -34,7 +41,6 @@ public class EnemyController : MonoBehaviour
     public float attackCoolTime;
     public float damage;
     public float bulletSpeed;
-    public List<float> alphaStat;
     public GameObject bulletPrefab;
     public GameObject laserPrefab;
     public bool moveAble;
@@ -64,6 +70,8 @@ public class EnemyController : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.gameObject.GetComponent<Animator>().SetInteger("Index", laserMat);
         lineRenderer.enabled = false;
+
+        InitStat();
 
         StartCoroutine(EnemyMove());
         StartCoroutine(EnemyAttack());
@@ -232,7 +240,7 @@ public class EnemyController : MonoBehaviour
                 breadBullet.SetTarget(transform.position - target.transform.position);
                 breadBullet.SetSpeed(bulletSpeed);
                 breadBullet.SetDamage(damage);
-                breadBullet.SetRadius(alphaStat[0]);
+                breadBullet.SetRadius(breadRadius);
                 breadBullet.SetSprite(anim.getEnemySprite());
                 break;
             case EnemyAttackType.MEAT:
@@ -252,7 +260,7 @@ public class EnemyController : MonoBehaviour
                 break;*/
             case EnemyAttackType.SOUP:
                 Destroy(bullet);
-                FireSoupBullet(bulletSpeed, damage, alphaStat[0], alphaStat[1]);
+                FireSoupBullet(bulletSpeed, damage, soupAmount, soupRadius);
                 break;
         }
     }
@@ -269,11 +277,10 @@ public class EnemyController : MonoBehaviour
         if(bulletPrefab.transform.childCount == 1)
         {
             link = bulletPrefab.transform.GetChild(0).GetChild(0).gameObject.name;
-            alphaStat[0] = link.Length;
         }
 
 
-        for (int i = 0; i < alphaStat[0]; i++)
+        for (int i = 0; i < riceAmount; i++)
         {
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0, 0, 0));
 
@@ -283,23 +290,44 @@ public class EnemyController : MonoBehaviour
             riceBullet.SetDamage(damage);
             riceBullet.SetSprite(anim.getEnemySprite());
 
-            if(link != "")
+            if(riceBullet.GetComponent<AudioSource>() != null)
+            {
+                if(i < 3)
+                {
+                    riceBullet.GetComponent<AudioSource>().Play();
+                }
+            }
+
+            if (link != "")
             {
                 int index = i;
-                if (!isleft)
-                {
-                    index = link.Length - i - 1;
-                }
+                TMP_Text text = riceBullet.transform.GetChild(0).GetChild(0).gameObject.GetComponent<TMP_Text>();
 
-                if (link[index] == 'a')
+                text.text = "";
+
+                if (link[index * 2] == 'a')
                 {
                     string format = "abcdefghijklmnopqrstuvwxyz";
-                    riceBullet.transform.GetChild(0).GetChild(0).gameObject.GetComponent<TMP_Text>().text = format[Random.Range(0, format.Length)].ToString();
+                    text.text += format[Random.Range(0, format.Length)].ToString();
                 }
                 else
                 {
-                    
-                    riceBullet.transform.GetChild(0).GetChild(0).gameObject.GetComponent<TMP_Text>().text = link[index].ToString();
+                    text.text += link[index * 2].ToString();
+                }
+
+                if (link[(index * 2) + 1] == 'a')
+                {
+                    string format = "abcdefghijklmnopqrstuvwxyz";
+                    text.text += format[Random.Range(0, format.Length)].ToString();
+                }
+                else
+                {
+                    text.text += link[(index * 2) + 1].ToString();
+                }
+
+                if(!isleft)
+                {
+                    text.text = new string(text.text.Reverse().ToArray());
                 }
             }
             
@@ -348,7 +376,7 @@ public class EnemyController : MonoBehaviour
         laser.transform.rotation = angleAxis;
         laser.transform.position = pos;
 
-        yield return new WaitForSeconds(alphaStat[0]);
+        yield return new WaitForSeconds(laserTime);
 
         lineRenderer.SetPosition(1, transform.position);
         lineRenderer.enabled = false;
@@ -422,7 +450,6 @@ public class EnemyController : MonoBehaviour
                 break;
             case EnemyAttackType.NOODLE:
                 laserMat = Random.Range(0, data.enemyBullet.noodleBullet.Count) + 1;
-                alphaStat[0] = 1;
                 bulletSpeed = 0.1f;
                 break;
             case EnemyAttackType.BREAD:
@@ -450,6 +477,56 @@ public class EnemyController : MonoBehaviour
     {
         maxHp = max;
         hp = maxHp;
+    }
+
+    private void InitStat()
+    {
+        switch(GameManager.gameManager.stage)
+        {
+            case 1:
+                soupAmount = 5;
+                soupRadius = 5;
+                riceAmount = 4;
+                laserTime = 1;
+                break;
+            case 2:
+                soupAmount = 5;
+                soupRadius = 5;
+                riceAmount = 4;
+                laserTime = 1;
+                break;
+            case 3:
+                soupAmount = 6;
+                soupRadius = 6;
+                riceAmount = 5;
+                laserTime = 1.5f;
+                break;
+            case 4:
+                soupAmount = 6;
+                soupRadius = 6;
+                riceAmount = 5;
+                laserTime = 1.5f;
+                break;
+            case 5:
+                soupAmount = 7;
+                soupRadius = 7;
+                riceAmount = 6;
+                laserTime = 2;
+                break;
+            case 6:
+                soupAmount = 7;
+                soupRadius = 7;
+                riceAmount = 6;
+                laserTime = 2;
+                break;
+            case 7:
+                soupAmount = 8;
+                soupRadius = 8;
+                riceAmount = 7;
+                laserTime = 2.5f;
+                break;
+        }
+        breadRadius = 2;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

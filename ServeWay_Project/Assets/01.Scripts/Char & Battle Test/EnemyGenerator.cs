@@ -125,6 +125,7 @@ public class EnemyGenerator : MonoBehaviour
         enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
         enemy.GetComponent<EnemyController>().roomCenter = transform.position;
         enemy.GetComponent<EnemyController>().SetAttackType(data);
+        SetEnemyHp(enemy.GetComponent<EnemyController>());
         enemy.GetComponent<EnemySprite>().SetLayerOrder(enemyCount);
         enemyCount++;
     }
@@ -331,6 +332,38 @@ public class EnemyGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void SetEnemyHp(EnemyController enemyCon)
+    {
+        float maxHp = 10;
+
+        switch (GameManager.gameManager.stage)
+        {
+            case 1:
+                maxHp = Random.Range(17, 24);
+                break;
+            case 2:
+                maxHp = Random.Range(25, 33);
+                break;
+            case 3:
+                maxHp = Random.Range(30, 41);
+                break;
+            case 4:
+                maxHp = Random.Range(43, 49);
+                break;
+            case 5:
+                maxHp = Random.Range(51, 56);
+                break;
+            case 6:
+                maxHp = Random.Range(53, 59);
+                break;
+            case 7:
+                maxHp = Random.Range(55, 61);
+                break;
+        }
+
+        enemyCon.SetMaxHp(maxHp);
     }
 
     // 미니맵
