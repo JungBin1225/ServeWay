@@ -19,6 +19,8 @@ public class YoutuberController : MonoBehaviour
     private bool isTouch;
     private bool playerDamaged;
     private FoodData algorithmFood;
+    private float algorithmCoolTime;
+    private float machineGunAmount;
 
     public int test;
     public BossRoom room;
@@ -26,7 +28,6 @@ public class YoutuberController : MonoBehaviour
     public GameObject riceBulletPrefab;
     public GameObject explosionPrefab;
     public GameObject algorithmPrefab;
-    public float hp;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
@@ -53,8 +54,7 @@ public class YoutuberController : MonoBehaviour
         bossCon.nation = this.nation;
         bossCon.room = this.room;
         bossCon.job = this.job;
-        bossCon.SetHp(hp);
-        bossCon.SetMaxHp(hp);
+        SetIncreaseByStage();
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         coolTime = attackCoolTime;
@@ -193,7 +193,7 @@ public class YoutuberController : MonoBehaviour
             algorithm.GetComponent<Algorithm>().boss = this.gameObject;
             algorithm.GetComponent<Algorithm>().sprite = GetComponent<SpriteRenderer>().sprite;
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(algorithmCoolTime);
         }
         yield return new WaitForSeconds(1.5f);
 
@@ -210,7 +210,7 @@ public class YoutuberController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         rigidbody.velocity = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized * (speed / 3);
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < machineGunAmount; i++)
         {
             Vector2 direction = player.transform.position - transform.position;
             Vector3 spawnPos = direction.normalized * 2.6f;
@@ -306,6 +306,18 @@ public class YoutuberController : MonoBehaviour
     public void PlayerAlgorithmDamage()
     {
         playerDamaged = true;
+    }
+
+    private void SetIncreaseByStage()
+    {
+        int stage = GameManager.gameManager.stage - 1;
+
+        bossCon.SetMaxHp(500 + (stage * 400));
+        bossCon.SetHp(500 + (stage * 400));
+
+        explosionRadius += (stage / 2) * 0.5f;
+        algorithmCoolTime = 0.55f - (stage * 0.05f);
+        machineGunAmount = 20 + (stage * 2);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

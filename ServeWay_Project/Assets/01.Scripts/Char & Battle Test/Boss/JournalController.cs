@@ -17,6 +17,8 @@ public class JournalController : MonoBehaviour
     private bool isAttack;
     private bool isPicture;
     private bool isCharge;
+    private float shotGunRadius;
+    private float shotGunAmount;
 
     public int test;
     public BossRoom room;
@@ -26,7 +28,6 @@ public class JournalController : MonoBehaviour
     public GameObject scoopPrefab;
     public CircleCollider2D collider;
     public Animator pictureAnim;
-    public float hp;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
@@ -54,8 +55,7 @@ public class JournalController : MonoBehaviour
         bossCon.nation = this.nation;
         bossCon.room = this.room;
         bossCon.job = this.job;
-        bossCon.SetHp(hp);
-        bossCon.SetMaxHp(hp);
+        SetIncreaseByStage();
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         collider.enabled = false;
@@ -151,7 +151,6 @@ public class JournalController : MonoBehaviour
 
         string ment = riceBulletPrefab.transform.GetChild(0).GetChild(1).gameObject.name;
         ment = ment.Replace(" ", "");
-        Debug.Log(ment);
         rigidbody.velocity = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized * (speed / 3);
         for (int i = 0; i < ment.Length; i++)
         {
@@ -177,15 +176,13 @@ public class JournalController : MonoBehaviour
         isAttack = true;
         yield return new WaitForSeconds(0.35f);
 
-        float radius = 7;
-        float bulletAmount = 4;
         for (int j = 0; j < 6; j++)
         {
-            float startAngle = (radius * 10) / 2;
-            float differAngle = (radius * 10) / (bulletAmount - 1);
+            float startAngle = (shotGunRadius * 10) / 2;
+            float differAngle = (shotGunRadius * 10) / (shotGunAmount - 1);
             string ment = soupMents[Random.Range(0, soupMents.Count)];
 
-            for (int i = 0; i < bulletAmount; i++)
+            for (int i = 0; i < shotGunAmount; i++)
             {
                 GameObject bullet = Instantiate(soupBulletPrefab, transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
                 bullet.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = ment[i].ToString();
@@ -241,6 +238,17 @@ public class JournalController : MonoBehaviour
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
+    }
+
+    private void SetIncreaseByStage()
+    {
+        int stage = GameManager.gameManager.stage - 1;
+
+        bossCon.SetMaxHp(500 + (stage * 400));
+        bossCon.SetHp(500 + (stage * 400));
+
+        shotGunRadius = 7 + (stage * 1);
+        shotGunAmount = 4 + (stage * 1);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

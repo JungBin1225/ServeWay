@@ -14,6 +14,9 @@ public class CriticController : MonoBehaviour
     private List<Sprite> sprites;
     private bool isAttack;
     private bool isCharge;
+    private float shotGunRadius;
+    private float shotGunAmount;
+    private int machineGunAmount;
 
     public int test;
     public BossRoom room;
@@ -21,7 +24,6 @@ public class CriticController : MonoBehaviour
     public GameObject pen;
     public GameObject explosionPenPrefab;
     public List<GameObject> bulletPrefab;
-    public float hp;
     public float speed;
     public float attackCoolTime;
     public float chargeSpeed;
@@ -44,8 +46,7 @@ public class CriticController : MonoBehaviour
         bossCon.nation = this.nation;
         bossCon.room = this.room;
         bossCon.job = this.job;
-        bossCon.SetHp(hp);
-        bossCon.SetMaxHp(hp);
+        SetIncreaseByStage();
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         coolTime = attackCoolTime;
@@ -117,7 +118,7 @@ public class CriticController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         rigidbody.velocity = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized * (speed / 3);
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < machineGunAmount; i++)
         {
             Vector2 direction = player.transform.position - transform.position;
             Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
@@ -142,16 +143,14 @@ public class CriticController : MonoBehaviour
         isAttack = true;
         yield return new WaitForSeconds(0.35f);
 
-        float radius = 7;
-        float bulletAmount = 5;
         for (int j = 0; j < 5; j++)
         {
-            float startAngle = (radius * 10) / 2;
-            float differAngle = (radius * 10) / (bulletAmount - 1);
+            float startAngle = (shotGunRadius * 10) / 2;
+            float differAngle = (shotGunRadius * 10) / (shotGunAmount - 1);
             int rate = Random.Range(0, 6);
             int rateTemp = 0;
 
-            for (int i = 0; i < bulletAmount; i++)
+            for (int i = 0; i < shotGunAmount; i++)
             {
                 float speed = Random.Range(bulletSpeed - 0.5f, bulletSpeed + 1.5f);
                 int index;
@@ -172,7 +171,7 @@ public class CriticController : MonoBehaviour
 
                 rateTemp++;
             }
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.5f);
         }
         yield return new WaitForSeconds(0.3f);
 
@@ -243,6 +242,18 @@ public class CriticController : MonoBehaviour
         isAttack = false;
         coolTime = attackCoolTime / 4;
         StartCoroutine(EnemyMove());
+    }
+
+    private void SetIncreaseByStage()
+    {
+        int stage = GameManager.gameManager.stage - 1;
+
+        bossCon.SetMaxHp(500 + (stage * 400));
+        bossCon.SetHp(500 + (stage * 400));
+
+        shotGunRadius = 7 + (stage * 1);
+        shotGunAmount = 5 + (stage * 1);
+        machineGunAmount = 30 + (stage * 2);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

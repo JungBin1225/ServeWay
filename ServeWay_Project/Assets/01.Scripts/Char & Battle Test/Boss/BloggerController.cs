@@ -20,6 +20,7 @@ public class BloggerController : MonoBehaviour
     private bool isComment;
     private bool playerCharge;
     private bool playerDamage;
+    private float laserTime;
 
     public int test;
     public BossRoom room;
@@ -30,7 +31,6 @@ public class BloggerController : MonoBehaviour
     public GameObject teleportPrefab;
     public PolygonCollider2D pictureCollider;
     public Animator pictureAnim;
-    public float hp;
     public float speed;
     public float attackCoolTime;
     public float chargeSpeed;
@@ -55,8 +55,7 @@ public class BloggerController : MonoBehaviour
         bossCon.nation = this.nation;
         bossCon.room = this.room;
         bossCon.job = this.job;
-        bossCon.SetHp(hp);
-        bossCon.SetMaxHp(hp);
+        SetIncreaseByStage();
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         coolTime = attackCoolTime;
@@ -219,7 +218,7 @@ public class BloggerController : MonoBehaviour
         laser = Instantiate(laserPrefab, this.transform);
 
         laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
-        laser.GetComponent<EnemyLaser>().SetCoolTime(0.5f);
+        laser.GetComponent<EnemyLaser>().SetCoolTime(0.2f);
         laser.GetComponent<EnemyLaser>().SetSprite(sprites);
 
         Vector3 target = player.transform.position;
@@ -252,12 +251,12 @@ public class BloggerController : MonoBehaviour
         laser.transform.rotation = angleAxis;
         laser.transform.position = pos;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(laserTime / 4);
         isAttack = false;
         coolTime = attackCoolTime / 2;
         StartCoroutine(EnemyMove());
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(laserTime);
         isLaser = false;
         line.SetPosition(1, transform.position);
         line.enabled = false;
@@ -334,6 +333,16 @@ public class BloggerController : MonoBehaviour
     public void PlayerCommentDamage()
     {
         playerDamage = true;
+    }
+
+    private void SetIncreaseByStage()
+    {
+        int stage = GameManager.gameManager.stage - 1;
+
+        bossCon.SetMaxHp(500 + (stage * 400));
+        bossCon.SetHp(500 + (stage * 400));
+
+        laserTime = 2f + (stage * 0.3f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

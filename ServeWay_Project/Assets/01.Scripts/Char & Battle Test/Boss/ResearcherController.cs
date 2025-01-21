@@ -18,6 +18,8 @@ public class ResearcherController : MonoBehaviour
     private bool isCharge;
     private bool plateTouch;
     private int plateIndex;
+    private float shotGunRadius;
+    private float shotGunAmount;
 
     public int test;
     public BossRoom room;
@@ -26,7 +28,6 @@ public class ResearcherController : MonoBehaviour
     public GameObject ladelPrefab;
     public GameObject platePrefab;
     public GameObject soupPrefab;
-    public float hp;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
@@ -50,8 +51,7 @@ public class ResearcherController : MonoBehaviour
         bossCon.nation = this.nation;
         bossCon.room = this.room;
         bossCon.job = this.job;
-        bossCon.SetHp(hp);
-        bossCon.SetMaxHp(hp);
+        SetIncreaseByStage();
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         platePos = new List<Vector3>();
@@ -136,14 +136,12 @@ public class ResearcherController : MonoBehaviour
         isAttack = true;
         yield return new WaitForSeconds(0.35f);
 
-        float radius = 10;
-        float bulletAmount = 7;
         for (int j = 0; j < 4; j++)
         {
-            float startAngle = (radius * 10) / 2;
-            float differAngle = (radius * 10) / (bulletAmount - 1);
+            float startAngle = (shotGunRadius * 10) / 2;
+            float differAngle = (shotGunRadius * 10) / (shotGunAmount - 1);
 
-            for (int i = 0; i < bulletAmount; i++)
+            for (int i = 0; i < shotGunAmount; i++)
             {
                 GameObject bullet = Instantiate(soupBulletPrefab, transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
                 bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
@@ -290,6 +288,17 @@ public class ResearcherController : MonoBehaviour
     public int GetIndex()
     {
         return plateIndex;
+    }
+
+    private void SetIncreaseByStage()
+    {
+        int stage = GameManager.gameManager.stage - 1;
+
+        bossCon.SetMaxHp(500 + (stage * 400));
+        bossCon.SetHp(500 + (stage * 400));
+
+        shotGunRadius = 10 + (stage * 1);
+        shotGunAmount = 7 + (stage * 1);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

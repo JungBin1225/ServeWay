@@ -30,7 +30,6 @@ public class TeacherController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject laserPrefab;
     public GameObject explosionPrefab;
-    public float hp;
     public float speed;
     public float attackCoolTime;
     public float bulletSpeed;
@@ -58,8 +57,7 @@ public class TeacherController : MonoBehaviour
         bossCon.nation = this.nation;
         bossCon.room = this.room;
         bossCon.job = this.job;
-        bossCon.SetHp(hp);
-        bossCon.SetMaxHp(hp);
+        SetIncreaseByStage();
         //GameManager.gameManager.mission.boss = this.gameObject;
 
         playerFood = new List<FoodData>();
@@ -167,7 +165,7 @@ public class TeacherController : MonoBehaviour
         laser = Instantiate(laserPrefab, this.transform);
 
         laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
-        laser.GetComponent<EnemyLaser>().SetCoolTime(0.5f);
+        laser.GetComponent<EnemyLaser>().SetCoolTime(0.2f);
         laser.GetComponent<EnemyLaser>().SetSprite(sprites);
 
         Vector3 target = player.transform.position;
@@ -198,7 +196,7 @@ public class TeacherController : MonoBehaviour
         laser.transform.rotation = angleAxis;
         laser.transform.position = pos;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         isAttack = false;
         coolTime = attackCoolTime / 2;
         StartCoroutine(EnemyMove());
@@ -216,8 +214,8 @@ public class TeacherController : MonoBehaviour
         SetSprite(Food_MainIngred.SOUP);
         yield return new WaitForSeconds(0.35f);
 
-        float radius = 10;
-        float bulletAmount = 6;
+        float radius = 15;
+        float bulletAmount = 12;
         for (int j = 0; j < 6; j++)
         {
             float startAngle = (radius * 10) / 2;
@@ -266,7 +264,7 @@ public class TeacherController : MonoBehaviour
             breadBullet.SetRadius(explosionRadius);
             breadBullet.SetSprite(sprites);
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.4f);
         }
 
         yield return new WaitForSeconds(0.4f);
@@ -348,6 +346,12 @@ public class TeacherController : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private void SetIncreaseByStage()
+    {
+        bossCon.SetMaxHp(500 + ((GameManager.gameManager.stage - 1) * 400));
+        bossCon.SetHp(500 + ((GameManager.gameManager.stage - 1) * 400));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
