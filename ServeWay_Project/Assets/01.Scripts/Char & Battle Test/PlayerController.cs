@@ -247,6 +247,7 @@ public class PlayerController : MonoBehaviour
                 weaponSlot.GetWeapon(foodData.FindFood(weapon).foodPrefab.GetComponent<GetItem>().weaponPrefab, GameManager.gameManager.charData.saveFile.weaponSuccess[n], weapon);
                 n++;
             }
+            weaponSlot.SetIndex(GameManager.gameManager.charData.saveFile.weaponIndex);
 
             speed = GameManager.gameManager.charData.saveFile.playerSpeed;
             chargeSpeed = GameManager.gameManager.charData.saveFile.playerChargeSpeed;

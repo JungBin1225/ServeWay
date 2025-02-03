@@ -41,7 +41,7 @@ public class MissionManager : MonoBehaviour
             missionName[i] = missionName[i].Replace("\\n", "\n");
         }
 
-        missionUI.GetComponent<RectTransform>().localPosition = new Vector3(-1195, 240, 0);
+        MissionDisappear();
         SetMission(NUM_MISSION);
     }
 
@@ -682,5 +682,10 @@ public class MissionManager : MonoBehaviour
         }
 
         missionUI.GetComponent<RectTransform>().localPosition = new Vector3(-735, 240, 0);
+    }
+
+    public void MissionDisappear()
+    {
+        missionUI.GetComponent<RectTransform>().localPosition = new Vector3(-1195, 240, 0);
     }
 }

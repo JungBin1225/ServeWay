@@ -43,6 +43,7 @@ public class CharData : MonoBehaviour
             saveFile.weaponList.Add(name);
             saveFile.weaponSuccess.Add(success);
         }
+        saveFile.weaponIndex = plInfo.weaponSlot.index;
 
         saveFile.playerSpeed = plInfo.speed;
         saveFile.playerChargeSpeed = plInfo.chargeSpeed;

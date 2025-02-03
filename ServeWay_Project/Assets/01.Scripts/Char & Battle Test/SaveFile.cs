@@ -7,6 +7,7 @@ public class SaveFile : ScriptableObject
 {
     public NameAmount inventory;
     public List<string> weaponList;
+    public int weaponIndex;
     public List<Create_Success> weaponSuccess;
     public float playerHp;
     public float playerSpeed;
@@ -30,6 +31,7 @@ public class SaveFile : ScriptableObject
     {
         inventory = new NameAmount();
         weaponList = new List<string>();
+        weaponIndex = 0;
         weaponSuccess = new List<Create_Success>();
         playerHp = 10;
         playerSpeed = 0;

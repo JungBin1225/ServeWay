@@ -49,6 +49,7 @@ public class BossController : MonoBehaviour
 
         room.OpenDoor();
         room.ActiveStair();
+        misson.MissionDisappear();
         GameManager.gameManager.isBossStage = false;
         Destroy(this.gameObject);
     }

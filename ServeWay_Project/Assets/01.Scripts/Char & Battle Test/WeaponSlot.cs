@@ -83,6 +83,27 @@ public class WeaponSlot : MonoBehaviour
         }
     }
 
+    public void SetIndex(int index)
+    {
+        this.index = index;
+
+        if (weaponList.Count != 0)
+        {
+            for(int i = 0; i < weaponList.Count; i++)
+            {
+                if(i == this.index)
+                {
+                    weaponList[i].SetActive(true);
+                    holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[i]));
+                }
+                else
+                {
+                    weaponList[i].SetActive(false);
+                }
+            }
+        }
+    }
+
     public void GetWeapon(GameObject newWeapon, Create_Success success, string name)
     {
         if(weaponList.Count < 3)
@@ -176,7 +197,7 @@ public class WeaponSlot : MonoBehaviour
         {
             if(weapon.GetComponentInChildren<WeaponController>().weaponName == name)
             {
-                Debug.Log(weapon.GetComponentInChildren<WeaponController>().name);
+                //Debug.Log(weapon.GetComponentInChildren<WeaponController>().name);
                 return weapon.GetComponentInChildren<WeaponController>();
             }
         }
