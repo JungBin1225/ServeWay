@@ -52,6 +52,12 @@ public class EnemyGenerator : MonoBehaviour
         noodleOrBread = 0;
         InitEnemy();
 
+        if(!nonEnemyRoom)
+        {
+            PlaceMapObject();
+        }
+
+
         // 미니맵
         minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
     }
@@ -179,45 +185,77 @@ public class EnemyGenerator : MonoBehaviour
         return ingredList[randomIndex];
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void PlaceMapObject()
     {
-        GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+        List<int> quadrant = new List<int> { 1, 2, 3, 4 };
+        float sizeX = transform.localScale.x / 2;
+        float sizeY = transform.localScale.y / 2;
 
-        if (collision.gameObject.tag == "Player" && !isClear && isStarted)
+        int objectAmount = Random.Range(0, 3);
+        int triggerAmount = Random.Range(0, 5 - objectAmount);
+
+        switch(objectAmount)
         {
-            // 미니맵
-            GenerateMiniRoomMesh();
+            case 1:
+                int quad = quadrant[Random.Range(0, quadrant.Count)];
+                quadrant.Remove(quad);
 
-            if (!nonEnemyRoom)
-            {
-                // 일반 방 작동
-                foreach (GameObject door in doorList)
-                {
-                    for (int i = 0; i < door.transform.childCount; i++)
-                    {
-                        door.GetComponent<DoorAnimation>().CloseDoor();
-                    }
-                    doorCloseSound.Play();
-                }
+                SpawnObject(data.mapObjectList.testList[Random.Range(0, 2)], quad, sizeX, sizeY);
+                break;
 
-                if (!isSpawn)
-                {
-                    StartCoroutine(SelectEnamy());
-                }
-            }
+            case 2:
+                int first = quadrant[Random.Range(0, quadrant.Count)];
+                quadrant.Remove(first);
+                int second = quadrant[Random.Range(0, quadrant.Count)];
+                quadrant.Remove(second);
+
+                SpawnObject(data.mapObjectList.testList[Random.Range(0, 2)], first, sizeX, sizeY);
+                SpawnObject(data.mapObjectList.testList[Random.Range(0, 2)], second, sizeX, sizeY);
+                break;
+        }
+
+        for(int i = 0; i < triggerAmount; i++)
+        {
+            int index = quadrant[Random.Range(0, quadrant.Count)];
+            quadrant.Remove(index);
+
+            SpawnObject(data.mapObjectList.testList[2], index, sizeX, sizeY);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void SpawnObject(GameObject prefab, int quadrant, float sizeX, float sizeY)
     {
-        /*if(collision.gameObject.tag == "Enemy")
+        int signX = 1;
+        int signY = 1;
+
+        float distanceX = prefab.GetComponent<MapObject>().width;
+        float distanceY = prefab.GetComponent<MapObject>().height;
+
+        switch (quadrant)
         {
-            enemyAmount--;
+            case 1:
+                signX = 1;
+                signY = 1;
+                break;
+            case 2:
+                signX = -1;
+                signY = 1;
+                break;
+            case 3:
+                signX = -1;
+                signY = -1;
+                break;
+            case 4:
+                signX = 1;
+                signY = -1;
+                break;
         }
-        else if(collision.gameObject.tag == "Player")
-        {
-            //StopCoroutine(SelectEnamy());
-        }*/
+
+        float posX = Random.Range(transform.position.x + (signX * (distanceX + 2)), (transform.position.x + (signX * sizeX)) - (signX * (distanceX + 2)));
+        float posY = Random.Range(transform.position.y + (signY * (distanceY + 2)), (transform.position.y + (signY * sizeY)) - (signY * (distanceY + 2)));
+
+        GameObject mapObject = Instantiate(prefab, new Vector3(posX, posY, 0), Quaternion.Euler(0, 0, 0), transform);
+        mapObject.transform.localScale = new Vector3(mapObject.transform.localScale.x / transform.localScale.x, mapObject.transform.localScale.y / transform.localScale.y, 1);
     }
 
     private void InitEnemy()
@@ -403,5 +441,46 @@ public class EnemyGenerator : MonoBehaviour
         {
             enemyAmount--;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+
+        if (collision.gameObject.tag == "Player" && !isClear && isStarted)
+        {
+            // 미니맵
+            GenerateMiniRoomMesh();
+
+            if (!nonEnemyRoom)
+            {
+                // 일반 방 작동
+                foreach (GameObject door in doorList)
+                {
+                    for (int i = 0; i < door.transform.childCount; i++)
+                    {
+                        door.GetComponent<DoorAnimation>().CloseDoor();
+                    }
+                    doorCloseSound.Play();
+                }
+
+                if (!isSpawn)
+                {
+                    StartCoroutine(SelectEnamy());
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        /*if(collision.gameObject.tag == "Enemy")
+        {
+            enemyAmount--;
+        }
+        else if(collision.gameObject.tag == "Player")
+        {
+            //StopCoroutine(SelectEnamy());
+        }*/
     }
 }

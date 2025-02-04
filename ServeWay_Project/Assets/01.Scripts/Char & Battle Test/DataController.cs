@@ -11,6 +11,7 @@ public class DataController : MonoBehaviour
     public FoodIngredDex FoodIngredDex;
     public BossList bossList;
     public EnemyBulletList enemyBullet;
+    public MapObjectList mapObjectList;
 
     private List<Ingredient> grade1List;
     private List<Ingredient> grade2List;
