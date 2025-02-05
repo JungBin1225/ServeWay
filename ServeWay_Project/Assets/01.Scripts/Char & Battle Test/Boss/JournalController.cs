@@ -8,6 +8,8 @@ public class JournalController : MonoBehaviour
     private MissionManager misson;
     private Rigidbody2D rigidbody;
     private BossController bossCon;
+    private Animator anim;
+    private SpriteRenderer renderer;
     private GameObject player;
     private Vector2 minPos;
     private Vector2 maxPos;
@@ -19,6 +21,7 @@ public class JournalController : MonoBehaviour
     private bool isCharge;
     private float shotGunRadius;
     private float shotGunAmount;
+    private bool isLeft;
 
     public int test;
     public BossRoom room;
@@ -35,6 +38,7 @@ public class JournalController : MonoBehaviour
     public float bulletDamage;
     public float pictureDamage;
     public float chargeDamage;
+    public float attackRange;
     public Food_Nation nation;
     public Boss_Job job;
 
@@ -43,6 +47,8 @@ public class JournalController : MonoBehaviour
         misson = FindObjectOfType<MissionManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
+        anim = GetComponent<Animator>();
+        renderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
@@ -64,6 +70,7 @@ public class JournalController : MonoBehaviour
         isAttack = false;
         isPicture = false;
         isCharge = false;
+        isLeft = true;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -78,18 +85,45 @@ public class JournalController : MonoBehaviour
             coolTime -= Time.deltaTime;
         }
 
-        if (isAttack)
+        /*if (isAttack)
         {
             rigidbody.velocity = Vector2.zero;
+        }*/
+
+
+        if(rigidbody.velocity.x < 0)
+        {
+            isLeft = true;
         }
+        else if(rigidbody.velocity.x > 0)
+        {
+            isLeft = false;
+        }
+        if(isLeft)
+        {
+            renderer.flipX = false;
+        }
+        else
+        {
+            renderer.flipX = true;
+        }
+
+        Debug.Log(Vector3.Distance(transform.position, player.transform.position));
     }
 
     private IEnumerator EnemyMove()
     {
+        anim.SetTrigger("walk");
         while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
             float posY = Random.Range(minPos.y, maxPos.y);
+            if(attackRange < Vector3.Distance(transform.position, player.transform.position))
+            {
+                posX = player.transform.position.x;
+                posY = player.transform.position.y;
+            }
+
             rigidbody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed;
             yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
         }
@@ -128,6 +162,8 @@ public class JournalController : MonoBehaviour
     {
         isAttack = true;
         transform.GetChild(0).gameObject.SetActive(true);
+        anim.SetInteger("attacktype", 1);
+        anim.SetTrigger("attack");
         //범위 표시
         yield return new WaitForSeconds(1f);
 
@@ -136,6 +172,7 @@ public class JournalController : MonoBehaviour
         collider.enabled = true;
         yield return new WaitForSeconds(0.2f);
 
+        anim.SetTrigger("attackend");
         transform.GetChild(0).gameObject.SetActive(false);
         isPicture = false;
         collider.enabled = false;
@@ -146,8 +183,12 @@ public class JournalController : MonoBehaviour
 
     private IEnumerator MachineGunPattern()
     {
+        anim.SetTrigger("attackend");
         isAttack = true;
         yield return new WaitForSeconds(0.3f);
+
+        anim.SetInteger("attacktype", 2);
+        anim.SetTrigger("attack");
 
         string ment = riceBulletPrefab.transform.GetChild(0).GetChild(1).gameObject.name;
         ment = ment.Replace(" ", "");
@@ -173,8 +214,12 @@ public class JournalController : MonoBehaviour
 
     private IEnumerator ShotGunPattern()
     {
+        anim.SetTrigger("attackend");
         isAttack = true;
         yield return new WaitForSeconds(0.35f);
+
+        anim.SetInteger("attacktype", 3);
+        anim.SetTrigger("attack");
 
         for (int j = 0; j < 6; j++)
         {
@@ -202,6 +247,7 @@ public class JournalController : MonoBehaviour
 
     private IEnumerator ChargePattern()
     {
+        anim.SetTrigger("attackend");
         isAttack = true;
         float posX = Random.Range(-(room.transform.localScale.x / 2) + 1, (room.transform.localScale.x / 2) - 1);
         float posY = Random.Range(-(room.transform.localScale.y / 2) + 1, (room.transform.localScale.y / 2) - 1);
@@ -210,6 +256,9 @@ public class JournalController : MonoBehaviour
         Scoop scoopCon = scoop.GetComponent<Scoop>();
 
         yield return new WaitForSeconds(0.5f);
+
+        anim.SetInteger("attacktype", 4);
+        anim.SetTrigger("attack");
 
         rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * chargeSpeed;
         isCharge = true;
@@ -232,6 +281,10 @@ public class JournalController : MonoBehaviour
         }
         Destroy(scoop);
 
+        if(faintTime != 0)
+        {
+            anim.SetTrigger("faint");
+        }
         yield return new WaitForSeconds(faintTime);
 
         isCharge = false;
@@ -266,9 +319,16 @@ public class JournalController : MonoBehaviour
             rigidbody.velocity *= -1;
         }
 
-        if(collision.gameObject.tag == "Player" && isCharge)
+        if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage, sprites);
+            if(isCharge)
+            {
+                collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(chargeDamage, sprites);
+            }
+            else
+            {
+                rigidbody.velocity *= -1;
+            }
         }
     }
 }

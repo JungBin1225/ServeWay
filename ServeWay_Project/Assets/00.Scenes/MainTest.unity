@@ -19899,6 +19899,7 @@ GameObject:
   - component: {fileID: 609390243}
   - component: {fileID: 609390245}
   - component: {fileID: 609390246}
+  - component: {fileID: 609390247}
   m_Layer: 9
   m_Name: Tilemap
   m_TagString: Wall
@@ -20020,7 +20021,7 @@ TilemapCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
@@ -20045,6 +20046,30 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!66 &609390247
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609390241}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 609390245}
+    m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
 --- !u!1 &609882560
 GameObject:
   m_ObjectHideFlags: 0
@@ -40728,12 +40753,32 @@ MonoBehaviour:
   room: {fileID: 8257463934890013968, guid: fcdeac74a71d20e46a5f7192b0abc348, type: 3}
   road: {fileID: 1124818198890577575, guid: a92c4cb324ea64740bae365ec46a744e, type: 3}
   tileMap: {fileID: 609390244}
-  roomTile: {fileID: 11400000, guid: e0455bc13aac74140a645a4b49d03ec4, type: 2}
-  wallTile: {fileID: 11400000, guid: cb920375d1f8b884082b6db376bf5175, type: 2}
-  outTile: {fileID: 11400000, guid: 69efcb04d05003c4d8436883a01bf431, type: 2}
-  startRoomTile: {fileID: 11400000, guid: 5c9ddc6eab86f894da1674113ce9b1df, type: 2}
-  kitchenTile: {fileID: 11400000, guid: 76a57af68a7c6c847b6dad87f5e92a02, type: 2}
-  bossTile: {fileID: 11400000, guid: 4841713ca8150f3429bd9141b8c8ed73, type: 2}
+  roomTile: {fileID: 11400000, guid: d2b94a408ec13944cbb99daf3cbacaba, type: 2}
+  topWallTile: {fileID: 11400000, guid: 8b87c3675ff277a4c982ce67147147f9, type: 2}
+  outTile: {fileID: 11400000, guid: 7de1c67d77deb634e84bbc28d465f96a, type: 2}
+  leftWallTile: {fileID: 11400000, guid: f9549b2b57add944bb970bec1db23dd0, type: 2}
+  rightWallTile: {fileID: 11400000, guid: 39746fa9ee5d69b49892fa48ab3cea35, type: 2}
+  bottomWallTile: {fileID: 11400000, guid: 5b279617ae5f5424181f5d34136cfbe5, type: 2}
+  bottomRightEdgeTile: {fileID: 11400000, guid: c809facc12ff3c7449a8a55ab0f6119d, type: 2}
+  topRightEdgeTile: {fileID: 11400000, guid: 3dd9bbe982e07224ca9e8f219d9d687f, type: 2}
+  topLeftEdgeTile: {fileID: 11400000, guid: 9afe5f2a95e5f554ca64e30f55496485, type: 2}
+  bottomLeftEdgeTile: {fileID: 11400000, guid: 9074cd4b35d27e1418d47b861eab8954, type: 2}
+  roadTile: {fileID: 11400000, guid: 8fc8601bedcb74d4fb1bb73b23d509f2, type: 2}
+  leftRoadEdgeTile: {fileID: 11400000, guid: edcd27c1c6aa72542a06e19722bbdcef, type: 2}
+  rightRoadEdgeTile: {fileID: 11400000, guid: 507f547b1b9669b478f8cbd189482ff1, type: 2}
+  topRoadEdgeTile: {fileID: 11400000, guid: 89db96a8eb2168741af3b99180d880c9, type: 2}
+  bottomRoadEdgeTile: {fileID: 11400000, guid: c604ff74bbaa59544bd39ca98faeaa31, type: 2}
+  startRoomTile: {fileID: 11400000, guid: b4fdc248677a4344d89bf0c653c0949a, type: 2}
+  startRoomTopLeftEdgeTile: {fileID: 11400000, guid: 57fc00f4b32c9ca4789b52175888b301, type: 2}
+  startRoomLeftWallTile: {fileID: 11400000, guid: 70463f562dd277d4abe43067338debb6, type: 2}
+  startRoomBottomLeftEdgeTile: {fileID: 11400000, guid: 2a7325d57ef86c24fad086635ae4464d, type: 2}
+  startRoomTopRightEdgeTile: {fileID: 11400000, guid: 8c09e91209736c944973545fab7d4c3a, type: 2}
+  startRoomRightWallTile: {fileID: 11400000, guid: 26c0b3c442c2c3f4c8cdb8b0d92758cf, type: 2}
+  startRoomBottomRightEdgeTile: {fileID: 11400000, guid: c00a6e42c133ff04a9f7e70bf49824b8, type: 2}
+  startRoomTopWallTile: {fileID: 11400000, guid: 6805cd92098be104aae9d605b17f2886, type: 2}
+  startRoomBottomWallTile: {fileID: 11400000, guid: a9565995b8cd6ad488b38f51bd023bcd, type: 2}
+  kitchenTile: {fileID: 11400000, guid: 4d67120b17bd67440a3fa17182f34b13, type: 2}
+  bossTile: {fileID: 11400000, guid: b2449247c193fb7448fd1184cba53c59, type: 2}
   Player: {fileID: 1949100525}
   EnemyGenerator: {fileID: 6874041130241798213, guid: 11581115ca29e3941b8ea339fe30b862, type: 3}
   BossGenerator: {fileID: 5006794229874112998, guid: 8ca2eca6689801645bbadbab85df5f2c, type: 3}

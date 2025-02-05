@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6133355778297075874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6133355778297075876}
+  - component: {fileID: 6133355778297075877}
+  m_Layer: 0
+  m_Name: MapGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6133355778297075876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6133355778297075874}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6133355778297075877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6133355778297075874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47286a64e9fc1654bb6d2ccb404cabd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapSize: {x: 128, y: 120}
+  map: {fileID: 3243437847550831143, guid: 7460af2268b43f0448e9521bb92340c8, type: 3}
+  node: {fileID: 6339427693834887709, guid: 0123b4d352639184b8a23559389be675, type: 3}
+  room: {fileID: 8257463934890013968, guid: fcdeac74a71d20e46a5f7192b0abc348, type: 3}
+  road: {fileID: 1124818198890577575, guid: a92c4cb324ea64740bae365ec46a744e, type: 3}
+  tileMap: {fileID: 0}
+  roomTile: {fileID: 11400000, guid: 4dbf91ebac970ce42abe963926b03b83, type: 2}
+  topWallTile: {fileID: 11400000, guid: 8f87d1ee1ea68084eba299df973985ac, type: 2}
+  outTile: {fileID: 11400000, guid: e0455bc13aac74140a645a4b49d03ec4, type: 2}
+  leftWallTile: {fileID: 11400000, guid: b9d9a0273208d1e4d99558f5521e63da, type: 2}
+  rightWallTile: {fileID: 11400000, guid: f3b6bd5ccaeaca040bfbc990b0313188, type: 2}
+  bottomWallTile: {fileID: 11400000, guid: 4d34c830941fdc94bbd0db1ac1c93b3a, type: 2}
+  bottomRightEdgeTile: {fileID: 11400000, guid: f0fac9fbf5f670f4c89276b8cea292f4, type: 2}
+  topRightEdgeTile: {fileID: 11400000, guid: 8a5e923db98783b4a91f4009711b8d6f, type: 2}
+  topLeftEdgeTile: {fileID: 11400000, guid: 35a5cfc4f83bc0841867e1bc95eafbba, type: 2}
+  bottomLeftEdgeTile: {fileID: 11400000, guid: e231a33475f2fbb488cb08a603000e14, type: 2}
+  roadTile: {fileID: 11400000, guid: 13afcb58522beeb4098131986b5261f7, type: 2}
+  leftRoadEdgeTile: {fileID: 11400000, guid: d4a8263c033bd7047969b672f2f077c9, type: 2}
+  rightRoadEdgeTile: {fileID: 11400000, guid: a74bf34440b3cc346badc75cb71df24a, type: 2}
+  topRoadEdgeTile: {fileID: 11400000, guid: 0a11c864420ecba4d8166ecbe3afaf67, type: 2}
+  bottomRoadEdgeTile: {fileID: 11400000, guid: c405a0c968b0d8a4ca0b6aadbf9701f7, type: 2}
+  startRoomTile: {fileID: 11400000, guid: 06d92d51fae3f5a458ecd1fd79307c1d, type: 2}
+  startRoomTopLeftEdgeTile: {fileID: 11400000, guid: 57fc00f4b32c9ca4789b52175888b301, type: 2}
+  startRoomLeftWallTile: {fileID: 11400000, guid: 70463f562dd277d4abe43067338debb6, type: 2}
+  startRoomBottomLeftEdgeTile: {fileID: 11400000, guid: 2a7325d57ef86c24fad086635ae4464d, type: 2}
+  startRoomTopRightEdgeTile: {fileID: 11400000, guid: 8c09e91209736c944973545fab7d4c3a, type: 2}
+  startRoomRightWallTile: {fileID: 11400000, guid: 26c0b3c442c2c3f4c8cdb8b0d92758cf, type: 2}
+  startRoomBottomRightEdgeTile: {fileID: 11400000, guid: c00a6e42c133ff04a9f7e70bf49824b8, type: 2}
+  startRoomTopWallTile: {fileID: 11400000, guid: 6805cd92098be104aae9d605b17f2886, type: 2}
+  startRoomBottomWallTile: {fileID: 11400000, guid: a9565995b8cd6ad488b38f51bd023bcd, type: 2}
+  kitchenTile: {fileID: 11400000, guid: 02b655d0e2c3137409071b0d9270c90e, type: 2}
+  bossTile: {fileID: 11400000, guid: a398dd63b3b90ad468a24f34742fd57c, type: 2}
+  Player: {fileID: 0}
+  EnemyGenerator: {fileID: 6874041130241798213, guid: 11581115ca29e3941b8ea339fe30b862, type: 3}
+  BossGenerator: {fileID: 5006794229874112998, guid: 8ca2eca6689801645bbadbab85df5f2c, type: 3}
+  createTablePrefab: {fileID: 6816831641518174314, guid: b916e2c1b77415e4d9a62acc624cb06b, type: 3}
+  refrigeratorPrefab: {fileID: 6816831641518174314, guid: 884f628a608b00d4f811e02f048699eb, type: 3}
+  doorPrefab: {fileID: 5084242752961716783, guid: 6591cedea97a0524db2410791722fac9, type: 3}
+  miniTileMap: {fileID: 0}
+  miniRoomTile: {fileID: 11400000, guid: 0e4a4bdcce028aa48a65d1c9a53aed48, type: 2}
+  miniWallTile: {fileID: 11400000, guid: c20303fa6b79ba14c8b6051509d66478, type: 2}
+  miniOutTile: {fileID: 11400000, guid: f344e83fbac9d174c914f9003a03ba0b, type: 2}

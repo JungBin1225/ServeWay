@@ -22,11 +22,41 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject road;
 
     [SerializeField] Tilemap tileMap;
-    [SerializeField] Tile roomTile; //방을 구성하는 타일
-    [SerializeField] Tile wallTile; //방과 외부를 구분지어줄 벽 타일
+    [SerializeField] Tile roomTile; //방 내부를 구성하는 타일
+    //[SerializeField] Tile wallTile; // 벽 타일
+    //[SerializeField] Tile wallTopTile; //상단 벽 천장 부분, 현재 사용 X
+    [SerializeField] Tile topWallTile; //상단 벽 타일
+    //[SerializeField] Tile wallLeftEdgeTile; //벽 왼쪽 모서리 부분
+    //[SerializeField] Tile wallRightEdgeTile; //벽 오른쪽 모서리 부분
     [SerializeField] Tile outTile; //방 외부의 타일
+    [SerializeField] Tile leftWallTile; //왼쪽 벽 타일
+    [SerializeField] Tile rightWallTile; //오른쪽 벽 타일
+    [SerializeField] Tile bottomWallTile; //아래쪽 벽 타일
+    [SerializeField] Tile bottomRightEdgeTile; //아래쪽 왼편 모서리 타일
+    [SerializeField] Tile topRightEdgeTile; //위쪽 오른편 모서리 타일
+    [SerializeField] Tile topLeftEdgeTile; //위쪽 왼편 모서리 타일
+    [SerializeField] Tile bottomLeftEdgeTile; //아래쪽 왼편 모서리 타일
+    //[SerializeField] Tile topRightInternalEdgeTile; //위쪽 오른편 내각 모서리 타일, 내각 타일은 방과 통로 연결 부분 모서리에 사용
+    //[SerializeField] Tile bottomRightInternalEdgeTile; //아래쪽 오른편 내각 모서리 타일
+    //[SerializeField] Tile topLeftInternalEdgeTile; //위쪽 왼편 내각 모서리 타일
+    //[SerializeField] Tile bottomLeftInternalEdgeTile; //아래쪽 왼편 내각 모서리 타일
+
+    [SerializeField] Tile roadTile; //통로 타일
+    [SerializeField] Tile leftRoadEdgeTile; //통로 왼편 시작지점 타일
+    [SerializeField] Tile rightRoadEdgeTile; //통로 오른편 시작지점 타일
+    [SerializeField] Tile topRoadEdgeTile; //통로 윗편 시작지점 타일
+    [SerializeField] Tile bottomRoadEdgeTile; //통로 아래편 시작지점 타일
 
     [SerializeField] Tile startRoomTile; //시작방 타일
+    [SerializeField] Tile startRoomTopLeftEdgeTile; //시작방 위쪽 왼편 모서리 타일
+    [SerializeField] Tile startRoomLeftWallTile; //시작방 왼쪽 벽 타일
+    [SerializeField] Tile startRoomBottomLeftEdgeTile; //시작방 아래쪽 왼편 모서리 타일
+    [SerializeField] Tile startRoomTopRightEdgeTile; //시작방 위쪽 오른편 모서리 타일
+    [SerializeField] Tile startRoomRightWallTile; //시작방 오른쪽 벽 타일
+    [SerializeField] Tile startRoomBottomRightEdgeTile; //시작방 아래쪽 오른편 모서리 타일
+    [SerializeField] Tile startRoomTopWallTile; //시작방 위쪽 벽 타일
+    [SerializeField] Tile startRoomBottomWallTile; //시작방 아래쪽 벽 타일
+
     [SerializeField] Tile kitchenTile; //주방 타일
     [SerializeField] Tile bossTile; //보스방 타일
 
@@ -400,16 +430,23 @@ public class MapGenerator : MonoBehaviour
                 float distanceY = (Mathf.Max(fromRect.y, toRect.y) - Mathf.Min(fromRect.y - fromRect.height, toRect.y - toRect.height)) / 2;
                 float pointY = Mathf.Max(fromRect.y, toRect.y) - distanceY;
 
-                Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, pointY, 0));
-                tileMap.SetTile(tilePosition, roomTile);
-
-
-                tilePosition = tileMap.WorldToCell(new Vector3(i, pointY - 1, 0));
-                tileMap.SetTile(tilePosition, roomTile);
-
-
-                tilePosition = tileMap.WorldToCell(new Vector3(i, pointY + 1, 0));
-                tileMap.SetTile(tilePosition, roomTile);
+                for(int k= -1 ; k <= 1 ; k++) //타일 배치 로직 부분, 최적화 필요할듯
+                {
+                    Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, pointY + k, 0));
+                    if(tileMap.GetTile(tilePosition) != roomTile) //생성할 타일이 외부 타일이면 통로 타일 설치
+                    {
+                        if(tileMap.GetTile(tileMap.WorldToCell(new Vector3(i - 1, pointY + k, 0))) == roomTile) //왼쪽에 룸타일이 있으면 길 왼쪽 시작부 타일 설치
+                        {
+                            tileMap.SetTile(tilePosition, leftRoadEdgeTile);
+                        }
+                        else if(tileMap.GetTile(tileMap.WorldToCell(new Vector3(i + 1, pointY + k, 0))) == roomTile) //오른쪽에 룸타일이 있으면 길 오른쪽 시작부 타일 설치
+                        {
+                            tileMap.SetTile(tilePosition, rightRoadEdgeTile);
+                        }
+                        else
+                            tileMap.SetTile(tilePosition, roadTile);
+                    }
+                }
 
                 if (x == nextX + 1)
                 {
@@ -449,17 +486,25 @@ public class MapGenerator : MonoBehaviour
                 float distanceX = (Mathf.Max(fromRect.x + fromRect.width, toRect.x + toRect.width) - Mathf.Min(fromRect.x, toRect.x)) / 2;
                 float pointX = Mathf.Min(fromRect.x, toRect.x) + distanceX;
 
-                GameObject door;
+                //GameObject door;
 
-                Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(pointX, i, 0));
-                tileMap.SetTile(tilePosition, roomTile);
-
-
-                tilePosition = tileMap.WorldToCell(new Vector3(pointX - 1, i, 0));
-                tileMap.SetTile(tilePosition, roomTile);
-
-                tilePosition = tileMap.WorldToCell(new Vector3(pointX + 1, i, 0));
-                tileMap.SetTile(tilePosition, roomTile);
+                for (int k = -1; k <= 1; k++) //타일 배치 로직 부분, 최적화 필요할듯
+                {
+                    Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(pointX + k, i, 0));
+                    if (tileMap.GetTile(tilePosition) != roomTile) //생성할 타일이 외부 타일이면 통로 타일 설치
+                    {
+                        if (tileMap.GetTile(tileMap.WorldToCell(new Vector3(pointX + k, i + 1, 0))) == roomTile) //위쪽에 룸타일이 있으면 길 위쪽 시작부 타일 설치
+                        {
+                            tileMap.SetTile(tilePosition, topRoadEdgeTile);
+                        }
+                        else if (tileMap.GetTile(tileMap.WorldToCell(new Vector3(pointX + k, i - 1, 0))) == roomTile) //아래쪽에 룸타일이 있으면 길 아래쪽 시작부 타일 설치
+                        {
+                            tileMap.SetTile(tilePosition, bottomRoadEdgeTile);
+                        }
+                        else
+                            tileMap.SetTile(tilePosition, roadTile);
+                    }
+                }
 
                 if (y == nextY + 1)
                 {
@@ -525,34 +570,115 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    void DrawWall()
+    void DrawWall() //알고리즘과 조건문 대폭 수정함
     {
         //범위가 0~mapSize.x가 아니라 -1~mapSize.x+1인 이유는 전자로 하면 벽 타일이 방을 휘감지 못하는 사태가 생기기 때문
-        for (int i = -1; i < mapSize.x+1; i++) //타일 전체를 순회
+        for (int i = -1; i < mapSize.x + 1; i++) //타일 전체를 순회
         {
-            for (int j = -1; j < mapSize.y+1; j++)
+            for (int j = -1; j < mapSize.y + 1; j++)
             {
                 if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0)) == outTile)
                 {
-                    //바깥타일 일 경우
-                    for (int x = -1; x <= 1; x++)
+                    var tempTile = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 0, 0)); //-1
+                    var tempTile2 = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 0, 0)); //+1
+                    if ((tempTile == roomTile)/* || (tempTile == roadTile) || (tempTile == topRoadEdgeTile) || (tempTile == bottomRoadEdgeTile)*/) //(-1, 0) 왼쪽에 룸타일, rightWall 배치
                     {
-                        for (int y = -1; y <= 1; y++)
+                        /*
+                        if ((tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == roomTile) || (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == leftRoadEdgeTile)) // 상단에도 룸타일이면 내각 모서리 타일 배치
                         {
-                            if (x == 0 && y == 0) continue;//바깥 타일 기준 8방향을 탐색해서 room tile이 있다면 wall tile로 바꿔준다.
-                            if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + x, j - mapSize.y / 2 + y, 0)) == roomTile)
-                            {
-                                tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile);
-                                break;
-                            }
+                            tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), bottomRightInternalEdgeTile);
                         }
+                        else if ((tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == roomTile) || (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == leftRoadEdgeTile)) //하단에도 룸타일이면 내각 모서리 타일 배치
+                        {
+                            tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), topRightInternalEdgeTile);
+                        }
+                        else
+                        {
+                            tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), rightWallTile);
+                        }*/
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), rightWallTile);
+                    }
+                    else if ((tempTile2 == roomTile)/* || (tempTile2 == roadTile) || (tempTile2 == topRoadEdgeTile) || (tempTile2 == bottomRoadEdgeTile)*/) //(1, 0) 오른쪽에 룸타일, leftWall 배치
+                    {
+                        /*
+                        if ((tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == roomTile) || (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == rightRoadEdgeTile)) // 상단에도 룸타일이면 내각 모서리 타일 배치
+                        {
+                            tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), bottomLeftInternalEdgeTile);
+                        }
+                        else if ((tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == roomTile) || (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == rightRoadEdgeTile)) //하단에도 룸타일이면 내각 모서리 타일 배치
+                        {
+                            tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), topLeftInternalEdgeTile);
+                        }
+                        else
+                        {
+                            tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), leftWallTile);
+                        }*/
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), leftWallTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == roomTile) //(0, -1) 아래에 룸타일, 상단 벽 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), topWallTile); //상단 벽면 세로면 타일로 변경
+                        //tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2 + 1, 0), wallTopTile); //벽면 타일 윗부분을 상단 타일로 변경
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == roomTile) //(0, 1) 위에 룸타일, 하단 벽 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), bottomWallTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 1, 0)) == roomTile) //(-1, 1) 상단좌측에 룸타일,  하단우측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), bottomRightEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 - 1, 0)) == roomTile) //(-1, -1) 하단좌측에 룸타일,  상단우측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), topRightEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 - 1, 0)) == roomTile) //(1, -1) 하단우측에 룸타일,  상단좌측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), topLeftEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 1, 0)) == roomTile) //(1, 1) 상단우측에 룸타일,  하단좌측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), bottomLeftEdgeTile);
+                    }
+                    else if (tempTile == startRoomTile) //** 이 아래로는 시작방 타일 배치 판별용 조건문 **, 구조는 위와 동일
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomRightWallTile);
+                    }
+                    else if (tempTile2 == startRoomTile)
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomLeftWallTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == startRoomTile) //(0, -1) 아래에 룸타일, 상단 벽 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomTopWallTile); //상단 벽면 세로면 타일로 변경
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == startRoomTile) //(0, 1) 위에 룸타일, 하단 벽 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomBottomWallTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 1, 0)) == startRoomTile) //(-1, 1) 상단좌측에 룸타일,  하단우측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomBottomRightEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 - 1, 0)) == startRoomTile) //(-1, -1) 하단좌측에 룸타일,  상단우측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomTopRightEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 - 1, 0)) == startRoomTile) //(1, -1) 하단우측에 룸타일,  상단좌측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomTopLeftEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 1, 0)) == startRoomTile) //(1, 1) 상단우측에 룸타일,  하단좌측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomBottomLeftEdgeTile);
                     }
                 }
             }
         }
     }
 
-    void DisplayRoomType()
+
+        void DisplayRoomType()
     {
         List<KeyValuePair <int, int>> bossIdxList = new List <KeyValuePair<int, int>>();
         List<KeyValuePair <int, int>> kitchenIdxList = new List <KeyValuePair<int, int>>();
@@ -691,7 +817,52 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-       
+
+        for (int i = -1; i < mapSize.x + 1; i++) //시작방 벽타일 배치용 코드, 맵타일 생성 후 특정 방을 시작방으로 만들어서 시작방 지정된 후 한번 더 돌려야 함
+        {
+            for (int j = -1; j < mapSize.y + 1; j++)
+            {
+                var temtemTile = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0));
+                if ((temtemTile == rightWallTile) || (temtemTile == leftWallTile) || (temtemTile == topWallTile) || (temtemTile == bottomWallTile) || (temtemTile == bottomRightEdgeTile) || (temtemTile == topRightEdgeTile) || (temtemTile == topLeftEdgeTile) || (temtemTile == bottomLeftEdgeTile))
+                {
+                    var tempTile = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 0, 0)); //-1
+                    var tempTile2 = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 0, 0)); //+1
+                    if (tempTile == startRoomTile) //** 이 아래로는 시작방 타일 배치 판별용 조건문 **, 구조는 위와 동일
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomRightWallTile);
+                    }
+                    else if (tempTile2 == startRoomTile)
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomLeftWallTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == startRoomTile) //(0, -1) 아래에 룸타일, 상단 벽 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomTopWallTile); //상단 벽면 세로면 타일로 변경
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == startRoomTile) //(0, 1) 위에 룸타일, 하단 벽 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomBottomWallTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 1, 0)) == startRoomTile) //(-1, 1) 상단좌측에 룸타일,  하단우측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomBottomRightEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 - 1, 0)) == startRoomTile) //(-1, -1) 하단좌측에 룸타일,  상단우측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomTopRightEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 - 1, 0)) == startRoomTile) //(1, -1) 하단우측에 룸타일,  상단좌측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomTopLeftEdgeTile);
+                    }
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 1, 0)) == startRoomTile) //(1, 1) 상단우측에 룸타일,  하단좌측모서리 배치
+                    {
+                        tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), startRoomBottomLeftEdgeTile);
+                    }
+                }
+            }
+        }
+
     }
 
 

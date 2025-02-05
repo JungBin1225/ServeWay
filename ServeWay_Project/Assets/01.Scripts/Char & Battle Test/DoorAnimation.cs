@@ -29,7 +29,7 @@ public class DoorAnimation : MonoBehaviour
         leftAnim_W.gameObject.SetActive(true);
         rightAnim_W.gameObject.SetActive(true);
 
-        collider2D.enabled = false;
+        //collider2D.enabled = false;
     }
 
     void Update()
@@ -39,7 +39,7 @@ public class DoorAnimation : MonoBehaviour
 
     public void OpenDoor()
     {
-        collider2D.enabled = false;
+        //collider2D.enabled = false;
 
         /*if (Mathf.Abs(transform.rotation.eulerAngles.z) == 90)
         {
@@ -57,7 +57,7 @@ public class DoorAnimation : MonoBehaviour
 
     public void CloseDoor()
     {
-        collider2D.enabled = true;
+        //collider2D.enabled = true;
 
         /*if (Mathf.Abs(transform.rotation.eulerAngles.z) == 90 )
         {
