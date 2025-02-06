@@ -445,7 +445,10 @@ public class EnemyGenerator : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+        if(collision.gameObject.tag == "Player")
+        {
+            GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+        }
 
         if (collision.gameObject.tag == "Player" && !isClear && isStarted)
         {

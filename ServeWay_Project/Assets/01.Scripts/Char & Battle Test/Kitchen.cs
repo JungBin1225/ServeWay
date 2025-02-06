@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Kitchen : MonoBehaviour
 {
+    private DataController data;
     private FoodDataSet foodInfo;
     private StartFoodDataSet startFoodInfo;
     private FoodIngredDex dex;
@@ -15,23 +16,31 @@ public class Kitchen : MonoBehaviour
     private InteractionWindow interaction;
 
     // 미니맵
-    [SerializeField] GameObject miniRoomMesh;
+    [SerializeField] private GameObject miniRoomMesh;
+    [SerializeField] private SpriteRenderer foodImage;
     private bool isVisited = false;
+
 
     void Start()
     {
         list = new List<string>();
         isTouch = false;
         Inventory = FindObjectOfType<InventoryManager>();
-        foodInfo = FindObjectOfType<DataController>().foodData;
-        startFoodInfo = FindObjectOfType<DataController>().startFoodData;
-        dex = FindObjectOfType<DataController>().FoodIngredDex;
+        data = FindObjectOfType<DataController>();
+        foodInfo = data.foodData;
+        startFoodInfo = data.startFoodData;
+        dex = data.FoodIngredDex;
         createUI = FindObjectOfType<CreateUI>();
         interaction = FindObjectOfType<InteractionWindow>();
 
         createUI.gameObject.SetActive(false);
 
         isVisited = false;
+
+        if(!SceneManager.GetActiveScene().name.Contains("Start") && !SceneManager.GetActiveScene().name.Contains("Tutorial"))
+        {
+            SetNationFood();
+        }
     }
 
     
@@ -92,9 +101,17 @@ public class Kitchen : MonoBehaviour
         return true;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void SetNationFood()
     {
-        if(collision.gameObject.tag == "Player")
+        List<FoodData> foodList = data.GetNationFoodList(GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1]);
+
+        foodImage.enabled = true;
+        foodImage.sprite = foodList[Random.Range(0, foodList.Count)].foodSprite;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
         {
             /*if (!SceneManager.GetActiveScene().name.Contains("Start"))
             {
@@ -107,9 +124,9 @@ public class Kitchen : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
             isTouch = false;
             interaction.SetCookAble(false);

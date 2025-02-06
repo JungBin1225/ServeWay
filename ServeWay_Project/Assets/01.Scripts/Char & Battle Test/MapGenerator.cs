@@ -780,7 +780,7 @@ public class MapGenerator : MonoBehaviour
 
                 roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().nonEnemyRoom = true;
                 //Destroy(roomList[ROW, COL].enemyGenerator);
-                GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].roomRect.x + (roomList[ROW, COL].roomRect.width / 2), roomList[ROW, COL].roomRect.y - (roomList[ROW, COL].roomRect.height / 2), 0), Quaternion.Euler(0, 0, 0));
+                GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].enemyGenerator.transform.position.x, roomList[ROW, COL].enemyGenerator.transform.position.y, 0), Quaternion.Euler(0, 0, 0));
                 GameObject refrigerator = Instantiate(refrigeratorPrefab, createTable.transform.position + new Vector3(5, 0, 0), Quaternion.Euler(0, 0, 0));
             }
             else if (k == 2)

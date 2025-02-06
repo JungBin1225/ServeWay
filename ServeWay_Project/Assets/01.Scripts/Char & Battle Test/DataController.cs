@@ -150,4 +150,19 @@ public class DataController : MonoBehaviour
                 return bossList.bossPrefab[0];
         }
     }
+
+    public List<FoodData> GetNationFoodList(Food_Nation nation)
+    {
+        List<FoodData> result = new List<FoodData>();
+
+        foreach(FoodData food in foodData.FoodDatas)
+        {
+            if(food.nation == nation)
+            {
+                result.Add(food);
+            }
+        }
+
+        return result;
+    }
 }
