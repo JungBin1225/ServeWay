@@ -19,12 +19,14 @@ public class TutorialEnemy : MonoBehaviour
     private bool moveAble;
     private Rigidbody2D rigidBody;
     private List<Sprite> sprites;
+    private bool touchWall;
 
     private void Start()
     {
         hp = maxHp;
         moveAble = true;
         attackAble = false;
+        touchWall = false;
         sprites = new List<Sprite>();
         sprites.Add(GetComponent<SpriteRenderer>().sprite);
         target = GameObject.FindGameObjectWithTag("Player");
@@ -75,7 +77,11 @@ public class TutorialEnemy : MonoBehaviour
     {
         moveAble = false;
         rigidBody.velocity = Vector2.zero;
-        rigidBody.AddForce((transform.position - player.transform.position).normalized * 20, ForceMode2D.Impulse);
+
+        if(!touchWall)
+        {
+            rigidBody.AddForce((transform.position - player.transform.position).normalized * 20, ForceMode2D.Impulse);
+        }
 
         yield return new WaitForSeconds(0.2f);
 
@@ -114,6 +120,20 @@ public class TutorialEnemy : MonoBehaviour
         else if (!moveAble && collision.gameObject.tag == "Wall")
         {
             rigidBody.velocity = Vector2.zero;
+        }
+
+        if(collision.gameObject.tag == "Wall")
+        {
+            touchWall = true;
+            rigidBody.velocity = Vector2.zero;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Wall")
+        {
+            touchWall = false;
         }
     }
 }

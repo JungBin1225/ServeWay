@@ -53,17 +53,17 @@ public class FireGame : MonoBehaviour
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
 
         float barTime = Random.Range(4.0f, 7.0f);
-        float barLoc = Random.Range(0.0f, 530.0f);
+        float barLoc = Random.Range(0.0f, 500.0f);
 
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
 
-        while ((Time.realtimeSinceStartup - time) - now < 30)
+        while ((Time.realtimeSinceStartup - time) - now < 20)
         {
             if(isPress)
             {
                 if (spaceBar.GetComponent<RectTransform>().anchoredPosition.x < 575.0f)
                 {
-                    spaceBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(1.5f, 0);
+                    spaceBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(0.5f, 0);
                 }
                 else
                 {
@@ -74,7 +74,7 @@ public class FireGame : MonoBehaviour
             {
                 if(spaceBar.GetComponent<RectTransform>().anchoredPosition.x > 0)
                 {
-                    spaceBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(2.5f, 0);
+                    spaceBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(0.8f, 0);
                 }
                 else
                 {
@@ -84,10 +84,11 @@ public class FireGame : MonoBehaviour
             rangeButton.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 180 - spaceBar.GetComponent<RectTransform>().anchoredPosition.x * 0.21f);
 
             float degree = spaceBar.GetComponent<RectTransform>().anchoredPosition.x - targetBar.GetComponent<RectTransform>().anchoredPosition.x;
-            Debug.Log(targetBar.GetComponent<RectTransform>().sizeDelta.x);
+            
             if(degree > 0 && degree < targetBar.GetComponent<RectTransform>().sizeDelta.x)
             {
                 score += Time.realtimeSinceStartup - frameTime;
+                Debug.Log(score);
             }
 
             if((Time.realtimeSinceStartup - time) - barNow > barTime)
@@ -108,11 +109,11 @@ public class FireGame : MonoBehaviour
             yield return null;
         }
 
-        if(score >= 13)
+        if(score >= 8)
         {
             success = Create_Success.GREAT;
         }
-        else if(score >= 8)
+        else if(score >= 5)
         {
             success = Create_Success.SUCCESS;
         }

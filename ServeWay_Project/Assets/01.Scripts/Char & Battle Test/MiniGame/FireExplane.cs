@@ -37,7 +37,7 @@ public class FireExplane : MonoBehaviour
         {
             if (fire.anchoredPosition.x < 275.0f)
             {
-                fire.anchoredPosition += new Vector2(0.6f, 0);
+                fire.anchoredPosition += new Vector2(0.25f, 0);
             }
             else
             {
@@ -51,7 +51,7 @@ public class FireExplane : MonoBehaviour
         {
             if(fire.anchoredPosition.x > 0)
             {
-                fire.anchoredPosition -= new Vector2(1.1f, 0);
+                fire.anchoredPosition -= new Vector2(0.4f, 0);
             }
             else
             {

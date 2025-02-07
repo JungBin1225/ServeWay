@@ -14,6 +14,7 @@ public class BossTutorial : MonoBehaviour
     public TextAsset clearText;
     public GameObject door;
     public TutorialBoss boss;
+    public Image hpUI;
 
     private PlayerController player;
     private DataController data;
@@ -41,6 +42,7 @@ public class BossTutorial : MonoBehaviour
 
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
+        hpUI.transform.parent.gameObject.SetActive(false);
     }
 
     void Update()
@@ -75,6 +77,11 @@ public class BossTutorial : MonoBehaviour
                 door.transform.GetChild(i).GetComponent<DoorAnimation>().OpenDoor();
             }
             StartCoroutine(StartDialog(clearText));
+        }
+
+        if (boss != null)
+        {
+            hpUI.fillAmount = 1 - (boss.GetHp() / boss.GetMaxHp());
         }
     }
 
@@ -167,6 +174,7 @@ public class BossTutorial : MonoBehaviour
                 door.transform.GetChild(i).GetComponent<DoorAnimation>().CloseDoor();
             }
             GameManager.gameManager.isBossStage = true;
+            hpUI.transform.parent.gameObject.SetActive(true);
             StartCoroutine(misson.MissionAppear());
         }
     }

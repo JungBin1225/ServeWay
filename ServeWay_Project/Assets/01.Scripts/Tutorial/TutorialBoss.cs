@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialBoss : MonoBehaviour
 {
     private MissionManager misson;
     private float hp;
+    private float maxHp;
 
     public BossTutorial room;
     public Food_Nation nation;
@@ -51,6 +53,7 @@ public class TutorialBoss : MonoBehaviour
     public void SetHp(float hp)
     {
         this.hp = hp;
+        this.maxHp = hp;
     }
 
     public float GetHp()
@@ -58,5 +61,9 @@ public class TutorialBoss : MonoBehaviour
         return hp;
     }
 
+    public float GetMaxHp()
+    {
+        return maxHp;
+    }
 
 }
