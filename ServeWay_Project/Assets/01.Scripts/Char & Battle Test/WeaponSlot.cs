@@ -10,12 +10,14 @@ public class WeaponSlot : MonoBehaviour
     private float changeCooltime;
     private DataController dataController;
     private HoldWeapon holdWeapon;
+    private GameObject player;
 
     void Start()
     {
         //InitSlot();
         dataController = FindObjectOfType<DataController>();
         holdWeapon = FindObjectOfType<HoldWeapon>();
+        player = GameObject.FindGameObjectWithTag("Player");
         changeCooltime = 0;
     }
 
@@ -150,11 +152,47 @@ public class WeaponSlot : MonoBehaviour
         {
             GameObject delete = weaponList[index];
             weaponList[index] = null;
-            GameObject drop = Instantiate(delete.transform.GetChild(0).GetComponent<WeaponController>().dropPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(0, 1, 0), Quaternion.Euler(0, 0, 0));
+            GameObject drop = Instantiate(delete.transform.GetChild(0).GetComponent<WeaponController>().dropPrefab, SetDropPos(), Quaternion.Euler(0, 0, 0));
             drop.GetComponent<GetItem>().name = delete.transform.GetChild(0).GetComponent<WeaponController>().weaponName;
             drop.GetComponent<GetItem>().SetSprite();
 
             Destroy(delete);
+        }
+    }
+
+    public Vector3 SetDropPos()
+    {
+        int mask = 1 << LayerMask.NameToLayer("RayWall");
+
+        Ray2D rayUp = new Ray2D(player.transform.position, Vector2.up);
+        Ray2D rayDown = new Ray2D(player.transform.position, Vector2.down);
+        Ray2D rayRight = new Ray2D(player.transform.position, Vector2.right);
+        Ray2D rayLeft = new Ray2D(player.transform.position, Vector2.left);
+
+        RaycastHit2D hitUp = Physics2D.Raycast(rayUp.origin, rayUp.direction, 1f, mask);
+        RaycastHit2D hitDown = Physics2D.Raycast(rayDown.origin, rayDown.direction, 1f, mask);
+        RaycastHit2D hitRight = Physics2D.Raycast(rayRight.origin, rayRight.direction, 1f, mask);
+        RaycastHit2D hitLeft = Physics2D.Raycast(rayLeft.origin, rayLeft.direction, 1f, mask);
+
+        if(!hitUp)
+        {
+            return player.transform.position + new Vector3(0, 1, 0);
+        }
+        else if(!hitDown)
+        {
+            return player.transform.position + new Vector3(0, -1, 0);
+        }
+        else if (!hitRight)
+        {
+            return player.transform.position + new Vector3(1, 0, 0);
+        }
+        else if (!hitLeft)
+        {
+            return player.transform.position + new Vector3(-1, 0, 0);
+        }
+        else
+        {
+            return player.transform.position + new Vector3(0, 0, 0);
         }
     }
 

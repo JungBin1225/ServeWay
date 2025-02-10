@@ -43,7 +43,7 @@ public class PanFlipGame : MonoBehaviour
             isClicked = true;
         }
 
-        if(gameAnim.GetCurrentAnimatorStateInfo(0).IsName("PanFlip"))
+        if(isStart && gameAnim.GetCurrentAnimatorStateInfo(0).IsName("PanFlip"))
         {
             if(audio.volume == 1)
             {

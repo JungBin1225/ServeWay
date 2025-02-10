@@ -9,6 +9,8 @@ public class GetIngredients : MonoBehaviour
     private InteractionWindow interaction;
 
     public Ingred_Name itemName;
+    public Vector3 roomPos;
+    public SpriteRenderer spriteRenderer;
     void Start()
     {
         inventory = FindObjectOfType<InventoryManager>();
@@ -17,9 +19,9 @@ public class GetIngredients : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (getAble && interaction.ingredGet.activeSelf)
         {
-            if (getAble && interaction.ingredGet.activeSelf)
+            if (Input.GetKey(KeyCode.F))
             {
                 GetItem();
             }
@@ -35,7 +37,7 @@ public class GetIngredients : MonoBehaviour
 
     public void SetSprite(Sprite sprite)
     {
-        GetComponent<SpriteRenderer>().sprite = sprite;
+        spriteRenderer.sprite = sprite;
     }
 
     private void GetItem()
@@ -55,6 +57,11 @@ public class GetIngredients : MonoBehaviour
         {
             getAble = true;
             interaction.SetIngredGetAble(true);
+        }
+
+        if(collision.tag == "Wall")
+        {
+            transform.position -= (transform.position - roomPos).normalized * 0.5f;
         }
     }
 

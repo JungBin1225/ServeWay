@@ -190,7 +190,7 @@ public class CreateUI : MonoBehaviour
         }
         else
         {
-            GameObject food = Instantiate(selectedFood.foodPrefab, GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(-2f, 0, 0), Quaternion.Euler(0, 0, 0));
+            GameObject food = Instantiate(selectedFood.foodPrefab, weaponSlot.SetDropPos(), Quaternion.Euler(0, 0, 0));
             food.GetComponent<GetItem>().name = selectedFood.foodName;
             food.GetComponent<GetItem>().SetSprite();
             food.GetComponent<GetItem>().success = success;

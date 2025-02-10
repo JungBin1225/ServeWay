@@ -6,19 +6,22 @@ public class GetRecipe : MonoBehaviour
 {
     private bool getAble;
     private FoodIngredDex dex;
+    private InteractionWindow interaction;
 
     public string foodName;
+    public Vector3 roomPos;
 
     void Start()
     {
         dex = FindObjectOfType<DataController>().FoodIngredDex;
+        interaction = FindObjectOfType<InteractionWindow>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (getAble && interaction.foodGet.activeSelf)
         {
-            if (getAble)
+            if (Input.GetKey(KeyCode.F))
             {
                 GetItem();
             }
@@ -31,11 +34,17 @@ public class GetRecipe : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
             getAble = true;
+            interaction.SetIngredGetAble(true);
+        }
+
+        if (collision.tag == "Wall")
+        {
+            transform.position -= (transform.position - roomPos).normalized * 0.5f;
         }
     }
 
@@ -44,6 +53,7 @@ public class GetRecipe : MonoBehaviour
         if (collision.tag == "Player")
         {
             getAble = false;
+            interaction.SetFoodGetAble(false);
         }
     }
 }

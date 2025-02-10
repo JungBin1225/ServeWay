@@ -22,6 +22,7 @@ public class GetItem : MonoBehaviour
     public string name;
     public Create_Success success;
     public GameObject weaponPrefab;
+    public SpriteRenderer spriteRenderer;
     void Start()
     {
         time = 0;
@@ -81,7 +82,7 @@ public class GetItem : MonoBehaviour
 
     public void SetSprite()
     {
-        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<DataController>().FindFood(name).foodSprite;
+        spriteRenderer.sprite = FindObjectOfType<DataController>().FindFood(name).foodSprite;
     }
 
     private void OnTriggerStay2D(Collider2D collision)

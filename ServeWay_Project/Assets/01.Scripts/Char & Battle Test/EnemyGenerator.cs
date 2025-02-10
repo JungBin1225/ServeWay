@@ -153,6 +153,7 @@ public class EnemyGenerator : MonoBehaviour
             GameObject item = Instantiate(itemPrefab, pos, Quaternion.Euler(0, 0, 0));
             item.GetComponent<GetIngredients>().itemName = ingredient.name;
             item.GetComponent<GetIngredients>().SetSprite(ingredient.sprite);
+            item.GetComponent<GetIngredients>().roomPos = transform.position;
         }
     }
 

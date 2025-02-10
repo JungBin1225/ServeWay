@@ -200,6 +200,7 @@ public class BossRoom : MonoBehaviour
                 Vector3 pos = transform.position + new Vector3(0, -6f, 0);
                 GameObject recipe = Instantiate(recipePrefab, pos, Quaternion.Euler(0, 0, 0));
                 recipe.GetComponent<GetRecipe>().foodName = foodName;
+                recipe.GetComponent<GetRecipe>().roomPos = transform.position;
             }
         }
     }
