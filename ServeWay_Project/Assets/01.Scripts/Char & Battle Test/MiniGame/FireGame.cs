@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FireGame : MonoBehaviour
 {
@@ -11,12 +12,15 @@ public class FireGame : MonoBehaviour
     public GameObject spaceBar;
     public GameObject rangeButton;
     public AudioSource audio;
+    public TMP_Text timer;
 
     private Create_Success success;
     private float time;
     private float score;
     private bool isPress;
     private float frameTime;
+    private float now;
+    private bool isPlaying;
 
     private void OnEnable()
     {
@@ -26,6 +30,7 @@ public class FireGame : MonoBehaviour
 
         explanePanel.SetActive(true);
         gamePanel.SetActive(false);
+        isPlaying = false;
     }
 
     void Update()
@@ -38,26 +43,39 @@ public class FireGame : MonoBehaviour
         {
             isPress = false;
         }
+
+        if (isPlaying)
+        {
+            if ((Time.realtimeSinceStartup - time) - now <= 15)
+            {
+                timer.text = (15 - ((Time.realtimeSinceStartup - time) - now)).ToString("F1");
+            }
+            else
+            {
+                timer.text = "0.0";
+            }
+        }
     }
 
     public IEnumerator GameStart()
     {
         explanePanel.SetActive(false);
         gamePanel.SetActive(true);
+        isPlaying = true;
 
-        float now = Time.realtimeSinceStartup - time;
+        now = Time.realtimeSinceStartup - time;
         float barNow = Time.realtimeSinceStartup - time;
         frameTime = Time.realtimeSinceStartup;
 
         spaceBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
 
-        float barTime = Random.Range(4.0f, 7.0f);
+        float barTime = Random.Range(3.5f, 6.0f);
         float barLoc = Random.Range(0.0f, 500.0f);
 
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
 
-        while ((Time.realtimeSinceStartup - time) - now < 20)
+        while ((Time.realtimeSinceStartup - time) - now < 15)
         {
             if(isPress)
             {
@@ -94,7 +112,7 @@ public class FireGame : MonoBehaviour
             if((Time.realtimeSinceStartup - time) - barNow > barTime)
             {
                 barNow = Time.realtimeSinceStartup - time;
-                barTime = Random.Range(4.0f, 7.0f);
+                barTime = Random.Range(3.5f, 6.0f);
                 barLoc = Random.Range(0.0f, 530.0f);
                 targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
             }
@@ -122,6 +140,7 @@ public class FireGame : MonoBehaviour
             success = Create_Success.FAIL;
         }
 
+        isPlaying = false;
         Debug.Log(success);
         yield return new WaitForSecondsRealtime(1.0f);
 

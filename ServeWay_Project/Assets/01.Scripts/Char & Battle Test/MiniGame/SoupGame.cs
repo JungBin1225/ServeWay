@@ -10,33 +10,31 @@ public class SoupGame : MonoBehaviour
     public GameObject gamePanel;
     public GameObject pot;
     public GameObject spoon;
-    public GameObject way;
     public GameObject timer;
     public Texture2D cursorInvisible;
+    public List<GameObject> wayPoint;
 
     private Create_Success success;
     private bool spoonDown;
     private float time;
     private float score;
-    private int lastIndex;
-    private List<string> wayPoint;
+    private bool isStart;
     private Texture2D cursorImage;
 
     private void OnEnable()
     {
         score = 0;
-        lastIndex = 0;
         spoonDown = false;
+        isStart = false;
         cursorImage = GameManager.gameManager.cursorImage;
         time = Time.realtimeSinceStartup;
 
-        wayPoint = new List<string>();
-        for(int i = 0; i < way.transform.childCount; i++)
-        {
-            wayPoint.Add(way.transform.GetChild(i).gameObject.name);
-        }
-
         spoon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-120, -50, 0);
+
+        foreach (GameObject way in wayPoint)
+        {
+            way.SetActive(false);
+        }
 
         explanePanel.SetActive(true);
         gamePanel.SetActive(false);
@@ -54,13 +52,16 @@ public class SoupGame : MonoBehaviour
             }
         }
 
-        if (Time.realtimeSinceStartup - time <= 30)
+        if(isStart)
         {
-            timer.GetComponent<TMP_Text>().text = (30 - (Time.realtimeSinceStartup - time)).ToString("F1");
-        }
-        else
-        {
-            timer.GetComponent<TMP_Text>().text = "0.0";
+            if (Time.realtimeSinceStartup - time <= 15)
+            {
+                timer.GetComponent<TMP_Text>().text = (15 - (Time.realtimeSinceStartup - time)).ToString("F1");
+            }
+            else
+            {
+                timer.GetComponent<TMP_Text>().text = "0.0";
+            }
         }
     }
 
@@ -68,15 +69,37 @@ public class SoupGame : MonoBehaviour
     {
         explanePanel.SetActive(false);
         gamePanel.SetActive(true);
+        yield return new WaitUntil(() => spoonDown);
+
+        isStart = true;
         time = Time.realtimeSinceStartup;
 
-        yield return new WaitUntil(() => (lastIndex >= wayPoint.Count || Time.realtimeSinceStartup - time > 30));
+        while (Time.realtimeSinceStartup - time < 15)
+        {
+            float coolTime = Time.realtimeSinceStartup;
 
-        if (score >= wayPoint.Count - 5)
+            foreach (GameObject way in wayPoint)
+            {
+                way.SetActive(false);
+            }
+            yield return null;
+
+            foreach (GameObject way in wayPoint)
+            {
+                Vector3 pos = new Vector3(Random.Range(835.0f, 1105.0f), Random.Range(315.0f, 530.0f), 0);
+                way.SetActive(true);
+                way.GetComponent<RectTransform>().transform.position = pos;
+                way.GetComponent<Animator>().SetTrigger("bubble");
+            }
+
+            yield return new WaitUntil(() => ListAllFalse() || Time.realtimeSinceStartup - coolTime > 2 || Time.realtimeSinceStartup - time >= 15);
+        }
+
+        if (score >= 26)
         {
             success = Create_Success.GREAT;
         }
-        else if (score >= wayPoint.Count - 15)
+        else if (score >= 17)
         {
             success = Create_Success.SUCCESS;
         }
@@ -87,6 +110,7 @@ public class SoupGame : MonoBehaviour
         Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
         yield return new WaitForSecondsRealtime(1.0f);
 
+        isStart = false;
         createUI.success = success;
         createUI.OnGameCleared(this.gameObject);
     }
@@ -115,30 +139,28 @@ public class SoupGame : MonoBehaviour
         createUI.menuClick.Play();
     }
 
-    public void TriggerPoint(string name)
+    public bool ListAllFalse()
+    {
+        foreach(GameObject way in wayPoint)
+        {
+            if(way.activeSelf)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void TriggerPoint(GameObject way)
     {
         int index = 0;
-        if(wayPoint.Contains(name))
+        if(wayPoint.Contains(way))
         {
-            index = wayPoint.FindIndex(0, x => x.Equals(name));
-            if(index > lastIndex - 1)
-            {
-                if(lastIndex == 0)
-                {
-                    if(index == 0)
-                    {
-                        score++;
-                        lastIndex = index + 1;
-                        Debug.Log(score);
-                    }
-                }
-                else
-                {
-                    score++;
-                    lastIndex = index + 1;
-                    Debug.Log(score);
-                }
-            }
+            index = wayPoint.FindIndex(0, x => x.Equals(way));
+            way.SetActive(false);
+            score++;
+            Debug.Log(score);
         }
     }
 }

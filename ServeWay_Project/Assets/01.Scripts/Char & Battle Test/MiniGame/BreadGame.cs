@@ -14,11 +14,13 @@ public class BreadGame : MonoBehaviour
     public Animator anim;
     public AudioSource audio;
     public List<AudioClip> audioList;
+    public TMP_Text timer;
 
     private Create_Success success;
     private KeyCode targetKey;
     private float time;
     private float score;
+    private float now;
     private bool isPlaying;
 
     private void OnEnable()
@@ -43,6 +45,18 @@ public class BreadGame : MonoBehaviour
             score++;
             Debug.Log(score);
         }
+
+        if (isPlaying)
+        {
+            if ((Time.realtimeSinceStartup - time) - now <= 15)
+            {
+                timer.text = (15 - ((Time.realtimeSinceStartup - time) - now)).ToString("F1");
+            }
+            else
+            {
+                timer.text = "0.0";
+            }
+        }
     }
 
     public IEnumerator GameStart()
@@ -51,41 +65,21 @@ public class BreadGame : MonoBehaviour
         gamePanel.SetActive(true);
 
         int index = 0;
-        float now = Time.realtimeSinceStartup - time;
+        now = Time.realtimeSinceStartup - time;
         float keyNow = Time.realtimeSinceStartup - time;
-        float KeyTime = Random.Range(2.0f, 6.0f);
+        float KeyTime = 0;
 
         int targetNum = 26;
         //int targetNum = Random.Range(0, 27);
-        targetKey = IntToKey(targetNum);
-        if (targetKey == KeyCode.Space)
-        {
-            gamePanel.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(200, 50);
-            anim.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-120, 50, 0);
-        }
-        else
-        {
-            gamePanel.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(75, 75);
-            anim.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-60, 60, 0);
-        }
-
-        if (index % 2 == 0)
-        {
-            gamePanel.transform.GetChild(1).GetComponent<Image>().sprite = keyboardList[targetNum];
-        }
-        else
-        {
-            gamePanel.transform.GetChild(1).GetComponent<Image>().sprite = pressList[targetNum];
-        }
         isPlaying = true;
 
-        while ((Time.realtimeSinceStartup - time) - now < 20)
+        while ((Time.realtimeSinceStartup - time) - now < 15)
         {
             if((Time.realtimeSinceStartup - time) - keyNow > KeyTime)
             {
                 index = 0;
                 keyNow = Time.realtimeSinceStartup - time;
-                KeyTime = Random.Range(2.0f, 6.0f);
+                KeyTime = Random.Range(2.0f, 4.5f);
                 targetNum = Random.Range(0, 27);
                 targetKey = IntToKey(targetNum);
 
@@ -110,15 +104,15 @@ public class BreadGame : MonoBehaviour
                 gamePanel.transform.GetChild(1).GetComponent<Image>().sprite = pressList[targetNum];
             }
             index++;
-            yield return new WaitForSecondsRealtime(0.2f);
+            yield return new WaitForSecondsRealtime(0.1f);
         }
 
         isPlaying = false;
-        if (score >= 80)
+        if (score >= 55)
         {
             success = Create_Success.GREAT;
         }
-        else if (score >= 60)
+        else if (score >= 40)
         {
             success = Create_Success.SUCCESS;
         }

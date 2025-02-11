@@ -19,14 +19,9 @@ public class SoupSpoon : MonoBehaviour
 
     void Update()
     {
-        if(Vector2.Distance(parentTransform.anchoredPosition + Rtransform.anchoredPosition, spoonP.anchoredPosition + spoon.anchoredPosition) < 5)
+        if(Vector2.Distance(parentTransform.anchoredPosition + Rtransform.anchoredPosition, spoonP.anchoredPosition + spoon.anchoredPosition) < 10)
         {
-            game.TriggerPoint(gameObject.name);
+            game.TriggerPoint(this.gameObject);
         }
-
-        /*if (gameObject.name.EndsWith("_1"))
-        {
-            Debug.Log(Vector2.Distance(Rtransform.anchoredPosition, spoonP.anchoredPosition + spoon.anchoredPosition));
-        }*/
     }
 }
