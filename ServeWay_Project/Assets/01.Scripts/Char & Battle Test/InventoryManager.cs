@@ -31,12 +31,13 @@ public class InventoryManager : MonoBehaviour
         inventory = new NameAmount();
         player = FindObjectOfType<PlayerController>();
         dataController = FindObjectOfType<DataController>();
+        SceneManager.activeSceneChanged += setData;
 
         InitIncrease();
 
         if (inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
         {
-            if(!SceneManager.GetActiveScene().name.Contains("Tutorial"))
+            if(!SceneManager.GetActiveScene().name.Contains("Tutorial") && !SceneManager.GetActiveScene().name.Contains("Title"))
             {
                 LoadInventory();
             }
@@ -47,6 +48,12 @@ public class InventoryManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void setData(Scene scene0, Scene scene1)
+    {
+        player = FindObjectOfType<PlayerController>();
+        dataController = FindObjectOfType<DataController>();
     }
 
     public void GetItem(Ingred_Name itemName, int amount)

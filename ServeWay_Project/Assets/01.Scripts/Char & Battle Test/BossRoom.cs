@@ -162,7 +162,7 @@ public class BossRoom : MonoBehaviour
     public void DropIngredient(int min, int max)
     {
         int dropAmount = UnityEngine.Random.Range(min, max + 1);
-        float radius = 5f;
+        float radius = 3f;
 
         for (int i = 0; i < dropAmount; i++)
         {
@@ -197,7 +197,7 @@ public class BossRoom : MonoBehaviour
 
             if (dropAmount == 1)
             {
-                Vector3 pos = transform.position + new Vector3(0, -6f, 0);
+                Vector3 pos = transform.position + new Vector3(0, -4f, 0);
                 GameObject recipe = Instantiate(recipePrefab, pos, Quaternion.Euler(0, 0, 0));
                 recipe.GetComponent<GetRecipe>().foodName = foodName;
                 recipe.GetComponent<GetRecipe>().roomPos = transform.position;

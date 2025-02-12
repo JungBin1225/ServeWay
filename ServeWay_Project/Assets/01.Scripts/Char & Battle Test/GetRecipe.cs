@@ -19,7 +19,7 @@ public class GetRecipe : MonoBehaviour
 
     void Update()
     {
-        if (getAble && interaction.foodGet.activeSelf)
+        if (getAble && interaction.ingredGet.activeSelf)
         {
             if (Input.GetKey(KeyCode.F))
             {
@@ -53,7 +53,7 @@ public class GetRecipe : MonoBehaviour
         if (collision.tag == "Player")
         {
             getAble = false;
-            interaction.SetFoodGetAble(false);
+            interaction.SetIngredGetAble(false);
         }
     }
 }

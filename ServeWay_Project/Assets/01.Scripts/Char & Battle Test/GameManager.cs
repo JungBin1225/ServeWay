@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum Stage_Theme
 {
@@ -76,6 +77,7 @@ public class GameManager : MonoBehaviour
             stage = 0;
             InitList();
         }
+
     }
 
     void Update()
