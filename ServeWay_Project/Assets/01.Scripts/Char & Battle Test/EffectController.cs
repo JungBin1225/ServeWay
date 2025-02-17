@@ -18,6 +18,11 @@ public class EffectController : MonoBehaviour
         
     }
 
+    private void OnDisable()
+    {
+        Destroy(this.gameObject);
+    }
+
     IEnumerator DestroyEffect()
     {
         float time = 0;
