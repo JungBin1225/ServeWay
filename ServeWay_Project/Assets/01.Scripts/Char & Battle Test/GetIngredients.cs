@@ -11,6 +11,7 @@ public class GetIngredients : MonoBehaviour
     public Ingred_Name itemName;
     public Vector3 roomPos;
     public SpriteRenderer spriteRenderer;
+    public List<GameObject> starObject;
     void Start()
     {
         inventory = FindObjectOfType<InventoryManager>();
@@ -35,9 +36,10 @@ public class GetIngredients : MonoBehaviour
         }*/
     }
 
-    public void SetSprite(Sprite sprite)
+    public void SetSprite(Sprite sprite, int star)
     {
         spriteRenderer.sprite = sprite;
+        starObject[star].SetActive(true);
     }
 
     private void GetItem()

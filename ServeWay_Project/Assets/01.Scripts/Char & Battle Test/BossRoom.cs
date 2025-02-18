@@ -173,9 +173,14 @@ public class BossRoom : MonoBehaviour
             float angleDegrees = -angle * Mathf.Rad2Deg;
 
             Ingredient ingred = RandomIngredient();
+            if(i == 0)
+            {
+                ingred = RandomIngredient(4);
+            }
+
             GameObject item = Instantiate(ingred.prefab, pos, Quaternion.Euler(0, 0, 0));
             item.GetComponent<GetIngredients>().itemName = ingred.name;
-            item.GetComponent<GetIngredients>().SetSprite(ingred.sprite);
+            item.GetComponent<GetIngredients>().SetSprite(ingred.sprite, ((int)ingred.grade));
         }
     }
 
@@ -228,6 +233,14 @@ public class BossRoom : MonoBehaviour
         }
 
         List<Ingredient> ingredList = data.GetGradeList(num);
+        int randomIndex = UnityEngine.Random.Range(0, ingredList.Count);
+
+        return ingredList[randomIndex];
+    }
+
+    private Ingredient RandomIngredient(int star)
+    {
+        List<Ingredient> ingredList = data.GetGradeList(star);
         int randomIndex = UnityEngine.Random.Range(0, ingredList.Count);
 
         return ingredList[randomIndex];

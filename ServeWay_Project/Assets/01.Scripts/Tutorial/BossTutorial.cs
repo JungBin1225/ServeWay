@@ -158,7 +158,7 @@ public class BossTutorial : MonoBehaviour
             Ingredient ingred = data.IngredientList.IngredientList[i];
             GameObject item = Instantiate(ingred.prefab, pos, Quaternion.Euler(0, 0, 0));
             item.GetComponent<GetIngredients>().itemName = ingred.name;
-            item.GetComponent<GetIngredients>().SetSprite(ingred.sprite);
+            item.GetComponent<GetIngredients>().SetSprite(ingred.sprite, ((int)ingred.grade));
         }
     }
 

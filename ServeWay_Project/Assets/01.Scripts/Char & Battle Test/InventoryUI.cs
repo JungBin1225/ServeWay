@@ -255,8 +255,7 @@ public class InventoryUI : MonoBehaviour
             if(foodInfo.FindFood(image.sprite) != null)
             {
                 FoodData food = foodInfo.FindFood(image.sprite);
-                Create_Success success = FindObjectOfType<WeaponSlot>().GetWeaponInfo(food.foodName).success;
-
+                Create_Success success = FindObjectOfType<WeaponSlot>().GetWeaponInfo(int.Parse(image.transform.parent.gameObject.name[image.transform.parent.gameObject.name.Length - 1].ToString()) - 1).success;
                 string success_D = "";
                 string success_S = "";
                 string success_C = "";

@@ -176,7 +176,7 @@ public class AttackTutorial : MonoBehaviour
             Ingredient ingredient = data.IngredientList.IngredientList[i];
             GameObject item = Instantiate(ingredient.prefab, pos, Quaternion.Euler(0, 0, 0));
             item.GetComponent<GetIngredients>().itemName = ingredient.name;
-            item.GetComponent<GetIngredients>().SetSprite(ingredient.sprite);
+            item.GetComponent<GetIngredients>().SetSprite(ingredient.sprite, ((int)ingredient.grade));
         }
     }
 

@@ -155,6 +155,7 @@ public class WeaponSlot : MonoBehaviour
             GameObject drop = Instantiate(delete.transform.GetChild(0).GetComponent<WeaponController>().dropPrefab, SetDropPos(), Quaternion.Euler(0, 0, 0));
             drop.GetComponent<GetItem>().name = delete.transform.GetChild(0).GetComponent<WeaponController>().weaponName;
             drop.GetComponent<GetItem>().SetSprite();
+            drop.GetComponent<GetItem>().success = delete.transform.GetChild(0).GetComponent<WeaponController>().success;
 
             Destroy(delete);
         }
@@ -241,6 +242,11 @@ public class WeaponSlot : MonoBehaviour
         }
 
         return null;
+    }
+
+    public WeaponController GetWeaponInfo(int index)
+    {
+        return weaponList[index].GetComponentInChildren<WeaponController>();
     }
 
     public string GetHoldWeapon()

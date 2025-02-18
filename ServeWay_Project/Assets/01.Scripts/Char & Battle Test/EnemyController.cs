@@ -98,24 +98,9 @@ public class EnemyController : MonoBehaviour
             if(anim.layerOrder[1].color.a == 0)
             {
                 generator.GetComponent<EnemyGenerator>().EnemyDie();
-                Debug.Log("die");
                 Destroy(this.gameObject);
             }
         }
-        else
-        {
-            if (target.transform.position.x > transform.position.x)
-            {
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-                hpImage.gameObject.transform.parent.parent.localRotation = Quaternion.Euler(0, 0, 0);
-            }
-            else
-            {
-                transform.rotation = Quaternion.Euler(0, 180, 0);
-                hpImage.gameObject.transform.parent.parent.localRotation = Quaternion.Euler(0, 180, 0);
-            }
-        }
-        
     }
 
     public void GetDamage(float damage)
@@ -146,6 +131,15 @@ public class EnemyController : MonoBehaviour
                 {
                     rigidBody.velocity = Vector2.zero;
                     anim.state = EnemyState.idle;
+
+                    if (target.transform.position.x > transform.position.x)
+                    {
+                        anim.flipObject.transform.localScale = new Vector3(1f, 1f, 1f);
+                    }
+                    else
+                    {
+                        anim.flipObject.transform.localScale = new Vector3(-1f, 1f, 1f);
+                    }
                 }
                 else
                 {
@@ -201,7 +195,7 @@ public class EnemyController : MonoBehaviour
             {
                 if (dir.magnitude <= range * inventory.decrease_EnemyAttackRange && moveAble)
                 {
-                    switch(attackType)
+                    switch (attackType)
                     {
                         case EnemyAttackType.NOODLE:
                             StartCoroutine(EnemyLaser());
@@ -341,6 +335,8 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator EnemyLaser()
     {
+        bool ishit = false;
+        float length = 0;
         moveAble = false;
         rigidBody.velocity = Vector2.zero;
         lineRenderer.enabled = true;
@@ -354,27 +350,34 @@ public class EnemyController : MonoBehaviour
 
         lineRenderer.SetPosition(0, transform.position);
 
-        int mask = 1 << LayerMask.NameToLayer("RayTarget_P") | 1 << LayerMask.NameToLayer("RayWall");
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
-        if (hit)
+        int mask = 1 << LayerMask.NameToLayer("RayWall");
+        while(!ishit)
         {
-            lineRenderer.SetPosition(1, hit.point);
-        }
-        else
-        {
-            lineRenderer.SetPosition(1, target.transform.position);
-        }
+            length += Time.deltaTime * 8;
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, length, mask);
+            if (hit)
+            {
+                lineRenderer.SetPosition(1, hit.point);
+                ishit = true;
+            }
+            else
+            {
+                lineRenderer.SetPosition(1, transform.position + (new Vector3(ray.direction.x, ray.direction.y, 0) * length));
+            }
 
-        Vector3 start = lineRenderer.GetPosition(0);
-        Vector3 end = lineRenderer.GetPosition(1);
+            Vector3 start = lineRenderer.GetPosition(0);
+            Vector3 end = lineRenderer.GetPosition(1);
 
-        laser.transform.localScale = new Vector3(Vector3.Distance(start, end) * 1.25f, lineRenderer.transform.lossyScale.y * 1.25f, 0);
-        Vector3 pos = (start + end) / 2;
-        Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
-        laser.transform.rotation = angleAxis;
-        laser.transform.position = pos;
+            laser.transform.localScale = new Vector3(Vector3.Distance(start, end), lineRenderer.transform.lossyScale.y, 0);
+            Vector3 pos = (start + end) / 2;
+            Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
+            laser.transform.rotation = angleAxis;
+            laser.transform.position = pos;
+
+            yield return null;
+        }
 
         yield return new WaitForSeconds(laserTime);
 
@@ -487,43 +490,43 @@ public class EnemyController : MonoBehaviour
                 soupAmount = 5;
                 soupRadius = 5;
                 riceAmount = 4;
-                laserTime = 1;
+                laserTime = 2;
                 break;
             case 2:
                 soupAmount = 5;
                 soupRadius = 5;
                 riceAmount = 4;
-                laserTime = 1;
+                laserTime = 2;
                 break;
             case 3:
                 soupAmount = 6;
                 soupRadius = 6;
                 riceAmount = 5;
-                laserTime = 1.5f;
+                laserTime = 3;
                 break;
             case 4:
                 soupAmount = 6;
                 soupRadius = 6;
                 riceAmount = 5;
-                laserTime = 1.5f;
+                laserTime = 3;
                 break;
             case 5:
                 soupAmount = 7;
                 soupRadius = 7;
                 riceAmount = 6;
-                laserTime = 2;
+                laserTime = 4;
                 break;
             case 6:
                 soupAmount = 7;
                 soupRadius = 7;
                 riceAmount = 6;
-                laserTime = 2;
+                laserTime = 4;
                 break;
             case 7:
                 soupAmount = 8;
                 soupRadius = 8;
                 riceAmount = 7;
-                laserTime = 2.5f;
+                laserTime = 5;
                 break;
         }
         breadRadius = 2;

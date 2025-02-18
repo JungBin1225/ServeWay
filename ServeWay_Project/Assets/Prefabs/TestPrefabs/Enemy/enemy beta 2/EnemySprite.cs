@@ -92,7 +92,7 @@ public class EnemySprite : MonoBehaviour
 
     private string enemyEyeColorCategory; //적 눈 색깔 카테고리 지정
 
-    private GameObject flipObject; //적 오브젝트 좌우 플립하는데 최상위 오브젝트 뒤집으면 이동이 꼬일 것 같아서 바로 아래 오브젝트 뒤집기용
+    public GameObject flipObject; //적 오브젝트 좌우 플립하는데 최상위 오브젝트 뒤집으면 이동이 꼬일 것 같아서 바로 아래 오브젝트 뒤집기용
     //커스터마이징 옵션 생성
     public EnemyHairColor enemyHairColor = EnemyHairColor.black;
     public EnemyHairType enemyHairType = EnemyHairType.hair1;
