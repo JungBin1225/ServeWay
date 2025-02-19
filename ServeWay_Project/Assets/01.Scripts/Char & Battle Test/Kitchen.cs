@@ -12,6 +12,7 @@ public class Kitchen : MonoBehaviour
     private InventoryManager Inventory;
     private List<string> list;
     private bool isTouch;
+    private bool startMaked;
     private CreateUI createUI;
     private InteractionWindow interaction;
 
@@ -25,12 +26,14 @@ public class Kitchen : MonoBehaviour
     {
         list = new List<string>();
         isTouch = false;
+        startMaked = false;
         Inventory = FindObjectOfType<InventoryManager>();
         data = FindObjectOfType<DataController>();
         foodInfo = data.foodData;
         startFoodInfo = data.startFoodData;
         dex = data.FoodIngredDex;
         createUI = FindObjectOfType<CreateUI>();
+        createUI.kitchen = this;
         interaction = FindObjectOfType<InteractionWindow>();
 
         createUI.gameObject.SetActive(false);
@@ -48,9 +51,9 @@ public class Kitchen : MonoBehaviour
     {
         if(isTouch && interaction.cookInteraction.activeSelf)
         {
-            if(Input.GetKeyDown(KeyCode.F))
+            if(Input.GetKeyDown(KeyCode.F) && !startMaked)
             {
-                if(Time.timeScale == 1)
+                if (Time.timeScale == 1)
                 {
                     CreatableList();
                     createUI.gameObject.SetActive(true);
@@ -109,9 +112,14 @@ public class Kitchen : MonoBehaviour
         foodImage.sprite = foodList[Random.Range(0, foodList.Count)].foodSprite;
     }
 
+    public void StartMaked()
+    {
+        startMaked = true;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && !startMaked)
         {
             /*if (!SceneManager.GetActiveScene().name.Contains("Start"))
             {

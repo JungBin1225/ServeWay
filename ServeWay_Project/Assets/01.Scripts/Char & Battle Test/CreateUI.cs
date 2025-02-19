@@ -17,17 +17,22 @@ public class CreateUI : MonoBehaviour
     private InventoryManager inventory;
     private WeaponSlot weaponSlot;
     private bool isFirst;
+    private bool isMaking;
     public bool isOpen;
 
     public float deltaTime;
     public Create_Success success;
+    public Kitchen kitchen;
     public GameObject buttonGroup;
     public GameObject explaneUI;
     public GameObject ingredientUI;
     public List<GameObject> minigameUI;
+    public GameObject makingStart;
     public GameObject weaponPrefab;
     public AudioSource menuOpen;
     public AudioSource menuClick;
+    public GameObject resultWindow;
+    public List<Sprite> resultImage;
 
     void Start()
     {
@@ -54,7 +59,7 @@ public class CreateUI : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && isOpen)
+        if(Input.GetKeyDown(KeyCode.Escape) && isOpen && !isMaking)
         {
             CloseUI();
         }
@@ -63,6 +68,8 @@ public class CreateUI : MonoBehaviour
     private void OnEnable()
     {
         isOpen = true;
+        isMaking = false;
+
         if(!isFirst)
         {
             isFirst = true;
@@ -76,6 +83,7 @@ public class CreateUI : MonoBehaviour
     private void OnDisable()
     {
         isOpen = false;
+        makingStart.SetActive(false);
     }
 
     public void SetList(List<string> nameList)
@@ -168,8 +176,40 @@ public class CreateUI : MonoBehaviour
 
     public void OnCreateClicked(int index)
     {
-        minigameUI[index].SetActive(true);
-        menuClick.Play();
+        if (SceneManager.GetActiveScene().name.Contains("Start"))
+        {
+            StartCoroutine(MakeStartFood());
+        }
+        else
+        {
+            minigameUI[index].SetActive(true);
+            menuClick.Play();
+        }  
+    }
+
+    private IEnumerator MakeStartFood()
+    {
+        isMaking = true;
+        makingStart.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(5f);
+
+        isMaking = false;
+        makingStart.SetActive(false);
+        if (weaponSlot.WeaponCount() != 3)
+        {
+            weaponSlot.GetWeapon(weaponPrefab, Create_Success.SUCCESS, selectedFood.foodName);
+        }
+        else
+        {
+            GameObject food = Instantiate(selectedFood.foodPrefab, weaponSlot.SetDropPos(), Quaternion.Euler(0, 0, 0));
+            food.GetComponent<GetItem>().name = selectedFood.foodName;
+            food.GetComponent<GetItem>().SetSprite();
+            food.GetComponent<GetItem>().success = Create_Success.SUCCESS;
+        }
+
+        kitchen.StartMaked();
+        CloseUI();
     }
 
     public void OnGameCleared(GameObject gameUI)
@@ -195,6 +235,37 @@ public class CreateUI : MonoBehaviour
             food.GetComponent<GetItem>().SetSprite();
             food.GetComponent<GetItem>().success = success;
         }
+
+        StartCoroutine(ShowResult());
+    }
+
+    private IEnumerator ShowResult()
+    {
+        isMaking = true;
+        resultWindow.SetActive(true);
+        switch (success)
+        {
+            case Create_Success.FAIL:
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "실패...";
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(1, 0, 0);
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[0];
+                break;
+            case Create_Success.SUCCESS:
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "성공!";
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(1, 1, 1);
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[1];
+                break;
+            case Create_Success.GREAT:
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "대성공!!";
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(0, 1, 0);
+                resultWindow.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[2];
+                break;
+        }
+
+        yield return new WaitForSecondsRealtime(3f);
+
+        resultWindow.SetActive(false);
+        isMaking = false;
 
         CloseUI();
     }

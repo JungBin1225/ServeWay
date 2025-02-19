@@ -13,6 +13,7 @@ public class CookTutorial : MonoBehaviour
     public TextAsset textFile;
     public TextAsset clearText;
     public GameObject door;
+    public GameObject cookUI;
     public string missionText;
 
     private PlayerController player;
@@ -59,7 +60,7 @@ public class CookTutorial : MonoBehaviour
             }
         }
 
-        if (maked && !isClear)
+        if (maked && !cookUI.activeSelf && !isClear)
         {
             isClear = true;
             for (int i = 0; i < door.transform.childCount; i++)

@@ -212,4 +212,12 @@ public class TabMenu : MonoBehaviour
 
         StartCoroutine(ButtonAnimation(isFlip, num));
     }
+
+    public void OnCloseClicked()
+    {
+        if (isOpen && interAble)
+        {
+            StartCoroutine(CloseBook());
+        }
+    }
 }
