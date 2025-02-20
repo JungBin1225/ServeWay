@@ -129,7 +129,7 @@ public class WeaponController : MonoBehaviour
 
     private void GenerateBullet(float speed, float damage, Vector3 mousePos)
     {
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        GameObject bullet = Instantiate(bulletPrefab, player.transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles));
         int tofuDamage = 1;
 
         if(inventory.isTofu)
@@ -228,7 +228,7 @@ public class WeaponController : MonoBehaviour
                 }
             }
 
-            GameObject bullet = Instantiate(bulletPrefab, transform.position + (mousePos - transform.position).normalized * 0.1f, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+            GameObject bullet = Instantiate(bulletPrefab, player.transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
             bullet.GetComponent<BulletController>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<BulletController>().SetSpeed(speed);
             bullet.GetComponent<BulletController>().SetDamage(damage * tofuDamage);

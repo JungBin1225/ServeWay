@@ -892,7 +892,7 @@ MonoBehaviour:
   roomCenter: {x: 0, y: 0}
   attackType: 1
   range: 15
-  attackCoolTime: 5
+  attackCoolTime: {x: 2, y: 2.5}
   damage: 1
   bulletSpeed: 2.5
   bulletPrefab: {fileID: 2490266043329067457, guid: 3ddb7db3ee5ba71488c240fe1a97bba4, type: 3}
@@ -992,6 +992,7 @@ MonoBehaviour:
   eyesSpriteLib: {fileID: 2000244802787561469}
   headSkinSpriteLib: {fileID: 2819123165792806254}
   bodySpriteLib: {fileID: 569745728698099065}
+  flipObject: {fileID: 0}
   enemyHairColor: 0
   enemyHairType: 0
   enemyBodyColor: 2

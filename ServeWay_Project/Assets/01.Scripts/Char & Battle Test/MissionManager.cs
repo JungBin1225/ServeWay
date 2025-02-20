@@ -142,7 +142,7 @@ public class MissionManager : MonoBehaviour
                     nation = Food_Nation.KOREA;
                 }
                 FoodData food = new FoodData();
-                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), food.EunmToString(nation));
+                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F0"), food.EunmToString(nation));
                 break;
             case 1:
                 missionEvent += DashInTime;
@@ -163,7 +163,7 @@ public class MissionManager : MonoBehaviour
                 targetAmount[index] = Random.Range(20, 50);
 
                 matchedUI.Add(index, missionText[textIndex]);
-                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString());
+                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F0"));
                 break;
             case 4:
                 missionEvent += DashAvoid;
@@ -179,7 +179,7 @@ public class MissionManager : MonoBehaviour
                 matchedUI.Add(index, missionText[textIndex]);
                 Food_Nation nation_2 = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
                 FoodData food_2 = new FoodData();
-                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString(), food_2.EunmToString(nation_2));
+                missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F0"), food_2.EunmToString(nation_2));
                 break;
             case 6:
                 missionEvent += ThreeFood;
@@ -273,8 +273,12 @@ public class MissionManager : MonoBehaviour
             }
 
             Food_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+            if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+            {
+                nation = Food_Nation.KOREA;
+            }
             FoodData food = new FoodData();
-            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString(), food.EunmToString(nation));
+            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString("F0"), food.EunmToString(nation));
             //UI에 수치 갱신 reload num in UI
         }
     }
@@ -361,7 +365,7 @@ public class MissionManager : MonoBehaviour
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString());
+            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString("F0"));
             //UI에 수치 갱신 reload num in UI
         }
     }
@@ -411,7 +415,7 @@ public class MissionManager : MonoBehaviour
 
             Food_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
             FoodData food = new FoodData();
-            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString(), food.EunmToString(nation));
+            matchedUI[missionID].GetComponent<TMP_Text>().text = string.Format(missionName[missionID], targetAmount[missionID].ToString(), nowAmount[missionID].ToString("F0"), food.EunmToString(nation));
             //UI에 수치 갱신 reload num in UI
         }
     }

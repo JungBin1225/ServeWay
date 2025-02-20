@@ -188,6 +188,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private void PlaceMapObject()
     {
+        List<GameObject> objectList = new List<GameObject>();
         List<int> quadrant = new List<int> { 1, 2, 3, 4 };
         float sizeX = transform.localScale.x / 2;
         float sizeY = transform.localScale.y / 2;
@@ -195,13 +196,14 @@ public class EnemyGenerator : MonoBehaviour
         int objectAmount = Random.Range(0, 3);
         int triggerAmount = Random.Range(0, 5 - objectAmount);
 
+        objectList = GetObjectList();
         switch(objectAmount)
         {
             case 1:
                 int quad = quadrant[Random.Range(0, quadrant.Count)];
                 quadrant.Remove(quad);
 
-                SpawnObject(data.mapObjectList.testList[Random.Range(0, 2)], quad, sizeX, sizeY);
+                SpawnObject(objectList[Random.Range(0, objectList.Count - 1)], quad, sizeX, sizeY);
                 break;
 
             case 2:
@@ -210,8 +212,8 @@ public class EnemyGenerator : MonoBehaviour
                 int second = quadrant[Random.Range(0, quadrant.Count)];
                 quadrant.Remove(second);
 
-                SpawnObject(data.mapObjectList.testList[Random.Range(0, 2)], first, sizeX, sizeY);
-                SpawnObject(data.mapObjectList.testList[Random.Range(0, 2)], second, sizeX, sizeY);
+                SpawnObject(objectList[Random.Range(0, objectList.Count - 1)], first, sizeX, sizeY);
+                SpawnObject(objectList[Random.Range(0, objectList.Count - 1)], second, sizeX, sizeY);
                 break;
         }
 
@@ -220,7 +222,18 @@ public class EnemyGenerator : MonoBehaviour
             int index = quadrant[Random.Range(0, quadrant.Count)];
             quadrant.Remove(index);
 
-            SpawnObject(data.mapObjectList.testList[2], index, sizeX, sizeY);
+            SpawnObject(objectList[objectList.Count - 1], index, sizeX, sizeY);
+        }
+    }
+
+    private List<GameObject> GetObjectList()
+    {
+        switch(GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1])
+        {
+            case Stage_Theme.CAMPING:
+                return data.mapObjectList.campingList;
+            default:
+                return data.mapObjectList.testList;
         }
     }
 

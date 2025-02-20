@@ -6,4 +6,5 @@ using UnityEngine;
 public class MapObjectList : ScriptableObject
 {
     public List<GameObject> testList;
+    public List<GameObject> campingList;
 }

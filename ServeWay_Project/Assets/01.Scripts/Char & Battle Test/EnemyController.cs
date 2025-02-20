@@ -38,7 +38,7 @@ public class EnemyController : MonoBehaviour
     public Vector2 roomCenter;
     public EnemyAttackType attackType;
     public float range;
-    public float attackCoolTime;
+    public Vector2 attackCoolTime;
     public float damage;
     public float bulletSpeed;
     public GameObject bulletPrefab;
@@ -60,7 +60,7 @@ public class EnemyController : MonoBehaviour
         hp = maxHp;
         moveAble = true;
         isWall = false;
-        coolTime = attackCoolTime;
+        coolTime = Random.Range(attackCoolTime.x, attackCoolTime.y);
         anim = GetComponent<EnemySprite>();
         collider = GetComponent<BoxCollider2D>();
         rigidBody = GetComponent<Rigidbody2D>();
@@ -209,7 +209,7 @@ public class EnemyController : MonoBehaviour
                             yield return new WaitForSeconds(0.2f);
                             EnemyFire();
                             yield return new WaitForSeconds(0.3f);
-                            coolTime = attackCoolTime * inventory.decrease_EnemyAttackTime;
+                            coolTime = Random.Range(attackCoolTime.x, attackCoolTime.y) * inventory.decrease_EnemyAttackTime;
                             moveAble = true;
                             break;
                     }
@@ -329,7 +329,7 @@ public class EnemyController : MonoBehaviour
         }
         yield return new WaitForSeconds(0.1f);
 
-        coolTime = attackCoolTime * inventory.decrease_EnemyAttackTime;
+        coolTime = Random.Range(attackCoolTime.x, attackCoolTime.y) * inventory.decrease_EnemyAttackTime;
         moveAble = true;
     }
 
@@ -384,7 +384,7 @@ public class EnemyController : MonoBehaviour
         lineRenderer.SetPosition(1, transform.position);
         lineRenderer.enabled = false;
         Destroy(laser);
-        coolTime = attackCoolTime * inventory.decrease_EnemyAttackTime;
+        coolTime = Random.Range(attackCoolTime.x, attackCoolTime.y) * inventory.decrease_EnemyAttackTime;
         moveAble = true;
     }
 

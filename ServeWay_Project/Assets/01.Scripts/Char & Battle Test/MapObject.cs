@@ -24,6 +24,10 @@ public class MapObject : MonoBehaviour
         {
             if(GetComponent<BoxCollider2D>().isTrigger)
             {
+                if(GetComponent<Animator>() != null)
+                {
+                    GetComponent<Animator>().enabled = false;
+                }
                 GetComponent<SpriteRenderer>().sprite = changeSprite;
             }
         }
