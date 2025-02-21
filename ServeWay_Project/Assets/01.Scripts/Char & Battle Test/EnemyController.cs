@@ -353,7 +353,7 @@ public class EnemyController : MonoBehaviour
         int mask = 1 << LayerMask.NameToLayer("RayWall");
         while(!ishit)
         {
-            length += Time.deltaTime * 8;
+            length += Time.deltaTime * 7;
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, length, mask);
             if (hit)
             {

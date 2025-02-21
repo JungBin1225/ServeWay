@@ -115,6 +115,9 @@ public class Kitchen : MonoBehaviour
     public void StartMaked()
     {
         startMaked = true;
+        isTouch = false;
+        interaction.SetCookAble(false);
+        interaction.AlreadyMaked(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -130,6 +133,10 @@ public class Kitchen : MonoBehaviour
             isTouch = true;
             interaction.SetCookAble(true);
         }
+        else if(collision.gameObject.tag == "Player" && startMaked)
+        {
+            interaction.AlreadyMaked(true);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -138,6 +145,7 @@ public class Kitchen : MonoBehaviour
         {
             isTouch = false;
             interaction.SetCookAble(false);
+            interaction.AlreadyMaked(false);
         }
     }
 }

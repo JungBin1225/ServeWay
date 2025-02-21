@@ -10,12 +10,14 @@ public class InteractionWindow : MonoBehaviour
     public GameObject refrigeratorOpen;
     public GameObject time;
     public GameObject moveStage;
+    public GameObject startMaked;
 
     private bool foodGetAble;
     private bool ingredGetAble;
     private bool cookAble;
     private bool refrigeAble;
     private bool moveStageAble;
+    private bool alreadyMaked;
 
     void Start()
     {
@@ -24,19 +26,21 @@ public class InteractionWindow : MonoBehaviour
         cookAble = false;
         refrigeAble = false;
         moveStageAble = false;
+        alreadyMaked = false;
 
         foodGet.SetActive(false);
         ingredGet.SetActive(false);
         cookInteraction.SetActive(false);
         refrigeratorOpen.SetActive(false);
         moveStage.SetActive(false);
+        startMaked.SetActive(false);
     }
 
     void Update()
     {
         if(foodGetAble)
         {
-            if(!ingredGetAble && !cookAble && !refrigeAble && !moveStageAble)
+            if(!ingredGetAble && !cookAble && !refrigeAble && !moveStageAble && !alreadyMaked)
             {
                 foodGet.SetActive(true);
             }
@@ -48,7 +52,7 @@ public class InteractionWindow : MonoBehaviour
 
         if(ingredGetAble)
         {
-            if(!foodGetAble && !cookAble && !refrigeAble && !moveStageAble)
+            if(!foodGetAble && !cookAble && !refrigeAble && !moveStageAble && !alreadyMaked)
             {
                 ingredGet.SetActive(true);
             }
@@ -60,7 +64,7 @@ public class InteractionWindow : MonoBehaviour
 
         if (cookAble)
         {
-            if (!foodGetAble && !ingredGetAble && !refrigeAble && !moveStageAble)
+            if (!foodGetAble && !ingredGetAble && !refrigeAble && !moveStageAble && !alreadyMaked)
             {
                 cookInteraction.SetActive(true);
             }
@@ -70,9 +74,21 @@ public class InteractionWindow : MonoBehaviour
             cookInteraction.SetActive(false);
         }
 
-        if(refrigeAble)
+        if (alreadyMaked)
         {
-            if (!foodGetAble && !ingredGetAble && !cookAble && !moveStageAble)
+            if (!foodGetAble && !ingredGetAble && !refrigeAble && !moveStageAble && !cookAble)
+            {
+                startMaked.SetActive(true);
+            }
+        }
+        else
+        {
+            startMaked.SetActive(false);
+        }
+
+        if (refrigeAble)
+        {
+            if (!foodGetAble && !ingredGetAble && !cookAble && !moveStageAble && !alreadyMaked)
             {
                 refrigeratorOpen.SetActive(true);
             }
@@ -84,7 +100,7 @@ public class InteractionWindow : MonoBehaviour
 
         if(moveStageAble)
         {
-            if(!foodGetAble && !ingredGetAble && !cookAble && !refrigeAble)
+            if(!foodGetAble && !ingredGetAble && !cookAble && !refrigeAble && !alreadyMaked)
             {
                 moveStage.SetActive(true);
             }
@@ -118,5 +134,10 @@ public class InteractionWindow : MonoBehaviour
     public void SetMoveStageAble(bool able)
     {
         moveStageAble = able;
+    }
+
+    public void AlreadyMaked(bool able)
+    {
+        alreadyMaked = able;
     }
 }
