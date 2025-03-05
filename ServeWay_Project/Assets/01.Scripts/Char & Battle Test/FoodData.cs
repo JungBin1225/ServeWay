@@ -89,7 +89,7 @@ public class FoodData
 
             if(_NeedIngredient == "")
             {
-                sprites = Resources.LoadAll<Sprite>("Pixel_House_Icons_1.2.1-32x");
+                sprites = Resources.LoadAll<Sprite>("StartFood_Sprite");
                 _FoodSprite = sprites[int.Parse(_FoodSpriteIndex)] as Sprite;
             }
 
