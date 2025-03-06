@@ -7,7 +7,8 @@ using TMPro;
 public class InventoryUI : MonoBehaviour
 {
     public Sprite defaultSprite;
-    public GameObject infoWindow;
+    public GameObject info_Food;
+    public GameObject info_Ingred;
     public Animator bgAnim;
     public AudioSource flipAudio;
 
@@ -66,7 +67,8 @@ public class InventoryUI : MonoBehaviour
 
     private void OnDisable()
     {
-        infoWindow.SetActive(false);
+        info_Food.SetActive(false);
+        info_Ingred.SetActive(false);
         interAble = true;
     }
 
@@ -86,7 +88,7 @@ public class InventoryUI : MonoBehaviour
 
     public void InitPage(int page)
     {
-        if(page == 0)
+        if (page == 0)
         {
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(false);
@@ -211,6 +213,7 @@ public class InventoryUI : MonoBehaviour
         tabMenu.interAble = false;
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
+        transform.GetChild(2).gameObject.SetActive(false);
 
         float time = 0;
         if (dir < 0)
@@ -240,6 +243,8 @@ public class InventoryUI : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(time);
 
+        transform.GetChild(2).gameObject.SetActive(true);
+
         InitPage(this.page);
         interAble = true;
         tabMenu.interAble = true;
@@ -250,10 +255,9 @@ public class InventoryUI : MonoBehaviour
         clickAudio.Play();
         if (image.sprite != defaultSprite)
         {
-            infoWindow.SetActive(true);
-
             if(foodInfo.FindFood(image.sprite) != null)
             {
+                info_Food.SetActive(true);
                 FoodData food = foodInfo.FindFood(image.sprite);
                 Create_Success success = FindObjectOfType<WeaponSlot>().GetWeaponInfo(int.Parse(image.transform.parent.gameObject.name[image.transform.parent.gameObject.name.Length - 1].ToString()) - 1).success;
                 string success_D = "";
@@ -283,45 +287,32 @@ public class InventoryUI : MonoBehaviour
                         break;
                 }
 
-                infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(7).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(8).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(9).gameObject.SetActive(true);
+                info_Food.transform.GetChild(3).GetChild(7).GetComponent<TMP_Text>().color = color;
+                info_Food.transform.GetChild(3).GetChild(8).GetComponent<TMP_Text>().color = color;
+                info_Food.transform.GetChild(3).GetChild(9).GetComponent<TMP_Text>().color = color;
 
-                infoWindow.transform.GetChild(3).GetChild(7).GetComponent<TMP_Text>().color = color;
-                infoWindow.transform.GetChild(3).GetChild(8).GetComponent<TMP_Text>().color = color;
-                infoWindow.transform.GetChild(3).GetChild(9).GetComponent<TMP_Text>().color = color;
-
-                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
-                infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
-                infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
-                infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
-                infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
-                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("만족도: {0}", food.damage);
-                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0}", food.speed);
-                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0}", food.coolTime);
-                infoWindow.transform.GetChild(3).GetChild(7).GetComponent<TMP_Text>().text = string.Format("({0})", success_D);
-                infoWindow.transform.GetChild(3).GetChild(8).GetComponent<TMP_Text>().text = string.Format("({0})", success_S);
-                infoWindow.transform.GetChild(3).GetChild(9).GetComponent<TMP_Text>().text = string.Format("({0})", success_C);
+                info_Food.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
+                info_Food.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
+                info_Food.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
+                info_Food.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
+                info_Food.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
+                info_Food.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = food.damage.ToString();
+                info_Food.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = food.speed.ToString();
+                info_Food.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = food.coolTime.ToString();
+                info_Food.transform.GetChild(3).GetChild(7).GetComponent<TMP_Text>().text = string.Format("({0})", success_D);
+                info_Food.transform.GetChild(3).GetChild(8).GetComponent<TMP_Text>().text = string.Format("({0})", success_S);
+                info_Food.transform.GetChild(3).GetChild(9).GetComponent<TMP_Text>().text = string.Format("({0})", success_C);
             }
             else
             {
+                info_Ingred.SetActive(true);
                 Ingredient ingred = foodInfo.FindIngredient(image.sprite);
 
-                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = ingred.sprite;
-                infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);
-                infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = ingred.EunmToString(ingred.grade);
-                infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = ingred.passive;
-                infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(7).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(8).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(9).gameObject.SetActive(false);
+                info_Ingred.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = ingred.sprite;
+                info_Ingred.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);
+                info_Ingred.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = ingred.EunmToString(ingred.grade);
+                info_Ingred.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = ingred.passive;
+                info_Ingred.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
 
                 if (ingred.name == Ingred_Name.Cream)
                 {
@@ -329,10 +320,10 @@ public class InventoryUI : MonoBehaviour
                     string text1 = passive[0];
                     string text2 = passive[1] + "\n" + passive[2];
 
-                    infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
-                    infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = text1;
-                    infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
-                    infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = text2;
+                    info_Ingred.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
+                    info_Ingred.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = text1;
+                    info_Ingred.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
+                    info_Ingred.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = text2;
                 }
             }
         }
@@ -341,7 +332,8 @@ public class InventoryUI : MonoBehaviour
     public void OnInfoCloseClicked()
     {
         clickAudio.Play();
-        infoWindow.SetActive(false);
+        info_Food.SetActive(false);
+        info_Ingred.SetActive(false);
     }
 
     /*public void OnButtonClicked(int num)

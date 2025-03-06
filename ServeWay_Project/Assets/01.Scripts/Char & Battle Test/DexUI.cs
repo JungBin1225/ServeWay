@@ -19,7 +19,8 @@ public class DexUI : MonoBehaviour
 
     public Sprite lockSprite;
     public GameObject buttonGruop;
-    public GameObject infoWindow;
+    public GameObject info_Food;
+    public GameObject info_Ingred;
     public Material defultMaterial;
     public Material grayScale;
     public Animator bgAnim;
@@ -51,12 +52,14 @@ public class DexUI : MonoBehaviour
 
         InitList(page);
 
-        infoWindow.SetActive(false);
+        info_Food.SetActive(false);
+        info_Ingred.SetActive(false);
     }
 
     private void OnDisable()
     {
-        infoWindow.SetActive(false);
+        info_Food.SetActive(false);
+        info_Ingred.SetActive(false);
         interAble = true;
     }
 
@@ -239,37 +242,30 @@ public class DexUI : MonoBehaviour
         clickAudio.Play();
         if (image.sprite != lockSprite)
         {
-            infoWindow.SetActive(true);
             if (dexMod == 0)
             {
+                info_Food.SetActive(true);
                 FoodData food = dataController.FindFood(image.sprite);
 
-                infoWindow.transform.GetChild(3).GetChild(1).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
-
-                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
-                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = defultMaterial;
-                infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
-                infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
-                infoWindow.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
-                infoWindow.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
-                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = string.Format("포만감: {0}", food.damage);
-                infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = string.Format("서빙 속도: {0}", food.speed);
-                infoWindow.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = string.Format("조리 속도: {0}", food.coolTime);
+                info_Food.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = food.foodSprite;
+                info_Food.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = defultMaterial;
+                info_Food.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = food.foodName;
+                info_Food.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = food.EunmToString(food.grade);
+                info_Food.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = food.EunmToString(food.mainIngred);
+                info_Food.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = food.EunmToString(food.nation);
+                info_Food.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = food.damage.ToString();
+                info_Food.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = food.speed.ToString();
+                info_Food.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = food.coolTime.ToString();
 
                 if (dataController.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.RECIPE)
                 {
-                    infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = grayScale;
-                    infoWindow.transform.GetChild(3).GetChild(1).gameObject.SetActive(false);
-                    infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
-                    infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
-                    infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(false);
-                    infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
-                    infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
+                    info_Food.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = grayScale;
+                    info_Food.transform.GetChild(3).GetChild(1).gameObject.SetActive(false);
+                    info_Food.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
+                    info_Food.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
+                    info_Food.transform.GetChild(3).GetChild(4).gameObject.SetActive(false);
+                    info_Food.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
+                    info_Food.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
                 }
 
                 List<Ingred_Name> ingred = food.needIngredient.Keys.ToList();
@@ -277,13 +273,13 @@ public class DexUI : MonoBehaviour
                 {
                     if(i < ingred.Count)
                     {
-                        infoWindow.transform.GetChild(4).GetChild(i).gameObject.SetActive(true);
-                        infoWindow.transform.GetChild(4).GetChild(i).GetComponent<Image>().sprite = dataController.FindIngredient(ingred[i]).sprite;
-                        infoWindow.transform.GetChild(4).GetChild(i).GetChild(0).GetComponent<TMP_Text>().text = string.Format("X{0}", food.needIngredient[ingred[i]].ToString());
+                        info_Food.transform.GetChild(4).GetChild(i).gameObject.SetActive(true);
+                        info_Food.transform.GetChild(4).GetChild(i).GetComponent<Image>().sprite = dataController.FindIngredient(ingred[i]).sprite;
+                        info_Food.transform.GetChild(4).GetChild(i).GetChild(0).GetComponent<TMP_Text>().text = string.Format("X{0}", food.needIngredient[ingred[i]].ToString());
                     }
                     else
                     {
-                        infoWindow.transform.GetChild(4).GetChild(i).gameObject.SetActive(false);
+                        info_Food.transform.GetChild(4).GetChild(i).gameObject.SetActive(false);
                     }
 
                     
@@ -291,18 +287,15 @@ public class DexUI : MonoBehaviour
             }
             else
             {
+                info_Ingred.SetActive(true);
                 Ingredient ingred = dataController.FindIngredient(image.sprite);
 
-                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = ingred.sprite;
-                infoWindow.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = defultMaterial;
-                infoWindow.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);
-                infoWindow.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = ingred.EunmToString(ingred.grade);
-                infoWindow.transform.GetChild(3).GetChild(2).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
-                infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = ingred.passive;
-                infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
-                infoWindow.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
+                info_Ingred.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = ingred.sprite;
+                info_Ingred.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = defultMaterial;
+                info_Ingred.transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = ingred.EnumToString(ingred.name);
+                info_Ingred.transform.GetChild(3).GetChild(1).GetComponent<TMP_Text>().text = ingred.EunmToString(ingred.grade);
+                info_Ingred.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = ingred.passive;
+                info_Ingred.transform.GetChild(3).GetChild(3).gameObject.SetActive(false);
 
                 if(ingred.name == Ingred_Name.Cream)
                 {
@@ -310,15 +303,10 @@ public class DexUI : MonoBehaviour
                     string text1 = passive[0];
                     string text2 = passive[1] + "\n" + passive[2];
 
-                    infoWindow.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
-                    infoWindow.transform.GetChild(3).GetChild(4).GetComponent<TMP_Text>().text = text1;
-                    infoWindow.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
-                    infoWindow.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = text2;
-                }
-
-                for(int i = 0; i < 6; i++)
-                {
-                    infoWindow.transform.GetChild(4).GetChild(i).gameObject.SetActive(false);
+                    info_Ingred.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
+                    info_Ingred.transform.GetChild(3).GetChild(2).GetComponent<TMP_Text>().text = text1;
+                    info_Ingred.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
+                    info_Ingred.transform.GetChild(3).GetChild(3).GetComponent<TMP_Text>().text = text2;
                 }
             }
         }
@@ -327,6 +315,7 @@ public class DexUI : MonoBehaviour
     public void OnInfoCloseClicked()
     {
         clickAudio.Play();
-        infoWindow.SetActive(false);
+        info_Food.SetActive(false);
+        info_Ingred.SetActive(false);
     }
 }
