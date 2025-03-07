@@ -16,7 +16,10 @@ public class StageStartMessage : MonoBehaviour
         GameManager.gameManager.menuAble = false;
         anim = message.GetComponent<Animator>();
 
-        message.GetComponent<TMP_Text>().text = string.Format("{0}Â÷ ½ÃÇè: {1}", GameManager.gameManager.stage, "Ä«Æä");
+        string theme = GameManager.gameManager.ThemeToString(GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1]);
+
+        message.transform.GetChild(1).GetComponent<TMP_Text>().text = string.Format("{0}ì°¨ ì‹œí—˜", GameManager.gameManager.stage);
+        message.transform.GetChild(2).GetComponent<TMP_Text>().text = theme;
     }
 
     void Update()

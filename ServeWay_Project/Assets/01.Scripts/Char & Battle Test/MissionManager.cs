@@ -685,11 +685,11 @@ public class MissionManager : MonoBehaviour
             yield return null;
         }
 
-        missionUI.GetComponent<RectTransform>().localPosition = new Vector3(-735, 240, 0);
+        missionUI.GetComponent<RectTransform>().localPosition = new Vector3(-735, 200, 0);
     }
 
     public void MissionDisappear()
     {
-        missionUI.GetComponent<RectTransform>().localPosition = new Vector3(-1195, 240, 0);
+        missionUI.GetComponent<RectTransform>().localPosition = new Vector3(-1300, 200, 0);
     }
 }

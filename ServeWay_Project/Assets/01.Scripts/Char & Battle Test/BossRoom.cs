@@ -69,6 +69,10 @@ public class BossRoom : MonoBehaviour
                 bossNowHp.fillAmount = 1 - (bossCon.GetHp() / bossCon.GetMaxHp());
             }
         }
+        else
+        {
+            bossHp.SetActive(false);
+        }
     }
 
     private IEnumerator BossIntro()

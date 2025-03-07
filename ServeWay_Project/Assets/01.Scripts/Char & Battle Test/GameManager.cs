@@ -166,6 +166,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public string ThemeToString(Stage_Theme theme)
+    {
+        switch(theme)
+        {
+            case Stage_Theme.BAR:
+                return "술집";
+            case Stage_Theme.CAFE:
+                return "카페";
+            case Stage_Theme.CAMPING:
+                return "캠핑장";
+            case Stage_Theme.NORMAL:
+                return "일반 식당";
+            case Stage_Theme.RESTORANT:
+                return "레스토랑";
+            case Stage_Theme.SCHOOL:
+                return "급식실";
+            case Stage_Theme.STREET:
+                return "길거리 식당";
+            default:
+                return "";
+        }
+    }
+
     public void SetNextStage(string name)
     {
         nextStage = name;
