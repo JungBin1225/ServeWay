@@ -61,13 +61,13 @@ public class TutorialMissionUI : MonoBehaviour
             yield return null;
         }
 
-        GetComponent<RectTransform>().localPosition = new Vector3(-735, 240, 0);
+        GetComponent<RectTransform>().localPosition = new Vector3(-735, 200, 0);
     }
 
     public void MissonDisappear()
     {
         isAppear = false;
-        GetComponent<RectTransform>().localPosition = new Vector3(-1195, 240, 0);
+        GetComponent<RectTransform>().localPosition = new Vector3(-1195, 200, 0);
         text.color = new Color(0, 0, 0);
         check.SetActive(false);
     }
