@@ -20,6 +20,8 @@ public class StageStartMessage : MonoBehaviour
 
         message.transform.GetChild(1).GetComponent<TMP_Text>().text = string.Format("{0}차 시험", GameManager.gameManager.stage);
         message.transform.GetChild(2).GetComponent<TMP_Text>().text = theme;
+
+        Time.timeScale = 0;
     }
 
     void Update()

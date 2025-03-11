@@ -7,6 +7,7 @@ public class DestroySelf : MonoBehaviour
     public void Destroy()
     {
         GameManager.gameManager.menuAble = true;
+        Time.timeScale = 1;
         Destroy(gameObject);
     }
 }

@@ -10,6 +10,7 @@ public class JournalController : MonoBehaviour
     private BossController bossCon;
     private Animator anim;
     private SpriteRenderer renderer;
+    private SpriteRenderer effectRenderer;
     private GameObject player;
     private Vector2 minPos;
     private Vector2 maxPos;
@@ -29,6 +30,8 @@ public class JournalController : MonoBehaviour
     public GameObject riceBulletPrefab;
     public GameObject soupBulletPrefab;
     public GameObject scoopPrefab;
+    public GameObject dashEffect;
+    public GameObject dashDust;
     public CircleCollider2D collider;
     public Animator pictureAnim;
     public float speed;
@@ -49,6 +52,7 @@ public class JournalController : MonoBehaviour
         bossCon = GetComponent<BossController>();
         anim = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
+        effectRenderer = dashEffect.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
@@ -102,13 +106,13 @@ public class JournalController : MonoBehaviour
         if(isLeft)
         {
             renderer.flipX = false;
+            effectRenderer.flipX = false;
         }
         else
         {
             renderer.flipX = true;
+            effectRenderer.flipX = true;
         }
-
-        Debug.Log(Vector3.Distance(transform.position, player.transform.position));
     }
 
     private IEnumerator EnemyMove()
@@ -259,12 +263,24 @@ public class JournalController : MonoBehaviour
 
         anim.SetInteger("attacktype", 4);
         anim.SetTrigger("attack");
+        dashEffect.SetActive(true);
+
+        if(target.x > transform.position.x)
+        {
+            GameObject dust = Instantiate(dashDust, new Vector3(transform.position.x - 2.8f, transform.position.y + 0.5f), Quaternion.Euler(0, 0, 0));
+            dust.GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else
+        {
+            Instantiate(dashDust, new Vector3(transform.position.x + 2.8f, transform.position.y + 0.5f), Quaternion.Euler(0, 0, 0));
+        }
 
         rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * chargeSpeed;
         isCharge = true;
 
         yield return new WaitUntil(() => scoopCon.GetTouch());
 
+        dashEffect.GetComponent<Animator>().SetTrigger("end");
         rigidbody.velocity = new Vector2(0, 0);
 
         float faintTime = 0;
