@@ -7,4 +7,5 @@ public class MapObjectList : ScriptableObject
 {
     public List<GameObject> testList;
     public List<GameObject> campingList;
+    public List<GameObject> schoolList;
 }

@@ -134,7 +134,24 @@ public class DexUI : MonoBehaviour
                 buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().sprite = dataController.FindIngredient(ingredientList[i]).sprite;
             }
         }
-        Debug.Log(dexMod);
+
+
+        if (dexMod == 0) // modButton
+        {
+            transform.GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
+
+            transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(1).GetChild(1).gameObject.SetActive(false);
+        }
+        else
+        {
+            transform.GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
+
+            transform.GetChild(0).GetChild(1).GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(0).GetChild(1).GetChild(1).gameObject.SetActive(true);
+        }
     }
 
     public void OnModChangeClicked(int index)
