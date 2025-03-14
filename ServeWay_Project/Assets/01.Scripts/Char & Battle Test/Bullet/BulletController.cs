@@ -13,6 +13,7 @@ public class BulletController : MonoBehaviour
     private Animator anim;
     private bool isCollide;
     public GameObject destroyEffect;
+    public bool isRotate;
 
     protected void Start()
     {
@@ -57,6 +58,11 @@ public class BulletController : MonoBehaviour
             Vector3 dir = new Vector3(target.x, target.y, 0);
 
             transform.position -= dir * Time.deltaTime * speed;
+
+            if (isRotate)
+            {
+                transform.eulerAngles += new Vector3(0, 0, 180 * Time.deltaTime);
+            }
         }
     }
 

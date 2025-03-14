@@ -8,12 +8,15 @@ public class ExplosionBullet : BulletController
 
     private bool isExplode;
     private AudioSource audio;
+    private SpriteRenderer renderer;
 
     private void Start()
     {
         isExplode = false;
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
         audio = gameObject.GetComponent<AudioSource>();
+        renderer = GetComponent<SpriteRenderer>();
+        renderer.sprite = food.foodSprite;
     }
 
     public void SetRadius(float radius)
