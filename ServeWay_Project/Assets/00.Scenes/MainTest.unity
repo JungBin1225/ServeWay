@@ -53150,7 +53150,12 @@ MonoBehaviour:
   BossGenerator: {fileID: 5006794229874112998, guid: 8ca2eca6689801645bbadbab85df5f2c, type: 3}
   createTablePrefab: {fileID: 6816831641518174314, guid: b916e2c1b77415e4d9a62acc624cb06b, type: 3}
   refrigeratorPrefab: {fileID: 6816831641518174314, guid: 884f628a608b00d4f811e02f048699eb, type: 3}
-  doorPrefab: {fileID: 5084242752961716783, guid: 6591cedea97a0524db2410791722fac9, type: 3}
+  doorPrefab:
+  - {fileID: 6165326318184531208, guid: 1c6105f7e8bd8ab44832937471587a1f, type: 3}
+  - {fileID: 618360360689487042, guid: 387c8854bd1e18641b6b3c1d30434d03, type: 3}
+  - {fileID: 1823538018899128015, guid: c2ada612fcb3d7543ba7be7fe3e7692a, type: 3}
+  - {fileID: 1823538018899128015, guid: b1453dd5666c2754eb71475ed1a03d23, type: 3}
+  - {fileID: 1273171915}
   miniTileMap: {fileID: 249021785}
   miniRoomTile: {fileID: 11400000, guid: 0e4a4bdcce028aa48a65d1c9a53aed48, type: 2}
   miniWallTile: {fileID: 11400000, guid: c20303fa6b79ba14c8b6051509d66478, type: 2}
@@ -54360,6 +54365,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271436074}
   m_CullTransparentMesh: 1
+--- !u!1 &1273171915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1273171916}
+  m_Layer: 0
+  m_Name: DoorList
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1273171916
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273171915}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1274018817
 GameObject:
   m_ObjectHideFlags: 0

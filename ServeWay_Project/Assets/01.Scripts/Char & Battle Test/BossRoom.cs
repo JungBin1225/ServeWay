@@ -265,10 +265,7 @@ public class BossRoom : MonoBehaviour
     {
         foreach (GameObject door in doorList)
         {
-            for (int i = 0; i < door.transform.childCount; i++)
-            {
-                door.GetComponent<DoorAnimation>().OpenDoor();
-            }
+            door.GetComponent<DoorAnimation>().OpenDoor();
         }
     }
 

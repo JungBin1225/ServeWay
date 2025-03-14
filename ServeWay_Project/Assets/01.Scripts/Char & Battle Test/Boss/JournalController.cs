@@ -113,6 +113,12 @@ public class JournalController : MonoBehaviour
             renderer.flipX = true;
             effectRenderer.flipX = true;
         }
+
+        if(bossCon.GetHp() == 0)
+        {
+            rigidbody.velocity = Vector2.zero;
+            StopAllCoroutines();
+        }
     }
 
     private IEnumerator EnemyMove()
@@ -133,8 +139,10 @@ public class JournalController : MonoBehaviour
         }
 
         rigidbody.velocity = Vector2.zero;
-        SelectPattern();
-        //boss pattern
+        if(bossCon.GetHp() != 0)
+        {
+            SelectPattern();
+        }
     }
 
     private void SelectPattern()
@@ -291,7 +299,6 @@ public class JournalController : MonoBehaviour
         else if (scoopCon.touchedObject == "Player")
         {
             faintTime = 2;
-            Debug.Log("Faint");
             misson.OccurreEvent(9, 1);
             //기절 이펙트
         }
@@ -299,6 +306,7 @@ public class JournalController : MonoBehaviour
 
         if(faintTime != 0)
         {
+            isCharge = false;
             anim.SetTrigger("faint");
         }
         yield return new WaitForSeconds(faintTime);

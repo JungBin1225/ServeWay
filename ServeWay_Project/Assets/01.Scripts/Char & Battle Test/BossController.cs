@@ -7,6 +7,9 @@ public class BossController : MonoBehaviour
     private MissionManager misson;
     private float hp;
     private float maxHp;
+    private bool dying;
+    private Animator anim;
+    private SpriteRenderer renderer;
 
     public BossRoom room;
     public Food_Nation nation;
@@ -15,6 +18,9 @@ public class BossController : MonoBehaviour
     void Start()
     {
         misson = FindObjectOfType<MissionManager>();
+        dying = false;
+        anim = GetComponent<Animator>();
+        renderer = GetComponent<SpriteRenderer>();
         //StartCoroutine(EnemyMove());
     }
 
@@ -22,18 +28,34 @@ public class BossController : MonoBehaviour
     {
         if (hp <= 0)
         {
-            BossDie(0);
+            if(!dying)
+            {
+                StartCoroutine(BossDie(0));
+            }
+            
         }
 
         if(misson.isClear())
         {
-            BossDie(1);
+            if (!dying)
+            {
+                StartCoroutine(BossDie(1));
+            }
         }
 
     }
 
-    public void BossDie(int dieType)
+    public IEnumerator BossDie(int dieType)
     {
+        dying = true;
+        anim.SetTrigger("dead");
+        Debug.Log("dead");
+        while(renderer.color.a > 0)
+        {
+            yield return null;
+        }
+
+
         room.isClear = true;
 
         switch(dieType)
@@ -96,7 +118,14 @@ public class BossController : MonoBehaviour
 
     public float GetHp()
     {
-        return hp;
+        if(hp <= 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return hp;
+        }
     }
 
     public void SetMaxHp(float hp)

@@ -30,6 +30,7 @@ public class EnemyGenerator : MonoBehaviour
     private bool isSpawn;
     private int noodleOrBread;
     private bool isStarted = false;
+    private bool isEntered;
     private int enemyCount;
     //Start() 함수가 끝까지 실행된 이후에 true로 바뀜
     //해주는 이유 : spawnlist를 초기화해주는 Start() 함수가 불리기 이전에 spawnlist를 참조하는 OnTriggerEnter2D()가 불릴 수 있기 때문이다.
@@ -43,6 +44,7 @@ public class EnemyGenerator : MonoBehaviour
         isClear = false;
         isSpawn = false;
         isStarted = true;
+        isEntered = false;
 
         isVisited = false;
 
@@ -72,10 +74,7 @@ public class EnemyGenerator : MonoBehaviour
                 //StopCoroutine(SelectEnamy());
                 foreach (GameObject door in doorList)
                 {
-                    for (int i = 0; i < door.transform.childCount; i++)
-                    {
-                        door.GetComponent<DoorAnimation>().OpenDoor();
-                    }
+                    door.GetComponent<DoorAnimation>().OpenDoor();
                     doorOpenSound.Play();
                 }
 
@@ -464,8 +463,9 @@ public class EnemyGenerator : MonoBehaviour
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
         }
 
-        if (collision.gameObject.tag == "Player" && !isClear && isStarted)
+        if (collision.gameObject.tag == "Player" && !isClear && isStarted && !isEntered)
         {
+            isEntered = true;
             // 미니맵
             GenerateMiniRoomMesh();
 
@@ -474,10 +474,7 @@ public class EnemyGenerator : MonoBehaviour
                 // 일반 방 작동
                 foreach (GameObject door in doorList)
                 {
-                    for (int i = 0; i < door.transform.childCount; i++)
-                    {
-                        door.GetComponent<DoorAnimation>().CloseDoor();
-                    }
+                    door.GetComponent<DoorAnimation>().CloseDoor();
                     doorCloseSound.Play();
                 }
 
