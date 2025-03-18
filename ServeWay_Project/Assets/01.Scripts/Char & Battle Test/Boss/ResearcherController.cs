@@ -6,6 +6,9 @@ public class ResearcherController : MonoBehaviour
 {
     private MissionManager mission;
     private Rigidbody2D rigidbody;
+    private Animator anim;
+    private SpriteRenderer renderer;
+    private SpriteRenderer effectRenderer;
     private BossController bossCon;
     private GameObject player;
     private List<Vector3> platePos;
@@ -20,6 +23,7 @@ public class ResearcherController : MonoBehaviour
     private int plateIndex;
     private float shotGunRadius;
     private float shotGunAmount;
+    private bool isLeft;
 
     public int test;
     public BossRoom room;
@@ -28,6 +32,7 @@ public class ResearcherController : MonoBehaviour
     public GameObject ladelPrefab;
     public GameObject platePrefab;
     public GameObject soupPrefab;
+    public GameObject dashEffect;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
@@ -44,6 +49,9 @@ public class ResearcherController : MonoBehaviour
         mission = FindObjectOfType<MissionManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
+        renderer = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+        effectRenderer = dashEffect.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
@@ -61,6 +69,7 @@ public class ResearcherController : MonoBehaviour
         isCharge = false;
         plateTouch = false;
         plateIndex = 0;
+        isLeft = true;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -80,14 +89,43 @@ public class ResearcherController : MonoBehaviour
             soupTime -= Time.deltaTime;
         }
 
-        if(isAttack)
+        if(isAttack && !isCharge)
         {
             rigidbody.velocity = Vector2.zero;
+        }
+
+
+        if (rigidbody.velocity.x < 0)
+        {
+            isLeft = true;
+        }
+        else if (rigidbody.velocity.x > 0)
+        {
+            isLeft = false;
+        }
+        if (isLeft)
+        {
+            renderer.flipX = false;
+            effectRenderer.gameObject.transform.localPosition = new Vector3(-1.64f, 0.18f, 0);
+            effectRenderer.flipX = false;
+        }
+        else
+        {
+            renderer.flipX = true;
+            effectRenderer.gameObject.transform.localPosition = new Vector3(1.64f, 0.18f, 0);
+            effectRenderer.flipX = true;
+        }
+
+        if (bossCon.GetHp() == 0)
+        {
+            rigidbody.velocity = Vector2.zero;
+            StopAllCoroutines();
         }
     }
 
     private IEnumerator EnemyMove()
     {
+        anim.SetTrigger("walk");
         while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
@@ -97,7 +135,10 @@ public class ResearcherController : MonoBehaviour
         }
 
         rigidbody.velocity = Vector2.zero;
-        SelectPattern();
+        if (bossCon.GetHp() != 0)
+        {
+            SelectPattern();
+        }
         //boss pattern
     }
 
@@ -134,7 +175,11 @@ public class ResearcherController : MonoBehaviour
     private IEnumerator ShotGunPattern()
     {
         isAttack = true;
+        rigidbody.velocity = Vector2.zero;
+
         yield return new WaitForSeconds(0.35f);
+        anim.SetInteger("attacktype", 1);
+        anim.SetTrigger("attack");
 
         for (int j = 0; j < 4; j++)
         {
@@ -152,6 +197,7 @@ public class ResearcherController : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
         yield return new WaitForSeconds(0.3f);
+        anim.SetTrigger("attackend");
 
         isAttack = false;
         coolTime = attackCoolTime;
@@ -161,10 +207,20 @@ public class ResearcherController : MonoBehaviour
     private IEnumerator LadlePattern()
     {
         isAttack = true;
+        rigidbody.velocity = Vector2.zero;
+
         yield return new WaitForSeconds(0.2f);
+        anim.SetInteger("attacktype", 2);
+        anim.SetTrigger("attack");
+
+        int left = 1;
+        if(renderer.flipX)
+        {
+            left = -1;
+        }
 
         GameObject ladle = Instantiate(ladelPrefab, transform.position, Quaternion.Euler(0, 0, 0));
-        ladle.GetComponent<Ladle>().start = transform.position;
+        ladle.GetComponent<Ladle>().start = transform.position + new Vector3(left * -0.39f, -0.25f, 0);
         ladle.GetComponent<Ladle>().target = player;
         ladle.GetComponent<Ladle>().damage = bulletDamage;
         ladle.GetComponent<Ladle>().sprite = GetComponent<SpriteRenderer>().sprite;
@@ -172,6 +228,7 @@ public class ResearcherController : MonoBehaviour
         yield return new WaitUntil(() => FindObjectOfType<Ladle>() == null);
         yield return new WaitForSeconds(0.5f);
 
+        anim.SetTrigger("attackend");
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
@@ -182,8 +239,11 @@ public class ResearcherController : MonoBehaviour
         isAttack = true;
         int amount = Random.Range(2, 5);
         RandomPlate(amount);
+        rigidbody.velocity = Vector2.zero;
 
         yield return new WaitForSeconds(0.5f);
+        anim.SetInteger("attacktype", 3);
+        anim.SetTrigger("attack");
 
         plateIndex = 100;
         for (int i = 0; i < platePos.Count; i++)
@@ -197,6 +257,9 @@ public class ResearcherController : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.2f);
+        anim.SetTrigger("dash");
+        dashEffect.SetActive(true);
+
         for (int i = 0; i < platePos.Count; i++)
         {
             isCharge = true;
@@ -212,6 +275,8 @@ public class ResearcherController : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
+        dashEffect.GetComponent<Animator>().SetTrigger("end");
+        anim.SetTrigger("attackend");
         yield return new WaitForSeconds(1);
 
         platePos.Clear();
@@ -224,8 +289,9 @@ public class ResearcherController : MonoBehaviour
     private IEnumerator FloorSoupPattern()
     {
         isAttack = true;
+        rigidbody.velocity = Vector2.zero;
 
-        if(soupTime > 0)
+        if (soupTime > 0)
         {
             isAttack = false;
             StartCoroutine(EnemyMove());
@@ -237,6 +303,8 @@ public class ResearcherController : MonoBehaviour
             Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
 
             yield return new WaitForSeconds(0.3f);
+            anim.SetInteger("attacktype", 4);
+            anim.SetTrigger("attack");
 
             GameObject soup = Instantiate(soupPrefab, target, Quaternion.Euler(0, 0, 0));
             soup.GetComponent<FloorSoup>().damage = soupDamage;
@@ -244,6 +312,7 @@ public class ResearcherController : MonoBehaviour
             soup.GetComponent<FloorSoup>().sprite = GetComponent<SpriteRenderer>().sprite;
             yield return new WaitForSeconds(0.7f);
 
+            anim.SetTrigger("attackend");
             isAttack = false;
             coolTime = attackCoolTime;
             soupTime = soupCoolTime;

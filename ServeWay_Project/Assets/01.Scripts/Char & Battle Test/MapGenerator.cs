@@ -924,14 +924,14 @@ public class MapGenerator : MonoBehaviour
 
                     if (j > 0 && roomList[i, j - 1].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.x + ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) - (doorPrefab[3].transform.localScale.y * 0.24f / 2);
+                        point = roomList[i, j].enemyGenerator.transform.position.x - ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) - 0.756f;
                         GameObject door = Instantiate(doorPrefab[3], new Vector3(point + 0.5f, roomList[i, j].rightYPoint, 0), Quaternion.Euler(0, 0, -90), doorPrefab[4].transform);
                         roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
                     }
 
                     if (j < NUM_ROOM - 1 && roomList[i, j + 1].isCreated != 0)
                     {
-                        point = roomList[i, j].enemyGenerator.transform.position.x - ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) + (doorPrefab[2].transform.localScale.y * 0.24f / 2);
+                        point = roomList[i, j].enemyGenerator.transform.position.x + ((roomList[i, j].enemyGenerator.transform.localScale.x + 1) / 2) + 0.756f;
                         GameObject door = Instantiate(doorPrefab[2], new Vector3(point - 0.5f, roomList[i, j].leftYPoint, 0), Quaternion.Euler(0, 0, 90), doorPrefab[4].transform);
                         roomList[i, j].enemyGenerator.GetComponent<BossRoom>().doorList.Add(door);
                     }

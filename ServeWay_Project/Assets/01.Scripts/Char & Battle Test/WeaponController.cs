@@ -215,6 +215,7 @@ public class WeaponController : MonoBehaviour
 
         float startAngle = (radius * 10) / 2;
         float differAngle = (radius * 10) / (bulletAmount - 1);
+        bulletColor = new Color32(bulletColor.r, bulletColor.g, bulletColor.g, 200);
 
         for(int i = 0; i < bulletAmount; i++)
         {
