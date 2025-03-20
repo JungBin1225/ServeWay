@@ -93,6 +93,24 @@ public class MoveStage : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            isTouch = true;
+            interaction.SetMoveStageAble(true);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            isTouch = false;
+            interaction.SetMoveStageAble(false);
+        }
+    }
+
     private IEnumerator FadeOut(bool isTuto)
     {
         moving = true;

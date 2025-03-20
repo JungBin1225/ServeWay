@@ -12,6 +12,7 @@ public class BossRoom : MonoBehaviour
     private BossController bossCon;
     private GameObject bossHp;
     private Image bossNowHp;
+    private bool isEntered;
 
 
     public bool isClear;
@@ -35,6 +36,7 @@ public class BossRoom : MonoBehaviour
     {
         isClear = false;
 
+        isEntered = false;
         data = FindObjectOfType<DataController>();
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
@@ -289,8 +291,10 @@ public class BossRoom : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && !isClear)
+        if (collision.gameObject.tag == "Player" && !isClear && !isEntered)
         {
+            isEntered = true;
+
             // 미니맵
             setMiniRowCol();
             if (!isVisited)

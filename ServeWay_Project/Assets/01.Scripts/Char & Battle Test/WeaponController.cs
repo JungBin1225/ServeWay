@@ -35,6 +35,7 @@ public class WeaponController : MonoBehaviour
     public GameObject dropPrefab;
     public List<float> alphaStat;
     public Color32 bulletColor;
+    public List<AudioClip> fireSound;
 
     void Start()
     {
@@ -53,6 +54,8 @@ public class WeaponController : MonoBehaviour
         isClicked = false;
         isLaser = false;
         foodData = data.FindFood(weaponName);
+
+        audio.clip = fireSound[(int)mainIngred];
     }
 
 
@@ -151,6 +154,7 @@ public class WeaponController : MonoBehaviour
                 explosionbulletController.SetDamage(damage * inventory.increase_Damage * tofuDamage);
                 explosionbulletController.SetFood(foodData);
                 explosionbulletController.SetRadius(alphaStat[0]);
+                audio.Play();
                 break;
             case Food_MainIngred.MEAT:
                 Instantiate(effectPrefab, transform);
@@ -160,6 +164,7 @@ public class WeaponController : MonoBehaviour
                 bulletController.SetDamage(damage * inventory.increase_Damage * tofuDamage);
                 bulletController.SetFood(foodData);
                 bulletController.SetColor(bulletColor);
+                audio.Play();
                 break;
             case Food_MainIngred.RICE:
                 Instantiate(effectPrefab, transform);
@@ -169,11 +174,13 @@ public class WeaponController : MonoBehaviour
                 bulletController.SetDamage(damage * inventory.increase_Damage * tofuDamage);
                 bulletController.SetFood(foodData);
                 bulletController.SetColor(bulletColor);
+                audio.Play();
                 break;
             case Food_MainIngred.SOUP:
                 Destroy(bullet);
                 Instantiate(effectPrefab, transform);
                 GenerateSoupBullet(speed * inventory.increase_BulletSpeed, damage * inventory.increase_Damage, alphaStat[0], alphaStat[1]);
+                audio.Play();
                 break;
             case Food_MainIngred.NOODLE:
                 Destroy(bullet);

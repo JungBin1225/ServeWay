@@ -145,6 +145,15 @@ MonoBehaviour:
   effectPrefab: {fileID: 0}
   dropPrefab: {fileID: 8164251098009920836, guid: 0a4f700751b61db42aa62a151d6291b2, type: 3}
   alphaStat: []
+  bulletColor:
+    serializedVersion: 2
+    rgba: 0
+  fireSound:
+  - {fileID: 8300000, guid: 39c155880cb97f44d8c879ccb2c58e96, type: 3}
+  - {fileID: 8300000, guid: 2279c88441dae6a4eb6b829da2d1cbc8, type: 3}
+  - {fileID: 8300000, guid: cba449c8f3866fa4d9d498cad31ba2ed, type: 3}
+  - {fileID: 8300000, guid: 43da7cd5b74960f44af07a7f274caab1, type: 3}
+  - {fileID: 8300000, guid: 66722c689b457cc48846a3c63bf2b6b0, type: 3}
 --- !u!120 &7269001887459528168
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -277,7 +286,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 1138023030925671211, guid: 6fb4c38b18e699945878c59b54cd107e, type: 2}
   m_audioClip: {fileID: 8300000, guid: 43da7cd5b74960f44af07a7f274caab1, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0

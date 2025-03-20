@@ -14,6 +14,7 @@ public class BossController : MonoBehaviour
     public BossRoom room;
     public Food_Nation nation;
     public Boss_Job job;
+    public GameObject eatSound;
 
     void Start()
     {
@@ -79,8 +80,12 @@ public class BossController : MonoBehaviour
     public void GetDamage(float damage, Vector3 effectPos, FoodData food)
     {
         //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
+        if(FindObjectOfType<EatSound>() == null)
+        {
+            GameObject sound = Instantiate(eatSound, transform.position, transform.rotation);
+        }
 
-        if(job == Boss_Job.YOUTUBER && gameObject.GetComponent<YoutuberController>().isAlgorithm)
+        if (job == Boss_Job.YOUTUBER && gameObject.GetComponent<YoutuberController>().isAlgorithm)
         {
             if(food != gameObject.GetComponent<YoutuberController>().GetAlgorithmFood())
             {
