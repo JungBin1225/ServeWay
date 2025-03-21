@@ -11,6 +11,7 @@ public class JournalController : MonoBehaviour
     private Animator anim;
     private SpriteRenderer renderer;
     private SpriteRenderer effectRenderer;
+    private AudioSource audio;
     private GameObject player;
     private Vector2 minPos;
     private Vector2 maxPos;
@@ -34,6 +35,7 @@ public class JournalController : MonoBehaviour
     public GameObject dashDust;
     public CircleCollider2D collider;
     public Animator pictureAnim;
+    public List<AudioClip> attackSound;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
@@ -53,6 +55,7 @@ public class JournalController : MonoBehaviour
         anim = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
         effectRenderer = dashEffect.GetComponent<SpriteRenderer>();
+        audio = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
@@ -179,6 +182,10 @@ public class JournalController : MonoBehaviour
         //범위 표시
         yield return new WaitForSeconds(1f);
 
+        audio.loop = false;
+        audio.clip = attackSound[0];
+        audio.Play();
+
         pictureAnim.SetTrigger("picture");
         isPicture = true;
         collider.enabled = true;
@@ -190,6 +197,7 @@ public class JournalController : MonoBehaviour
         collider.enabled = false;
         isAttack = false;
         coolTime = attackCoolTime;
+        audio.Stop();
         StartCoroutine(EnemyMove());
     }
 
@@ -201,6 +209,10 @@ public class JournalController : MonoBehaviour
 
         anim.SetInteger("attacktype", 2);
         anim.SetTrigger("attack");
+
+        audio.loop = true;
+        audio.clip = attackSound[1];
+        audio.Play();
 
         string ment = riceBulletPrefab.transform.GetChild(0).GetChild(1).gameObject.name;
         ment = ment.Replace(" ", "");
@@ -218,6 +230,7 @@ public class JournalController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+        audio.Stop();
         isAttack = false;
         rigidbody.velocity = Vector2.zero;
         coolTime = attackCoolTime;
@@ -232,6 +245,10 @@ public class JournalController : MonoBehaviour
 
         anim.SetInteger("attacktype", 3);
         anim.SetTrigger("attack");
+
+        audio.loop = true;
+        audio.clip = attackSound[2];
+        audio.Play();
 
         for (int j = 0; j < 6; j++)
         {
@@ -252,6 +269,7 @@ public class JournalController : MonoBehaviour
         }
         yield return new WaitForSeconds(0.3f);
 
+        audio.Stop();
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
