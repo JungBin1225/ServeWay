@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public float nowHp;
     public float invincibleTime;
     public GameObject gameOverUI;
+    public AudioSource damagedSound;
 
     private Animator anim;
     private PlayerController playerController;
@@ -63,6 +64,8 @@ public class PlayerHealth : MonoBehaviour
         {
             nowHp -= damage;
             damagedObject = sprite;
+            damagedSound.Play();
+
             if (GameManager.gameManager.isBossStage)
             {
                 misson.OccurreEvent(2, 0);

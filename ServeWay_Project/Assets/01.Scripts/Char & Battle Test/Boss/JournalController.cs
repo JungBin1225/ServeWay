@@ -184,6 +184,8 @@ public class JournalController : MonoBehaviour
 
         audio.loop = false;
         audio.clip = attackSound[0];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
         audio.Play();
 
         pictureAnim.SetTrigger("picture");
@@ -197,7 +199,6 @@ public class JournalController : MonoBehaviour
         collider.enabled = false;
         isAttack = false;
         coolTime = attackCoolTime;
-        audio.Stop();
         StartCoroutine(EnemyMove());
     }
 
@@ -212,6 +213,8 @@ public class JournalController : MonoBehaviour
 
         audio.loop = true;
         audio.clip = attackSound[1];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
         audio.Play();
 
         string ment = riceBulletPrefab.transform.GetChild(0).GetChild(1).gameObject.name;
@@ -248,6 +251,8 @@ public class JournalController : MonoBehaviour
 
         audio.loop = true;
         audio.clip = attackSound[2];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
         audio.Play();
 
         for (int j = 0; j < 6; j++)
@@ -291,7 +296,13 @@ public class JournalController : MonoBehaviour
         anim.SetTrigger("attack");
         dashEffect.SetActive(true);
 
-        if(target.x > transform.position.x)
+        audio.loop = false;
+        audio.clip = attackSound[3];
+        audio.volume = 0.5f;
+        audio.pitch = 1.2f;
+        audio.Play();
+
+        if (target.x > transform.position.x)
         {
             GameObject dust = Instantiate(dashDust, new Vector3(transform.position.x - 2.8f, transform.position.y + 0.5f), Quaternion.Euler(0, 0, 0));
             dust.GetComponent<SpriteRenderer>().flipX = true;
