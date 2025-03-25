@@ -56,6 +56,24 @@ public class WeaponController : MonoBehaviour
         foodData = data.FindFood(weaponName);
 
         audio.clip = fireSound[(int)mainIngred];
+        switch(foodData.mainIngred)
+        {
+            case Food_MainIngred.SOUP:
+                audio.pitch = 1.5f;
+                break;
+
+            case Food_MainIngred.RICE:
+                audio.volume = 0.4f;
+                break;
+
+            case Food_MainIngred.NOODLE:
+                audio.volume = 0.3f;
+                break;
+
+            case Food_MainIngred.MEAT:
+                audio.volume = 0.4f;
+                break;
+        }
     }
 
 
