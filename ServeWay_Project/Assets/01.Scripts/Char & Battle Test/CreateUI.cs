@@ -273,7 +273,8 @@ public class CreateUI : MonoBehaviour
     public void CloseUI()
     {
         explaneUI.SetActive(false);
-        foreach(GameObject minigame in minigameUI)
+        menuClick.Play();
+        foreach (GameObject minigame in minigameUI)
         {
             minigame.SetActive(false);
         }
