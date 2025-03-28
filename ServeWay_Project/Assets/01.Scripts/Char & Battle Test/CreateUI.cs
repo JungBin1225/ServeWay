@@ -246,19 +246,19 @@ public class CreateUI : MonoBehaviour
         switch (success)
         {
             case Create_Success.FAIL:
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "실패...";
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(1, 0, 0);
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[0];
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "실패...";
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(1, 0, 0);
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[0];
                 break;
             case Create_Success.SUCCESS:
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "성공!";
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(1, 1, 1);
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[1];
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "성공!";
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(1, 1, 1);
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[1];
                 break;
             case Create_Success.GREAT:
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "대성공!!";
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(0, 1, 0);
-                resultWindow.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[2];
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = "대성공!!";
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().color = new Color(0, 1, 0);
+                resultWindow.transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Image>().sprite = resultImage[2];
                 break;
         }
 

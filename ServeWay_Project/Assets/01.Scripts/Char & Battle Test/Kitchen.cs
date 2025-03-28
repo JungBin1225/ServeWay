@@ -10,6 +10,7 @@ public class Kitchen : MonoBehaviour
     private StartFoodDataSet startFoodInfo;
     private FoodIngredDex dex;
     private InventoryManager Inventory;
+    private PlayerController player;
     private List<string> list;
     private bool isTouch;
     private bool startMaked;
@@ -29,6 +30,7 @@ public class Kitchen : MonoBehaviour
         startMaked = false;
         Inventory = FindObjectOfType<InventoryManager>();
         data = FindObjectOfType<DataController>();
+        player = FindObjectOfType<PlayerController>();
         foodInfo = data.foodData;
         startFoodInfo = data.startFoodData;
         dex = data.FoodIngredDex;
@@ -53,7 +55,7 @@ public class Kitchen : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.F) && !startMaked)
             {
-                if (Time.timeScale == 1)
+                if (Time.timeScale == 1 && player.controllAble)
                 {
                     CreatableList();
                     createUI.gameObject.SetActive(true);
