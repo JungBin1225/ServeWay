@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHandler
 {
     public BTNType currentType;
-    public Transform buttonScale;
     Vector3 defaultScale;
 
     public CanvasGroup mainGroup;
@@ -22,12 +21,13 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
 
     private void Start()
     {
-        defaultScale = buttonScale.localScale;
+
     }
+
     public void OnBtnClick()
     {
         menuClick.Play();
-        switch(currentType)
+        switch (currentType)
         {
             case BTNType.Opening:
                 GameManager.gameManager.charData.saveFile.Reset();
@@ -39,7 +39,7 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
                 SceneManager.LoadScene("Loading");
                 break;
             case BTNType.Start:
-                if(GameManager.gameManager.charData.saveFile.weaponList.Count == 0)
+                if (GameManager.gameManager.charData.saveFile.weaponList.Count == 0)
                 {
                     GameManager.gameManager.charData.saveFile.Reset();
                     GameManager.gameManager.ClearInventory();
@@ -80,8 +80,8 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
                 GameManager.gameManager.ClearInventory();
 
                 UnityEditor.EditorUtility.SetDirty(GameManager.gameManager.charData.saveFile);
-                
-                if(GameManager.gameManager.charData.saveFile.isTuto)
+
+                if (GameManager.gameManager.charData.saveFile.isTuto)
                 {
                     GameManager.gameManager.SetNextStage("StartMap");
                 }
@@ -113,9 +113,9 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
             case BTNType.Start:
                 //EventSystem.current.SetSelectedGameObject(cg.transform.Find("CloseBtn").GetChild(0).gameObject);
                 break;
-            /*case BTNType.Option:
-                EventSystem.current.SetSelectedGameObject(cg.transform.Find("BackBtn").GetChild(0).gameObject);
-                break;*/
+                /*case BTNType.Option:
+                    EventSystem.current.SetSelectedGameObject(cg.transform.Find("BackBtn").GetChild(0).gameObject);
+                    break;*/
         }
         cg.alpha = 1;
         cg.interactable = true;
@@ -148,5 +148,37 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
         {
             buttonScale.localScale = defaultScale;
         }*/
+    }
+
+    public void OpenTop()
+    {
+        RectTransform textObj = gameObject.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
+        RectTransform top = gameObject.transform.GetChild(1).gameObject.GetComponent<RectTransform>();
+        TMP_Text text = gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>();
+
+        textObj.anchoredPosition = new Vector3(textObj.anchoredPosition.x, 105, 0);
+        top.anchoredPosition = new Vector3(textObj.anchoredPosition.x, 190, 0);
+        text.color = new Color(0, 0, 0);
+    }
+
+    public void CloseTop()
+    {
+        RectTransform textObj = gameObject.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
+        RectTransform top = gameObject.transform.GetChild(1).gameObject.GetComponent<RectTransform>();
+        TMP_Text text = gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>();
+
+        textObj.anchoredPosition = new Vector3(textObj.anchoredPosition.x, 0, 0);
+        top.anchoredPosition = new Vector3(textObj.anchoredPosition.x, 117.5f, 0);
+        text.color = new Color(1, 1, 1);
+    }
+
+    public void SetFork()
+    {
+        gameObject.transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    public void SetOffFork()
+    {
+        gameObject.transform.GetChild(1).gameObject.SetActive(false);
     }
 }
