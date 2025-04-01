@@ -65,7 +65,6 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
                 }
                 break;
             case BTNType.Option:
-                CanvasGroupOff(mainGroup);
                 CanvasGroupOn(optionGroup);
                 menuOpen.Play();
                 break;
@@ -73,7 +72,6 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
                 break;
             case BTNType.OptionBack:
                 CanvasGroupOff(optionGroup);
-                CanvasGroupOn(mainGroup);
                 break;
             case BTNType.New:
                 GameManager.gameManager.charData.saveFile.Reset();
@@ -180,5 +178,15 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
     public void SetOffFork()
     {
         gameObject.transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    public void Check(GameObject check)
+    {
+        check.SetActive(true);
+    }
+
+    public void UnCheck(GameObject check)
+    {
+        check.SetActive(false);
     }
 }
