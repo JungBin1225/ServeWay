@@ -90,7 +90,7 @@ public class BossRoom : MonoBehaviour
 
         intro.SetActive(true);
         intro.transform.GetChild(1).GetComponent<Text>().text = GameManager.gameManager.JobToString(bossJob);
-        intro.transform.GetChild(2).GetComponent<Text>().text = "OOO"; //name
+        intro.transform.GetChild(2).GetComponent<Text>().text = BossName(bossJob); //name
         intro.transform.GetChild(4).GetComponent<Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
         intro.transform.GetChild(6).GetComponent<Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
         intro.transform.GetChild(8).GetComponent<Text>().text = email + "@space.com"; //email
@@ -287,6 +287,19 @@ public class BossRoom : MonoBehaviour
         int index = UnityEngine.Random.Range(0, list.Length);
 
         return list[index].ToString();
+    }
+
+    private string BossName(Boss_Job job)
+    {
+        switch(job)
+        {
+            case Boss_Job.JOURNAL:
+                return "문어";
+            case Boss_Job.COOKRESEARCH:
+                return "슬라임";
+            default:
+                return "OOO";
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
