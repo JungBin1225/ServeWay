@@ -11,6 +11,7 @@ public class EnemyGenerator : MonoBehaviour
     public AudioSource doorOpenSound;
     public AudioSource doorCloseSound;
     public GameObject enemyAppear;
+    public GameObject minimapIcon;
 
     // 미니맵
     [SerializeField] GameObject miniRoomMesh;
@@ -461,6 +462,11 @@ public class EnemyGenerator : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+
+            if(minimapIcon != null)
+            {
+                minimapIcon.SetActive(true);
+            }
         }
 
         if (collision.gameObject.tag == "Player" && !isClear && isStarted && !isEntered)

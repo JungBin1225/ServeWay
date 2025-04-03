@@ -21,6 +21,7 @@ public class BossRoom : MonoBehaviour
     public GameObject stairPrefab;
     public GameObject recipePrefab;
     public List<GameObject> doorList;
+    public GameObject minimapIcon;
     public Food_Nation bossNation;
     public Boss_Job bossJob;
 
@@ -320,6 +321,7 @@ public class BossRoom : MonoBehaviour
             }
 
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+            minimapIcon.SetActive(true);
 
             // 보스방 작동
             GameManager.gameManager.isBossStage = true;

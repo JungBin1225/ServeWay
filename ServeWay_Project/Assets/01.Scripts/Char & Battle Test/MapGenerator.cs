@@ -753,13 +753,6 @@ public class MapGenerator : MonoBehaviour
 
         }
 
-        // 미니맵에 주방, 보스방 위치 표시
-        GameObject.Find("miniKitchen").transform.position = roomList[kitchenPos.Value, kitchenPos.Key].enemyGenerator.transform.position;
-        GameObject.Find("miniBoss").transform.position = roomList[bossPos.Value, bossPos.Key].enemyGenerator.transform.position;
-
-        Debug.Log("주방 위치: " + GameObject.Find("miniKitchen").transform.position);
-        Debug.Log("보스방 위치: " + GameObject.Find("miniBoss").transform.position);
-
         for (int k = 0; k < 3; k++)
         {
             Tile nowTile = roomTile;
@@ -796,7 +789,6 @@ public class MapGenerator : MonoBehaviour
                 roomList[ROW, COL].enemyGenerator.transform.position = pos;
                 roomList[ROW, COL].enemyGenerator.transform.localScale = size;
             }
-            
 
             Rect roomRect = roomList[ROW, COL].roomRect;
 
@@ -817,6 +809,19 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+
+        GameObject miniKit = GameObject.Find("miniKitchen");
+        GameObject miniBoss = GameObject.Find("miniBoss");
+
+        roomList[kitchenPos.Value, kitchenPos.Key].enemyGenerator.GetComponent<EnemyGenerator>().minimapIcon = miniKit;
+        roomList[bossPos.Value, bossPos.Key].enemyGenerator.GetComponent<BossRoom>().minimapIcon = miniBoss;
+
+        miniKit.transform.position = roomList[kitchenPos.Value, kitchenPos.Key].enemyGenerator.transform.position;
+        miniBoss.transform.position = roomList[bossPos.Value, bossPos.Key].enemyGenerator.transform.position;
+
+        miniKit.SetActive(false);
+        miniBoss.SetActive(false);
+
 
         for (int i = -1; i < mapSize.x + 1; i++) //시작방 벽타일 배치용 코드, 맵타일 생성 후 특정 방을 시작방으로 만들어서 시작방 지정된 후 한번 더 돌려야 함
         {
