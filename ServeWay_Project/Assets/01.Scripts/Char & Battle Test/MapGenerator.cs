@@ -678,7 +678,7 @@ public class MapGenerator : MonoBehaviour
     }
 
 
-        void DisplayRoomType()
+    void DisplayRoomType()
     {
         List<KeyValuePair <int, int>> bossIdxList = new List <KeyValuePair<int, int>>();
         List<KeyValuePair <int, int>> kitchenIdxList = new List <KeyValuePair<int, int>>();
@@ -772,9 +772,8 @@ public class MapGenerator : MonoBehaviour
                 nowTile = kitchenTile;
 
                 roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().nonEnemyRoom = true;
-                //Destroy(roomList[ROW, COL].enemyGenerator);
-                GameObject createTable = Instantiate(createTablePrefab, new Vector3(roomList[ROW, COL].enemyGenerator.transform.position.x, roomList[ROW, COL].enemyGenerator.transform.position.y, 0), Quaternion.Euler(0, 0, 0));
-                GameObject refrigerator = Instantiate(refrigeratorPrefab, createTable.transform.position + new Vector3(5, 0, 0), Quaternion.Euler(0, 0, 0));
+                GameObject createTable = Instantiate(createTablePrefab, roomList[ROW, COL].enemyGenerator.transform.position, Quaternion.Euler(0, 0, 0));
+                GameObject refrigerator = Instantiate(refrigeratorPrefab, createTable.transform.position + new Vector3(4, 0, 0), Quaternion.Euler(0, 0, 0));
             }
             else if (k == 2)
             {
