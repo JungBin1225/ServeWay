@@ -15,6 +15,9 @@ public class CookTutorial : MonoBehaviour
     public GameObject door;
     public GameObject cookUI;
     public string missionText;
+    public GameObject minimapPlayer;
+    public GameObject minimapTile;
+    public GameObject minimapRoad;
 
     private PlayerController player;
     private TutorialMissionUI mission;
@@ -144,6 +147,13 @@ public class CookTutorial : MonoBehaviour
             GameManager.gameManager.inventory.GetItem(Ingred_Name.Rice, 3);
             GameManager.gameManager.inventory.GetItem(Ingred_Name.Oil, 1);
             GameManager.gameManager.inventory.GetItem(Ingred_Name.Egg, 1);
+        }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            minimapPlayer.transform.position = transform.position;
+            minimapTile.SetActive(false);
+            minimapRoad.SetActive(false);
         }
     }
 }

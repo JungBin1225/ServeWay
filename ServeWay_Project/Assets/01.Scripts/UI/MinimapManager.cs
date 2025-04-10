@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/* ±¸Çö ³¡³ª¸é ¼¼ÀÌºêÆÄÀÏ ¿¬µ¿ ÀÛ¾÷µµ ÇØÁà¾ß ÇÔ */
+/* êµ¬í˜„ ëë‚˜ë©´ ì„¸ì´ë¸ŒíŒŒì¼ ì—°ë™ ìž‘ì—…ë„ í•´ì¤˜ì•¼ í•¨ */
 
 public class MinimapManager : MonoBehaviour
 {
@@ -62,18 +62,15 @@ public class MinimapManager : MonoBehaviour
 
     public void PutMesh(GameObject tmp, int col, int row)
     {
-        Debug.Log("col: " + col + " row: " + row);
-        // col:¿­:x  row:Çà:y
+        // col:ì—´:x  row:í–‰:y
         miniRoomMeshList[col, row].miniRoomMesh = tmp;
-        tmp.transform.SetParent(GameObject.Find("minimapGroup").transform);
 
         DrawRoad(col, row);
     }
 
     private void DrawRoad(int col, int row)
     {
-        Debug.Log("±æ ±×¸®±â ½ÃÀÛ " + col + ", " + row);
-        // col:¿­:x
+        // col:ì—´:x
         if (col > 0)    // left road (col - 1, row)
         {
             if (miniRoomMeshList[col - 1, row].miniRoomMesh != null && !miniRoomMeshList[col, row].left)
@@ -81,23 +78,24 @@ public class MinimapManager : MonoBehaviour
                 float distance = (miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x - miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2) - (miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localScale.x / 2);
 
                 /* draw road */
-                GameObject roadTmp = Instantiate(miniRoadMesh);
-                // move meshGroup
-                roadTmp.transform.SetParent(GameObject.Find("minimapGroup").transform);
+                GameObject roadTmp = Instantiate(miniRoadMesh, GameObject.Find("minimapGroup").transform);
                 // set road position
                 float roadX = miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localScale.x / 2 + distance / 2;
                 float roomsHeight = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localScale.y / 2) - Mathf.Min(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localScale.y / 2);
                 float roadY = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localScale.y / 2) - roomsHeight / 2;
                 
-                roadTmp.transform.localPosition = new Vector3(roadX, roadY, 0.0f);
+                roadTmp.transform.localPosition = new Vector3(roadX, roadY - 0.5f, 0.0f);
                 // set road roatation
                 roadTmp.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 // set road scale
-                roadTmp.transform.localScale = new Vector3(distance, 3.0f, 0.0f);
+                roadTmp.transform.localScale = new Vector3(distance, 4.0f, 0.0f);
 
                 /* check road */
                 miniRoomMeshList[col - 1, row].right = true;
                 miniRoomMeshList[col, row].left = true;
+
+                AddRoad(miniRoomMeshList[col - 1, row].miniRoomMesh, roadTmp);
+                AddRoad(miniRoomMeshList[col, row].miniRoomMesh, roadTmp);
             }
         }
         if (col < NUM_ROOM - 1)  // right road (col + 1, row)
@@ -107,31 +105,32 @@ public class MinimapManager : MonoBehaviour
                 float distance = (miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localPosition.x - miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localScale.x / 2) - (miniRoomMeshList[col , row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col , row].miniRoomMesh.transform.localScale.x / 2);
 
                 /* draw road */
-                GameObject roadTmp = Instantiate(miniRoadMesh);
-                // move meshGroup
-                roadTmp.transform.SetParent(GameObject.Find("minimapGroup").transform);
+                GameObject roadTmp = Instantiate(miniRoadMesh, GameObject.Find("minimapGroup").transform);
                 // set road position
                 float roadX = miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2 + distance / 2;
                 float roomsHeight = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localScale.y / 2) - Mathf.Min(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localScale.y / 2);
                 float roadY = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localScale.y / 2) - roomsHeight / 2;
 
-                roadTmp.transform.localPosition = new Vector3(roadX, roadY, 0.0f);
+                roadTmp.transform.localPosition = new Vector3(roadX, roadY - 0.5f, 0.0f);
                 // set road roatation
                 roadTmp.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 // set road scale
-                roadTmp.transform.localScale = new Vector3(distance, 3.0f, 0.0f);
+                roadTmp.transform.localScale = new Vector3(distance, 4.0f, 0.0f);
 
                 /* check road */
                 miniRoomMeshList[col, row].right = true;
                 miniRoomMeshList[col + 1, row].left = true;
+
+                AddRoad(miniRoomMeshList[col, row].miniRoomMesh, roadTmp);
+                AddRoad(miniRoomMeshList[col + 1, row].miniRoomMesh, roadTmp);
             }
         }
         if (col <= 0 || col >= NUM_ROOM)
         {
-            Debug.Log("wrong miniRoomMesh col " + col);
+            
         }
 
-        // row:Çà:y
+        // row:í–‰:y
         if (row > 0)    // upper road (col, row - 1)
         {
             if (miniRoomMeshList[col, row - 1].miniRoomMesh != null && !miniRoomMeshList[col, row].up)
@@ -139,56 +138,68 @@ public class MinimapManager : MonoBehaviour
                 float distance = (miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localScale.y / 2) - (miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2);
 
                 /* draw road */
-                GameObject roadTmp = Instantiate(miniRoadMesh);
-                // move meshGroup
-                roadTmp.transform.SetParent(GameObject.Find("minimapGroup").transform);
+                GameObject roadTmp = Instantiate(miniRoadMesh, GameObject.Find("minimapGroup").transform);
                 // set road position
                 float roomsWidth = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2, miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localScale.x / 2) - Mathf.Min(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x - miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2, miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localPosition.x - miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localScale.x / 2);
                 float roadX = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2, miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localScale.x / 2) - roomsWidth / 2;
                 float roadY = miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localScale.y / 2 - distance / 2;
 
-                roadTmp.transform.localPosition = new Vector3(roadX, roadY, 0.0f);
+                roadTmp.transform.localPosition = new Vector3(roadX + 0.5f, roadY, 0.0f);
                 // set road roatation
                 roadTmp.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 // set road scale
-                roadTmp.transform.localScale = new Vector3(3.0f, distance, 0.0f);
+                roadTmp.transform.localScale = new Vector3(4.0f, distance, 0.0f);
 
                 /* check road */
                 miniRoomMeshList[col, row - 1].down = true;
                 miniRoomMeshList[col, row].up = true;
+
+                AddRoad(miniRoomMeshList[col, row - 1].miniRoomMesh, roadTmp);
+                AddRoad(miniRoomMeshList[col, row].miniRoomMesh, roadTmp);
             }
         }
         if (row < NUM_ROOM - 1)  // lower road (col, row + 1)
         {
-            Debug.Log("draw lower road");
-            Debug.Log("col: " + col + " row: " + row);
             if (miniRoomMeshList[col, row + 1].miniRoomMesh != null && !miniRoomMeshList[col, row].down)
             {
                 float distance = (miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2) - (miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localScale.y / 2);
 
                 /* draw road */
-                GameObject roadTmp = Instantiate(miniRoadMesh);
-                // move meshGroup
-                roadTmp.transform.SetParent(GameObject.Find("minimapGroup").transform);
+                GameObject roadTmp = Instantiate(miniRoadMesh, GameObject.Find("minimapGroup").transform);
                 // set road position
                 float roomsWidth = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2, miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localScale.x / 2) - Mathf.Min(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x - miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2, miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localPosition.x - miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localScale.x / 2);
                 float roadX = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2, miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localScale.x / 2) - roomsWidth / 2;
                 float roadY = miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localScale.y / 2 + distance / 2;
 
-                roadTmp.transform.localPosition = new Vector3(roadX, roadY, 0.0f);
+                roadTmp.transform.localPosition = new Vector3(roadX + 0.5f, roadY, 0.0f);
                 // set road roatation
                 roadTmp.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 // set road scale
-                roadTmp.transform.localScale = new Vector3(3.0f, distance, 0.0f);
+                roadTmp.transform.localScale = new Vector3(4.0f, distance, 0.0f);
 
                 /* check road */
                 miniRoomMeshList[col, row].down = true;
                 miniRoomMeshList[col, row + 1].up = true;
+
+                AddRoad(miniRoomMeshList[col, row].miniRoomMesh, roadTmp);
+                AddRoad(miniRoomMeshList[col, row + 1].miniRoomMesh, roadTmp);
             }
         }
         if (row <= 0 || row >= NUM_ROOM)
         {
-            Debug.Log("wrong miniRoomMesh row " + row);
+            
+        }
+    }
+
+    private void AddRoad(GameObject room, GameObject road)
+    {
+        if(room.GetComponent<EnemyGenerator>() != null)
+        {
+            room.GetComponent<EnemyGenerator>().AddMinimapRoad(road);
+        }
+        else
+        {
+            room.GetComponent<BossRoom>().AddMinimapRoad(road);
         }
     }
 }

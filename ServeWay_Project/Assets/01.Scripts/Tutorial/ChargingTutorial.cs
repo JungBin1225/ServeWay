@@ -16,6 +16,9 @@ public class ChargingTutorial : MonoBehaviour
     public GameObject door;
     public TutorialEnemy enemy;
     public string missionText;
+    public GameObject minimapPlayer;
+    public GameObject minimapTile;
+    public GameObject minimapRoad;
 
     private PlayerController player;
     private TutorialMissionUI mission;
@@ -176,6 +179,13 @@ public class ChargingTutorial : MonoBehaviour
             {
                 door.transform.GetChild(i).GetComponent<DoorAnimation>().CloseDoor();
             }
+        }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            minimapPlayer.transform.position = transform.position;
+            minimapTile.SetActive(false);
+            minimapRoad.SetActive(false);
         }
     }
 }

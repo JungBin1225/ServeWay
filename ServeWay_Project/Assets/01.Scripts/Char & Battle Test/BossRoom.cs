@@ -32,6 +32,7 @@ public class BossRoom : MonoBehaviour
     [SerializeField] MapGenerator mapGen;
     private int myRow;
     private int myCol;
+    public List<GameObject> miniRoadList;
 
     void Start()
     {
@@ -48,6 +49,7 @@ public class BossRoom : MonoBehaviour
         bossJob = GameManager.gameManager.bossJobList[GameManager.gameManager.stage - 1];
 
 
+
         intro.SetActive(false);
         startButton.SetActive(false);
         bossHp.SetActive(false);
@@ -61,6 +63,10 @@ public class BossRoom : MonoBehaviour
         mapGen = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
         myRow = 0;
         myCol = 0;
+        miniRoadList = new List<GameObject>();
+
+        setMiniRowCol();
+        GenerateMiniRoomMesh();
     }
 
     void Update()
@@ -275,11 +281,35 @@ public class BossRoom : MonoBehaviour
     }
 
     // 미니맵 좌표
-    private void setMiniRowCol()
+    public void setMiniRowCol()
     {
         KeyValuePair<int, int> bossPos = mapGen.BossGridNum();
         myCol = bossPos.Key;    // x
         myRow = bossPos.Value;  // y
+    }
+
+    public void GenerateMiniRoomMesh()
+    {
+        isVisited = true;
+        Vector3 pos = transform.position + new Vector3(0, 0.35f, 0);
+        Vector3 scale = transform.localScale + new Vector3(0.6f, 1.3f, 0);
+
+        // minimapGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+        GameObject tmp = Instantiate(miniRoomMesh, GameObject.Find("minimapGroup").transform);
+        tmp.transform.position = pos;
+        tmp.transform.localScale = scale;
+        AddMinimapRoad(tmp);
+
+        if (!minimapMG)
+        {
+            minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
+        }
+        minimapMG.PutMesh(this.gameObject, myCol, myRow);
+    }
+
+    public void AddMinimapRoad(GameObject road)
+    {
+        miniRoadList.Add(road);
     }
 
     private string RandomChar()
@@ -310,14 +340,9 @@ public class BossRoom : MonoBehaviour
             isEntered = true;
 
             // 미니맵
-            setMiniRowCol();
-            if (!isVisited)
+            foreach (GameObject mini in miniRoadList)
             {
-                isVisited = true;
-                // miniMapMeshGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
-                GameObject tmp = Instantiate(miniRoomMesh, transform);
-                minimapMG.PutMesh(tmp, myCol, myRow);
-                
+                mini.SetActive(false);
             }
 
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;

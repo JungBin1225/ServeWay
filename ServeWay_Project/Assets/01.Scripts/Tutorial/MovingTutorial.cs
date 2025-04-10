@@ -14,6 +14,8 @@ public class MovingTutorial : MonoBehaviour
     public TextAsset clearText;
     public GameObject door;
     public string missionText;
+    public GameObject minimapPlayer;
+    public GameObject minimapTile;
 
     private PlayerController player;
     private TutorialMissionUI mission;
@@ -139,6 +141,12 @@ public class MovingTutorial : MonoBehaviour
             {
                 door.transform.GetChild(i).GetComponent<DoorAnimation>().CloseDoor();
             }
+        }
+
+        if(collision.gameObject.tag == "Player")
+        {
+            minimapPlayer.transform.position = transform.position;
+            minimapTile.SetActive(false);
         }
     }
 }

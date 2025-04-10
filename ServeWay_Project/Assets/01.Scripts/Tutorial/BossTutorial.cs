@@ -15,6 +15,9 @@ public class BossTutorial : MonoBehaviour
     public GameObject door;
     public TutorialBoss boss;
     public Image hpUI;
+    public GameObject minimapPlayer;
+    public GameObject minimapTile;
+    public GameObject minimapRoad;
 
     private PlayerController player;
     private DataController data;
@@ -176,6 +179,13 @@ public class BossTutorial : MonoBehaviour
             GameManager.gameManager.isBossStage = true;
             hpUI.transform.parent.gameObject.SetActive(true);
             StartCoroutine(misson.MissionAppear());
+        }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            minimapPlayer.transform.position = transform.position;
+            minimapTile.SetActive(false);
+            minimapRoad.SetActive(false);
         }
     }
 }

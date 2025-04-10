@@ -20,6 +20,7 @@ public class EnemyGenerator : MonoBehaviour
     public int myRow;
     public int myCol;
     [SerializeField] MinimapManager minimapMG;
+    public bool isStartMap;
 
     private List<GameObject> spawnList;
     private List<GameObject> followSpawnList;
@@ -33,6 +34,7 @@ public class EnemyGenerator : MonoBehaviour
     private bool isStarted = false;
     private bool isEntered;
     private int enemyCount;
+    public List<GameObject> miniRoadList;
     //Start() 함수가 끝까지 실행된 이후에 true로 바뀜
     //해주는 이유 : spawnlist를 초기화해주는 Start() 함수가 불리기 이전에 spawnlist를 참조하는 OnTriggerEnter2D()가 불릴 수 있기 때문이다.
 
@@ -46,6 +48,7 @@ public class EnemyGenerator : MonoBehaviour
         isSpawn = false;
         isStarted = true;
         isEntered = false;
+        miniRoadList = new List<GameObject>();
 
         isVisited = false;
 
@@ -63,6 +66,7 @@ public class EnemyGenerator : MonoBehaviour
 
         // 미니맵
         minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
+        GenerateMiniRoomMesh();
     }
 
     void Update()
@@ -424,16 +428,29 @@ public class EnemyGenerator : MonoBehaviour
         if (!isVisited)
         {
             isVisited = true;
-            // minimapGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
-            GameObject tmp = Instantiate(miniRoomMesh, transform);
+            Vector3 pos = transform.position + new Vector3(0, 0.35f, 0);
+            Vector3 scale = transform.localScale + new Vector3(0.6f, 1.3f, 0);
 
-            Debug.Log("EG: " + myCol + ", " + myRow);
+            // minimapGroup 게임 오브젝트의 자식 오브젝트로 방의 메시 프리팹 생성
+            GameObject tmp = Instantiate(miniRoomMesh, GameObject.Find("minimapGroup").transform);
+            tmp.transform.position = pos;
+            tmp.transform.localScale = scale;
+            AddMinimapRoad(tmp);
 
             if (!minimapMG)
             {
                 minimapMG = GameObject.Find("MinimapManager").GetComponent<MinimapManager>();
             }
-            minimapMG.PutMesh(tmp, myCol, myRow);
+            minimapMG.PutMesh(this.gameObject, myCol, myRow);
+        }
+    }
+
+    public void AddMinimapRoad(GameObject road)
+    {
+        miniRoadList.Add(road);
+        if(isStartMap)
+        {
+            road.SetActive(false);
         }
     }
 
@@ -462,19 +479,10 @@ public class EnemyGenerator : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
-
-            if(minimapIcon != null)
-            {
-                minimapIcon.SetActive(true);
-            }
         }
 
-        if (collision.gameObject.tag == "Player" && !isClear && isStarted && !isEntered)
+        if (collision.gameObject.tag == "Player" && !isClear && isStarted)
         {
-            isEntered = true;
-            // 미니맵
-            GenerateMiniRoomMesh();
-
             if (!nonEnemyRoom)
             {
                 // 일반 방 작동
@@ -488,6 +496,16 @@ public class EnemyGenerator : MonoBehaviour
                 {
                     StartCoroutine(SelectEnamy());
                 }
+            }
+        }
+
+        if (collision.gameObject.tag == "Player" && !isEntered)
+        {
+            isEntered = true;
+
+            foreach(GameObject mini in miniRoadList)
+            {
+                mini.SetActive(false);
             }
         }
     }

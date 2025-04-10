@@ -22,8 +22,6 @@ public class HPBar : MonoBehaviour
         {
             hpImages.Add(transform.GetChild(i).GetComponent<Image>());
         }
-
-        Debug.Log(hpImages.Count);
     }
 
     // Update is called once per frame

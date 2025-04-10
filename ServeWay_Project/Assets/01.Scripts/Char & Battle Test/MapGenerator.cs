@@ -109,7 +109,7 @@ public class MapGenerator : MonoBehaviour
         DisplayRoomType(); // 시작방, 주방, 보스방 표시
         SetDoor();
         // 플레이어 위치 초기화
-        Player.transform.position = new Vector3(roomList[startY, startX].roomRect.x , roomList[startY, startX].roomRect.y , 0);
+        Player.transform.position = roomList[startY, startX].enemyGenerator.transform.position;
         GameObject.Find("miniPlayer").transform.position = roomList[startY, startX].enemyGenerator.transform.position;
 
         GameManager.gameManager.charData.SaveMapData(roomList, startX, startY);
@@ -410,6 +410,11 @@ public class MapGenerator : MonoBehaviour
         
         //+1 안해주면 양쪽 반 칸이 모자름
         roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1, (int)roomList[ROW, COL].roomRect.height + 1);
+
+        if(ROW == startX && COL == startY)
+        {
+            AnnounceStartMap(roomList[ROW, COL].enemyGenerator);
+        }
     }
 
     void DrawRoad(int x,int y,int nextX,int nextY)
@@ -566,7 +571,7 @@ public class MapGenerator : MonoBehaviour
             vertPoint -= vertSize;
         }
         // 미니맵 - 시작 방이면 miniRoomMesh 바로 생성
-        roomList[startY, startX].enemyGenerator.GetComponent<EnemyGenerator>().GenerateMiniRoomMesh();
+        //roomList[startY, startX].enemyGenerator.GetComponent<EnemyGenerator>().GenerateMiniRoomMesh();
 
     }
 
@@ -978,4 +983,8 @@ public class MapGenerator : MonoBehaviour
         return targetPos;
     }
 
+    private void AnnounceStartMap(GameObject enemyGen)
+    {
+        enemyGen.GetComponent<EnemyGenerator>().isStartMap = true;
+    }
 }
