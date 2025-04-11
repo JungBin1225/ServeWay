@@ -71,7 +71,7 @@ public class MoveStage : MonoBehaviour
     private void EndTutorial()
     {
         GameManager.gameManager.inventory.inventory.Clear();
-        GameManager.gameManager.SetNextStage("2_OpeningCutScene");
+        GameManager.gameManager.SetNextStage("StartMap");
         SceneManager.LoadScene("Loading");
     }
 

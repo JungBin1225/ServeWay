@@ -17,6 +17,7 @@ public class Test : MonoBehaviour
     public bool dexRefresh;
     public bool addInventory;
     public bool checkPercent;
+    public bool clearSave;
 
     void Start()
     {
@@ -33,6 +34,7 @@ public class Test : MonoBehaviour
         dexRefresh = false;
         addInventory = false;
         checkPercent = false;
+        clearSave = false;
     }
 
     
@@ -54,6 +56,11 @@ public class Test : MonoBehaviour
         {
             CheckPercent();
             checkPercent = false;
+        }
+
+        if(clearSave)
+        {
+            clearSave = false;
         }
     }
 
@@ -118,5 +125,10 @@ public class Test : MonoBehaviour
         }
 
         Debug.Log("1성: " + star1 + " 2성: " + star2 + " 3성: " + star3 + " 4성: " + star4);
+    }
+
+    private void ClearSave()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }

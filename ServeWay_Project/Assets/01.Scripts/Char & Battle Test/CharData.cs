@@ -4,17 +4,7 @@ using UnityEngine;
 
 public class CharData : MonoBehaviour
 {
-
     public SaveFile saveFile;
-
-    /*public List<string> weaponList;
-    public float playerHp;
-    public float playerSpeed;
-    public float playerChargeSpeed;
-    public float playerChargeLength;
-    public float playerChargeCooltime;
-
-    public int stage;*/
 
     void Start()
     {
@@ -63,6 +53,7 @@ public class CharData : MonoBehaviour
         saveFile.themes = GameManager.gameManager.stageThemes;
 
         UnityEditor.EditorUtility.SetDirty(saveFile);
+        PlayerPrefs.Save();
     }
 
     public void SaveMapData(Room[ , ] roomList, int startX, int startY)
@@ -81,6 +72,7 @@ public class CharData : MonoBehaviour
         saveFile.isMapSave = true;
 
         UnityEditor.EditorUtility.SetDirty(saveFile);
+        PlayerPrefs.Save();
     }
 
     public void DeleteMapData()
@@ -90,4 +82,33 @@ public class CharData : MonoBehaviour
         UnityEditor.EditorUtility.SetDirty(saveFile);
     }
 
+    public List<string> FindFoodIngredInSave(List<string> foodList)
+    {
+        List<string> result = new List<string>();
+
+        foreach(string food in foodList)
+        {
+            if(PlayerPrefs.HasKey(food))
+            {
+                result.Add(food);
+            }
+        }
+
+        return result;
+    }
+
+    public NameAmount FindFoodIngredInSave(List<Ingred_Name> ingredList)
+    {
+        NameAmount result = new NameAmount();
+
+        foreach(Ingred_Name name in ingredList)
+        {
+            if(PlayerPrefs.HasKey(name.ToString()))
+            {
+                result.Add(name, PlayerPrefs.GetInt(name.ToString()));
+            }
+        }
+
+        return result;
+    }
 }

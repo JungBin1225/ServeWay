@@ -8,6 +8,8 @@ public class TutorialBoss : MonoBehaviour
     private MissionManager misson;
     private float hp;
     private float maxHp;
+    private GameObject target;
+    private SpriteRenderer spriteRenderer;
 
     public BossTutorial room;
     public Food_Nation nation;
@@ -16,6 +18,8 @@ public class TutorialBoss : MonoBehaviour
     void Start()
     {
         misson = FindObjectOfType<MissionManager>();
+        target = GameObject.FindGameObjectWithTag("Player");
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         SetHp(500);
         nation = Food_Nation.KOREA;
@@ -26,6 +30,15 @@ public class TutorialBoss : MonoBehaviour
         if (hp <= 0 || misson.isClear())
         {
             BossDie();
+        }
+
+        if (target.transform.position.x < transform.position.x)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
         }
     }
 

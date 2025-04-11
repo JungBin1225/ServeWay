@@ -18,6 +18,7 @@ public class TutorialEnemy : MonoBehaviour
     private GameObject target;
     private bool moveAble;
     private Rigidbody2D rigidBody;
+    private SpriteRenderer spriteRenderer;
     private List<Sprite> sprites;
     private bool touchWall;
 
@@ -27,8 +28,9 @@ public class TutorialEnemy : MonoBehaviour
         moveAble = true;
         attackAble = false;
         touchWall = false;
+        spriteRenderer = GetComponent<SpriteRenderer>();
         sprites = new List<Sprite>();
-        sprites.Add(GetComponent<SpriteRenderer>().sprite);
+        sprites.Add(spriteRenderer.sprite);
         target = GameObject.FindGameObjectWithTag("Player");
         rigidBody = GetComponent<Rigidbody2D>();
     }
@@ -44,6 +46,15 @@ public class TutorialEnemy : MonoBehaviour
         if (hp <= 0)
         {
             Destroy(this.gameObject);
+        }
+
+        if(target.transform.position.x < transform.position.x)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
         }
     }
 

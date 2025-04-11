@@ -136,11 +136,16 @@ public class MissionManager : MonoBehaviour
                 targetAmount[index] = Random.Range(20, 50);
 
                 matchedUI.Add(index, missionText[textIndex]);
-                Food_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+                Food_Nation nation;
                 if(SceneManager.GetActiveScene().name.Contains("Tutorial"))
                 {
                     nation = Food_Nation.KOREA;
                 }
+                else
+                {
+                    nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+                }
+
                 FoodData food = new FoodData();
                 missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F0"), food.EunmToString(nation));
                 break;
