@@ -28,4 +28,4 @@
     + #### 플레이어는 시험이 시작되면 주변에 있는 방으로 들어갈 수 있으며, 각 방에 있는 손님들을 음식으로 모두 만족시키고, 재료를 얻어 더 강한 음식을 만들어 시험을 돌파해야 한다. 스테이지마다 있는 보스의 시험을 통과하면 다음 시험으로 넘어갈 수 있고, 이렇게 총 7번의 시험을 완료해야 요리사로 인정받을 수 있다.
   + ### 시연 영상
     + #### [유튜브 링크](https://youtu.be/tfrjzSx_99M)
-    + #### [![Video Label](https://user-images.githubusercontent.com/69952837/178147577-0ba07b58-8d36-4bb7-b306-3291cb117f06.PNG)](https://youtu.be/tfrjzSx_99M)
+    + #### [![Image](https://github.com/user-attachments/assets/397d734d-967c-417d-b9b4-18b246b6b86b)](https://youtu.be/tfrjzSx_99M)
