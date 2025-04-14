@@ -288,7 +288,7 @@ public class WeaponController : MonoBehaviour
 
             lineRenderer.SetPosition(0, transform.position);
 
-            int mask = 1 << LayerMask.NameToLayer("RayTarget") | 1 << LayerMask.NameToLayer("RayWall");
+            int mask = 1 << LayerMask.NameToLayer("RayTarget") | 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
             hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
             if (hit)
             {

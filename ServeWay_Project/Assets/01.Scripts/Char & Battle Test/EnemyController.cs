@@ -350,7 +350,7 @@ public class EnemyController : MonoBehaviour
 
         lineRenderer.SetPosition(0, transform.position);
 
-        int mask = 1 << LayerMask.NameToLayer("RayWall");
+        int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("RayTarget");
         while(!ishit)
         {
             length += Time.deltaTime * 7;
