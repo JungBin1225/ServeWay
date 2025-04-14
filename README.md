@@ -10,7 +10,7 @@
   + ### 장르
     + #### 2D 탄막 로그라이크 게임
   + ### 개발에 사용한 엔진 및 언어 
-    + <img alt="Unity" src ="https://img.shields.io/badge/Unity-FFFFFF.svg?&style=for-the-badge&logo=Unity&logoColor=black"/> <img alt="C sharp" src ="https://img.shields.io/badge/C sharp-99CC00.svg?&style=for-the-badge&logo=sharp&logoColor=white"/>
+    + <img alt="Unity" src ="https://img.shields.io/badge/Unity-FFFFFF.svg?&style=for-the-badge&logo=Unity&logoColor=black"/> <img alt="C sharp" src ="https://img.shields.io/badge/sharp-99CC00.svg?&style=for-the-badge&logo=sharp&logoColor=white"/>
 + ## **개발 개요**
   + ### 개발 기간
     + #### 2023-04-07 ~ 개발 중
@@ -18,7 +18,7 @@
     + #### 팀 프로젝트
   + ### 개발 인원 및 역할
     + #### 상명대학교 게임학과 19학번 이정빈 - <img alt="프로그래머" src ="https://img.shields.io/badge/메인 프로그래머-5C2D91.svg?&style=for-the-badge&logo=VisualStudio&logoColor=white"/>
-    + #### 상명대학교 게임학과 21학번 송규섭 - <img alt="아트 디자이너" src ="https://img.shields.io/badge/아트 디자이너-7D929E.svg?&style=for-the-badge&logo=AdobePhotoshop&logoColor=black"/>
+    + #### 상명대학교 게임학과 21학번 송규섭 - <img alt="아트 디자이너" src ="https://img.shields.io/badge/아트 디자이너-7D929E.svg?&style=for-the-badge&logo=aseprite&logoColor=black"/>
     + #### 상명대학교 게임학과 21학번 전선현 - <img alt="프로그래머" src ="https://img.shields.io/badge/UI 프로그래머-5C2D91.svg?&style=for-the-badge&logo=VisualStudio&logoColor=white"/>
     + #### 상명대학교 게임학과 21학번 황윤신 - <img alt="프로그래머" src ="https://img.shields.io/badge/맵, 멀티플레이 프로그래머-5C2D91.svg?&style=for-the-badge&logo=VisualStudio&logoColor=white"/>
 + ## **게임 상세**
