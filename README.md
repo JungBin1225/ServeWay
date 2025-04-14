@@ -10,7 +10,7 @@
   + ### 장르
     + #### 2D 탄막 로그라이크 게임
   + ### 개발에 사용한 엔진 및 언어 
-    + <img alt="Unity" src ="https://img.shields.io/badge/Unity-FFFFFF.svg?&style=for-the-badge&logo=Unity&logoColor=black"/> <img alt="sharp" src ="https://img.shields.io/badge/C sharp-239120.svg?&style=for-the-badge&logo=CSharp&logoColor=white"/>
+    + <img alt="Unity" src ="https://img.shields.io/badge/Unity-FFFFFF.svg?&style=for-the-badge&logo=Unity&logoColor=black"/> <img alt="sharp" src ="https://img.shields.io/badge/sharp.svg?&style=for-the-badge&logo=CSharp&logoColor=white"/>
 + ## **개발 개요**
   + ### 개발 기간
     + #### 2023-04-07 ~ 개발 중
