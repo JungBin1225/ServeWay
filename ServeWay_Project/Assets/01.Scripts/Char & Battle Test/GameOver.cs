@@ -152,10 +152,9 @@ public class GameOver : MonoBehaviour
     {
         //Time.timeScale = 1;
 
-        GameManager.gameManager.charData.saveFile.Reset();
-        GameManager.gameManager.ClearInventory();
-
-        UnityEditor.EditorUtility.SetDirty(GameManager.gameManager.charData.saveFile);
+        GameManager.gameManager.charData.saveFile = new SaveFile();
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
 
         SceneManager.LoadScene("StartMap");
     }

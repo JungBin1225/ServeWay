@@ -56,6 +56,7 @@ public class MoveStage : MonoBehaviour
 
         GameManager.gameManager.charData.SaveData();
         GameManager.gameManager.charData.DeleteMapData();
+        GameManager.gameManager.charData.SetData();
         GameManager.gameManager.SetNextStage(name);
         Debug.Log(GameManager.gameManager.GetNextStage());
         if(GameManager.gameManager.stage == 8)

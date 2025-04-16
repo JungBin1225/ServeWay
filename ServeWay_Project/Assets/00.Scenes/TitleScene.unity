@@ -487,7 +487,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 447877d4d2d3d5245bde80483382d6be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveFile: {fileID: 11400000, guid: 494afcae66c1dc449849286c8c20528e, type: 2}
+  saveFile:
+    inventory:
+      m_keys: 
+      m_values: 
+    weaponList: []
+    weaponIndex: 0
+    weaponSuccess: 
+    playerHp: 0
+    playerSpeed: 0
+    playerChargeSpeed: 0
+    playerChargeLength: 0
+    playerChargeCooltime: 0
+    stage: 0
+    bossNations: 
+    bossJobs: 
+    themes: 
+    isMapSave: 0
+    roomList: []
+    startX: 0
+    startY: 0
+    isTuto: 0
 --- !u!114 &111781906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3664,6 +3684,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938118557}
   m_CullTransparentMesh: 1
+--- !u!1 &942764992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 942764994}
+  - component: {fileID: 942764993}
+  m_Layer: 0
+  m_Name: DataController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &942764993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942764992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da136880a7d0bd4cbf39784d8e9fe3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodData: {fileID: 11400000, guid: d8153a01b0dc8b94da524cdfe7c348c2, type: 2}
+  startFoodData: {fileID: 11400000, guid: ada051acf0568414aa04e7044467fd21, type: 2}
+  IngredientList: {fileID: 11400000, guid: 9195cf9b4b11ef04bab7c0cb05657c59, type: 2}
+  enemyList: {fileID: 11400000, guid: 528f1fd0fa7519445a6089625fffca0c, type: 2}
+  FoodIngredDex: {fileID: 11400000, guid: 49ef0c16f4fdb044abde3b4dceb650f6, type: 2}
+  bossList: {fileID: 11400000, guid: e058c62bc361ee14bbbb28b38824ee1d, type: 2}
+  enemyBullet: {fileID: 11400000, guid: ffadf813be7ae714c991b3b47b7d677a, type: 2}
+  mapObjectList: {fileID: 11400000, guid: 54f3a1f9666328e49be76f35e8778e75, type: 2}
+--- !u!4 &942764994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942764992}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1014896230
 GameObject:
   m_ObjectHideFlags: 0

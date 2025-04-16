@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//·ë Á¾·ù
+//ë£¸ ì¢…ë¥˜
 public enum RoomType
 {
     ROOM_START,
@@ -15,11 +15,11 @@ public enum RoomType
 [System.Serializable]
 public class Room
 {
-    public Rect nodeRect; //°ø°£ÀÇ »ç°¢Çü Á¤º¸
-    public Rect roomRect; //°ø°£ ¾È ¹æÀÇ »ç°¢Çü Á¤º¸
-    public int isCreated; //½ÇÁ¦·Î »ı¼ºµÇ¾ú´ÂÁö + ½ÃÀÛÁ¤Á¡±îÁöÀÇ ±æÀÌ ÆÇº°¿ë
-    public RoomType roomType; //¹æÀÇ Á¾·ù
-    public GameObject enemyGenerator; //¹æÀÇ ¿¡³Ê¹Ì Á¦³Ê·¹ÀÌÅÍ Á¤º¸
+    public Rect nodeRect; //ê³µê°„ì˜ ì‚¬ê°í˜• ì •ë³´
+    public Rect roomRect; //ê³µê°„ ì•ˆ ë°©ì˜ ì‚¬ê°í˜• ì •ë³´
+    public int isCreated; //ì‹¤ì œë¡œ ìƒì„±ë˜ì—ˆëŠ”ì§€ + ì‹œì‘ì •ì ê¹Œì§€ì˜ ê¸¸ì´ íŒë³„ìš©
+    public RoomType roomType; //ë°©ì˜ ì¢…ë¥˜
+    public GameObject enemyGenerator; //ë°©ì˜ ì—ë„ˆë¯¸ ì œë„ˆë ˆì´í„° ì •ë³´
 
     public float rightYPoint;
     public float leftYPoint;
@@ -30,6 +30,18 @@ public class Room
     {
         this.isCreated = 0;
         this.roomType = RoomType.ROOM_NORMAL;
+    }
+
+    public Room(Rect nodeRect, Rect roomRect, int isCreated, RoomType roomType, float rightYPoint, float leftYPoint, float upXPoint, float downXPoint)
+    {
+        this.nodeRect = nodeRect;
+        this.roomRect = roomRect;
+        this.isCreated = isCreated;
+        this.roomType = roomType;
+        this.rightYPoint = rightYPoint;
+        this.leftYPoint = leftYPoint;
+        this.upXPoint = upXPoint;
+        this.downXPoint = downXPoint;
     }
 
     public Vector2 center

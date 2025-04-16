@@ -204,6 +204,79 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Boss_Job StringToJob(string name)
+    {
+        switch (name)
+        {
+            case "JOURNAL":
+                return Boss_Job.JOURNAL;
+            case "CRITIC":
+                return Boss_Job.CRITIC;
+            case "COOKRESEARCH":
+                return Boss_Job.COOKRESEARCH;
+            case "BLOGGER":
+                return Boss_Job.BLOGGER;
+            case "YOUTUBER":
+                return Boss_Job.YOUTUBER;
+            case "TEACHER":
+                return Boss_Job.TEACHER;
+            default:
+                return Boss_Job.JOURNAL;
+        }
+    }
+
+    public Stage_Theme StringToTheme(string name)
+    {
+        switch (name)
+        {
+            case "BAR":
+                return Stage_Theme.BAR;
+            case "CAFE":
+                return Stage_Theme.CAFE;
+            case "CAMPING":
+                return Stage_Theme.CAMPING;
+            case "NORMAL":
+                return Stage_Theme.NORMAL;
+            case "RESTORANT":
+                return Stage_Theme.RESTORANT;
+            case "SCHOOL":
+                return Stage_Theme.SCHOOL;
+            case "STREET":
+                return Stage_Theme.STREET;
+            default:
+                return Stage_Theme.BAR;
+        }
+    }
+
+    public Food_Nation StringToNation(string name)
+    {
+        switch(name)
+        {
+            case "KOREA":
+                return Food_Nation.KOREA;
+            case "JAPAN":
+                return Food_Nation.JAPAN;
+            case "CHINA":
+                return Food_Nation.CHINA;
+            case "FRANCE":
+                return Food_Nation.FRANCE;
+            case "GERMANY":
+                return Food_Nation.GERMANY;
+            case "INDONESIA":
+                return Food_Nation.INDONESIA;
+            case "ITALY":
+                return Food_Nation.ITALY;
+            case "SPAIN":
+                return Food_Nation.SPAIN;
+            case "USA":
+                return Food_Nation.USA;
+            case "THAILAND":
+                return Food_Nation.THAILAND;
+            default:
+                return Food_Nation.KOREA;
+        }
+    }
+
     public void SetNextStage(string name)
     {
         nextStage = name;

@@ -30,10 +30,9 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
         switch (currentType)
         {
             case BTNType.Opening:
-                GameManager.gameManager.charData.saveFile.Reset();
-                GameManager.gameManager.ClearInventory();
-
-                UnityEditor.EditorUtility.SetDirty(GameManager.gameManager.charData.saveFile);
+                GameManager.gameManager.charData.saveFile = new SaveFile();
+                PlayerPrefs.DeleteAll();
+                PlayerPrefs.Save();
 
                 GameManager.gameManager.SetNextStage("1_OpeningCutScene");
                 SceneManager.LoadScene("Loading");
@@ -41,10 +40,9 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
             case BTNType.Start:
                 if (GameManager.gameManager.charData.saveFile.weaponList.Count == 0)
                 {
-                    GameManager.gameManager.charData.saveFile.Reset();
-                    GameManager.gameManager.ClearInventory();
-
-                    UnityEditor.EditorUtility.SetDirty(GameManager.gameManager.charData.saveFile);
+                    GameManager.gameManager.charData.saveFile = new SaveFile();
+                    PlayerPrefs.DeleteAll();
+                    PlayerPrefs.Save();
 
                     if (GameManager.gameManager.charData.saveFile.isTuto)
                     {
@@ -74,10 +72,9 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
                 CanvasGroupOff(optionGroup);
                 break;
             case BTNType.New:
-                GameManager.gameManager.charData.saveFile.Reset();
-                GameManager.gameManager.ClearInventory();
-
-                UnityEditor.EditorUtility.SetDirty(GameManager.gameManager.charData.saveFile);
+                GameManager.gameManager.charData.saveFile = new SaveFile();
+                PlayerPrefs.DeleteAll();
+                PlayerPrefs.Save();
 
                 if (GameManager.gameManager.charData.saveFile.isTuto)
                 {
