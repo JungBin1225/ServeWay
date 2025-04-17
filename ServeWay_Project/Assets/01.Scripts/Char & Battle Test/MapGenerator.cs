@@ -411,7 +411,7 @@ public class MapGenerator : MonoBehaviour
         //+1 안해주면 양쪽 반 칸이 모자름
         roomList[ROW, COL].enemyGenerator.transform.localScale = new Vector3((int)roomList[ROW, COL].roomRect.width + 1, (int)roomList[ROW, COL].roomRect.height + 1);
 
-        if(ROW == startX && COL == startY)
+        if(COL == startX && ROW == startY)
         {
             AnnounceStartMap(roomList[ROW, COL].enemyGenerator);
         }

@@ -15,7 +15,7 @@ public class EnemyGenerator : MonoBehaviour
 
     // 미니맵
     [SerializeField] GameObject miniRoomMesh;
-    private bool isVisited = false;
+    [SerializeField] private bool isVisited = false;
     public bool nonEnemyRoom = false;
     public int myRow;
     public int myCol;

@@ -84,11 +84,11 @@ public class MinimapManager : MonoBehaviour
                 float roomsHeight = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localScale.y / 2) - Mathf.Min(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localScale.y / 2);
                 float roadY = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col - 1, row].miniRoomMesh.transform.localScale.y / 2) - roomsHeight / 2;
                 
-                roadTmp.transform.localPosition = new Vector3(roadX, roadY - 0.5f, 0.0f);
+                roadTmp.transform.localPosition = new Vector3(roadX, roadY, 0.0f);
                 // set road roatation
                 roadTmp.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 // set road scale
-                roadTmp.transform.localScale = new Vector3(distance, 4.0f, 0.0f);
+                roadTmp.transform.localScale = new Vector3(distance, 5.0f, 0.0f);
 
                 /* check road */
                 miniRoomMeshList[col - 1, row].right = true;
@@ -111,11 +111,11 @@ public class MinimapManager : MonoBehaviour
                 float roomsHeight = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localScale.y / 2) - Mathf.Min(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localScale.y / 2);
                 float roadY = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.y / 2, miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col + 1, row].miniRoomMesh.transform.localScale.y / 2) - roomsHeight / 2;
 
-                roadTmp.transform.localPosition = new Vector3(roadX, roadY - 0.5f, 0.0f);
+                roadTmp.transform.localPosition = new Vector3(roadX, roadY, 0.0f);
                 // set road roatation
                 roadTmp.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 // set road scale
-                roadTmp.transform.localScale = new Vector3(distance, 4.0f, 0.0f);
+                roadTmp.transform.localScale = new Vector3(distance, 5.0f, 0.0f);
 
                 /* check road */
                 miniRoomMeshList[col, row].right = true;
@@ -144,11 +144,11 @@ public class MinimapManager : MonoBehaviour
                 float roadX = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2, miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localScale.x / 2) - roomsWidth / 2;
                 float roadY = miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localPosition.y - miniRoomMeshList[col, row - 1].miniRoomMesh.transform.localScale.y / 2 - distance / 2;
 
-                roadTmp.transform.localPosition = new Vector3(roadX + 0.5f, roadY, 0.0f);
+                roadTmp.transform.localPosition = new Vector3(roadX, roadY, 0.0f);
                 // set road roatation
                 roadTmp.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 // set road scale
-                roadTmp.transform.localScale = new Vector3(4.0f, distance, 0.0f);
+                roadTmp.transform.localScale = new Vector3(5.0f, distance, 0.0f);
 
                 /* check road */
                 miniRoomMeshList[col, row - 1].down = true;
@@ -171,11 +171,11 @@ public class MinimapManager : MonoBehaviour
                 float roadX = Mathf.Max(miniRoomMeshList[col, row].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row].miniRoomMesh.transform.localScale.x / 2, miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localPosition.x + miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localScale.x / 2) - roomsWidth / 2;
                 float roadY = miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localPosition.y + miniRoomMeshList[col, row + 1].miniRoomMesh.transform.localScale.y / 2 + distance / 2;
 
-                roadTmp.transform.localPosition = new Vector3(roadX + 0.5f, roadY, 0.0f);
+                roadTmp.transform.localPosition = new Vector3(roadX, roadY, 0.0f);
                 // set road roatation
                 roadTmp.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
                 // set road scale
-                roadTmp.transform.localScale = new Vector3(4.0f, distance, 0.0f);
+                roadTmp.transform.localScale = new Vector3(5.0f, distance, 0.0f);
 
                 /* check road */
                 miniRoomMeshList[col, row].down = true;

@@ -27,6 +27,11 @@ public class SaveFile
 
     public bool isTuto;
 
+    public SaveFile()
+    {
+        Reset();
+    }
+
     public void Reset()
     {
         inventory = new NameAmount();
@@ -44,8 +49,11 @@ public class SaveFile
         bossJobs = new List<Boss_Job>();
         themes = new List<Stage_Theme>();
 
+        isMapSave = false;
         roomList = new List<Room>();
         startX = 0;
         startY = 0;
+
+        isTuto = false;
     }
 }

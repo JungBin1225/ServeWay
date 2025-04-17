@@ -11,7 +11,7 @@ public class CharData : MonoBehaviour
         saveFile = new SaveFile();
         saveFile.Reset();
 
-        if (PlayerPrefs.HasKey("food_1"))
+        if (PlayerPrefs.HasKey("food_0"))
         {
             SetData();
         }
@@ -48,7 +48,7 @@ public class CharData : MonoBehaviour
                     break;
             }
 
-            PlayerPrefs.SetString(string.Format("food_{0}", i.ToString()), "name");
+            PlayerPrefs.SetString(string.Format("food_{0}", i.ToString()), name);
             PlayerPrefs.SetInt(string.Format("food_success_{0}", i.ToString()), success_int);
         }
         PlayerPrefs.SetInt("food_index", plInfo.weaponSlot.index);
@@ -71,6 +71,7 @@ public class CharData : MonoBehaviour
             PlayerPrefs.SetString(string.Format("boss_job_{0}", i.ToString()), GameManager.gameManager.bossJobList[i].ToString());
             PlayerPrefs.SetString(string.Format("stage_theme_{0}", i.ToString()), GameManager.gameManager.stageThemes[i].ToString());
         }
+        PlayerPrefs.SetString("isTuto", saveFile.isTuto.ToString());
 
         PlayerPrefs.Save();
     }
@@ -111,15 +112,56 @@ public class CharData : MonoBehaviour
 
         saveFile.inventory = FindIngredInSave();
 
-        saveFile.stage = PlayerPrefs.GetInt("stage");
+        //saveFile.stage = PlayerPrefs.GetInt("stage");
+        saveFile.stage = 1;//test
+
         for (int i = 0; i < 7; i++)
         {
             saveFile.bossNations.Add(GameManager.gameManager.StringToNation(PlayerPrefs.GetString(string.Format("boss_nation_{0}", i.ToString()))));
             saveFile.bossJobs.Add(GameManager.gameManager.StringToJob(PlayerPrefs.GetString(string.Format("boss_job_{0}", i.ToString()))));
             saveFile.themes.Add(GameManager.gameManager.StringToTheme(PlayerPrefs.GetString(string.Format("stage_theme_{0}", i.ToString()))));
         }
-
+        
+        if(PlayerPrefs.GetString("isTuto") == "True")
+        {
+            saveFile.isTuto = true;
+        }
+        else
+        {
+            saveFile.isTuto = false;
+        }
+        
         //맵 데이터 저장
+        saveFile.roomList = new List<Room>();
+        for (int i = 0; i < 25; i++)
+        {
+            if(PlayerPrefs.HasKey(string.Format("room_{0}_noderect_x", i.ToString())))
+            {
+                Rect nodeRect = new Rect(PlayerPrefs.GetFloat(string.Format("room_{0}_noderect_x", i.ToString())), PlayerPrefs.GetFloat(string.Format("room_{0}_noderect_y", i.ToString())), PlayerPrefs.GetFloat(string.Format("room_{0}_noderect_w", i.ToString())), PlayerPrefs.GetFloat(string.Format("room_{0}_noderect_h", i.ToString())));
+                Rect roomRect = new Rect(PlayerPrefs.GetFloat(string.Format("room_{0}_roomrect_x", i.ToString())), PlayerPrefs.GetFloat(string.Format("room_{0}_roomrect_y", i.ToString())), PlayerPrefs.GetFloat(string.Format("room_{0}_roomrect_w", i.ToString())), PlayerPrefs.GetFloat(string.Format("room_{0}_roomrect_h", i.ToString())));
+                int isCreated = PlayerPrefs.GetInt(string.Format("room_{0}_iscreated", i.ToString()));
+                RoomType roomType = StringToRoomType(PlayerPrefs.GetString(string.Format("room_{0}_type", i.ToString())));
+
+                float rightY = PlayerPrefs.GetFloat(string.Format("room_{0}_right_y", i.ToString()));
+                float leftY = PlayerPrefs.GetFloat(string.Format("room_{0}_left_y", i.ToString()));
+                float upX = PlayerPrefs.GetFloat(string.Format("room_{0}_up_x", i.ToString()));
+                float downX = PlayerPrefs.GetFloat(string.Format("room_{0}_down_x", i.ToString()));
+
+                Room room = new Room(nodeRect, roomRect, isCreated, roomType, rightY, leftY, upX, downX);
+                saveFile.roomList.Add(room);
+            }
+        }
+        saveFile.startX = PlayerPrefs.GetInt("startX");
+        saveFile.startY = PlayerPrefs.GetInt("startY");
+
+        if(PlayerPrefs.GetString("map_save") == "true")
+        {
+            saveFile.isMapSave = true;
+        }
+        else
+        {
+            saveFile.isMapSave = false;
+        }
     }
 
     public void SaveMapData(Room[ , ] roomList, int startX, int startY)
@@ -213,5 +255,22 @@ public class CharData : MonoBehaviour
         }
 
         return result;
+    }
+
+    public RoomType StringToRoomType(string name)
+    {
+        switch(name)
+        {
+            case "ROOM_NORMAL":
+                return RoomType.ROOM_NORMAL;
+            case "ROOM_KITCHEN":
+                return RoomType.ROOM_KITCHEN;
+            case "ROOM_BOSS":
+                return RoomType.ROOM_BOSS;
+            case "ROOM_START":
+                return RoomType.ROOM_START;
+            default:
+                return RoomType.ROOM_NORMAL;
+        }
     }
 }

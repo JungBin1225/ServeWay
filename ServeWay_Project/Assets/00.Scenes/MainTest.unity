@@ -57002,7 +57002,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 447877d4d2d3d5245bde80483382d6be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveFile: {fileID: 11400000, guid: 494afcae66c1dc449849286c8c20528e, type: 2}
+  saveFile:
+    inventory:
+      m_keys: 
+      m_values: 
+    weaponList: []
+    weaponIndex: 0
+    weaponSuccess: 
+    playerHp: 10
+    playerSpeed: 0
+    playerChargeSpeed: 0
+    playerChargeLength: 0
+    playerChargeCooltime: 0
+    stage: 0
+    bossNations: 
+    bossJobs: 
+    themes: 
+    isMapSave: 0
+    roomList: []
+    startX: 0
+    startY: 0
+    isTuto: 0
 --- !u!114 &1493189981
 MonoBehaviour:
   m_ObjectHideFlags: 0
