@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class FireGame : MonoBehaviour
@@ -72,6 +73,7 @@ public class FireGame : MonoBehaviour
 
         float barTime = Random.Range(3.5f, 6.0f);
         float barLoc = Random.Range(0.0f, 500.0f);
+        float barSize = targetBar.GetComponent<RectTransform>().sizeDelta.x * targetBar.GetComponent<Image>().fillAmount * 2;
 
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
 
@@ -103,7 +105,7 @@ public class FireGame : MonoBehaviour
 
             float degree = spaceBar.GetComponent<RectTransform>().anchoredPosition.x - targetBar.GetComponent<RectTransform>().anchoredPosition.x;
             
-            if(degree > 0 && degree < targetBar.GetComponent<RectTransform>().sizeDelta.x)
+            if(degree > 0 && degree < barSize)
             {
                 score += Time.realtimeSinceStartup - frameTime;
                 Debug.Log(score);
@@ -113,7 +115,7 @@ public class FireGame : MonoBehaviour
             {
                 barNow = Time.realtimeSinceStartup - time;
                 barTime = Random.Range(3.5f, 6.0f);
-                barLoc = Random.Range(0.0f, 530.0f);
+                barLoc = Random.Range(0.0f, 500.0f);
                 targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
             }
 
@@ -127,11 +129,11 @@ public class FireGame : MonoBehaviour
             yield return null;
         }
 
-        if(score >= 8)
+        if(score >= 7.5f)
         {
             success = Create_Success.GREAT;
         }
-        else if(score >= 5)
+        else if(score >= 4.5f)
         {
             success = Create_Success.SUCCESS;
         }
