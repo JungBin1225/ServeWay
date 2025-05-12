@@ -59,11 +59,11 @@ public class OptionMenu : MonoBehaviour
             pauseMenuBtns.SetActive(true);
         }
 
-        sm.soundSave.bgmMute = !BGMToggle.isOn;
-        sm.soundSave.bgmSound = BGMSlider.value;
-        sm.soundSave.sfxMute = !SFXToggle.isOn;
-        sm.soundSave.sfxSound = SFXSlider.value;
-        UnityEditor.EditorUtility.SetDirty(sm.soundSave);
+        PlayerPrefs.SetString("BGM_Mute", (!BGMToggle.isOn).ToString());
+        PlayerPrefs.SetFloat("BGM_Sound", BGMSlider.value);
+
+        PlayerPrefs.SetString("SFX_Mute", (!SFXToggle.isOn).ToString());
+        PlayerPrefs.SetFloat("SFX_Sound", SFXSlider.value);
 
         menuOpen.Play();
     }
@@ -138,9 +138,22 @@ public class OptionMenu : MonoBehaviour
 
     public void InitValue()
     {
-        BGMSlider.value = sm.soundSave.bgmSound;
-        SFXSlider.value = sm.soundSave.sfxSound;
-        BGMToggle.isOn = !sm.soundSave.bgmMute;
-        SFXToggle.isOn = !sm.soundSave.sfxMute;
+        if(PlayerPrefs.HasKey("BGM_Sound"))
+        {
+            bool bgmTemp = bool.Parse(PlayerPrefs.GetString("BGM_Mute"));
+            bool sfxTemp = bool.Parse(PlayerPrefs.GetString("SFX_Mute"));
+
+            BGMSlider.value = PlayerPrefs.GetFloat("BGM_Sound");
+            SFXSlider.value = PlayerPrefs.GetFloat("SFX_Sound");
+            BGMToggle.isOn = !bgmTemp;
+            SFXToggle.isOn = !sfxTemp;
+        }
+        else
+        {
+            BGMSlider.value = 1;
+            SFXSlider.value = 1;
+            BGMToggle.isOn = true;
+            SFXToggle.isOn = true;
+        }
     }
 }

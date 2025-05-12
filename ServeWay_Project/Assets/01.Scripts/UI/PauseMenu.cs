@@ -34,7 +34,6 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !optionBG.activeSelf && !optionPanel.activeSelf && !optionMenuBtns.activeSelf)
         {
-            Debug.Log("esc");
             if (!isPaused)  // Pause
             {
                 if (Time.timeScale == 1)
@@ -44,7 +43,6 @@ public class PauseMenu : MonoBehaviour
             }
             else  // Resume
             {
-                Debug.Log("resume");
                 Resume();
             }
         }
@@ -53,7 +51,6 @@ public class PauseMenu : MonoBehaviour
     void Pause()
     {
         Time.timeScale = 0;
-        Debug.Log(Time.timeScale);
 
         pauseBG.SetActive(true);
         pausePanel.SetActive(true);
@@ -65,32 +62,23 @@ public class PauseMenu : MonoBehaviour
 
     void Resume()
     {
-        Debug.Log("resume func start");
-        Debug.Log("btn " + pauseMenuBtns.activeSelf);
-        Debug.Log("panel " + pausePanel.activeSelf);
-        Debug.Log("bg " + pauseBG.activeSelf);
         isPaused = false;
         pauseMenuBtns.SetActive(false);
         pausePanel.SetActive(false);
         pauseBG.SetActive(false);
 
         Time.timeScale = 1;
-        Debug.Log("resume func end");
-        Debug.Log("btn " + pauseMenuBtns.activeSelf);
-        Debug.Log("panel " + pausePanel.activeSelf);
-        Debug.Log("bg " + pauseBG.activeSelf);
     }
 
-    public void ResumeBtn() // ����ϱ�
+    public void ResumeBtn()
     {
         Resume();
         menuClick.Play();
     }
 
-    public void OptionBtn() // ����
+    public void OptionBtn()
     {
         menuClick.Play();
-        Debug.Log("���� ��ư Ŭ��");
 
         pauseMenuBtns.SetActive(false);
         pausePanel.SetActive(false);
@@ -102,18 +90,16 @@ public class PauseMenu : MonoBehaviour
         menuOpen.Play();
     }
 
-    public void ToTitleSceneBtn()   // Ÿ��Ʋȭ������
+    public void ToTitleSceneBtn()
     {
         menuClick.Play();
-        Debug.Log("Ÿ��Ʋȭ������ ��ư Ŭ��");
         warningType = 1;
         popWarningPanel();
     }
 
-    public void QuitGameBtn()   // ��������
+    public void QuitGameBtn()
     {
         menuClick.Play();
-        Debug.Log("�������� ��ư Ŭ��");
         warningType = 2;
         popWarningPanel();
     }

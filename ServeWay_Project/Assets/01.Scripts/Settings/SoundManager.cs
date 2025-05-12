@@ -9,7 +9,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioSource bgmAudio;
     [SerializeField] AudioSource sfxAudio;
     [SerializeField] List<AudioClip> sfxList;
-    public SoundOptionSave soundSave;
     private float sfxCycle;
 
 
@@ -71,7 +70,21 @@ public class SoundManager : MonoBehaviour
 
     private void InitOption()
     {
-        BGMonoff(soundSave.bgmMute, soundSave.bgmSound);
-        SFXonoff(soundSave.sfxMute, soundSave.sfxSound);
+        bool bgmMute = false;
+        bool sfxMute = false;
+        float bgmValue = 1;
+        float sfxValue = 1;
+
+        if (PlayerPrefs.HasKey("BGM_Sound"))
+        {
+            bgmMute = bool.Parse(PlayerPrefs.GetString("BGM_Mute"));
+            sfxMute = bool.Parse(PlayerPrefs.GetString("SFX_Mute"));
+
+            bgmValue = PlayerPrefs.GetFloat("BGM_Sound");
+            sfxValue = PlayerPrefs.GetFloat("SFX_Sound");
+        }
+
+        BGMonoff(bgmMute, bgmValue);
+        SFXonoff(sfxMute, sfxValue);
     }
 }
