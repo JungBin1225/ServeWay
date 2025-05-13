@@ -82,7 +82,7 @@ public class OpeningSignal: MonoBehaviour
             clickCoolTime = 0;
         }
 
-        if(Input.GetMouseButtonDown(0) && (!Fade_black.activeSelf && !Fade_white.activeSelf) && clickCoolTime <= 0)
+        if((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && (!Fade_black.activeSelf && !Fade_white.activeSelf) && clickCoolTime <= 0)
         {
             foreach(double signalTime in signalTimeList)
             {
@@ -93,7 +93,7 @@ public class OpeningSignal: MonoBehaviour
                 }
             }
 
-            clickCoolTime = 0.5f;
+            clickCoolTime = 0.25f;
         }
     }
 

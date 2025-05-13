@@ -5,47 +5,47 @@ using UnityEngine.UI;
 
 public class FadeController : MonoBehaviour
 {
-    public void FadeIn(SpriteRenderer sprite)
+    public void FadeIn(Image image)
     {
         StopCoroutine("FadeOutCoroutine");
-        StartCoroutine("FadeInCoroutine", sprite);
+        StartCoroutine("FadeInCoroutine", image);
     }
-    IEnumerator FadeInCoroutine(SpriteRenderer sprite)
+    IEnumerator FadeInCoroutine(Image image)
     {
         float fadeInCount = 0;
         while (fadeInCount < 1.0f)
         {
-            fadeInCount += 0.01f;
+            fadeInCount += 0.02f;
             yield return new WaitForSeconds(0.01f);
-            if (sprite.gameObject.tag == "White")
+            if (image.gameObject.tag == "White")
             {
-                sprite.color = new Color(1, 1, 1, fadeInCount);
+                image.color = new Color(1, 1, 1, fadeInCount);
             } else
             {
-                sprite.color = new Color(0, 0, 0, fadeInCount);
+                image.color = new Color(0, 0, 0, fadeInCount);
             }
         }
     }
 
-    public void FadeOut(SpriteRenderer sprite)
+    public void FadeOut(Image image)
     {
         StopCoroutine("FadeInCoroutine");
-        StartCoroutine("FadeOutCoroutine", sprite);
+        StartCoroutine("FadeOutCoroutine", image);
     }
-    IEnumerator FadeOutCoroutine(SpriteRenderer sprite)
+    IEnumerator FadeOutCoroutine(Image image)
     {
         float fadeInCount = 1.0f;
         while (fadeInCount > 0.0f)
         {
-            fadeInCount -= 0.01f;
+            fadeInCount -= 0.02f;
             yield return new WaitForSeconds(0.01f);
-            if (sprite.gameObject.tag == "White")
+            if (image.gameObject.tag == "White")
             {
-                sprite.color = new Color(1, 1, 1, fadeInCount);
+                image.color = new Color(1, 1, 1, fadeInCount);
             }
             else
             {
-                sprite.color = new Color(0, 0, 0, fadeInCount);
+                image.color = new Color(0, 0, 0, fadeInCount);
             }
         }
     }
