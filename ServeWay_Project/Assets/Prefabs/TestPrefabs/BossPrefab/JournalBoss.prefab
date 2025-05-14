@@ -333,7 +333,6 @@ GameObject:
   - component: {fileID: 8570218352979256457}
   - component: {fileID: 899148545676988075}
   - component: {fileID: -5700573520485301022}
-  - component: {fileID: 890065575132556321}
   - component: {fileID: 3517313230200920848}
   - component: {fileID: 7662800629891133497}
   - component: {fileID: 2603072286305146770}
@@ -495,7 +494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 700144b1b28e026499bdfbebcfcd0132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: 0
+  test: 1
   room: {fileID: 0}
   damageEffect: {fileID: 0}
   riceBulletPrefab: {fileID: 2490266043329067457, guid: dac68d3d5f430684eb59e6231f99cadd, type: 3}
@@ -503,7 +502,7 @@ MonoBehaviour:
   scoopPrefab: {fileID: 1790386136260624764, guid: 181cf18c939e4e5409c7ab2b4728af60, type: 3}
   dashEffect: {fileID: 1567927910535616063}
   dashDust: {fileID: 8974278516831408870, guid: cc233a519a2451c4dbd8b6a90716ca2a, type: 3}
-  collider: {fileID: 890065575132556321}
+  collider: {fileID: 4719619014038066520}
   pictureAnim: {fileID: 4515806432512010922}
   attackSound:
   - {fileID: 8300000, guid: 89fec8e65504baa4f8c8f11edfbf006d, type: 3}
@@ -538,22 +537,6 @@ MonoBehaviour:
   nation: 0
   job: 0
   eatSound: {fileID: 5318576464459290623, guid: 28541ef36c8732944b62ce7c5aea9027, type: 3}
---- !u!58 &890065575132556321
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8570218352979256462}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 9.7
 --- !u!114 &3517313230200920848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,6 +768,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1630831238171588427}
   - component: {fileID: 3677566987819305921}
+  - component: {fileID: 4719619014038066520}
   m_Layer: 6
   m_Name: Around
   m_TagString: Untagged
@@ -859,3 +843,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &4719619014038066520
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143861543576129908}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.65

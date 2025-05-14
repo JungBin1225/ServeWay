@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioSource bgmAudio;
     [SerializeField] AudioSource sfxAudio;
     [SerializeField] List<AudioClip> sfxList;
+    [SerializeField] AudioClip bossBgm;
+    [SerializeField] AudioClip mainBgm;
     private float sfxCycle;
 
 
@@ -16,7 +19,11 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         sfxCycle = (bgmAudio.clip.length / 12);
-        StartCoroutine(BackGroundSFX());
+        if(SceneManager.GetActiveScene().name.Contains("Main"))
+        {
+            StartCoroutine(BackGroundSFX());
+        }
+        
         InitOption();
     }
 
@@ -66,6 +73,30 @@ public class SoundManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.2f);
             sfxAudio.Play();
         }
+    }
+
+    public IEnumerator SetBossBGM()
+    {
+        StopCoroutine(BackGroundSFX());
+        yield return new WaitForSecondsRealtime(0.1f);
+
+        bgmAudio.clip = bossBgm;
+        bgmAudio.Play();
+        sfxCycle = (bossBgm.length / 12);
+
+        StartCoroutine(BackGroundSFX());
+    }
+
+    public IEnumerator SetMainBGM()
+    {
+        StopCoroutine(BackGroundSFX());
+        yield return new WaitForSecondsRealtime(0.1f);
+
+        bgmAudio.clip = mainBgm;
+        bgmAudio.Play();
+        sfxCycle = (mainBgm.length / 12);
+
+        StartCoroutine(BackGroundSFX());
     }
 
     private void InitOption()

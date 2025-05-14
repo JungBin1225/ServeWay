@@ -28,6 +28,20 @@ public class CharData : MonoBehaviour
         PlayerController plInfo = FindObjectOfType<PlayerController>();
         InventoryManager inventory = GameManager.gameManager.inventory;
 
+        bool bgmMute = false;
+        bool sfxMute = false;
+        float bgmValue = 1;
+        float sfxValue = 1;
+
+        if (PlayerPrefs.HasKey("BGM_Sound"))
+        {
+            bgmMute = bool.Parse(PlayerPrefs.GetString("BGM_Mute"));
+            sfxMute = bool.Parse(PlayerPrefs.GetString("SFX_Mute"));
+
+            bgmValue = PlayerPrefs.GetFloat("BGM_Sound");
+            sfxValue = PlayerPrefs.GetFloat("SFX_Sound");
+        }
+
         PlayerPrefs.DeleteAll();
 
         for (int i = 0; i < plInfo.weaponSlot.gameObject.transform.childCount; i++)
@@ -72,6 +86,11 @@ public class CharData : MonoBehaviour
             PlayerPrefs.SetString(string.Format("stage_theme_{0}", i.ToString()), GameManager.gameManager.stageThemes[i].ToString());
         }
         PlayerPrefs.SetString("isTuto", saveFile.isTuto.ToString());
+
+        PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
+        PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
+        PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
+        PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
 
         PlayerPrefs.Save();
     }

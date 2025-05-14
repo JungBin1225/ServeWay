@@ -10,6 +10,7 @@ public class BossRoom : MonoBehaviour
     private DataController data;
     private MissionManager misson;
     private BossController bossCon;
+    private SoundManager soundManager;
     private GameObject bossHp;
     private Image bossNowHp;
     private bool isEntered;
@@ -43,6 +44,7 @@ public class BossRoom : MonoBehaviour
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
         bossHp = GameObject.Find("BossHp");
+        soundManager = FindObjectOfType<SoundManager>();
         bossNowHp = bossHp.transform.GetChild(0).GetComponent<Image>();
         misson = FindObjectOfType<MissionManager>();
         bossNation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
@@ -273,6 +275,8 @@ public class BossRoom : MonoBehaviour
         {
             door.GetComponent<DoorAnimation>().OpenDoor();
         }
+
+        StartCoroutine(soundManager.SetMainBGM());
     }
 
     public void ActiveStair()
@@ -350,6 +354,7 @@ public class BossRoom : MonoBehaviour
 
             // 보스방 작동
             GameManager.gameManager.isBossStage = true;
+            StartCoroutine(soundManager.SetBossBGM());
             StartCoroutine(BossIntro());
         }
     }

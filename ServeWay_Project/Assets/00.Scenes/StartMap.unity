@@ -146446,7 +146446,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 447877d4d2d3d5245bde80483382d6be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveFile: {fileID: 11400000, guid: 494afcae66c1dc449849286c8c20528e, type: 2}
+  saveFile:
+    inventory:
+      m_keys: 
+      m_values: 
+    weaponList: []
+    weaponIndex: 0
+    weaponSuccess: 
+    playerHp: 10
+    playerSpeed: 0
+    playerChargeSpeed: 0
+    playerChargeLength: 0
+    playerChargeCooltime: 0
+    stage: 0
+    bossNations: 
+    bossJobs: 
+    themes: 
+    isMapSave: 0
+    roomList: []
+    startX: 0
+    startY: 0
+    isTuto: 0
 --- !u!114 &1988845037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146609,7 +146629,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1998417349668151757, guid: 6fb4c38b18e699945878c59b54cd107e, type: 2}
-  m_audioClip: {fileID: 8300000, guid: d4d584b38bd2514449a21beefb6ed2c1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9669960e415ea604d81fb0784634df79, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -146715,7 +146735,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d3b7e7e99326eec4c949d6dafa0530b7, type: 3}
   - {fileID: 8300000, guid: a07871bf0a83bf144ae7366b46792360, type: 3}
   - {fileID: 8300000, guid: 8f5a7426dcfa04f43a3630091d472007, type: 3}
-  soundSave: {fileID: 11400000, guid: d77216c9be4527042957c1b50c40fe2e, type: 2}
 --- !u!4 &1990108905
 Transform:
   m_ObjectHideFlags: 0

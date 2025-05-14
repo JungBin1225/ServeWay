@@ -71,8 +71,6 @@ public class JournalController : MonoBehaviour
         SetIncreaseByStage();
         //GameManager.gameManager.mission.boss = this.gameObject;
 
-        collider.enabled = false;
-
         coolTime = attackCoolTime;
         isAttack = false;
         isPicture = false;

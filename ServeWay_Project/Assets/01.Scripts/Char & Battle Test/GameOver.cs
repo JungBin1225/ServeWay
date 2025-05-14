@@ -153,7 +153,27 @@ public class GameOver : MonoBehaviour
         //Time.timeScale = 1;
 
         GameManager.gameManager.charData.saveFile = new SaveFile();
+
+        bool bgmMute = false;
+        bool sfxMute = false;
+        float bgmValue = 1;
+        float sfxValue = 1;
+
+        if (PlayerPrefs.HasKey("BGM_Sound"))
+        {
+            bgmMute = bool.Parse(PlayerPrefs.GetString("BGM_Mute"));
+            sfxMute = bool.Parse(PlayerPrefs.GetString("SFX_Mute"));
+
+            bgmValue = PlayerPrefs.GetFloat("BGM_Sound");
+            sfxValue = PlayerPrefs.GetFloat("SFX_Sound");
+        }
+
         PlayerPrefs.DeleteAll();
+
+        PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
+        PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
+        PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
+        PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
         PlayerPrefs.Save();
 
         SceneManager.LoadScene("StartMap");

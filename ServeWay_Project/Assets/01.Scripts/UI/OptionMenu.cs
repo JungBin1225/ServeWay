@@ -65,6 +65,8 @@ public class OptionMenu : MonoBehaviour
         PlayerPrefs.SetString("SFX_Mute", (!SFXToggle.isOn).ToString());
         PlayerPrefs.SetFloat("SFX_Sound", SFXSlider.value);
 
+        PlayerPrefs.Save();
+
         menuOpen.Play();
     }
 
