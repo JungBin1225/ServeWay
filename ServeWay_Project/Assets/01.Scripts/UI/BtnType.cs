@@ -70,7 +70,9 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
             case BTNType.Sound:
                 break;
             case BTNType.OptionBack:
+                optionGroup.GetComponent<OptionMenu>().GoBack();
                 CanvasGroupOff(optionGroup);
+
                 break;
             case BTNType.New:
                 GameManager.gameManager.charData.saveFile = new SaveFile();

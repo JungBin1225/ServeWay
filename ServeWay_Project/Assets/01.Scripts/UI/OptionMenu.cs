@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OptionMenu : MonoBehaviour
 {
@@ -31,24 +32,29 @@ public class OptionMenu : MonoBehaviour
     void Start()
     {
         sm = sm.GetComponent<SoundManager>();
+
         InitValue();
+            
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (optionBG.activeSelf || optionPanel.activeSelf || optionMenuBtns.activeSelf)
+        if(!SceneManager.GetActiveScene().name.Contains("Title"))
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (optionBG.activeSelf || optionPanel.activeSelf || optionMenuBtns.activeSelf)
             {
-                GoBack();
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    GoBack();
+                }
             }
         }
     }
 
     public void GoBack()
     {
-        if(pauseBG != null)
+        if (pauseBG != null)
         {
             optionMenuBtns.SetActive(false);
             optionPanel.SetActive(false);
@@ -90,7 +96,7 @@ public class OptionMenu : MonoBehaviour
 
     public void onoffBGM()
     {
-        if(optionMenuBtns.activeSelf)
+        if(optionMenuBtns.activeSelf && (GetComponent<CanvasGroup>() == null || GetComponent<CanvasGroup>().alpha != 0))
         {
             menuClick.Play();
         }
@@ -108,7 +114,7 @@ public class OptionMenu : MonoBehaviour
 
     public void onoffFX()
     {
-        if (optionMenuBtns.activeSelf)
+        if (optionMenuBtns.activeSelf && (GetComponent<CanvasGroup>() == null || GetComponent<CanvasGroup>().alpha != 0))
         {
             menuClick.Play();
         }
