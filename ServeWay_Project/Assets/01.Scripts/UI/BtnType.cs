@@ -16,6 +16,7 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
 
     public AudioSource menuOpen;
     public AudioSource menuClick;
+    public AudioSource potSound;
 
     bool isSound;
 
@@ -154,6 +155,8 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
         textObj.anchoredPosition = new Vector3(textObj.anchoredPosition.x, 105, 0);
         top.anchoredPosition = new Vector3(textObj.anchoredPosition.x, 190, 0);
         text.color = new Color(0, 0, 0);
+
+        potSound.Play();
     }
 
     public void CloseTop()
@@ -170,6 +173,8 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
     public void SetFork()
     {
         gameObject.transform.GetChild(1).gameObject.SetActive(true);
+
+        potSound.Play();
     }
 
     public void SetOffFork()
