@@ -19,12 +19,9 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         sfxCycle = (bgmAudio.clip.length / 12);
-        if(SceneManager.GetActiveScene().name.Contains("Main"))
-        {
-            StartCoroutine(BackGroundSFX());
-        }
-        
+
         InitOption();
+        StartCoroutine(InitBGM());
     }
 
     public void setBGM(float volume)
@@ -97,6 +94,18 @@ public class SoundManager : MonoBehaviour
         sfxCycle = (mainBgm.length / 12);
 
         StartCoroutine(BackGroundSFX());
+    }
+
+    private IEnumerator InitBGM()
+    {
+        yield return null;
+        yield return null;
+
+        bgmAudio.Play();
+        if (SceneManager.GetActiveScene().name.Contains("Main"))
+        {
+            StartCoroutine(BackGroundSFX());
+        }
     }
 
     private void InitOption()

@@ -34,7 +34,6 @@ public class OptionMenu : MonoBehaviour
         sm = sm.GetComponent<SoundManager>();
 
         InitValue();
-            
     }
 
     // Update is called once per frame
