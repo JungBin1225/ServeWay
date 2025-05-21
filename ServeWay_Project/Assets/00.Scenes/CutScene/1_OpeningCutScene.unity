@@ -1464,6 +1464,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9815f801451626f48ba87adb17c247f2, type: 2}
     - {fileID: 11400000, guid: 40ddf85e3a91518479499e2f39dd0368, type: 2}
     - {fileID: 11400000, guid: e05a15077c2566f47971c0ed63cf95c0, type: 2}
+    - {fileID: 11400000, guid: bbbcf37801f86284a8b41fdad67cccc1, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -1656,6 +1657,20 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 121722017}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 184419310}
+          m_TargetAssemblyTypeName: OpeningSignal, Assembly-CSharp
+          m_MethodName: AlienMomWalkSignal
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 1799960074}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -1876,9 +1891,9 @@ RectTransform:
   m_Father: {fileID: 841697581}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 45, y: -20}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &237725687
@@ -2027,6 +2042,7 @@ GameObject:
   - component: {fileID: 247370428}
   - component: {fileID: 247370427}
   - component: {fileID: 247370422}
+  - component: {fileID: 247370429}
   m_Layer: 12
   m_Name: Player_Living1
   m_TagString: Player
@@ -2122,6 +2138,19 @@ Transform:
   m_Father: {fileID: 1868289384}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &247370429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247370419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: front
 --- !u!1 &262071374
 GameObject:
   m_ObjectHideFlags: 0
@@ -2808,7 +2837,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &299833949
@@ -4138,7 +4167,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &430472201
@@ -5428,6 +5457,7 @@ GameObject:
   - component: {fileID: 549049463}
   - component: {fileID: 549049462}
   - component: {fileID: 549049457}
+  - component: {fileID: 549049464}
   m_Layer: 12
   m_Name: Player_Living2
   m_TagString: Player
@@ -5523,6 +5553,19 @@ Transform:
   m_Father: {fileID: 1868289384}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &549049464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549049454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: front
 --- !u!1 &552460060
 GameObject:
   m_ObjectHideFlags: 0
@@ -5534,6 +5577,7 @@ GameObject:
   - component: {fileID: 552460061}
   - component: {fileID: 552460063}
   - component: {fileID: 552460062}
+  - component: {fileID: 552460064}
   m_Layer: 12
   m_Name: Player_Master
   m_TagString: Player
@@ -5629,6 +5673,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &552460064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552460060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: front
 --- !u!1 &564551870
 GameObject:
   m_ObjectHideFlags: 0
@@ -6880,7 +6937,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -103}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &841697582
 MonoBehaviour:
@@ -9374,6 +9431,7 @@ GameObject:
   - component: {fileID: 1248118846}
   - component: {fileID: 1248118854}
   - component: {fileID: 1248118849}
+  - component: {fileID: 1248118855}
   m_Layer: 12
   m_Name: Player_Dump
   m_TagString: Player
@@ -9460,7 +9518,7 @@ SpriteRenderer:
   m_SortingOrder: 3
   m_Sprite: {fileID: 44174474, guid: 6b0d83bd0e730ba409918da9f81976ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -9469,6 +9527,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1248118855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248118845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: back
 --- !u!1 &1266446918
 GameObject:
   m_ObjectHideFlags: 0
@@ -9799,6 +9870,7 @@ GameObject:
   - component: {fileID: 1314463563}
   - component: {fileID: 1314463565}
   - component: {fileID: 1314463564}
+  - component: {fileID: 1314463566}
   m_Layer: 12
   m_Name: Mom_Living_2
   m_TagString: Untagged
@@ -9894,6 +9966,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1314463566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314463562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: front
 --- !u!1 &1319838460
 GameObject:
   m_ObjectHideFlags: 0
@@ -11132,6 +11217,7 @@ GameObject:
   - component: {fileID: 1492293666}
   - component: {fileID: 1492293667}
   - component: {fileID: 1492293668}
+  - component: {fileID: 1492293669}
   m_Layer: 12
   m_Name: Alien_Son
   m_TagString: Untagged
@@ -11227,6 +11313,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1492293669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492293665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: stop
 --- !u!1 &1495163995
 GameObject:
   m_ObjectHideFlags: 0
@@ -11344,6 +11443,7 @@ GameObject:
   - component: {fileID: 1512072289}
   - component: {fileID: 1512072291}
   - component: {fileID: 1512072290}
+  - component: {fileID: 1512072292}
   m_Layer: 12
   m_Name: Dad
   m_TagString: Untagged
@@ -11439,6 +11539,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1512072292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512072288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: back
 --- !u!1 &1522347718
 GameObject:
   m_ObjectHideFlags: 0
@@ -11531,6 +11644,7 @@ GameObject:
   - component: {fileID: 1540409692}
   - component: {fileID: 1540409694}
   - component: {fileID: 1540409693}
+  - component: {fileID: 1540409695}
   m_Layer: 12
   m_Name: Mom_Living_1
   m_TagString: Untagged
@@ -11626,6 +11740,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1540409695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540409691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: front
 --- !u!1 &1543663607
 GameObject:
   m_ObjectHideFlags: 0
@@ -11751,6 +11878,7 @@ GameObject:
   - component: {fileID: 1572552744}
   - component: {fileID: 1572552743}
   - component: {fileID: 1572552738}
+  - component: {fileID: 1572552745}
   m_Layer: 12
   m_Name: Player_Dining
   m_TagString: Player
@@ -11822,7 +11950,7 @@ SpriteRenderer:
   m_SortingOrder: 3
   m_Sprite: {fileID: 44174474, guid: 6b0d83bd0e730ba409918da9f81976ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -11846,6 +11974,19 @@ Transform:
   m_Father: {fileID: 1868289384}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1572552745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572552735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: side
 --- !u!1 &1606600593
 GameObject:
   m_ObjectHideFlags: 0
@@ -12224,7 +12365,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1625013459
@@ -12506,6 +12647,7 @@ GameObject:
   - component: {fileID: 1699703681}
   - component: {fileID: 1699703683}
   - component: {fileID: 1699703682}
+  - component: {fileID: 1699703684}
   m_Layer: 12
   m_Name: Mom_Dining
   m_TagString: Untagged
@@ -12601,6 +12743,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1699703684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699703680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: side
 --- !u!1 &1703738695
 GameObject:
   m_ObjectHideFlags: 0
@@ -13356,6 +13511,7 @@ GameObject:
   - component: {fileID: 1799960075}
   - component: {fileID: 1799960076}
   - component: {fileID: 1799960077}
+  - component: {fileID: 1799960078}
   m_Layer: 12
   m_Name: Alien_Mom
   m_TagString: Untagged
@@ -13451,6 +13607,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1799960078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799960074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8807e417a94d4688490127bedacb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: stop
 --- !u!1 &1800587509
 GameObject:
   m_ObjectHideFlags: 0
