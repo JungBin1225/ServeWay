@@ -112,11 +112,11 @@ public class OpeningSignal: MonoBehaviour
 
         if (PlayerTalkIndex < 2)
             PlayerText[0].text = talkData;
-        else if (PlayerTalkIndex < 6)
-            PlayerText[1].text = talkData;
         else if (PlayerTalkIndex < 7)
+            PlayerText[1].text = talkData;
+        else if (PlayerTalkIndex < 8)
             PlayerText[2].text = talkData;
-        else if (PlayerTalkIndex < 11)
+        else if (PlayerTalkIndex < 13)
             PlayerText[3].text = talkData;
 
         PlayerTalkIndex++;
