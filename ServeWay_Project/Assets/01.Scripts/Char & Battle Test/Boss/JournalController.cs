@@ -12,6 +12,8 @@ public class JournalController : MonoBehaviour
     private SpriteRenderer renderer;
     private SpriteRenderer effectRenderer;
     private GameObject player;
+    private GameObject bulletParent;
+    private GameObject effectParent;
     private Vector2 minPos;
     private Vector2 maxPos;
     private List<Sprite> sprites;
@@ -57,6 +59,8 @@ public class JournalController : MonoBehaviour
         renderer = GetComponent<SpriteRenderer>();
         effectRenderer = dashEffect.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
         soupMents = new List<string>();
@@ -222,7 +226,7 @@ public class JournalController : MonoBehaviour
         {
             Vector2 direction = player.transform.position - transform.position;
             Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
-            GameObject bullet = Instantiate(riceBulletPrefab, transform.position, rot);
+            GameObject bullet = Instantiate(riceBulletPrefab, transform.position, rot, bulletParent.transform);
             bullet.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = ment[i].ToString();
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
@@ -261,7 +265,7 @@ public class JournalController : MonoBehaviour
 
             for (int i = 0; i < shotGunAmount; i++)
             {
-                GameObject bullet = Instantiate(soupBulletPrefab, transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+                GameObject bullet = Instantiate(soupBulletPrefab, transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
                 bullet.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = ment[i].ToString();
                 bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
                 bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
@@ -302,12 +306,12 @@ public class JournalController : MonoBehaviour
 
         if (target.x > transform.position.x)
         {
-            GameObject dust = Instantiate(dashDust, new Vector3(transform.position.x - 2.8f, transform.position.y + 0.5f), Quaternion.Euler(0, 0, 0));
+            GameObject dust = Instantiate(dashDust, new Vector3(transform.position.x - 2.8f, transform.position.y + 0.5f), Quaternion.Euler(0, 0, 0), effectParent.transform);
             dust.GetComponent<SpriteRenderer>().flipX = true;
         }
         else
         {
-            Instantiate(dashDust, new Vector3(transform.position.x + 2.8f, transform.position.y + 0.5f), Quaternion.Euler(0, 0, 0));
+            Instantiate(dashDust, new Vector3(transform.position.x + 2.8f, transform.position.y + 0.5f), Quaternion.Euler(0, 0, 0), effectParent.transform);
         }
 
         rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * chargeSpeed;

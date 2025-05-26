@@ -18,6 +18,8 @@ public class EnemyController : MonoBehaviour
     private float maxHp;
     private float hp;
     private GameObject target;
+    private GameObject bulletParent;
+    private GameObject effectParent;
     private Vector2 dir;
     private Rigidbody2D rigidBody;
     private LineRenderer lineRenderer;
@@ -66,6 +68,8 @@ public class EnemyController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         inventory = GameManager.gameManager.inventory;
         target = GameObject.FindGameObjectWithTag("Player");
+        bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
         lineRenderer = transform.GetChild(2).gameObject.GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.gameObject.GetComponent<Animator>().SetInteger("Index", laserMat);
@@ -105,8 +109,8 @@ public class EnemyController : MonoBehaviour
 
     public void GetDamage(float damage)
     {
-        GameObject effect = Instantiate(damageEffect, transform.position, transform.rotation);
-        GameObject sound = Instantiate(eatSound, transform.position, transform.rotation);
+        GameObject effect = Instantiate(damageEffect, transform.position, transform.rotation, effectParent.transform);
+        GameObject sound = Instantiate(eatSound, transform.position, transform.rotation, effectParent.transform);
 
         hp -= damage;
         if(hp <= 0)
@@ -225,7 +229,7 @@ public class EnemyController : MonoBehaviour
 
     private void EnemyFire()
     {
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation, bulletParent.transform);
 
         switch(attackType)
         {
@@ -276,7 +280,7 @@ public class EnemyController : MonoBehaviour
 
         for (int i = 0; i < riceAmount; i++)
         {
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0, 0, 0));
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0, 0, 0), bulletParent.transform);
 
             EnemyBullet riceBullet = bullet.GetComponent<EnemyBullet>();
             riceBullet.SetTarget(targetTemp);
@@ -340,7 +344,7 @@ public class EnemyController : MonoBehaviour
         moveAble = false;
         rigidBody.velocity = Vector2.zero;
         lineRenderer.enabled = true;
-        laser = Instantiate(laserPrefab, this.transform.position, Quaternion.Euler(0, 0, 0));
+        laser = Instantiate(laserPrefab, this.transform.position, Quaternion.Euler(0, 0, 0), bulletParent.transform);
 
         laser.GetComponent<EnemyLaser>().SetDamage(damage);
         laser.GetComponent<EnemyLaser>().SetCoolTime(bulletSpeed);
@@ -396,7 +400,7 @@ public class EnemyController : MonoBehaviour
 
         for (int i = 0; i < bulletAmount; i++)
         {
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(fromAngle + new Vector3(0, 0, startAngle - (differAngle * i))));
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(fromAngle + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
             bullet.GetComponent<EnemyBullet>().SetDamage(damage);

@@ -66,6 +66,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] GameObject createTablePrefab;
     [SerializeField] GameObject refrigeratorPrefab;
     [SerializeField] List<GameObject> doorPrefab; //up:0 down:1 right:2 left:3
+    [SerializeField] GameObject roomParent;
+    [SerializeField] GameObject roomObjectParent;
 
     // 미니맵
     [SerializeField] Tilemap miniTileMap;
@@ -394,7 +396,7 @@ public class MapGenerator : MonoBehaviour
 
         //position 피벗이 중앙임
         //룸 하나당 에너미 제너레이터도 하나씩 생성
-        roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator);
+        roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator, roomParent.transform);
         // 미니맵 - collider에 룸 위치 전달
         roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myRow = ROW;
         roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myCol = COL;
@@ -777,8 +779,8 @@ public class MapGenerator : MonoBehaviour
                 nowTile = kitchenTile;
 
                 roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().nonEnemyRoom = true;
-                GameObject createTable = Instantiate(createTablePrefab, roomList[ROW, COL].enemyGenerator.transform.position, Quaternion.Euler(0, 0, 0));
-                GameObject refrigerator = Instantiate(refrigeratorPrefab, createTable.transform.position + new Vector3(4, 0, 0), Quaternion.Euler(0, 0, 0));
+                GameObject createTable = Instantiate(createTablePrefab, roomList[ROW, COL].enemyGenerator.transform.position, Quaternion.Euler(0, 0, 0), roomObjectParent.transform);
+                GameObject refrigerator = Instantiate(refrigeratorPrefab, createTable.transform.position + new Vector3(4, 0, 0), Quaternion.Euler(0, 0, 0), roomObjectParent.transform);
             }
             else if (k == 2)
             {
@@ -789,7 +791,7 @@ public class MapGenerator : MonoBehaviour
                 Vector3 pos = roomList[ROW, COL].enemyGenerator.transform.position;
                 Vector3 size = roomList[ROW, COL].enemyGenerator.transform.localScale;
                 Destroy(roomList[ROW, COL].enemyGenerator);
-                roomList[ROW, COL].enemyGenerator = Instantiate(BossGenerator);
+                roomList[ROW, COL].enemyGenerator = Instantiate(BossGenerator, roomParent.transform);
                 roomList[ROW, COL].enemyGenerator.transform.position = pos;
                 roomList[ROW, COL].enemyGenerator.transform.localScale = size;
             }

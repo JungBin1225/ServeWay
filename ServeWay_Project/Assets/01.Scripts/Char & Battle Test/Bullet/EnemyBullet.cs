@@ -9,13 +9,14 @@ public class EnemyBullet : MonoBehaviour
     protected float damage;
     protected float speed;
     protected List<Sprite> sprite;
+    protected GameObject effectParent;
 
     public GameObject destroyEffect;
     public bool isRotate;
 
     protected void Start()
     {
-        
+        effectParent = GameObject.Find("EffectList");
     }
 
     protected void Update()
@@ -72,7 +73,7 @@ public class EnemyBullet : MonoBehaviour
 
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Wall")
         {
-            Instantiate(destroyEffect, transform.position, transform.rotation);
+            Instantiate(destroyEffect, transform.position, transform.rotation, effectParent.transform);
             Destroy(this.gameObject);
         }
     }

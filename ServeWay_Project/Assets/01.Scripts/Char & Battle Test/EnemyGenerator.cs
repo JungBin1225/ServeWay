@@ -12,6 +12,7 @@ public class EnemyGenerator : MonoBehaviour
     public AudioSource doorCloseSound;
     public GameObject enemyAppear;
     public GameObject minimapIcon;
+    
 
     // 미니맵
     [SerializeField] GameObject miniRoomMesh;
@@ -24,6 +25,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private List<GameObject> spawnList;
     private List<GameObject> followSpawnList;
+    private GameObject enemyParent;
     private BoxCollider2D boxCollider;
     private DataController data;
     private int wave;
@@ -49,6 +51,7 @@ public class EnemyGenerator : MonoBehaviour
         isStarted = true;
         isEntered = false;
         miniRoadList = new List<GameObject>();
+        enemyParent = GameObject.Find("EnemyList");
 
         isVisited = false;
 
@@ -130,7 +133,7 @@ public class EnemyGenerator : MonoBehaviour
         UnityEngine.Debug.LogFormat("minX : {0} maxX : {1} posX : {2} posY : {3}", minX, maxX, posX,posY);*/
         Destroy(appear);
 
-        GameObject enemy = Instantiate(enemyPrefab, new Vector3(posX, posY, 0), rot);
+        GameObject enemy = Instantiate(enemyPrefab, new Vector3(posX, posY, 0), rot, enemyParent.transform);
         enemy.GetComponent<EnemyController>().SetVector(new Vector2(minX, minY), new Vector2(maxX, maxY));
         enemy.GetComponent<EnemyController>().SetGenerator(this.gameObject);
         enemy.GetComponent<EnemyController>().roomCenter = transform.position;

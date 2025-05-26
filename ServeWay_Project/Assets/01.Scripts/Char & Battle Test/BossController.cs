@@ -10,6 +10,7 @@ public class BossController : MonoBehaviour
     private bool dying;
     private Animator anim;
     private SpriteRenderer renderer;
+    private GameObject effectParent;
 
     public BossRoom room;
     public Food_Nation nation;
@@ -22,6 +23,7 @@ public class BossController : MonoBehaviour
         dying = false;
         anim = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
+        effectParent = GameObject.Find("EffectList");
         //StartCoroutine(EnemyMove());
     }
 
@@ -82,7 +84,7 @@ public class BossController : MonoBehaviour
         //GameObject effect = Instantiate(damageEffect, effectPos, transform.rotation);
         if(FindObjectOfType<EatSound>() == null)
         {
-            GameObject sound = Instantiate(eatSound, transform.position, transform.rotation);
+            GameObject sound = Instantiate(eatSound, transform.position, transform.rotation, effectParent.transform);
         }
 
         if (job == Boss_Job.YOUTUBER && gameObject.GetComponent<YoutuberController>().isAlgorithm)

@@ -9,6 +9,7 @@ public class BulletController : MonoBehaviour
     protected float damage;
     protected Vector3 target;
     protected FoodData food;
+    protected GameObject effectParent;
 
     private Animator anim;
     private bool isCollide;
@@ -19,6 +20,7 @@ public class BulletController : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         isCollide = false;
+        effectParent = GameObject.Find("EffectList");
     }
 
     protected void Update()
@@ -95,7 +97,7 @@ public class BulletController : MonoBehaviour
 
             if (collision.tag == "Enemy" || collision.tag == "Boss" || collision.tag == "Wall")
             {
-                Instantiate(destroyEffect, transform.position, transform.rotation);
+                Instantiate(destroyEffect, transform.position, transform.rotation, effectParent.transform);
                 isCollide = true;
                 Destroy(this.gameObject);
             }

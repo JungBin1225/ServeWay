@@ -14,6 +14,7 @@ public class ExplosionBullet : BulletController
     {
         isExplode = false;
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        effectParent = GameObject.Find("EffectList");
         audio = gameObject.GetComponent<AudioSource>();
         renderer = GetComponent<SpriteRenderer>();
         renderer.sprite = food.foodSprite;
@@ -36,7 +37,7 @@ public class ExplosionBullet : BulletController
     {
         isExplode = true;
 
-        GameObject effect = Instantiate(destroyEffect, transform.position, transform.rotation);
+        GameObject effect = Instantiate(destroyEffect, transform.position, transform.rotation, effectParent.transform);
         effect.transform.localScale = new Vector3(radius * transform.localScale.x * 5, radius * transform.localScale.y * 5);
         audio.Play();
 

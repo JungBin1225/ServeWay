@@ -8,6 +8,7 @@ public class WeaponController : MonoBehaviour
     private SpriteRenderer playerSprite;
     private SpriteRenderer weaponSprite;
     private LineRenderer lineRenderer;
+    private GameObject bulletParent;
     private Vector3 mousePos;
     private float coolTime;
     private bool shootAble;
@@ -45,6 +46,7 @@ public class WeaponController : MonoBehaviour
         weaponSprite = GetComponent<SpriteRenderer>();
         inventory = GameManager.gameManager.inventory;
         audio = GetComponent<AudioSource>();
+        bulletParent = GameObject.Find("BulletList");
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.enabled = false;
@@ -150,7 +152,7 @@ public class WeaponController : MonoBehaviour
 
     private void GenerateBullet(float speed, float damage, Vector3 mousePos)
     {
-        GameObject bullet = Instantiate(bulletPrefab, player.transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles));
+        GameObject bullet = Instantiate(bulletPrefab, player.transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles), bulletParent.transform);
         int tofuDamage = 1;
 
         if(inventory.isTofu)
@@ -254,7 +256,7 @@ public class WeaponController : MonoBehaviour
                 }
             }
 
-            GameObject bullet = Instantiate(bulletPrefab, player.transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+            GameObject bullet = Instantiate(bulletPrefab, player.transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
             bullet.GetComponent<BulletController>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<BulletController>().SetSpeed(speed);
             bullet.GetComponent<BulletController>().SetDamage(damage * tofuDamage);
