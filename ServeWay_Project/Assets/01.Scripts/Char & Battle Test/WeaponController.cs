@@ -152,7 +152,7 @@ public class WeaponController : MonoBehaviour
 
     private void GenerateBullet(float speed, float damage, Vector3 mousePos)
     {
-        GameObject bullet = Instantiate(bulletPrefab, player.transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles), bulletParent.transform);
+        GameObject bullet = Instantiate(bulletPrefab, transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles), bulletParent.transform);
         int tofuDamage = 1;
 
         if(inventory.isTofu)
@@ -218,28 +218,6 @@ public class WeaponController : MonoBehaviour
 
     public void GenerateSoupBullet(float speed, float damage, float radius, float bulletAmount)
     {
-        /*for (int j = 0; j < 4; j++)
-        {
-            for (int i = 0; i < bulletAmount; i++)
-            {
-                float angle = i * Mathf.PI * 2 / bulletAmount;
-                float x = Mathf.Cos(angle) * radius;
-                float y = Mathf.Sin(angle) * radius;
-                Vector3 pos = transform.position + new Vector3(x, y, 0);
-
-                if (Mathf.Abs(Vector2.SignedAngle(pos - transform.position, mousePos - transform.position)) < 60)
-                {
-                    float angleDegrees = -angle * Mathf.Rad2Deg;
-                    Quaternion rot = Quaternion.Euler(0, 0, angleDegrees);
-                    GameObject bullet = Instantiate(bulletPrefab, pos, rot);
-                    bullet.GetComponent<BulletController>().SetTarget(new Vector3(-x, -y, 0).normalized);
-                    bullet.GetComponent<BulletController>().SetSpeed(speed);
-                    bullet.GetComponent<BulletController>().SetDamage(damage);
-                    bullet.GetComponent<BulletController>().SetNation(nation);
-                }
-            }
-        }*/
-
         float startAngle = (radius * 10) / 2;
         float differAngle = (radius * 10) / (bulletAmount - 1);
         bulletColor = new Color32(bulletColor.r, bulletColor.g, bulletColor.g, 200);
@@ -256,7 +234,7 @@ public class WeaponController : MonoBehaviour
                 }
             }
 
-            GameObject bullet = Instantiate(bulletPrefab, player.transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
+            GameObject bullet = Instantiate(bulletPrefab, transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
             bullet.GetComponent<BulletController>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<BulletController>().SetSpeed(speed);
             bullet.GetComponent<BulletController>().SetDamage(damage * tofuDamage);

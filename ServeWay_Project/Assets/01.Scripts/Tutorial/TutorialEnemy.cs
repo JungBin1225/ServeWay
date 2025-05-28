@@ -7,6 +7,8 @@ public class TutorialEnemy : MonoBehaviour
 {
     public float maxHp;
     public GameObject bulletPrefab;
+    private GameObject bulletParent;
+    private GameObject effectParent;
     public float bulletDamage;
     public float bulletSpeed;
     public bool attackAble;
@@ -32,6 +34,8 @@ public class TutorialEnemy : MonoBehaviour
         sprites = new List<Sprite>();
         sprites.Add(spriteRenderer.sprite);
         target = GameObject.FindGameObjectWithTag("Player");
+        bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
@@ -76,7 +80,7 @@ public class TutorialEnemy : MonoBehaviour
 
         for (int i = 0; i < bulletAmount; i++)
         {
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(fromAngle + new Vector3(0, 0, startAngle - (differAngle * i))));
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(fromAngle + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
             bullet.GetComponent<EnemyBullet>().SetDamage(damage);
@@ -104,7 +108,7 @@ public class TutorialEnemy : MonoBehaviour
 
     public void GetDamage(float damage, Vector3 effectPos)
     {
-        GameObject effect = Instantiate(damageEffect, transform.position, transform.rotation);
+        GameObject effect = Instantiate(damageEffect, transform.position, transform.rotation, effectParent.transform);
 
         hp -= damage;
         if (hp <= 0)
