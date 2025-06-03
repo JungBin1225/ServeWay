@@ -14,7 +14,7 @@ public class BossTutorial : MonoBehaviour
     public TextAsset clearText;
     public GameObject door;
     public TutorialBoss boss;
-    public Image hpUI;
+    public RectTransform hpUI;
     public GameObject minimapPlayer;
     public GameObject minimapTile;
     public GameObject minimapRoad;
@@ -29,6 +29,8 @@ public class BossTutorial : MonoBehaviour
     private bool isClear;
     private bool kiiled;
     private float time;
+
+    private float hp_width;
 
     void Start()
     {
@@ -45,6 +47,8 @@ public class BossTutorial : MonoBehaviour
 
         playerBox.SetActive(false);
         teacherBox.SetActive(false);
+
+        hp_width = hpUI.rect.width;
         hpUI.transform.parent.gameObject.SetActive(false);
     }
 
@@ -84,7 +88,7 @@ public class BossTutorial : MonoBehaviour
 
         if (boss != null)
         {
-            hpUI.fillAmount = 1 - (boss.GetHp() / boss.GetMaxHp());
+            hpUI.sizeDelta = new Vector2(hp_width * (1- (boss.GetHp() / boss.GetMaxHp())), 8);
         }
     }
 

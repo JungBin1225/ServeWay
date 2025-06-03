@@ -13,7 +13,7 @@ public class TutorialEnemy : MonoBehaviour
     public float bulletSpeed;
     public bool attackAble;
     public ChargingTutorial tutorial;
-    public Image hpImage;
+    public RectTransform hpImage;
     public GameObject damageEffect;
 
     private float hp;
@@ -23,6 +23,7 @@ public class TutorialEnemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private List<Sprite> sprites;
     private bool touchWall;
+    private float hp_width;
 
     private void Start()
     {
@@ -37,6 +38,8 @@ public class TutorialEnemy : MonoBehaviour
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
         rigidBody = GetComponent<Rigidbody2D>();
+        hp_width = hpImage.rect.width;
+        hpImage.sizeDelta = new Vector2(0, 8);
     }
 
     private void Update()
@@ -113,11 +116,11 @@ public class TutorialEnemy : MonoBehaviour
         hp -= damage;
         if (hp <= 0)
         {
-            hpImage.fillAmount = 1;
+            hpImage.sizeDelta = new Vector2(hp_width, 8);
         }
         else
         {
-            hpImage.fillAmount = 1 - (hp / maxHp);
+            hpImage.sizeDelta = new Vector2(hp_width * (1 - (hp / maxHp)), 8);
         }
     }
 

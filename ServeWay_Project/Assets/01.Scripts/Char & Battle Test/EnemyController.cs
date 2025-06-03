@@ -52,7 +52,8 @@ public class EnemyController : MonoBehaviour
     private GameObject generator;
     private EnemySprite anim;
 
-    public Image hpImage;
+    public RectTransform hpImage;
+    private float hp_width;
 
     public GameObject damageEffect;
     public GameObject eatSound;
@@ -74,6 +75,9 @@ public class EnemyController : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.gameObject.GetComponent<Animator>().SetInteger("Index", laserMat);
         lineRenderer.enabled = false;
+
+        hp_width = hpImage.rect.width;
+        hpImage.sizeDelta = new Vector2(0, 8);
 
         InitStat();
 
@@ -115,11 +119,11 @@ public class EnemyController : MonoBehaviour
         hp -= damage;
         if(hp <= 0)
         {
-            hpImage.fillAmount = 1;
+            hpImage.sizeDelta = new Vector2(hp_width, 8);
         }
         else
         {
-            hpImage.fillAmount = 1 - (hp / maxHp);
+            hpImage.sizeDelta = new Vector2(hp_width * (1 - (hp / maxHp)), 8);
         }
     }
 

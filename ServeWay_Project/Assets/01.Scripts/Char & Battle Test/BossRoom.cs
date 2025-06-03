@@ -12,7 +12,8 @@ public class BossRoom : MonoBehaviour
     private BossController bossCon;
     private SoundManager soundManager;
     private GameObject bossHp;
-    private Image bossNowHp;
+    private RectTransform bossNowHp;
+    private float hp_width;
     private bool isEntered;
 
 
@@ -45,7 +46,8 @@ public class BossRoom : MonoBehaviour
         startButton = GameObject.Find("IntroButton");
         bossHp = GameObject.Find("BossHp");
         soundManager = FindObjectOfType<SoundManager>();
-        bossNowHp = bossHp.transform.GetChild(0).GetComponent<Image>();
+        bossNowHp = bossHp.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
+        hp_width = bossNowHp.rect.width;
         misson = FindObjectOfType<MissionManager>();
         bossNation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
         bossJob = GameManager.gameManager.bossJobList[GameManager.gameManager.stage - 1];
@@ -77,7 +79,7 @@ public class BossRoom : MonoBehaviour
         {
             if(boss != null)
             {
-                bossNowHp.fillAmount = 1 - (bossCon.GetHp() / bossCon.GetMaxHp());
+                bossNowHp.sizeDelta = new Vector2(hp_width * (1 - (bossCon.GetHp() / bossCon.GetMaxHp())), 8);
             }
         }
         else
