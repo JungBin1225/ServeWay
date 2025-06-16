@@ -148,7 +148,7 @@ public class InventoryUI : MonoBehaviour
                 inventoryButtonList_0[i].SetActive(true);
                 inventoryButtonList_0[i].transform.GetChild(1).gameObject.SetActive(true);
                 inventoryButtonList_0[i].transform.GetChild(0).GetComponent<Image>().sprite = foodInfo.FindIngredient(ingredients[i]).sprite;
-                inventoryButtonList_0[i].transform.GetChild(1).GetComponent<Text>().text = inventory.inventory[ingredients[i]].ToString();
+                inventoryButtonList_0[i].transform.GetChild(1).GetComponent<TMP_Text>().text = inventory.inventory[ingredients[i]].ToString();
             }
         }
     }
@@ -178,7 +178,7 @@ public class InventoryUI : MonoBehaviour
                     inventoryButtonList_1[i].SetActive(true);
                     inventoryButtonList_1[i].transform.GetChild(1).gameObject.SetActive(true);
                     inventoryButtonList_1[i].transform.GetChild(0).GetComponent<Image>().sprite = foodInfo.FindIngredient(ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]).sprite;
-                    inventoryButtonList_1[i].transform.GetChild(1).GetComponent<Text>().text = inventory.inventory[ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]].ToString();
+                    inventoryButtonList_1[i].transform.GetChild(1).GetComponent<TMP_Text>().text = inventory.inventory[ingredients[((page - 1) * 8) + inventoryButtonList_0.Count + i]].ToString();
                 }
             }
         }
