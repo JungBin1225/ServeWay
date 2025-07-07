@@ -236,6 +236,7 @@ public class WeaponController : MonoBehaviour
 
             GameObject bullet = Instantiate(bulletPrefab, transform.position + (mousePos - player.transform.position).normalized * 0.5f, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
             bullet.GetComponent<BulletController>().SetTarget(-bullet.transform.up);
+            bullet.GetComponent<BulletController>().SetRotation(transform.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i)));
             bullet.GetComponent<BulletController>().SetSpeed(speed);
             bullet.GetComponent<BulletController>().SetDamage(damage * tofuDamage);
             bullet.GetComponent<BulletController>().SetFood(foodData);

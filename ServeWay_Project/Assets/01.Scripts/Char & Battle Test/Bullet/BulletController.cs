@@ -7,6 +7,7 @@ public class BulletController : MonoBehaviour
 {
     protected float speed;
     protected float damage;
+    protected Vector3 rotation;
     protected Vector3 target;
     protected FoodData food;
     protected GameObject effectParent;
@@ -38,6 +39,11 @@ public class BulletController : MonoBehaviour
         this.damage = damage;
     }
 
+    public void SetRotation(Vector3 rotation)
+    {
+        this.rotation = rotation;
+    }
+
     public void SetTarget(Vector3 target)
     {
         this.target = target;
@@ -64,6 +70,11 @@ public class BulletController : MonoBehaviour
             if (isRotate)
             {
                 transform.eulerAngles += new Vector3(0, 0, 180 * Time.deltaTime);
+            }
+
+            if(food.mainIngred == Food_MainIngred.SOUP)
+            {
+                transform.eulerAngles = rotation + new Vector3(0, 0, 90);
             }
         }
     }

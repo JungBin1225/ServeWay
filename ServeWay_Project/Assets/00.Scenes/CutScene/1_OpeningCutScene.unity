@@ -962,7 +962,7 @@ RectTransform:
   m_GameObject: {fileID: 160255078}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 9, y: 9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1801893671}
@@ -971,7 +971,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 214, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &160255080
 MonoBehaviour:
@@ -993,7 +993,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 53afed36dbd4cf047841f01f0803f416, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 85828e5583702df42932f9f4d5ef8f39, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1411,6 +1411,8 @@ PlayableDirector:
     value: {fileID: 552460060}
   - key: {fileID: 6599062442730709493, guid: 73b61f22691dd1b4db10fde385787e71, type: 2}
     value: {fileID: 1540409691}
+  - key: {fileID: -1711487084548573511, guid: 73b61f22691dd1b4db10fde385787e71, type: 2}
+    value: {fileID: 880682106}
   m_ExposedReferences:
     m_References:
     - 868cacb8d9629eb4a9b3f35bb5715dac: {fileID: 1157908546}
@@ -5179,7 +5181,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -35, y: -50}
+  m_AnchoredPosition: {x: 0, y: 230}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &549049454
@@ -7231,8 +7233,9 @@ GameObject:
   m_Component:
   - component: {fileID: 880682107}
   - component: {fileID: 880682108}
+  - component: {fileID: 880682109}
   m_Layer: 12
-  m_Name: 1_News
+  m_Name: Announcer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7246,8 +7249,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 880682106}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 2.0225, y: 2.4634433, z: 1}
+  m_LocalPosition: {x: 0, y: 0.52, z: 10}
+  m_LocalScale: {x: 8.5, y: 8.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 403257663}
@@ -7294,7 +7297,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: 53afed36dbd4cf047841f01f0803f416, type: 3}
+  m_Sprite: {fileID: 66860934, guid: a6b3b19b0c2b4544ead5f17cbd594c5b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -7305,6 +7308,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &880682109
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880682106}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dc238cfd4f59d5d429b7f19ff789b6e1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &895725621
 GameObject:
   m_ObjectHideFlags: 0
@@ -15356,7 +15380,7 @@ Transform:
   m_GameObject: {fileID: 1887597792}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -3, z: 10}
-  m_LocalScale: {x: 0.8179, y: 0.8179, z: 0.8179}
+  m_LocalScale: {x: 3.4000003, y: 3.4000003, z: 3.4000003}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 403257663}
@@ -15403,7 +15427,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1612725452, guid: 3e1596174642cb94ab758400edc9dd90, type: 3}
+  m_Sprite: {fileID: -369812075, guid: d3a7d691bdd07d04e97e299981c3b88d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
