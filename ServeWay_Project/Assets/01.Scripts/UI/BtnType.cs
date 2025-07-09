@@ -75,9 +75,7 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
 
                 break;
             case BTNType.New:
-                GameManager.gameManager.charData.saveFile = new SaveFile();
-                PlayerPrefs.DeleteAll();
-                PlayerPrefs.Save();
+                GameManager.gameManager.charData.DeleteAllWithoutTutoSound();
 
                 if (GameManager.gameManager.charData.saveFile.isTuto)
                 {

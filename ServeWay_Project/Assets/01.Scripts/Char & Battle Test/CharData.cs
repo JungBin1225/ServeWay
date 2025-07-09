@@ -260,6 +260,36 @@ public class CharData : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void DeleteAllWithoutTutoSound()
+    {
+        bool tuto = saveFile.isTuto;
+        bool bgmMute = false;
+        bool sfxMute = false;
+        float bgmValue = 1;
+        float sfxValue = 1;
+
+        if (PlayerPrefs.HasKey("BGM_Sound"))
+        {
+            bgmMute = bool.Parse(PlayerPrefs.GetString("BGM_Mute"));
+            sfxMute = bool.Parse(PlayerPrefs.GetString("SFX_Mute"));
+
+            bgmValue = PlayerPrefs.GetFloat("BGM_Sound");
+            sfxValue = PlayerPrefs.GetFloat("SFX_Sound");
+        }
+
+        saveFile = new SaveFile();
+        
+        PlayerPrefs.DeleteAll();
+        
+        PlayerPrefs.SetString("isTuto", tuto.ToString());
+        PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
+        PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
+        PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
+        PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
+
+        PlayerPrefs.Save();
+    }
+
     public NameAmount FindIngredInSave()
     {
         NameAmount result = new NameAmount();
