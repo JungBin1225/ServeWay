@@ -99,7 +99,7 @@ public class MissionManager : MonoBehaviour
             index = 9;
         }*/
 
-        if (index == 9)
+        if (index == 9 && !SceneManager.GetActiveScene().name.Contains("Tutorial"))
         {
             switch(GameManager.gameManager.bossJobList[GameManager.gameManager.stage - 1])
             {
@@ -277,7 +277,10 @@ public class MissionManager : MonoBehaviour
                 //완료했으면 UI에 완료한 표시 if success, show in UI
             }
 
-            Food_Nation nation = GameManager.gameManager.bossNations[GameManager.gameManager.stage - 1];
+            int index = GameManager.gameManager.stage - 1;
+            if (index <= 0) index = 0;
+
+            Food_Nation nation = GameManager.gameManager.bossNations[index];
             if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
             {
                 nation = Food_Nation.KOREA;

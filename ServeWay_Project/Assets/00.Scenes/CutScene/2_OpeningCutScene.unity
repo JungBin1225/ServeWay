@@ -5709,6 +5709,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 0f7630b5ec913e245876a6a5b84d8c4d, type: 2}
     - {fileID: 11400000, guid: 51a9b1429eb3a40439b4e6a28bcc4d28, type: 2}
     - {fileID: 11400000, guid: b32158d42bb5eb843a9613b549c20338, type: 2}
+    - {fileID: 11400000, guid: de433a09fa619104b8afd603abf2da1f, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -5869,6 +5870,20 @@ MonoBehaviour:
         - m_Target: {fileID: 1361649747}
           m_TargetAssemblyTypeName: OpeningSignal, Assembly-CSharp
           m_MethodName: OpeningATTalkSingal
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1361649747}
+          m_TargetAssemblyTypeName: OpeningSignal, Assembly-CSharp
+          m_MethodName: EndTutorial
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -7481,7 +7496,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1939409893
 GameObject:
@@ -7996,6 +8011,124 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 500, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2103485140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2103485144}
+  - component: {fileID: 2103485143}
+  - component: {fileID: 2103485142}
+  - component: {fileID: 2103485141}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2103485141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103485140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27ab78d35ec13af4d9f2818daa9e71c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory:
+    m_keys: 
+    m_values: 
+  increase_Speed: 1
+  increase_ChargeSpeed: 1
+  increase_ChargeCoolTime: 1
+  increase_Damage: 1
+  increase_BulletSpeed: 1
+  increase_BulletCoolTime: 1
+  decrease_EnemySpeed: 1
+  decrease_EnemyAttackRange: 1
+  decrease_EnemyAttackTime: 1
+  isKimchi: 0
+  isTofu: 0
+  isGinger: 0
+  isCream: 0
+  isNuts: 0
+--- !u!114 &2103485142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103485140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447877d4d2d3d5245bde80483382d6be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveFile:
+    inventory:
+      m_keys: 
+      m_values: 
+    weaponList: []
+    weaponIndex: 0
+    weaponSuccess: 
+    playerHp: 10
+    playerSpeed: 0
+    playerChargeSpeed: 0
+    playerChargeLength: 0
+    playerChargeCooltime: 0
+    stage: 0
+    bossNations: 
+    bossJobs: 
+    themes: 
+    isMapSave: 0
+    roomList: []
+    startX: 0
+    startY: 0
+    isTuto: 0
+--- !u!114 &2103485143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103485140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168348f3d0bb5cf4eaf24f7dc5eebcf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorImage: {fileID: 2800000, guid: 55607422156820345ad9d2f1eb18680f, type: 3}
+  isBossStage: 0
+  charData: {fileID: 2103485142}
+  inventory: {fileID: 2103485141}
+  stage: 0
+  bossNations: 
+  stageThemes: 
+  bossJobList: 
+  menuAble: 0
+  playTime: 0
+--- !u!4 &2103485144
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103485140}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2108891746
 GameObject:
   m_ObjectHideFlags: 0

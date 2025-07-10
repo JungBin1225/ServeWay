@@ -40,16 +40,12 @@ public class TutorialEnemy : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         hp_width = hpImage.rect.width;
         hpImage.sizeDelta = new Vector2(0, 8);
+
+        StartCoroutine(Fire());
     }
 
     private void Update()
     {
-        if(attackAble)
-        {
-            StartCoroutine(Fire());
-            attackAble = false;
-        }
-
         if (hp <= 0)
         {
             Destroy(this.gameObject);
@@ -67,12 +63,16 @@ public class TutorialEnemy : MonoBehaviour
 
     private IEnumerator Fire()
     {
+        yield return new WaitUntil(() => attackAble);
+
         for(int i = 0; i < 6; i++)
         {
             FireSoupBullet(bulletSpeed, bulletDamage, 6, 3);
             tutorial.AddMissonAmount();
             yield return new WaitForSeconds(0.5f);
         }
+
+        attackAble = false;
     }
 
     private void FireSoupBullet(float speed, float damage, float radius, float bulletAmount)

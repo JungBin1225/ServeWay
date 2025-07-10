@@ -31,9 +31,7 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
         switch (currentType)
         {
             case BTNType.Opening:
-                GameManager.gameManager.charData.saveFile = new SaveFile();
-                PlayerPrefs.DeleteAll();
-                PlayerPrefs.Save();
+                GameManager.gameManager.charData.DeleteAllWithoutTutoSound();
 
                 GameManager.gameManager.SetNextStage("1_OpeningCutScene");
                 SceneManager.LoadScene("Loading");
@@ -41,9 +39,7 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
             case BTNType.Start:
                 if (GameManager.gameManager.charData.saveFile.weaponList.Count == 0)
                 {
-                    GameManager.gameManager.charData.saveFile = new SaveFile();
-                    PlayerPrefs.DeleteAll();
-                    PlayerPrefs.Save();
+                    GameManager.gameManager.charData.DeleteAllWithoutTutoSound();
 
                     if (GameManager.gameManager.charData.saveFile.isTuto)
                     {

@@ -15,6 +15,7 @@ public class CharData : MonoBehaviour
         {
             SetData();
         }
+        SetTuto();
     }
 
     void Update()
@@ -173,7 +174,7 @@ public class CharData : MonoBehaviour
         saveFile.startX = PlayerPrefs.GetInt("startX");
         saveFile.startY = PlayerPrefs.GetInt("startY");
 
-        if(PlayerPrefs.GetString("map_save") == "true")
+        if(PlayerPrefs.GetString("map_save") == "True")
         {
             saveFile.isMapSave = true;
         }
@@ -288,6 +289,26 @@ public class CharData : MonoBehaviour
         PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
 
         PlayerPrefs.Save();
+    }
+
+    public void TutorialClear()
+    {
+        saveFile.isTuto = true;
+        PlayerPrefs.SetString("isTuto", true.ToString());
+
+        PlayerPrefs.Save();
+    }
+
+    public void SetTuto()
+    {
+        if (PlayerPrefs.GetString("isTuto") == "True")
+        {
+            saveFile.isTuto = true;
+        }
+        else
+        {
+            saveFile.isTuto = false;
+        }
     }
 
     public NameAmount FindIngredInSave()

@@ -68,6 +68,7 @@ public class ChargingTutorial : MonoBehaviour
                 if (!mission.isAppear)
                 {
                     StartCoroutine(mission.MissonAppear());
+                    missionAmount = 0;
                 }
 
                 if (!isCharge)

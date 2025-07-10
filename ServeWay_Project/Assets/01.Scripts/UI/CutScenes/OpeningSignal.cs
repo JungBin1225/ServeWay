@@ -268,4 +268,12 @@ public class OpeningSignal: MonoBehaviour
         GameManager.gameManager.SetNextStage("Tutorial");
         SceneManager.LoadScene("Loading");
     }
+
+    public void EndTutorial()
+    {
+        GameManager.gameManager.charData.TutorialClear();
+
+        GameManager.gameManager.SetNextStage("StartMap");
+        SceneManager.LoadScene("Loading");
+    }
 }
