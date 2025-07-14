@@ -174,7 +174,7 @@ public class CharData : MonoBehaviour
         saveFile.startX = PlayerPrefs.GetInt("startX");
         saveFile.startY = PlayerPrefs.GetInt("startY");
 
-        if(PlayerPrefs.GetString("map_save") == "True")
+        if(PlayerPrefs.GetString("map_save") == "true")
         {
             saveFile.isMapSave = true;
         }
