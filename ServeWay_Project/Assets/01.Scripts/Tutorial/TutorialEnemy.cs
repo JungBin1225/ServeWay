@@ -94,19 +94,25 @@ public class TutorialEnemy : MonoBehaviour
     private IEnumerator Knockback(GameObject player)
     {
         moveAble = false;
+        GetComponent<BoxCollider2D>().isTrigger = true;
         rigidBody.velocity = Vector2.zero;
-
-        if(!touchWall)
-        {
-            rigidBody.AddForce((transform.position - player.transform.position).normalized * 20, ForceMode2D.Impulse);
-        }
+        rigidBody.AddForce((transform.position - player.transform.position).normalized * 15000, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(0.2f);
 
         rigidBody.velocity = Vector2.zero;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
 
+        GetComponent<BoxCollider2D>().isTrigger = false;
         moveAble = true;
+    }
+
+    public void GetKnockBack(GameObject player)
+    {
+        if (moveAble)
+        {
+            StartCoroutine(Knockback(player));
+        }
     }
 
     public void GetDamage(float damage, Vector3 effectPos)
@@ -129,29 +135,35 @@ public class TutorialEnemy : MonoBehaviour
         return hp;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<PlayerController>().isCharge)
+        if (!moveAble && collision.gameObject.tag == "Wall")
         {
-            StartCoroutine(Knockback(collision.gameObject));
-        }
-        else if (!moveAble && collision.gameObject.tag == "Wall")
-        {
-            rigidBody.velocity = Vector2.zero;
-        }
-
-        if(collision.gameObject.tag == "Wall")
-        {
-            touchWall = true;
             rigidBody.velocity = Vector2.zero;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!moveAble && collision.gameObject.tag == "Wall")
+        {
+            rigidBody.velocity = Vector2.zero;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall")
         {
-            touchWall = false;
+            rigidBody.velocity = Vector2.zero;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!moveAble && collision.gameObject.tag == "Wall")
+        {
+            rigidBody.velocity = Vector2.zero;
         }
     }
 }

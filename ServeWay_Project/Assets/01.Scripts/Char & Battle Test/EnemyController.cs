@@ -151,10 +151,25 @@ public class EnemyController : MonoBehaviour
                 }
                 else
                 {
-                    if (dir.magnitude > range)
+                    int follow = Random.Range(0, 2);
+                    
+                    if(dir.magnitude < 3)
+                    {
+                        rigidBody.velocity = -dir.normalized * speed * inventory.decrease_EnemySpeed;
+                        if (dir.normalized.x > 0)
+                        {
+                            anim.state = EnemyState.moveRight;
+                        }
+                        else
+                        {
+                            anim.state = EnemyState.moveLeft;
+                        }
+                        yield return null;
+                    }
+                    else if (dir.magnitude > range && follow == 0)
                     {
                         //chase target
-                        rigidBody.velocity = dir.normalized * speed;
+                        rigidBody.velocity = dir.normalized * speed * inventory.decrease_EnemySpeed;
                         if (dir.normalized.x > 0)
                         {
                             anim.state = EnemyState.moveRight;
@@ -358,8 +373,8 @@ public class EnemyController : MonoBehaviour
 
         lineRenderer.SetPosition(0, transform.position);
 
-        int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("RayTarget");
-        while(!ishit)
+        int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
+        while (!ishit)
         {
             length += Time.deltaTime * 7;
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, length, mask);
@@ -420,17 +435,30 @@ public class EnemyController : MonoBehaviour
     private IEnumerator Knockback(GameObject player)
     {
         moveAble = false;
+        collider.isTrigger = true;
         rigidBody.velocity = Vector2.zero;
-        rigidBody.AddForce((transform.position - player.transform.position).normalized * 20, ForceMode2D.Impulse);
+        rigidBody.AddForce((transform.position - player.transform.position).normalized * 15000, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(0.2f);
 
         rigidBody.velocity = Vector2.zero;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
 
+        collider.isTrigger = false;
         moveAble = true;
     }
 
+    public void GetKnockBack(GameObject player)
+    {
+        if(moveAble)
+        {
+            StartCoroutine(Knockback(player));
+            if (inventory.isNuts)
+            {
+                GetDamage(5);
+            }
+        }
+    }
 
     public void SetVector(Vector2 min, Vector2 max)
     {
@@ -540,41 +568,43 @@ public class EnemyController : MonoBehaviour
         breadRadius = 2;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<PlayerController>().isCharge)
-        {
-            StartCoroutine(Knockback(collision.gameObject));
-            if(inventory.isNuts)
-            {
-                GetDamage(5);
-            }
-        }
-        else if (!moveAble && collision.gameObject.tag == "Wall")
+        if (!moveAble && collision.gameObject.tag == "Wall")
         {
             rigidBody.velocity = Vector2.zero;
         }
-        else if(moveAble && collision.gameObject.tag == "Wall")
+        else if (moveAble && collision.gameObject.tag == "Wall")
         {
             isWall = true;
-            rigidBody.velocity *= -1;
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Wall")
+        if (!moveAble && collision.gameObject.tag == "Wall")
+        {
+            rigidBody.velocity = Vector2.zero;
+        }
+        else if (moveAble && collision.gameObject.tag == "Wall")
+        {
+            isWall = true;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Wall")
         {
             rigidBody.velocity = new Vector2(roomCenter.x - transform.position.x, roomCenter.y - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall" && isWall)
         {
             isWall = false;
         }
     }
-
 }

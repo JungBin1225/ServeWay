@@ -174,11 +174,10 @@ public class PlayerController : MonoBehaviour
     {
         controllAble = false;
         Vector2 chargeVel = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y).normalized;
-        /*Vector2 chargeVel = moveVel.normalized;
-        if(chargeVel == Vector2.zero)
+        if(!GameManager.gameManager.isBossStage)
         {
-            chargeVel = new Vector2(1, 0).normalized;
-        }*/
+            GetComponent<BoxCollider2D>().isTrigger = true;
+        }
 
         if(weaponSlot.GetHoldWeapon() != null)
         {
@@ -200,9 +199,9 @@ public class PlayerController : MonoBehaviour
         isCharge = true;
 
         //rigidbody.velocity = chargeVel;
-        rigidBody.AddForce(chargeVel * chargeSpeed * 0.2f, ForceMode2D.Impulse);
+        rigidBody.AddForce(chargeVel * chargeSpeed * 0.15f, ForceMode2D.Impulse);
 
-        yield return new WaitForSeconds(chargeLength * inventory.increase_ChargeSpeed); //돌진
+        yield return new WaitForSeconds(chargeLength * 1.3f * inventory.increase_ChargeSpeed); //돌진
 
         isCharge = false;
         anim.SetTrigger("DashFinish");
@@ -219,6 +218,7 @@ public class PlayerController : MonoBehaviour
         }
             
         controllAble = true;
+        GetComponent<BoxCollider2D>().isTrigger = false;
         coolTime = chargeCooltime * inventory.increase_ChargeCoolTime;
         if(inventory.isKimchi)
         {
@@ -280,6 +280,46 @@ public class PlayerController : MonoBehaviour
         if(collision.gameObject.tag == "Boss" && isCharge)
         {
             misson.OccurreEvent(8, 1);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Enemy" && isCharge)
+        {
+            if(collision.gameObject.GetComponent<EnemyController>() != null)
+            {
+                collision.gameObject.GetComponent<EnemyController>().GetKnockBack(this.gameObject);
+            }
+            else
+            {
+                collision.gameObject.GetComponent<TutorialEnemy>().GetKnockBack(this.gameObject);
+            }
+        }
+
+        if (collision.gameObject.tag == "Wall")
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy" && isCharge)
+        {
+            if (collision.gameObject.GetComponent<EnemyController>() != null)
+            {
+                collision.gameObject.GetComponent<EnemyController>().GetKnockBack(this.gameObject);
+            }
+            else
+            {
+                collision.gameObject.GetComponent<TutorialEnemy>().GetKnockBack(this.gameObject);
+            }
+        }
+
+        if (collision.gameObject.tag == "Wall")
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
         }
     }
 }
