@@ -38,6 +38,7 @@ public class BloggerController : MonoBehaviour
     public float bulletDamage;
     public float commentDamage;
     public float pictureDamage;
+    public float attackRange;
     public Food_Nation nation;
     public Boss_Job job;
 
@@ -95,17 +96,33 @@ public class BloggerController : MonoBehaviour
 
     private IEnumerator EnemyMove()
     {
-        while (bossCon.GetHp() != 0 && coolTime > 0)
+        while (bossCon.GetHp() != 0 && (coolTime > 0 || attackRange < Vector3.Distance(transform.position, player.transform.position)))
         {
             float posX = Random.Range(minPos.x, maxPos.x);
             float posY = Random.Range(minPos.y, maxPos.y);
+            if (attackRange < Vector3.Distance(transform.position, player.transform.position))
+            {
+                posX = player.transform.position.x;
+                posY = player.transform.position.y;
+            }
+
             rigidbody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed;
-            yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+
+            if (attackRange < Vector3.Distance(transform.position, player.transform.position))
+            {
+                yield return new WaitUntil(() => attackRange > Vector3.Distance(transform.position, player.transform.position));
+            }
+            else
+            {
+                yield return new WaitForSeconds(Random.Range(0.3f, 1.0f));
+            }
         }
 
         rigidbody.velocity = Vector2.zero;
-        SelectPattern();
-        //boss pattern
+        if (bossCon.GetHp() != 0)
+        {
+            SelectPattern();
+        }
     }
 
     private void SelectPattern()

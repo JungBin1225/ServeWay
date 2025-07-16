@@ -129,7 +129,7 @@ public class JournalController : MonoBehaviour
     private IEnumerator EnemyMove()
     {
         anim.SetTrigger("walk");
-        while (bossCon.GetHp() != 0 && coolTime > 0)
+        while (bossCon.GetHp() != 0 && (coolTime > 0 || attackRange < Vector3.Distance(transform.position, player.transform.position)))
         {
             float posX = Random.Range(minPos.x, maxPos.x);
             float posY = Random.Range(minPos.y, maxPos.y);
@@ -140,7 +140,15 @@ public class JournalController : MonoBehaviour
             }
 
             rigidbody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed;
-            yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+
+            if(attackRange < Vector3.Distance(transform.position, player.transform.position))
+            {
+                yield return new WaitUntil(() => attackRange > Vector3.Distance(transform.position, player.transform.position));
+            }
+            else
+            {
+                yield return new WaitForSeconds(Random.Range(0.3f, 1.0f));
+            }
         }
 
         rigidbody.velocity = Vector2.zero;
@@ -384,7 +392,25 @@ public class JournalController : MonoBehaviour
             }
             else
             {
-                rigidbody.velocity *= -1;
+                if(isAttack)
+                {
+                    rigidbody.velocity = Vector2.zero;
+                }
+                else
+                {
+                    rigidbody.velocity *= -1;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            if (isAttack)
+            {
+                rigidbody.velocity = Vector2.zero;
             }
         }
     }
