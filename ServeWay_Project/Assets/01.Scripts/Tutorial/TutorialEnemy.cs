@@ -147,13 +147,18 @@ public class TutorialEnemy : MonoBehaviour
     {
         if (!moveAble && collision.gameObject.tag == "Wall")
         {
-            rigidBody.velocity = Vector2.zero;
+            rigidBody.velocity *= -1;
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall")
+        {
+            rigidBody.velocity = Vector2.zero;
+        }
+
+        if(collision.gameObject.tag == "Player" && moveAble)
         {
             rigidBody.velocity = Vector2.zero;
         }

@@ -584,7 +584,7 @@ public class EnemyController : MonoBehaviour
     {
         if (!moveAble && collision.gameObject.tag == "Wall")
         {
-            rigidBody.velocity = Vector2.zero;
+            rigidBody.velocity *= -1;
         }
         else if (moveAble && collision.gameObject.tag == "Wall")
         {
