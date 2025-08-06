@@ -13,6 +13,7 @@ public class InteractionWindow : MonoBehaviour
     public GameObject startMaked;
 
     private bool foodGetAble;
+    private GameObject foodObject;
     private bool ingredGetAble;
     private bool cookAble;
     private bool refrigeAble;
@@ -114,6 +115,16 @@ public class InteractionWindow : MonoBehaviour
     public void SetFoodGetAble(bool able)
     {
         foodGetAble = able;
+    }
+
+    public void SetFoodObject(GameObject foodObject)
+    {
+        this.foodObject = foodObject;
+    }
+
+    public GameObject GetFoodObject()
+    {
+        return foodObject;
     }
 
     public void SetIngredGetAble(bool able)

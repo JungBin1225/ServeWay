@@ -68,8 +68,12 @@ public class GetItem : MonoBehaviour
 
     public void GetWeapon()
     {
-        weaponSlot.GetWeapon(weaponPrefab, success, name);
-        Destroy(this.gameObject);
+        if(interaction.GetFoodObject() == this.gameObject)
+        {
+            weaponSlot.GetWeapon(weaponPrefab, success, name);
+            interaction.SetFoodObject(null);
+            Destroy(this.gameObject);
+        }
     }
 
     public void EatWeapon()
@@ -89,12 +93,25 @@ public class GetItem : MonoBehaviour
         starObject[star].SetActive(true);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            interaction.SetFoodObject(this.gameObject);
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
             getAble = true;
             interaction.SetFoodGetAble(true);
+
+            if(interaction.GetFoodObject() == null)
+            {
+                interaction.SetFoodObject(this.gameObject);
+            }
         }
     }
 
