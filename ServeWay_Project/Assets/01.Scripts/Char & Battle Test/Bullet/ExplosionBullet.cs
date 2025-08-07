@@ -7,6 +7,7 @@ public class ExplosionBullet : BulletController
     private float radius;
 
     private bool isExplode;
+    private DataController data;
     private AudioSource audio;
     private SpriteRenderer renderer;
 
@@ -15,9 +16,10 @@ public class ExplosionBullet : BulletController
         isExplode = false;
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
         effectParent = GameObject.Find("EffectList");
+        data = FindObjectOfType<DataController>();
         audio = gameObject.GetComponent<AudioSource>();
         renderer = GetComponent<SpriteRenderer>();
-        renderer.sprite = food.foodSprite;
+        renderer.sprite = data.breadBulletSprite.breadBulletSprite[food.foodName];
     }
 
     public void SetRadius(float radius)
@@ -38,7 +40,7 @@ public class ExplosionBullet : BulletController
         isExplode = true;
 
         GameObject effect = Instantiate(destroyEffect, transform.position, transform.rotation, effectParent.transform);
-        effect.transform.localScale = new Vector3(radius * transform.localScale.x * 5, radius * transform.localScale.y * 5);
+        effect.transform.localScale = new Vector3(radius * transform.localScale.x * 2.4f, radius * transform.localScale.y * 2.4f);
         audio.Play();
 
         gameObject.GetComponent<CircleCollider2D>().radius = radius;

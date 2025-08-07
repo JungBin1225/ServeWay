@@ -12,6 +12,7 @@ public class DataController : MonoBehaviour
     public BossList bossList;
     public EnemyBulletList enemyBullet;
     public MapObjectList mapObjectList;
+    public BreadBulletSprite breadBulletSprite;
 
     private List<Ingredient> grade1List;
     private List<Ingredient> grade2List;

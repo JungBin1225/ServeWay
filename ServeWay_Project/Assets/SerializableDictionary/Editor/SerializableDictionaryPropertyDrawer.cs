@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -8,6 +8,7 @@ using System;
 [CustomPropertyDrawer(typeof(NameAmount))]
 [CustomPropertyDrawer(typeof(FoodDex))]
 [CustomPropertyDrawer(typeof(IngredDex))]
+[CustomPropertyDrawer(typeof(BreadSprite))]
 public class SerializableDictionaryPropertyDrawer : PropertyDrawer
 {
 	const string KeysFieldName = "m_keys";
