@@ -13,6 +13,7 @@ public class BossRoom : MonoBehaviour
     private SoundManager soundManager;
     private GameObject bossHp;
     private RectTransform bossNowHp;
+    private GameObject dropParent;
     private float hp_width;
     private bool isEntered;
 
@@ -45,6 +46,7 @@ public class BossRoom : MonoBehaviour
         intro = GameObject.Find("BossIntro");
         startButton = GameObject.Find("IntroButton");
         bossHp = GameObject.Find("BossHp");
+        dropParent = GameObject.Find("DropList");
         soundManager = FindObjectOfType<SoundManager>();
         bossNowHp = bossHp.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
         hp_width = bossNowHp.rect.width;
@@ -195,7 +197,7 @@ public class BossRoom : MonoBehaviour
                 ingred = RandomIngredient(4);
             }
 
-            GameObject item = Instantiate(ingred.prefab, pos, Quaternion.Euler(0, 0, 0));
+            GameObject item = Instantiate(ingred.prefab, pos, Quaternion.Euler(0, 0, 0), dropParent.transform);
             item.GetComponent<GetIngredients>().itemName = ingred.name;
             item.GetComponent<GetIngredients>().SetSprite(ingred.sprite, ((int)ingred.grade));
         }
@@ -220,7 +222,7 @@ public class BossRoom : MonoBehaviour
             if (dropAmount == 1)
             {
                 Vector3 pos = transform.position + new Vector3(0, -4f, 0);
-                GameObject recipe = Instantiate(recipePrefab, pos, Quaternion.Euler(0, 0, 0));
+                GameObject recipe = Instantiate(recipePrefab, pos, Quaternion.Euler(0, 0, 0), dropParent.transform);
                 recipe.GetComponent<GetRecipe>().foodName = foodName;
                 recipe.GetComponent<GetRecipe>().roomPos = transform.position;
             }

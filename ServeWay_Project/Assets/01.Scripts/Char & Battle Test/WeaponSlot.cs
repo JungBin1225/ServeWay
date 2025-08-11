@@ -11,6 +11,7 @@ public class WeaponSlot : MonoBehaviour
     private DataController dataController;
     private HoldWeapon holdWeapon;
     private GameObject player;
+    private GameObject dropParent;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class WeaponSlot : MonoBehaviour
         dataController = FindObjectOfType<DataController>();
         holdWeapon = FindObjectOfType<HoldWeapon>();
         player = GameObject.FindGameObjectWithTag("Player");
+        dropParent = GameObject.Find("DropList");
         changeCooltime = 0;
     }
 
@@ -152,7 +154,7 @@ public class WeaponSlot : MonoBehaviour
         {
             GameObject delete = weaponList[index];
             weaponList[index] = null;
-            GameObject drop = Instantiate(delete.transform.GetChild(0).GetComponent<WeaponController>().dropPrefab, SetDropPos(), Quaternion.Euler(0, 0, 0));
+            GameObject drop = Instantiate(delete.transform.GetChild(0).GetComponent<WeaponController>().dropPrefab, SetDropPos(), Quaternion.Euler(0, 0, 0), dropParent.transform);
             drop.GetComponent<GetItem>().name = delete.transform.GetChild(0).GetComponent<WeaponController>().weaponName;
             drop.GetComponent<GetItem>().SetSprite();
             drop.GetComponent<GetItem>().success = delete.transform.GetChild(0).GetComponent<WeaponController>().success;

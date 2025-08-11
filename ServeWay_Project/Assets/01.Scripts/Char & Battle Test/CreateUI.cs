@@ -16,6 +16,7 @@ public class CreateUI : MonoBehaviour
     private IngredientDataSet ingredientInfo;
     private InventoryManager inventory;
     private WeaponSlot weaponSlot;
+    private GameObject dropParent;
     private bool isFirst;
     private bool isMaking;
     public bool isOpen;
@@ -42,6 +43,7 @@ public class CreateUI : MonoBehaviour
         ingredientInfo = dataController.IngredientList;
         inventory = FindObjectOfType<InventoryManager>();
         weaponSlot = FindObjectOfType<WeaponSlot>();
+        dropParent = GameObject.Find("DropList");
 
         buttonList = new List<GameObject>();
         for (int i = 0; i < buttonGroup.transform.childCount; i++)
@@ -230,7 +232,7 @@ public class CreateUI : MonoBehaviour
         }
         else
         {
-            GameObject food = Instantiate(selectedFood.foodPrefab, weaponSlot.SetDropPos(), Quaternion.Euler(0, 0, 0));
+            GameObject food = Instantiate(selectedFood.foodPrefab, weaponSlot.SetDropPos(), Quaternion.Euler(0, 0, 0), dropParent.transform);
             food.GetComponent<GetItem>().name = selectedFood.foodName;
             food.GetComponent<GetItem>().SetSprite();
             food.GetComponent<GetItem>().success = success;

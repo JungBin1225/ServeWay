@@ -23,6 +23,7 @@ public class BossTutorial : MonoBehaviour
     private DataController data;
     private MissionManager misson;
     private TutorialMissionUI tuto_mission;
+    private GameObject dropParent;
     private bool isTalking;
     private bool isClicked;
     private bool isMission;
@@ -38,6 +39,7 @@ public class BossTutorial : MonoBehaviour
         data = FindObjectOfType<DataController>();
         misson = FindObjectOfType<MissionManager>();
         tuto_mission = FindObjectOfType<TutorialMissionUI>();
+        dropParent = GameObject.Find("DropList");
         isTalking = false;
         isClicked = false;
         isClear = false;
@@ -163,7 +165,7 @@ public class BossTutorial : MonoBehaviour
             float angleDegrees = -angle * Mathf.Rad2Deg;
 
             Ingredient ingred = data.IngredientList.IngredientList[i];
-            GameObject item = Instantiate(ingred.prefab, pos, Quaternion.Euler(0, 0, 0));
+            GameObject item = Instantiate(ingred.prefab, pos, Quaternion.Euler(0, 0, 0), dropParent.transform);
             item.GetComponent<GetIngredients>().itemName = ingred.name;
             item.GetComponent<GetIngredients>().SetSprite(ingred.sprite, ((int)ingred.grade));
         }

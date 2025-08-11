@@ -28,6 +28,7 @@ public class EnemyGenerator : MonoBehaviour
     private GameObject enemyParent;
     private BoxCollider2D boxCollider;
     private DataController data;
+    private GameObject dropParent;
     private int wave;
     private int followUp;
     private bool isClear;
@@ -52,6 +53,7 @@ public class EnemyGenerator : MonoBehaviour
         isEntered = false;
         miniRoadList = new List<GameObject>();
         enemyParent = GameObject.Find("EnemyList");
+        dropParent = GameObject.Find("DropList");
 
         isVisited = false;
 
@@ -157,7 +159,7 @@ public class EnemyGenerator : MonoBehaviour
             float angleDegrees = -angle * Mathf.Rad2Deg;
             
             Ingredient ingredient = RandomIngredient();
-            GameObject item = Instantiate(itemPrefab, pos, Quaternion.Euler(0, 0, 0));
+            GameObject item = Instantiate(itemPrefab, pos, Quaternion.Euler(0, 0, 0), dropParent.transform);
             item.GetComponent<GetIngredients>().itemName = ingredient.name;
             item.GetComponent<GetIngredients>().SetSprite(ingredient.sprite, ((int)ingredient.grade));
             item.GetComponent<GetIngredients>().roomPos = transform.position;

@@ -38916,6 +38916,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140025146}
   m_CullTransparentMesh: 1
+--- !u!1 &1141930872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1141930873}
+  m_Layer: 0
+  m_Name: DropList
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1141930873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141930872}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1142605787
 GameObject:
   m_ObjectHideFlags: 0
@@ -49155,8 +49186,9 @@ MonoBehaviour:
   enemyList: {fileID: 11400000, guid: 528f1fd0fa7519445a6089625fffca0c, type: 2}
   FoodIngredDex: {fileID: 11400000, guid: 49ef0c16f4fdb044abde3b4dceb650f6, type: 2}
   bossList: {fileID: 11400000, guid: e058c62bc361ee14bbbb28b38824ee1d, type: 2}
-  enemyBullet: {fileID: 0}
-  mapObjectList: {fileID: 0}
+  enemyBullet: {fileID: 11400000, guid: ffadf813be7ae714c991b3b47b7d677a, type: 2}
+  mapObjectList: {fileID: 11400000, guid: 54f3a1f9666328e49be76f35e8778e75, type: 2}
+  breadBulletSprite: {fileID: 11400000, guid: c007303420888534c8a93b72d7dab395, type: 2}
 --- !u!4 &1506680570
 Transform:
   m_ObjectHideFlags: 0
