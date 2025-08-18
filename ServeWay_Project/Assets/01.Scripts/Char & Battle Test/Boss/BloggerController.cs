@@ -6,6 +6,7 @@ public class BloggerController : MonoBehaviour
 {
     private MissionManager mission;
     private Rigidbody2D rigidbody;
+    private SpriteRenderer renderer;
     private BossController bossCon;
     private GameObject player;
     private Vector2 minPos;
@@ -16,11 +17,13 @@ public class BloggerController : MonoBehaviour
     private LineRenderer line;
     private GameObject laser;
     private bool isAttack;
+    private bool isPicture;
     private bool isLaser;
     private bool isComment;
     private bool playerCharge;
     private bool playerDamage;
     private float laserTime;
+    private bool isLeft;
 
     public int test;
     public BossRoom room;
@@ -47,6 +50,7 @@ public class BloggerController : MonoBehaviour
         mission = FindObjectOfType<MissionManager>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
+        renderer = GetComponent<SpriteRenderer>();
         line = GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         commentPos = new List<Vector3>();
@@ -62,10 +66,12 @@ public class BloggerController : MonoBehaviour
         coolTime = attackCoolTime;
         line.enabled = false;
         isAttack = false;
+        isPicture = false;
         isLaser = false;
         isComment = false;
         playerCharge = false;
         playerDamage = false;
+        isLeft = true;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -88,9 +94,27 @@ public class BloggerController : MonoBehaviour
             }
         }
 
-        if (isAttack)
+        if (rigidbody.velocity.x < 0)
+        {
+            isLeft = true;
+        }
+        else if (rigidbody.velocity.x > 0)
+        {
+            isLeft = false;
+        }
+        if (isLeft)
+        {
+            renderer.flipX = false;
+        }
+        else
+        {
+            renderer.flipX = true;
+        }
+
+        if (bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            StopAllCoroutines();
         }
     }
 
@@ -216,11 +240,13 @@ public class BloggerController : MonoBehaviour
         rigidbody.velocity = new Vector2(0, 0);
         pictureCollider.enabled = true;
         pictureAnim.SetTrigger("picture");
+        isPicture = true;
         yield return new WaitForSeconds(0.2f);
 
         pictureObject.transform.GetChild(0).gameObject.SetActive(false);
         pictureCollider.enabled = false;
         isAttack = false;
+        isPicture = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }
@@ -362,19 +388,42 @@ public class BloggerController : MonoBehaviour
         laserTime = 2f + (stage * 0.3f);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && isPicture)
+        {
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage, sprites);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Wall")
         {
             rigidbody.velocity *= -1;
         }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            if (isAttack)
+            {
+                rigidbody.velocity = Vector2.zero;
+            }
+            else
+            {
+                rigidbody.velocity *= -1;
+            }
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(pictureDamage, sprites);
+            if (isAttack)
+            {
+                rigidbody.velocity = Vector2.zero;
+            }
         }
     }
 }

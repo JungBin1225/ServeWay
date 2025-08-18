@@ -129,7 +129,7 @@ public class JournalController : MonoBehaviour
     private IEnumerator EnemyMove()
     {
         anim.SetTrigger("walk");
-        while (bossCon.GetHp() != 0 && (coolTime > 0 || attackRange < Vector3.Distance(transform.position, player.transform.position)))
+        while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
             float posY = Random.Range(minPos.y, maxPos.y);
@@ -143,7 +143,7 @@ public class JournalController : MonoBehaviour
 
             if(attackRange < Vector3.Distance(transform.position, player.transform.position))
             {
-                yield return new WaitUntil(() => attackRange > Vector3.Distance(transform.position, player.transform.position));
+                yield return new WaitForSeconds(Random.Range(0.2f, 0.75f));
             }
             else
             {
@@ -154,18 +154,40 @@ public class JournalController : MonoBehaviour
         rigidbody.velocity = Vector2.zero;
         if(bossCon.GetHp() != 0)
         {
-            SelectPattern();
+            StartPattern();
         }
     }
 
-    private void SelectPattern()
+    private void StartPattern()
     {
-        int index = Random.Range(0, 4);
-        if(test > 0 && test < 5)
+        int index = 0;
+
+        if(attackRange > Vector3.Distance(transform.position, player.transform.position)) //사정 거리 안
+        {
+            if(Random.Range(0, 2) == 0)
+            {
+                index = 0; //근거리 패턴
+            }
+            else
+            {
+                index = Random.Range(1, 4); //원거리 패턴
+            }
+        }
+        else //사정 거리 밖
+        {
+            index = Random.Range(1, 4); //원거리 패턴
+        }
+
+        if (test > 0 && test < 5)
         {
             index = test - 1;
         }
 
+        SelectPattern(index);
+    }
+
+    private void SelectPattern(int index)
+    {
         switch (index)
         {
             case 0:
@@ -408,7 +430,7 @@ public class JournalController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            if (isAttack)
+            if (isAttack && !isCharge)
             {
                 rigidbody.velocity = Vector2.zero;
             }
