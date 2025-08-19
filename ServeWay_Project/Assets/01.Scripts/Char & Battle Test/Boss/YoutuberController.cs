@@ -6,6 +6,7 @@ public class YoutuberController : MonoBehaviour
 {
     private MissionManager mission;
     private Rigidbody2D rigidbody;
+    private SpriteRenderer renderer;
     private BossController bossCon;
     private DataController dataController;
     private GameObject player;
@@ -21,6 +22,7 @@ public class YoutuberController : MonoBehaviour
     private FoodData algorithmFood;
     private float algorithmCoolTime;
     private float machineGunAmount;
+    private bool isLeft;
 
     public int test;
     public BossRoom room;
@@ -48,6 +50,7 @@ public class YoutuberController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         line = GetComponent<LineRenderer>();
+        renderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
@@ -65,6 +68,7 @@ public class YoutuberController : MonoBehaviour
         isCharge = false;
         isTouch = false;
         playerDamaged = false;
+        isLeft = true;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
         maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -88,15 +92,33 @@ public class YoutuberController : MonoBehaviour
             }
         }
 
-        if (isAttack)
+        if (rigidbody.velocity.x < 0)
+        {
+            isLeft = true;
+        }
+        else if (rigidbody.velocity.x > 0)
+        {
+            isLeft = false;
+        }
+        if (isLeft)
+        {
+            renderer.flipX = false;
+        }
+        else
+        {
+            renderer.flipX = true;
+        }
+
+        if (bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            StopAllCoroutines();
         }
     }
 
     private IEnumerator EnemyMove()
     {
-        while (bossCon.GetHp() != 0 && (coolTime > 0 || attackRange < Vector3.Distance(transform.position, player.transform.position)))
+        while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
             float posY = Random.Range(minPos.y, maxPos.y);
@@ -110,7 +132,7 @@ public class YoutuberController : MonoBehaviour
 
             if (attackRange < Vector3.Distance(transform.position, player.transform.position))
             {
-                yield return new WaitUntil(() => attackRange > Vector3.Distance(transform.position, player.transform.position));
+                yield return new WaitForSeconds(Random.Range(0.2f, 0.75f));
             }
             else
             {
@@ -121,25 +143,47 @@ public class YoutuberController : MonoBehaviour
         rigidbody.velocity = Vector2.zero;
         if (bossCon.GetHp() != 0)
         {
-            SelectPattern();
+            StartPattern();
         }
     }
 
-    private void SelectPattern()
+    private void StartPattern()
     {
-        int index = Random.Range(0, 4);
+        int index = 0;
+
+        if (attackRange > Vector3.Distance(transform.position, player.transform.position)) //사정 거리 안
+        {
+            if (Random.Range(0, 2) == 0)
+            {
+                index = 0; //근거리 패턴
+            }
+            else
+            {
+                index = Random.Range(1, 4); //원거리 패턴
+            }
+        }
+        else //사정 거리 밖
+        {
+            index = Random.Range(1, 4); //원거리 패턴
+        }
+
         if (test > 0 && test < 5)
         {
             index = test - 1;
         }
 
+        SelectPattern(index);
+    }
+
+    private void SelectPattern(int index)
+    {
         switch (index)
         {
             case 0:
-                StartCoroutine(ExplosionPattern());
+                StartCoroutine(AlgorithmPattern());
                 break;
             case 1:
-                StartCoroutine(AlgorithmPattern());
+                StartCoroutine(ExplosionPattern());
                 break;
             case 2:
                 StartCoroutine(MachineGunPattern());
@@ -341,7 +385,7 @@ public class YoutuberController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Wall")
         {
-            if(isCharge)
+            if (isCharge)
             {
                 isTouch = true;
             }
@@ -351,9 +395,34 @@ public class YoutuberController : MonoBehaviour
             }
         }
 
-        if(collision.gameObject.tag == "Player" && isCharge)
+        if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(bulletDamage, sprites);
+            if (isCharge)
+            {
+                collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(bulletDamage, sprites);
+            }
+            else
+            {
+                if (isAttack)
+                {
+                    rigidbody.velocity = Vector2.zero;
+                }
+                else
+                {
+                    rigidbody.velocity *= -1;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            if (isAttack && !isCharge)
+            {
+                rigidbody.velocity = Vector2.zero;
+            }
         }
     }
 }

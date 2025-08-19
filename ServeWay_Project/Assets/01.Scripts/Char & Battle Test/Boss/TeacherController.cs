@@ -22,6 +22,7 @@ public class TeacherController : MonoBehaviour
     private int counterAmount;
     private bool playerDamaged;
     private FoodData nowFood;
+    private bool isLeft;
 
     public int test;
     public BossRoom room;
@@ -74,6 +75,7 @@ public class TeacherController : MonoBehaviour
         isCounter = false;
         isAttack = false;
         isLaser = false;
+        isLeft = true;
         playerDamaged = false;
 
         minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
@@ -104,15 +106,33 @@ public class TeacherController : MonoBehaviour
             weaponObject.sortingOrder = charSprite.sortingOrder + 1;
         }
 
-        if (isAttack)
+        if (rigidbody.velocity.x < 0)
+        {
+            isLeft = true;
+        }
+        else if (rigidbody.velocity.x > 0)
+        {
+            isLeft = false;
+        }
+        if (isLeft)
+        {
+            charSprite.flipX = false;
+        }
+        else
+        {
+            charSprite.flipX = true;
+        }
+
+        if (bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            StopAllCoroutines();
         }
     }
 
     private IEnumerator EnemyMove()
     {
-        while (bossCon.GetHp() != 0 && (coolTime > 0 || attackRange < Vector3.Distance(transform.position, player.transform.position)))
+        while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
             float posY = Random.Range(minPos.y, maxPos.y);
@@ -126,7 +146,7 @@ public class TeacherController : MonoBehaviour
 
             if (attackRange < Vector3.Distance(transform.position, player.transform.position))
             {
-                yield return new WaitUntil(() => attackRange > Vector3.Distance(transform.position, player.transform.position));
+                yield return new WaitForSeconds(Random.Range(0.2f, 0.75f));
             }
             else
             {
@@ -137,23 +157,28 @@ public class TeacherController : MonoBehaviour
         rigidbody.velocity = Vector2.zero;
         if (bossCon.GetHp() != 0)
         {
-            SelectPattern();
+            StartPattern();
         }
     }
 
-    private void SelectPattern()
+    private void StartPattern()
     {
         int index = Random.Range(0, 4);
-        if (test > 0 && test < 5)
-        {
-            index = test - 1;
-        }
-
         if (index == 0 && isLaser)
         {
             index = Random.Range(1, 4);
         }
 
+        if (test > 0 && test < 5)
+        {
+            index = test - 1;
+        }
+
+        SelectPattern(index);
+    }
+
+    private void SelectPattern(int index)
+    {
         switch (index)
         {
             case 0:
@@ -376,6 +401,29 @@ public class TeacherController : MonoBehaviour
         if (collision.gameObject.tag == "Wall")
         {
             rigidbody.velocity *= -1;
+        }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            if (isAttack)
+            {
+                rigidbody.velocity = Vector2.zero;
+            }
+            else
+            {
+                rigidbody.velocity *= -1;
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            if (isAttack)
+            {
+                rigidbody.velocity = Vector2.zero;
+            }
         }
     }
 }

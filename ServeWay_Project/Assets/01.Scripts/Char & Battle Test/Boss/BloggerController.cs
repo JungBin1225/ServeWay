@@ -120,7 +120,7 @@ public class BloggerController : MonoBehaviour
 
     private IEnumerator EnemyMove()
     {
-        while (bossCon.GetHp() != 0 && (coolTime > 0 || attackRange < Vector3.Distance(transform.position, player.transform.position)))
+        while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
             float posY = Random.Range(minPos.y, maxPos.y);
@@ -134,7 +134,7 @@ public class BloggerController : MonoBehaviour
 
             if (attackRange < Vector3.Distance(transform.position, player.transform.position))
             {
-                yield return new WaitUntil(() => attackRange > Vector3.Distance(transform.position, player.transform.position));
+                yield return new WaitForSeconds(Random.Range(0.2f, 0.75f));
             }
             else
             {
@@ -145,35 +145,47 @@ public class BloggerController : MonoBehaviour
         rigidbody.velocity = Vector2.zero;
         if (bossCon.GetHp() != 0)
         {
-            SelectPattern();
+            StartPattern();
         }
     }
 
-    private void SelectPattern()
+    private void StartPattern()
     {
-        int index = Random.Range(0, 4);
+        int index = 0;
+
+        if (attackRange > Vector3.Distance(transform.position, player.transform.position)) //사정 거리 안
+        {
+            if (Random.Range(0, 2) == 0)
+            {
+                index = 0; //근거리 패턴
+            }
+            else
+            {
+                index = Random.Range(1, 4); //원거리 패턴
+            }
+        }
+        else //사정 거리 밖
+        {
+            index = Random.Range(1, 4); //원거리 패턴
+        }
+
         if (test > 0 && test < 5)
         {
             index = test - 1;
         }
 
-        if (index == 3 && Vector3.Distance(transform.position, player.transform.position) < 5)
-        {
-            index = Random.Range(0, 3);
-        }
+        SelectPattern(index);
+    }
 
-        if (index == 2 && isLaser)
-        {
-            index = Random.Range(0, 2);
-        }
-
+    private void SelectPattern(int index)
+    {
         switch (index)
         {
             case 0:
-                StartCoroutine(CommentPattern());
+                StartCoroutine(picturePattern());
                 break;
             case 1:
-                StartCoroutine(picturePattern());
+                StartCoroutine(CommentPattern());
                 break;
             case 2:
                 StartCoroutine(LaserPattern());

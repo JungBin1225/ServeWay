@@ -102,16 +102,17 @@ public class BossRoom : MonoBehaviour
         }
 
         intro.SetActive(true);
-        intro.transform.GetChild(1).GetComponent<Text>().text = GameManager.gameManager.JobToString(bossJob);
-        intro.transform.GetChild(2).GetComponent<Text>().text = BossName(bossJob); //name
-        intro.transform.GetChild(4).GetComponent<Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
-        intro.transform.GetChild(6).GetComponent<Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
-        intro.transform.GetChild(8).GetComponent<Text>().text = email + "@space.com"; //email
+        GameObject card = intro.transform.GetChild(4).gameObject;
+        card.transform.GetChild(1).GetComponent<Text>().text = GameManager.gameManager.JobToString(bossJob);
+        card.transform.GetChild(2).GetComponent<Text>().text = BossName(bossJob); //name
+        card.transform.GetChild(4).GetComponent<Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
+        card.transform.GetChild(6).GetComponent<Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
+        card.transform.GetChild(8).GetComponent<Text>().text = email + "@space.com"; //email
         
         Time.timeScale = 0;
         intro.GetComponent<Animator>().SetTrigger("Start");
 
-        yield return new WaitForSecondsRealtime(2f);
+        yield return new WaitForSecondsRealtime(4f);
 
         startButton.SetActive(true);
     }
