@@ -103,16 +103,32 @@ public class BossRoom : MonoBehaviour
 
         intro.SetActive(true);
         GameObject card = intro.transform.GetChild(4).gameObject;
+        GameObject wall = intro.transform.GetChild(1).gameObject;
+
+        intro.transform.GetChild(2).GetComponent<Image>().sprite = data.FindBoss(bossJob).GetComponent<SpriteRenderer>().sprite;
+
         card.transform.GetChild(1).GetComponent<Text>().text = GameManager.gameManager.JobToString(bossJob);
         card.transform.GetChild(2).GetComponent<Text>().text = BossName(bossJob); //name
         card.transform.GetChild(4).GetComponent<Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
         card.transform.GetChild(6).GetComponent<Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
         card.transform.GetChild(8).GetComponent<Text>().text = email + "@space.com"; //email
-        
+
+        Stage_Theme theme = GameManager.gameManager.stageThemes[GameManager.gameManager.stage];
+        wall.transform.GetChild(0).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top;
+        wall.transform.GetChild(1).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top;
+
+        wall.transform.GetChild(2).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor;
+        wall.transform.GetChild(3).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor;
+        wall.transform.GetChild(4).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor;
+        wall.transform.GetChild(5).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor;
+
+        wall.transform.GetChild(6).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).road_Left;
+        wall.transform.GetChild(7).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).road_Right;
+
         Time.timeScale = 0;
         intro.GetComponent<Animator>().SetTrigger("Start");
 
-        yield return new WaitForSecondsRealtime(4f);
+        yield return new WaitForSecondsRealtime(5f);
 
         startButton.SetActive(true);
     }

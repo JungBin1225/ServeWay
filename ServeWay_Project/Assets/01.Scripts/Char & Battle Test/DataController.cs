@@ -13,6 +13,7 @@ public class DataController : MonoBehaviour
     public EnemyBulletList enemyBullet;
     public MapObjectList mapObjectList;
     public BreadBulletSprite breadBulletSprite;
+    public TileSpriteData tileSpriteData;
 
     private List<Ingredient> grade1List;
     private List<Ingredient> grade2List;
