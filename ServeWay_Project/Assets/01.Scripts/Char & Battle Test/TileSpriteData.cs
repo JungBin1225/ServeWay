@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "Tile Sprite Data", menuName = "Scriptable Object/Tile Sprite Data", order = int.MaxValue - 3)]
 public class TileSpriteData : ScriptableObject
 {
     public TileSprite camping_Map;
+
+    public Tile outTile;
+    public Tile kitchenTile;
 
     public TileSprite GetNowStageSprite(Stage_Theme theme)
     {

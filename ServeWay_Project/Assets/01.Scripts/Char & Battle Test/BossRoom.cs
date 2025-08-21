@@ -114,16 +114,16 @@ public class BossRoom : MonoBehaviour
         card.transform.GetChild(8).GetComponent<Text>().text = email + "@space.com"; //email
 
         Stage_Theme theme = GameManager.gameManager.stageThemes[GameManager.gameManager.stage];
-        wall.transform.GetChild(0).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top;
-        wall.transform.GetChild(1).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top;
+        wall.transform.GetChild(0).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top.sprite;
+        wall.transform.GetChild(1).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top.sprite;
 
-        wall.transform.GetChild(2).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor;
-        wall.transform.GetChild(3).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor;
-        wall.transform.GetChild(4).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor;
-        wall.transform.GetChild(5).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor;
+        wall.transform.GetChild(2).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor.sprite;
+        wall.transform.GetChild(3).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor.sprite;
+        wall.transform.GetChild(4).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor.sprite;
+        wall.transform.GetChild(5).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).floor.sprite;
 
-        wall.transform.GetChild(6).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).road_Left;
-        wall.transform.GetChild(7).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).road_Right;
+        wall.transform.GetChild(6).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).road_Left.sprite;
+        wall.transform.GetChild(7).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).road_Right.sprite;
 
         Time.timeScale = 0;
         intro.GetComponent<Animator>().SetTrigger("Start");
