@@ -867,7 +867,8 @@ public class MapGenerator : MonoBehaviour
 
     private void SetTile()
     {
-        TileSprite tile = data.tileSpriteData.GetNowStageSprite(GameManager.gameManager.stageThemes[GameManager.gameManager.stage]);
+        TileSprite tile = data.tileSpriteData.GetNowStageSprite(GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1]);
+        Debug.Log(GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1]);
 
         roomTile = tile.floor;
         outTile = data.tileSpriteData.outTile;

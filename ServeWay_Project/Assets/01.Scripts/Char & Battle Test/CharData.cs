@@ -132,7 +132,7 @@ public class CharData : MonoBehaviour
 
         saveFile.inventory = FindIngredInSave();
 
-        //saveFile.stage = PlayerPrefs.GetInt("stage");
+        saveFile.stage = PlayerPrefs.GetInt("stage");
         saveFile.stage = 1;//test
 
         for (int i = 0; i < 7; i++)

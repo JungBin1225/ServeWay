@@ -241,6 +241,8 @@ public class EnemyGenerator : MonoBehaviour
         {
             case Stage_Theme.CAMPING:
                 return data.mapObjectList.campingList;
+            case Stage_Theme.SCHOOL:
+                return data.mapObjectList.schoolList;
             default:
                 return data.mapObjectList.testList;
         }

@@ -7,6 +7,8 @@ using UnityEngine.Tilemaps;
 public class TileSpriteData : ScriptableObject
 {
     public TileSprite camping_Map;
+    public TileSprite school_Map;
+    public TileSprite bar_Map;
 
     public Tile outTile;
     public Tile kitchenTile;
@@ -19,7 +21,7 @@ public class TileSpriteData : ScriptableObject
                 return camping_Map;
 
             case Stage_Theme.BAR:
-                return camping_Map; //map tile
+                return bar_Map; //map tile
 
             case Stage_Theme.CAFE:
                 return camping_Map;
@@ -31,7 +33,7 @@ public class TileSpriteData : ScriptableObject
                 return camping_Map;
 
             case Stage_Theme.SCHOOL:
-                return camping_Map;
+                return school_Map;
 
             case Stage_Theme.STREET:
                 return camping_Map;
