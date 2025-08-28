@@ -45,6 +45,7 @@ public class GameClear : MonoBehaviour
         }
         button.SetActive(false);
 
+        Time.timeScale = 0;
         StartCoroutine(ShowText());
     }
 
@@ -102,7 +103,7 @@ public class GameClear : MonoBehaviour
 
     public void OnConfirm()
     {
-        //Time.timeScale = 1;
+        Time.timeScale = 1;
 
         GameManager.gameManager.charData.saveFile = new SaveFile();
 
