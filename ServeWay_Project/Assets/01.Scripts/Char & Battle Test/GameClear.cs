@@ -14,6 +14,7 @@ public class GameClear : MonoBehaviour
     [SerializeField] private GameObject ingredList;
     [SerializeField] private GameObject textGroup;
     [SerializeField] private GameObject button;
+    [SerializeField] private GameObject license;
 
     private WeaponSlot getFood;
     private DataController data;
@@ -130,5 +131,10 @@ public class GameClear : MonoBehaviour
         PlayerPrefs.Save();
 
         SceneManager.LoadScene("TitleScene");
+    }
+
+    public void OnLicenseClicked()
+    {
+        license.SetActive(true);
     }
 }
