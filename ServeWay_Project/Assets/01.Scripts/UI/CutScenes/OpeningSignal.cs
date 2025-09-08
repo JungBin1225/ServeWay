@@ -93,7 +93,7 @@ public class OpeningSignal: MonoBehaviour
                 }
             }
 
-            clickCoolTime = 0.25f;
+            clickCoolTime = 0.35f;
         }
     }
 
