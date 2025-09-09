@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OpeningCharAnimDirection : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class OpeningCharAnimDirection : MonoBehaviour
             pos = transform.position;
         }
 
-        if(gameObject.name.Contains("Player") && direction == "back")
+        if(SceneManager.GetActiveScene().name.Contains("Opening") && gameObject.name.Contains("Player") && direction == "back")
         {
             if (pos != transform.position)
             {
@@ -56,6 +57,10 @@ public class OpeningCharAnimDirection : MonoBehaviour
             }
 
             pos = transform.position;
+        }
+        else if(SceneManager.GetActiveScene().name.Contains("Ending") && gameObject.name.Contains("Player"))
+        {
+            anim.speed = 2;
         }
     }
 

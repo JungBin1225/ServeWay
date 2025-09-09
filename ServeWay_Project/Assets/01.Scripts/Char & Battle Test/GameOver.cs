@@ -176,6 +176,7 @@ public class GameOver : MonoBehaviour
         PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
         PlayerPrefs.Save();
 
-        SceneManager.LoadScene("StartMap");
+        GameManager.gameManager.SetNextStage("StartMap");
+        SceneManager.LoadScene("Loading");
     }
 }
