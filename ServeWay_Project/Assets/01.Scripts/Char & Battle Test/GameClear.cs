@@ -105,11 +105,14 @@ public class GameClear : MonoBehaviour
     public void OnConfirm()
     {
         Time.timeScale = 1;
+        bool tuto = GameManager.gameManager.charData.saveFile.isTuto;
+        bool ending = GameManager.gameManager.charData.saveFile.isEnding;
 
         GameManager.gameManager.charData.saveFile = new SaveFile();
 
         bool bgmMute = false;
         bool sfxMute = false;
+        
         float bgmValue = 1;
         float sfxValue = 1;
 
@@ -124,13 +127,23 @@ public class GameClear : MonoBehaviour
 
         PlayerPrefs.DeleteAll();
 
+        PlayerPrefs.SetString("isTuto", tuto.ToString());
+        PlayerPrefs.SetString("isEnding", ending.ToString());
         PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
         PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
         PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
         PlayerPrefs.Save();
 
-        SceneManager.LoadScene("TitleScene");
+        if(ending)
+        {
+            GameManager.gameManager.SetNextStage("TitleScene");
+        }
+        else
+        {
+            GameManager.gameManager.SetNextStage("EndingCutScene");
+        }
+        SceneManager.LoadScene("Loading");
     }
 
     public void OnLicenseClicked()

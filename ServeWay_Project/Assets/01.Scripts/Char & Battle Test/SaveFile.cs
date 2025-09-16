@@ -26,6 +26,7 @@ public class SaveFile
     public int startY;
 
     public bool isTuto;
+    public bool isEnding;
 
     public SaveFile()
     {
@@ -55,5 +56,6 @@ public class SaveFile
         startY = 0;
 
         isTuto = false;
+        isEnding = false;
     }
 }

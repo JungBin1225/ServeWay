@@ -151,6 +151,8 @@ public class GameOver : MonoBehaviour
     public void OnConfirm()
     {
         //Time.timeScale = 1;
+        bool tuto = GameManager.gameManager.charData.saveFile.isTuto;
+        bool ending = GameManager.gameManager.charData.saveFile.isEnding;
 
         GameManager.gameManager.charData.saveFile = new SaveFile();
 
@@ -170,6 +172,8 @@ public class GameOver : MonoBehaviour
 
         PlayerPrefs.DeleteAll();
 
+        PlayerPrefs.SetString("isTuto", tuto.ToString());
+        PlayerPrefs.SetString("isEnding", ending.ToString());
         PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
         PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);

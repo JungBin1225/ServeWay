@@ -16,6 +16,7 @@ public class CharData : MonoBehaviour
             SetData();
         }
         SetTuto();
+        SetEnding();
     }
 
     void Update()
@@ -86,7 +87,9 @@ public class CharData : MonoBehaviour
             PlayerPrefs.SetString(string.Format("boss_job_{0}", i.ToString()), GameManager.gameManager.bossJobList[i].ToString());
             PlayerPrefs.SetString(string.Format("stage_theme_{0}", i.ToString()), GameManager.gameManager.stageThemes[i].ToString());
         }
+
         PlayerPrefs.SetString("isTuto", saveFile.isTuto.ToString());
+        PlayerPrefs.SetString("isEnding", saveFile.isEnding.ToString());
 
         PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
         PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
@@ -141,16 +144,10 @@ public class CharData : MonoBehaviour
             saveFile.bossJobs.Add(GameManager.gameManager.StringToJob(PlayerPrefs.GetString(string.Format("boss_job_{0}", i.ToString()))));
             saveFile.themes.Add(GameManager.gameManager.StringToTheme(PlayerPrefs.GetString(string.Format("stage_theme_{0}", i.ToString()))));
         }
-        
-        if(PlayerPrefs.GetString("isTuto") == "True")
-        {
-            saveFile.isTuto = true;
-        }
-        else
-        {
-            saveFile.isTuto = false;
-        }
-        
+
+        saveFile.isTuto = bool.Parse(PlayerPrefs.GetString("isTuto"));
+        saveFile.isEnding = bool.Parse(PlayerPrefs.GetString("isEnding"));
+
         //맵 데이터 저장
         saveFile.roomList = new List<Room>();
         for (int i = 0; i < 25; i++)
@@ -264,6 +261,7 @@ public class CharData : MonoBehaviour
     public void DeleteAllWithoutTutoSound()
     {
         bool tuto = saveFile.isTuto;
+        bool ending = saveFile.isEnding;
         bool bgmMute = false;
         bool sfxMute = false;
         float bgmValue = 1;
@@ -283,6 +281,7 @@ public class CharData : MonoBehaviour
         PlayerPrefs.DeleteAll();
         
         PlayerPrefs.SetString("isTuto", tuto.ToString());
+        PlayerPrefs.SetString("isEnding", ending.ToString());
         PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
         PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
@@ -301,14 +300,12 @@ public class CharData : MonoBehaviour
 
     public void SetTuto()
     {
-        if (PlayerPrefs.GetString("isTuto") == "True")
-        {
-            saveFile.isTuto = true;
-        }
-        else
-        {
-            saveFile.isTuto = false;
-        }
+        saveFile.isTuto = bool.Parse(PlayerPrefs.GetString("isTuto"));
+    }
+
+    public void SetEnding()
+    {
+        saveFile.isEnding = bool.Parse(PlayerPrefs.GetString("isEnding"));
     }
 
     public NameAmount FindIngredInSave()

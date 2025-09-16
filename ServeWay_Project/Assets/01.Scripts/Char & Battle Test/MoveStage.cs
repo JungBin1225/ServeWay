@@ -57,15 +57,17 @@ public class MoveStage : MonoBehaviour
         GameManager.gameManager.charData.SaveData();
         GameManager.gameManager.charData.DeleteMapData();
         GameManager.gameManager.charData.SetData();
-        GameManager.gameManager.SetNextStage(name);
+        
         if(GameManager.gameManager.stage == 8)
         {
-            //Ending Scene
+            GameManager.gameManager.SetNextStage("EndingMap");//Ending Scene
         }
         else
         {
-            SceneManager.LoadScene("Loading");
+            GameManager.gameManager.SetNextStage(name);
         }
+
+        SceneManager.LoadScene("Loading");
     }
 
     private void EndTutorial()

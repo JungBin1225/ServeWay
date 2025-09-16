@@ -64,6 +64,8 @@ public class EndingController : MonoBehaviour
     {
         /*GameManager.gameManager.charData.saveFile = new SaveFile();
 
+        bool tuto = true;
+        bool ending = true;
         bool bgmMute = false;
         bool sfxMute = false;
         float bgmValue = 1;
@@ -76,10 +78,14 @@ public class EndingController : MonoBehaviour
 
             bgmValue = PlayerPrefs.GetFloat("BGM_Sound");
             sfxValue = PlayerPrefs.GetFloat("SFX_Sound");
+
+            tuto = bool.Parse(PlayerPrefs.GetString("isTuto"));
         }
 
         PlayerPrefs.DeleteAll();
 
+        PlayerPrefs.SetString("isTuto", tuto.ToString());
+        PlayerPrefs.SetString("isEnding", true.ToString());
         PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
         PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
