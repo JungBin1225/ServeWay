@@ -19,17 +19,24 @@ public class LicenseSign : MonoBehaviour
     private Vector2 lastPos;
     private bool signAble;
     private bool playingStamp;
+    private bool isEnter;
+    private Vector2 pos;
+    private Vector2 size;
 
     void Start()
     {
         mouseDown = false;
         signAble = true;
         playingStamp = false;
+        isEnter = false;
         signAmount = 0;
 
         lastPos = new Vector2(0, 0);
         pointList = new List<Vector2>();
         pointList.Add(new Vector2(0, 0));
+
+        pos = GetComponent<RectTransform>().anchoredPosition;
+        size = GetComponent<RectTransform>().sizeDelta / 2;
 
         Time.timeScale = 0;
     }
@@ -49,19 +56,20 @@ public class LicenseSign : MonoBehaviour
         if(mouseDown && signAmount <= 20 && pointList.Count <= 3000 && signAble)
         {
             Vector3 mousePos = Input.mousePosition;
-            
 
-            if (mousePos.x < 1151 && mousePos.x > 928 && mousePos.y < 331 && mousePos.y > 226)
+
+
+            if (isEnter)
             {
                 if (lastPos.x == 0)
                 {
-                    pointList[0] = new Vector2(mousePos.x - 1040, mousePos.y - 277);
+                    pointList[0] = new Vector2(mousePos.x - (Screen.width / 2), mousePos.y - (Screen.height / 2));
                     line.Points = pointList.ToArray();
                     lastPos = pointList[0];
                 }
                 else if(Vector2.Distance(lastPos, mousePos) > 1)
                 {
-                    pointList.Add(new Vector2(mousePos.x - 1040, mousePos.y - 277));
+                    pointList.Add(new Vector2(mousePos.x - (Screen.width / 2), mousePos.y - (Screen.height / 2)));
                     line.Points = pointList.ToArray();
                     lastPos = pointList[pointList.Count - 1];
                 }
@@ -92,7 +100,7 @@ public class LicenseSign : MonoBehaviour
 
         if(signAmount <= 20)
         {
-            GameObject sign = Instantiate(signPrefab, transform);
+            GameObject sign = Instantiate(signPrefab, transform.parent);
             signAmount++;
 
             line = sign.GetComponent<UILineRenderer>();
@@ -124,5 +132,15 @@ public class LicenseSign : MonoBehaviour
             transform.parent.gameObject.SetActive(false);
         }
         
+    }
+
+    public void OnPointerEnter()
+    {
+        isEnter = true;
+    }
+
+    public void OnPointerExit()
+    {
+        isEnter = false;
     }
 }
