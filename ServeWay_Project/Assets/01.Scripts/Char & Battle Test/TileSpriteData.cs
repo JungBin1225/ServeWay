@@ -9,6 +9,10 @@ public class TileSpriteData : ScriptableObject
     public TileSprite camping_Map;
     public TileSprite school_Map;
     public TileSprite bar_Map;
+    public TileSprite cafe_Map;
+    public TileSprite normal_Map;
+    public TileSprite restorant_Map;
+    public TileSprite street_Map;
 
     public Tile outTile;
     public Tile kitchenTile;
@@ -24,19 +28,19 @@ public class TileSpriteData : ScriptableObject
                 return bar_Map; //map tile
 
             case Stage_Theme.CAFE:
-                return camping_Map;
+                return cafe_Map;
 
             case Stage_Theme.NORMAL:
-                return camping_Map;
+                return normal_Map;
 
             case Stage_Theme.RESTORANT:
-                return camping_Map;
+                return restorant_Map;
 
             case Stage_Theme.SCHOOL:
                 return school_Map;
 
             case Stage_Theme.STREET:
-                return camping_Map;
+                return street_Map;
 
             default:
                 return camping_Map;
