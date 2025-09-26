@@ -14,6 +14,7 @@ public class JournalController : MonoBehaviour
     private GameObject player;
     private GameObject bulletParent;
     private GameObject effectParent;
+    private GameObject scoopTemp;
     private Vector2 minPos;
     private Vector2 maxPos;
     private List<Sprite> sprites;
@@ -122,6 +123,11 @@ public class JournalController : MonoBehaviour
         if(bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            dashEffect.SetActive(false);
+            if(scoopTemp != null)
+            {
+                Destroy(scoopTemp);
+            }
             StopAllCoroutines();
         }
     }
@@ -320,6 +326,7 @@ public class JournalController : MonoBehaviour
         float posY = Random.Range(-(room.transform.localScale.y / 2) + 1, (room.transform.localScale.y / 2) - 1);
         Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
         GameObject scoop = Instantiate(scoopPrefab, target, Quaternion.Euler(0, 0, 0));
+        scoopTemp = scoop;
         Scoop scoopCon = scoop.GetComponent<Scoop>();
 
         yield return new WaitForSeconds(0.5f);

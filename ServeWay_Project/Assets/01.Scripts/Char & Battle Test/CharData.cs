@@ -146,7 +146,12 @@ public class CharData : MonoBehaviour
         }
 
         saveFile.isTuto = bool.Parse(PlayerPrefs.GetString("isTuto"));
-        saveFile.isEnding = bool.Parse(PlayerPrefs.GetString("isEnding"));
+
+        if(PlayerPrefs.HasKey("isEnding"))
+        {
+            saveFile.isEnding = bool.Parse(PlayerPrefs.GetString("isEnding"));
+        }
+        
 
         //맵 데이터 저장
         saveFile.roomList = new List<Room>();
@@ -305,7 +310,10 @@ public class CharData : MonoBehaviour
 
     public void SetEnding()
     {
-        saveFile.isEnding = bool.Parse(PlayerPrefs.GetString("isEnding"));
+        if (PlayerPrefs.HasKey("isEnding"))
+        {
+            saveFile.isEnding = bool.Parse(PlayerPrefs.GetString("isEnding"));
+        }
     }
 
     public NameAmount FindIngredInSave()

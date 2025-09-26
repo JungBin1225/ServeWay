@@ -12,6 +12,9 @@ public class LicenseSign : MonoBehaviour
     public GameObject button;
     public GameObject stamp;
 
+    public TMP_Text num_Text;
+    public TMP_Text day_Text;
+
     private UILineRenderer line;
     private int signAmount;
     private bool mouseDown;
@@ -37,6 +40,10 @@ public class LicenseSign : MonoBehaviour
 
         pos = GetComponent<RectTransform>().anchoredPosition;
         size = GetComponent<RectTransform>().sizeDelta / 2;
+
+        num_Text.text = System.DateTime.Now.ToString(" : yyyy-MM-dd-");
+        num_Text.text += Random.Range(1, 1000).ToString("D3");
+        day_Text.text = System.DateTime.Now.ToString(" : yyyy년 MM월 dd일");
 
         Time.timeScale = 0;
     }

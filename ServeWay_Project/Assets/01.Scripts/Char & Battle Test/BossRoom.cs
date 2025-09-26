@@ -113,7 +113,7 @@ public class BossRoom : MonoBehaviour
         card.transform.GetChild(6).GetComponent<Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
         card.transform.GetChild(8).GetComponent<Text>().text = email + "@space.com"; //email
 
-        Stage_Theme theme = GameManager.gameManager.stageThemes[GameManager.gameManager.stage];
+        Stage_Theme theme = GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1];
         wall.transform.GetChild(0).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top.sprite;
         wall.transform.GetChild(1).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top.sprite;
 
