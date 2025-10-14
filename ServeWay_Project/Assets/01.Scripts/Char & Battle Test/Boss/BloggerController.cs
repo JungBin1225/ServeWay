@@ -9,6 +9,9 @@ public class BloggerController : MonoBehaviour
     private SpriteRenderer renderer;
     private BossController bossCon;
     private GameObject player;
+    private GameObject bulletParent;
+    private GameObject effectParent;
+    private GameObject summonObject;
     private Vector2 minPos;
     private Vector2 maxPos;
     private List<Sprite> sprites;
@@ -53,6 +56,9 @@ public class BloggerController : MonoBehaviour
         renderer = GetComponent<SpriteRenderer>();
         line = GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
+        summonObject = GameObject.Find("SummonList");
         commentPos = new List<Vector3>();
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
@@ -114,6 +120,7 @@ public class BloggerController : MonoBehaviour
         if (bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            Destroy(summonObject);
             StopAllCoroutines();
         }
     }
@@ -207,7 +214,7 @@ public class BloggerController : MonoBehaviour
         foreach(Vector3 pos in commentPos)
         {
             float rot = Random.Range(0, 360);
-            GameObject comment = Instantiate(commentPrefab, pos, Quaternion.Euler(0, 0, rot));
+            GameObject comment = Instantiate(commentPrefab, pos, Quaternion.Euler(0, 0, rot), summonObject.transform);
             comment.GetComponent<Comment>().damage = commentDamage;
             comment.GetComponent<Comment>().sprite = GetComponent<SpriteRenderer>().sprite;
             yield return null;
@@ -321,7 +328,7 @@ public class BloggerController : MonoBehaviour
     private IEnumerator TeleportPattern()
     {
         isAttack = true;
-        GameObject tel1 = Instantiate(teleportPrefab, transform.position, Quaternion.Euler(0, 0, 0));
+        GameObject tel1 = Instantiate(teleportPrefab, transform.position, Quaternion.Euler(0, 0, 0), summonObject.transform);
         yield return new WaitForSeconds(1f);
 
         Vector3 target = player.transform.position;
@@ -345,7 +352,7 @@ public class BloggerController : MonoBehaviour
             posY = target.y + 0.5f + posY;
         }
 
-        GameObject tel2 = Instantiate(teleportPrefab, new Vector3(posX, posY, 0), Quaternion.Euler(0, 0, 0));
+        GameObject tel2 = Instantiate(teleportPrefab, new Vector3(posX, posY, 0), Quaternion.Euler(0, 0, 0), summonObject.transform);
         yield return new WaitForSeconds(0.5f);
 
         transform.position = new Vector3(posX, posY, 0);

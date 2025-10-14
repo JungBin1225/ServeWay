@@ -10,6 +10,9 @@ public class YoutuberController : MonoBehaviour
     private BossController bossCon;
     private DataController dataController;
     private GameObject player;
+    private GameObject bulletParent;
+    private GameObject effectParent;
+    private GameObject summonObject;
     private Vector2 minPos;
     private Vector2 maxPos;
     private List<Sprite> sprites;
@@ -52,6 +55,9 @@ public class YoutuberController : MonoBehaviour
         line = GetComponent<LineRenderer>();
         renderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
+        summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
@@ -112,6 +118,7 @@ public class YoutuberController : MonoBehaviour
         if (bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            Destroy(summonObject);
             StopAllCoroutines();
         }
     }
@@ -199,7 +206,7 @@ public class YoutuberController : MonoBehaviour
         isAttack = true;
         yield return new WaitForSeconds(0.3f);
 
-        GameObject explosionBullet = Instantiate(explosionPrefab, transform.position, transform.rotation);
+        GameObject explosionBullet = Instantiate(explosionPrefab, transform.position, transform.rotation, bulletParent.transform);
         var breadBullet = explosionBullet.GetComponent<EnemyExplosionBullet>();
         breadBullet.SetTarget(transform.position - player.transform.position);
         breadBullet.SetSpeed(explosionSpeed);
@@ -240,7 +247,7 @@ public class YoutuberController : MonoBehaviour
         isAlgorithm = true;
         for(int i = 0; i < 40; i++)
         {
-            GameObject algorithm = Instantiate(algorithmPrefab, AlgorithmPos(), Quaternion.Euler(0, 0, 0));
+            GameObject algorithm = Instantiate(algorithmPrefab, AlgorithmPos(), Quaternion.Euler(0, 0, 0), summonObject.transform);
 
             Vector2 dir = new Vector2(algorithm.transform.position.x - transform.position.x, algorithm.transform.position.y - transform.position.y);
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -276,7 +283,7 @@ public class YoutuberController : MonoBehaviour
             Vector2 direction = player.transform.position - transform.position;
             Vector3 spawnPos = direction.normalized * 2.6f;
             Quaternion rot = Quaternion.FromToRotation(-Vector3.up, direction);
-            GameObject bullet = Instantiate(riceBulletPrefab, transform.position + spawnPos, rot);
+            GameObject bullet = Instantiate(riceBulletPrefab, transform.position + spawnPos, rot, bulletParent.transform);
             bullet.GetComponent<EnemyBullet>().SetTarget(bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);

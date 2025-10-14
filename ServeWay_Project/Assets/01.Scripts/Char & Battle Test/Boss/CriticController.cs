@@ -9,6 +9,9 @@ public class CriticController : MonoBehaviour
     private SpriteRenderer renderer;
     private BossController bossCon;
     private GameObject player;
+    private GameObject bulletParent;
+    private GameObject effectParent;
+    private GameObject summonObject;
     private Vector2 minPos;
     private Vector2 maxPos;
     private float coolTime;
@@ -44,6 +47,9 @@ public class CriticController : MonoBehaviour
         bossCon = GetComponent<BossController>();
         renderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
+        summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
@@ -91,6 +97,7 @@ public class CriticController : MonoBehaviour
         if (bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            Destroy(summonObject);
             StopAllCoroutines();
         }
     }
@@ -185,7 +192,7 @@ public class CriticController : MonoBehaviour
             Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
             int index = Random.Range(0, 2);
 
-            GameObject bullet = Instantiate(bulletPrefab[index], transform.position, rot);
+            GameObject bullet = Instantiate(bulletPrefab[index], transform.position, rot, bulletParent.transform);
             bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
@@ -224,7 +231,7 @@ public class CriticController : MonoBehaviour
                     index = 1; //empty
                 }
 
-                GameObject bullet = Instantiate(bulletPrefab[index], transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+                GameObject bullet = Instantiate(bulletPrefab[index], transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
                 bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
                 bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
                 bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
@@ -294,7 +301,7 @@ public class CriticController : MonoBehaviour
             float posY = Random.Range(-(room.transform.localScale.y / 2) + 2f, (room.transform.localScale.y / 2) - 2f);
             Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
 
-            GameObject explosionPen = Instantiate(explosionPenPrefab, target, Quaternion.Euler(0, 0, 0));
+            GameObject explosionPen = Instantiate(explosionPenPrefab, target, Quaternion.Euler(0, 0, 0), summonObject.transform);
             explosionPen.GetComponent<PenExplosion>().damage = explosionDamage;
 
             yield return new WaitForSeconds(0.1f);

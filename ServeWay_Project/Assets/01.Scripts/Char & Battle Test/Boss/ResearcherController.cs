@@ -11,6 +11,9 @@ public class ResearcherController : MonoBehaviour
     private SpriteRenderer effectRenderer;
     private BossController bossCon;
     private GameObject player;
+    private GameObject bulletParent;
+    private GameObject effectParent;
+    private GameObject summonObject;
     private List<Vector3> platePos;
     private Vector2 minPos;
     private Vector2 maxPos;
@@ -54,6 +57,9 @@ public class ResearcherController : MonoBehaviour
         anim = GetComponent<Animator>();
         effectRenderer = dashEffect.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
+        summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
@@ -114,6 +120,7 @@ public class ResearcherController : MonoBehaviour
         if (bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            Destroy(summonObject);
             StopAllCoroutines();
         }
     }
@@ -222,7 +229,7 @@ public class ResearcherController : MonoBehaviour
 
             for (int i = 0; i < shotGunAmount; i++)
             {
-                GameObject bullet = Instantiate(soupBulletPrefab, transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+                GameObject bullet = Instantiate(soupBulletPrefab, transform.position, Quaternion.Euler(Quaternion.FromToRotation(Vector3.up, player.transform.position - transform.position).eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
                 bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
                 bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
                 bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
@@ -253,7 +260,7 @@ public class ResearcherController : MonoBehaviour
             left = -1;
         }
 
-        GameObject ladle = Instantiate(ladelPrefab, transform.position, Quaternion.Euler(0, 0, 0));
+        GameObject ladle = Instantiate(ladelPrefab, transform.position, Quaternion.Euler(0, 0, 0), summonObject.transform);
         ladle.GetComponent<Ladle>().start = transform.position + new Vector3(left * -0.39f, -0.25f, 0);
         ladle.GetComponent<Ladle>().target = player;
         ladle.GetComponent<Ladle>().damage = bulletDamage;
@@ -282,7 +289,7 @@ public class ResearcherController : MonoBehaviour
         plateIndex = 100;
         for (int i = 0; i < platePos.Count; i++)
         {
-            GameObject plate = Instantiate(platePrefab, transform.position, Quaternion.Euler(0, 0, 0));
+            GameObject plate = Instantiate(platePrefab, transform.position, Quaternion.Euler(0, 0, 0), summonObject.transform);
             plate.GetComponent<Plate>().index = i;
             plate.GetComponent<Plate>().target = platePos[i];
             plate.GetComponent<Plate>().damage = 1;
@@ -333,7 +340,7 @@ public class ResearcherController : MonoBehaviour
         anim.SetInteger("attacktype", 4);
         anim.SetTrigger("attack");
 
-        GameObject soup = Instantiate(soupPrefab, target, Quaternion.Euler(0, 0, 0));
+        GameObject soup = Instantiate(soupPrefab, target, Quaternion.Euler(0, 0, 0), summonObject.transform);
         soup.GetComponent<FloorSoup>().damage = soupDamage;
         soup.GetComponent<FloorSoup>().durationTime = soupCoolTime;
         soup.GetComponent<FloorSoup>().sprite = GetComponent<SpriteRenderer>().sprite;

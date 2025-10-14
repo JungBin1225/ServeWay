@@ -9,6 +9,9 @@ public class TeacherController : MonoBehaviour
     private BossController bossCon;
     private DataController dataController;
     private GameObject player;
+    private GameObject bulletParent;
+    private GameObject effectParent;
+    private GameObject summonObject;
     private SpriteRenderer charSprite;
     private List<FoodData> playerFood;
     private Vector2 minPos;
@@ -53,6 +56,9 @@ public class TeacherController : MonoBehaviour
         line = GetComponent<LineRenderer>();
         charSprite = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
+        bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
+        summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
         sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
 
@@ -126,6 +132,7 @@ public class TeacherController : MonoBehaviour
         if (bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
+            Destroy(summonObject);
             StopAllCoroutines();
         }
     }
@@ -265,7 +272,7 @@ public class TeacherController : MonoBehaviour
 
             for (int i = 0; i < bulletAmount; i++)
             {
-                GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(weaponObject.gameObject.transform.parent.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))));
+                GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(weaponObject.gameObject.transform.parent.rotation.eulerAngles + new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
                 bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
                 bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed);
                 bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
@@ -298,7 +305,7 @@ public class TeacherController : MonoBehaviour
             }
 
 
-            GameObject explosionBullet = Instantiate(explosionPrefab, transform.position, transform.rotation);
+            GameObject explosionBullet = Instantiate(explosionPrefab, transform.position, transform.rotation, bulletParent.transform);
             var breadBullet = explosionBullet.GetComponent<EnemyExplosionBullet>();
             breadBullet.SetTarget(transform.position - target);
             breadBullet.SetSpeed(explosionSpeed);
