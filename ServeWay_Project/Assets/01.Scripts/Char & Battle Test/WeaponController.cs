@@ -9,6 +9,7 @@ public class WeaponController : MonoBehaviour
     private SpriteRenderer weaponSprite;
     private LineRenderer lineRenderer;
     private GameObject bulletParent;
+    private GameObject effectParent;
     private Vector3 mousePos;
     private float coolTime;
     private bool shootAble;
@@ -47,6 +48,7 @@ public class WeaponController : MonoBehaviour
         inventory = GameManager.gameManager.inventory;
         audio = GetComponent<AudioSource>();
         bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.enabled = false;
@@ -293,7 +295,7 @@ public class WeaponController : MonoBehaviour
 
             if (hiteffect == null && hit)
             {
-                hiteffect = Instantiate(effectPrefab, hit.point, Quaternion.Euler(angleAxis.eulerAngles + new Vector3(0, 0, -90)));
+                hiteffect = Instantiate(effectPrefab, hit.point, Quaternion.Euler(angleAxis.eulerAngles + new Vector3(0, 0, -90)), effectParent.transform);
             }
 
             yield return null;
