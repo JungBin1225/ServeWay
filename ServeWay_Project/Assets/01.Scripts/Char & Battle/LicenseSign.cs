@@ -11,6 +11,7 @@ public class LicenseSign : MonoBehaviour
     public GameObject placeHolder;
     public GameObject button;
     public GameObject stamp;
+    public AudioSource openSound;
 
     public TMP_Text num_Text;
     public TMP_Text day_Text;
@@ -56,6 +57,8 @@ public class LicenseSign : MonoBehaviour
             signAble = false;
             playingStamp = false;
         }
+
+        openSound.Play();
     }
 
     void Update()
