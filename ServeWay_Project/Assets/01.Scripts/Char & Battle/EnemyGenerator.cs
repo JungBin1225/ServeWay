@@ -243,6 +243,10 @@ public class EnemyGenerator : MonoBehaviour
                 return data.mapObjectList.campingList;
             case Stage_Theme.SCHOOL:
                 return data.mapObjectList.schoolList;
+            case Stage_Theme.BAR:
+                return data.mapObjectList.barList;
+            case Stage_Theme.RESTORANT:
+                return data.mapObjectList.restorantList;
             default:
                 return data.mapObjectList.testList;
         }
@@ -252,9 +256,15 @@ public class EnemyGenerator : MonoBehaviour
     {
         int signX = 1;
         int signY = 1;
+        float distanceX = 1;
+        float distanceY = 1;
 
-        float distanceX = prefab.GetComponent<MapObject>().width;
-        float distanceY = prefab.GetComponent<MapObject>().height;
+        if (prefab.GetComponent<MapObject>() != null)
+        {
+            distanceX = prefab.GetComponent<MapObject>().width;
+            distanceY = prefab.GetComponent<MapObject>().height;
+        }
+        
 
         switch (quadrant)
         {
