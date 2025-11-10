@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 using TMPro;
 using System.Linq;
 public enum EnemyAttackType
@@ -28,6 +29,7 @@ public class EnemyController : MonoBehaviour
     private int laserMat;
     private InventoryManager inventory;
     private BoxCollider2D collider;
+    private NavMeshAgent agent;
     private bool isWall;
 
     private int soupAmount;
@@ -75,6 +77,9 @@ public class EnemyController : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.gameObject.GetComponent<Animator>().SetInteger("Index", laserMat);
         lineRenderer.enabled = false;
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
 
         hp_width = hpImage.rect.width;
         hpImage.sizeDelta = new Vector2(0, 8);
@@ -137,7 +142,8 @@ public class EnemyController : MonoBehaviour
             {
                 if (!moveAble)
                 {
-                    rigidBody.velocity = Vector2.zero;
+                    //rigidBody.velocity = Vector2.zero;
+                    agent.SetDestination(transform.position);
                     anim.state = EnemyState.idle;
 
                     if (target.transform.position.x > transform.position.x)
@@ -152,10 +158,12 @@ public class EnemyController : MonoBehaviour
                 else
                 {
                     int follow = Random.Range(0, 2);
-                    
-                    if(dir.magnitude < 3)
+                    follow = 0;
+
+                    if (dir.magnitude < 3)
                     {
-                        rigidBody.velocity = -dir.normalized * speed * inventory.decrease_EnemySpeed;
+                        //rigidBody.velocity = -dir.normalized * speed * inventory.decrease_EnemySpeed;
+                        agent.SetDestination((Vector2)transform.position - dir);
                         if (dir.normalized.x > 0)
                         {
                             anim.state = EnemyState.moveRight;
@@ -169,7 +177,8 @@ public class EnemyController : MonoBehaviour
                     else if (dir.magnitude > range && follow == 0)
                     {
                         //chase target
-                        rigidBody.velocity = dir.normalized * speed * inventory.decrease_EnemySpeed;
+                        //rigidBody.velocity = dir.normalized * speed * inventory.decrease_EnemySpeed;
+                        agent.SetDestination(target.transform.position);
                         if (dir.normalized.x > 0)
                         {
                             anim.state = EnemyState.moveRight;
@@ -185,7 +194,8 @@ public class EnemyController : MonoBehaviour
                         //move & attack
                         float posX = Random.Range(minPos.x, maxPos.x);
                         float posY = Random.Range(minPos.y, maxPos.y);
-                        rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
+                        //rigidBody.velocity = new Vector2(posX - transform.position.x, posY - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
+                        agent.SetDestination(new Vector2(posX, posY));
 
                         if (posX - transform.position.x > 0)
                         {
