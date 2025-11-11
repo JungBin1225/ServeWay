@@ -159,7 +159,6 @@ public class EnemyController : MonoBehaviour
                 else
                 {
                     int follow = Random.Range(0, 2);
-                    follow = 0;
 
                     if (dir.magnitude < 3)
                     {
