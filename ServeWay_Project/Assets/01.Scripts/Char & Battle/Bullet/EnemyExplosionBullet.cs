@@ -14,6 +14,7 @@ public class EnemyExplosionBullet : EnemyBullet
     {
         isExplode = false;
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
         effectParent = GameObject.Find("EffectList");
     }
 

@@ -17,6 +17,7 @@ public class EnemyBullet : MonoBehaviour
     protected void Start()
     {
         effectParent = GameObject.Find("EffectList");
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
     }
 
     protected void Update()

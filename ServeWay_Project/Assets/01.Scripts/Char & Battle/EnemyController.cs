@@ -80,6 +80,7 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        agent.speed = this.speed;
 
         hp_width = hpImage.rect.width;
         hpImage.sizeDelta = new Vector2(0, 8);
@@ -212,7 +213,8 @@ public class EnemyController : MonoBehaviour
             yield return null;
         }
 
-        rigidBody.velocity = Vector2.zero;
+        //rigidBody.velocity = Vector2.zero;
+        agent.SetDestination(transform.position);
     }
 
     private IEnumerator EnemyAttack()
@@ -238,7 +240,8 @@ public class EnemyController : MonoBehaviour
                             break;
                         default:
                             moveAble = false;
-                            rigidBody.velocity = Vector2.zero;
+                            //rigidBody.velocity = Vector2.zero;
+                            agent.SetDestination(transform.position);
                             yield return new WaitForSeconds(0.2f);
                             EnemyFire();
                             yield return new WaitForSeconds(0.3f);
@@ -295,7 +298,8 @@ public class EnemyController : MonoBehaviour
     private IEnumerator EnemyRice()
     {
         moveAble = false;
-        rigidBody.velocity = Vector2.zero;
+        //rigidBody.velocity = Vector2.zero;
+        agent.SetDestination(transform.position);
         yield return new WaitForSeconds(0.2f);
 
         Vector3 targetTemp = transform.position - target.transform.position;
@@ -371,7 +375,8 @@ public class EnemyController : MonoBehaviour
         bool ishit = false;
         float length = 0;
         moveAble = false;
-        rigidBody.velocity = Vector2.zero;
+        //rigidBody.velocity = Vector2.zero;
+        agent.SetDestination(transform.position);
         lineRenderer.enabled = true;
         laser = Instantiate(laserPrefab, this.transform.position, Quaternion.Euler(0, 0, 0), bulletParent.transform);
 
@@ -445,6 +450,7 @@ public class EnemyController : MonoBehaviour
     private IEnumerator Knockback(GameObject player)
     {
         moveAble = false;
+        agent.enabled = false;
         collider.isTrigger = true;
         rigidBody.velocity = Vector2.zero;
         rigidBody.AddForce((transform.position - player.transform.position).normalized * 15000, ForceMode2D.Impulse);
@@ -456,6 +462,7 @@ public class EnemyController : MonoBehaviour
 
         collider.isTrigger = false;
         moveAble = true;
+        agent.enabled = true;
     }
 
     public void GetKnockBack(GameObject player)
@@ -607,6 +614,7 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.tag == "Wall")
         {
             rigidBody.velocity = new Vector2(roomCenter.x - transform.position.x, roomCenter.y - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
+            agent.SetDestination(new Vector2(roomCenter.x, roomCenter.y));
         }
     }
 
