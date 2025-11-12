@@ -144,7 +144,7 @@ public class EnemyController : MonoBehaviour
                 if (!moveAble)
                 {
                     //rigidBody.velocity = Vector2.zero;
-                    agent.SetDestination(transform.position);
+                    //agent.SetDestination(transform.position);
                     anim.state = EnemyState.idle;
 
                     if (target.transform.position.x > transform.position.x)
@@ -384,7 +384,6 @@ public class EnemyController : MonoBehaviour
         laser.GetComponent<EnemyLaser>().SetSprite(anim.getEnemySprite());
 
         Ray2D ray = new Ray2D(transform.position, target.transform.position - transform.position);
-
         lineRenderer.SetPosition(0, transform.position);
 
         int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
@@ -453,15 +452,14 @@ public class EnemyController : MonoBehaviour
         collider.isTrigger = true;
         rigidBody.velocity = Vector2.zero;
         rigidBody.AddForce((transform.position - player.transform.position).normalized * 15000, ForceMode2D.Impulse);
-
         yield return new WaitForSeconds(0.2f);
 
         rigidBody.velocity = Vector2.zero;
         yield return new WaitForSeconds(0.2f);
 
         collider.isTrigger = false;
-        moveAble = true;
         agent.enabled = true;
+        moveAble = true;
     }
 
     public void GetKnockBack(GameObject player)

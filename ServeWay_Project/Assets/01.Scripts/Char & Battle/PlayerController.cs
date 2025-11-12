@@ -177,6 +177,7 @@ public class PlayerController : MonoBehaviour
         if(!GameManager.gameManager.isBossStage)
         {
             GetComponent<BoxCollider2D>().isTrigger = true;
+            GetComponent<BoxCollider2D>().size = new Vector2(2, 2);
         }
 
         if(weaponSlot.GetHoldWeapon() != null)
@@ -200,8 +201,31 @@ public class PlayerController : MonoBehaviour
 
         //rigidbody.velocity = chargeVel;
         rigidBody.AddForce(chargeVel * chargeSpeed * 0.15f, ForceMode2D.Impulse);
+        
+        float time = 0;
+        while(time < chargeLength * 1.3f * inventory.increase_ChargeSpeed)
+        {
+            Ray2D ray = new Ray2D(transform.position, chargeVel);
+            int mask = 1 << LayerMask.NameToLayer("RayTarget_E");
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 0.3f, mask);
 
-        yield return new WaitForSeconds(chargeLength * 1.3f * inventory.increase_ChargeSpeed); //돌진
+            if(hit)
+            {
+                if(hit.collider.gameObject.GetComponent<EnemyController>() != null)
+                {
+                    hit.collider.gameObject.GetComponent<EnemyController>().GetKnockBack(this.gameObject);
+                }
+                else
+                {
+                    hit.collider.gameObject.GetComponent<TutorialEnemy>().GetKnockBack(this.gameObject);
+                }
+            }
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        //yield return new WaitForSeconds(chargeLength * 1.3f * inventory.increase_ChargeSpeed); //돌진
 
         isCharge = false;
         anim.SetTrigger("DashFinish");
@@ -219,6 +243,7 @@ public class PlayerController : MonoBehaviour
             
         controllAble = true;
         GetComponent<BoxCollider2D>().isTrigger = false;
+        GetComponent<BoxCollider2D>().size = new Vector2(1, 0.58f);
         coolTime = chargeCooltime * inventory.increase_ChargeCoolTime;
         if(inventory.isKimchi)
         {
