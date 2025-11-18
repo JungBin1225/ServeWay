@@ -10,4 +10,6 @@ public class MapObjectList : ScriptableObject
     public List<GameObject> schoolList;
     public List<GameObject> barList;
     public List<GameObject> restorantList;
+    public List<GameObject> cafeList;
+    public List<GameObject> normalList;
 }

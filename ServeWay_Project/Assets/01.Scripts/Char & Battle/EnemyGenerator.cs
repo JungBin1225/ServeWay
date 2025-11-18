@@ -206,7 +206,10 @@ public class EnemyGenerator : MonoBehaviour
         int triggerAmount = Random.Range(0, 5 - objectAmount);
 
         objectList = GetObjectList();
-        switch(objectAmount)
+
+        GameObject mapObject = Instantiate(objectList[0], transform.position, Quaternion.Euler(0, 0, 0), transform);
+        mapObject.transform.localScale = new Vector3(mapObject.transform.localScale.x / transform.localScale.x, mapObject.transform.localScale.y / transform.localScale.y, 1);
+        switch (objectAmount)
         {
             case 1:
                 int quad = quadrant[Random.Range(0, quadrant.Count)];
@@ -247,6 +250,10 @@ public class EnemyGenerator : MonoBehaviour
                 return data.mapObjectList.barList;
             case Stage_Theme.RESTORANT:
                 return data.mapObjectList.restorantList;
+            case Stage_Theme.CAFE:
+                return data.mapObjectList.cafeList;
+            case Stage_Theme.NORMAL:
+                return data.mapObjectList.normalList;
             default:
                 return data.mapObjectList.testList;
         }

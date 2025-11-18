@@ -50,7 +50,7 @@ public class EnemyController : MonoBehaviour
     public bool moveAble;
 
     private Vector2 minPos;
-    public Vector2 maxPos;
+    private Vector2 maxPos;
     private GameObject generator;
     private EnemySprite anim;
 
@@ -81,6 +81,8 @@ public class EnemyController : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.speed = this.speed;
+        agent.angularSpeed = this.speed;
+        agent.avoidancePriority = 50;
 
         hp_width = hpImage.rect.width;
         hpImage.sizeDelta = new Vector2(0, 8);
@@ -114,6 +116,20 @@ public class EnemyController : MonoBehaviour
                 generator.GetComponent<EnemyGenerator>().EnemyDie();
                 Destroy(this.gameObject);
             }
+        }
+
+        if(agent.velocity == Vector3.zero || (!agent.enabled && rigidBody.velocity == Vector2.zero))
+        {
+            agent.avoidancePriority = 50;
+        }
+        else
+        {
+            agent.avoidancePriority = 51;
+        }
+
+        if(transform.parent.GetChild(0).gameObject == this.gameObject)
+        {
+            Debug.Log(agent.velocity.magnitude);
         }
     }
 
@@ -212,8 +228,9 @@ public class EnemyController : MonoBehaviour
             yield return null;
         }
 
-        //rigidBody.velocity = Vector2.zero;
+        rigidBody.velocity = Vector2.zero;
         agent.SetDestination(transform.position);
+        agent.velocity = Vector3.zero;
     }
 
     private IEnumerator EnemyAttack()
@@ -241,6 +258,7 @@ public class EnemyController : MonoBehaviour
                             moveAble = false;
                             //rigidBody.velocity = Vector2.zero;
                             agent.SetDestination(transform.position);
+                            agent.velocity = Vector3.zero;
                             yield return new WaitForSeconds(0.2f);
                             EnemyFire();
                             yield return new WaitForSeconds(0.3f);
@@ -299,6 +317,7 @@ public class EnemyController : MonoBehaviour
         moveAble = false;
         //rigidBody.velocity = Vector2.zero;
         agent.SetDestination(transform.position);
+        agent.velocity = Vector3.zero;
         yield return new WaitForSeconds(0.2f);
 
         Vector3 targetTemp = transform.position - target.transform.position;
@@ -376,6 +395,7 @@ public class EnemyController : MonoBehaviour
         moveAble = false;
         //rigidBody.velocity = Vector2.zero;
         agent.SetDestination(transform.position);
+        agent.velocity = Vector3.zero;
         lineRenderer.enabled = true;
         laser = Instantiate(laserPrefab, this.transform.position, Quaternion.Euler(0, 0, 0), bulletParent.transform);
 
@@ -610,7 +630,7 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Wall")
         {
-            rigidBody.velocity = new Vector2(roomCenter.x - transform.position.x, roomCenter.y - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
+            //rigidBody.velocity = new Vector2(roomCenter.x - transform.position.x, roomCenter.y - transform.position.y).normalized * speed * inventory.decrease_EnemySpeed;
             agent.SetDestination(new Vector2(roomCenter.x, roomCenter.y));
         }
     }
