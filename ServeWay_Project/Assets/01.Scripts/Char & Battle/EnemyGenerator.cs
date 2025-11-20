@@ -207,8 +207,8 @@ public class EnemyGenerator : MonoBehaviour
 
         objectList = GetObjectList();
 
-        GameObject mapObject = Instantiate(objectList[0], transform.position, Quaternion.Euler(0, 0, 0), transform);
-        mapObject.transform.localScale = new Vector3(mapObject.transform.localScale.x / transform.localScale.x, mapObject.transform.localScale.y / transform.localScale.y, 1);
+        /*GameObject mapObject = Instantiate(objectList[0], transform.position, Quaternion.Euler(0, 0, 0), transform);
+        mapObject.transform.localScale = new Vector3(mapObject.transform.localScale.x / transform.localScale.x, mapObject.transform.localScale.y / transform.localScale.y, 1); //test*/
         switch (objectAmount)
         {
             case 1:
@@ -254,6 +254,8 @@ public class EnemyGenerator : MonoBehaviour
                 return data.mapObjectList.cafeList;
             case Stage_Theme.NORMAL:
                 return data.mapObjectList.normalList;
+            case Stage_Theme.STREET:
+                return data.mapObjectList.streetList;
             default:
                 return data.mapObjectList.testList;
         }

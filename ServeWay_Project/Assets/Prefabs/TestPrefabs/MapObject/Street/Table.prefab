@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 8918533206539694728}
   - component: {fileID: 5115804739494267760}
   - component: {fileID: 1946563922297307114}
-  - component: {fileID: 4651843975386446739}
+  - component: {fileID: 1522949484855732812}
   m_Layer: 9
-  m_Name: Soju
+  m_Name: Table
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: -581979341
   m_SortingLayer: -2
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: efb147fd26c468b4b80035af03041ca4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f8a70cef397d7248ab72ef2627a1f4b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,14 +105,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.9, y: 1.2}
+    oldSize: {x: 0.89, y: 0.82}
     newSize: {x: 1.28, y: 1.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 1.2}
+  m_Size: {x: 0.89, y: 0.82}
   m_EdgeRadius: 0
 --- !u!50 &5115804739494267760
 Rigidbody2D:
@@ -148,9 +148,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 2
-  height: 3
+  height: 2
   changeSprite: {fileID: 0}
---- !u!114 &4651843975386446739
+--- !u!114 &1522949484855732812
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
