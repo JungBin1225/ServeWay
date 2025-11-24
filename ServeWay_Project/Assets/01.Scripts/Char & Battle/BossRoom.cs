@@ -251,15 +251,15 @@ public class BossRoom : MonoBehaviour
         int grade = UnityEngine.Random.Range(0, 100) + 1;
 
         int num = 0;
-        if (grade <= 55)
+        if (grade <= 50)
         {
             num = 1;
         }
-        else if (grade <= 80)
+        else if (grade <= 85)
         {
             num = 2;
         }
-        else if (grade <= 95)
+        else if (grade <= 97)
         {
             num = 3;
         }

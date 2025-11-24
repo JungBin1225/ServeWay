@@ -99,8 +99,10 @@ public class EnemyController : MonoBehaviour
         if(hp <= 0)
         {
             rigidBody.velocity = Vector2.zero;
+            agent.SetDestination(transform.position);
+            agent.velocity = Vector3.zero;
             //generator.GetComponent<EnemyGenerator>().enemyAmount--;
-            if(lineRenderer.enabled)
+            if (lineRenderer.enabled)
             {
                 lineRenderer.SetPosition(1, transform.position);
                 lineRenderer.enabled = false;

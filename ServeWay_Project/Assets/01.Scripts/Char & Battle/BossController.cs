@@ -68,9 +68,9 @@ public class BossController : MonoBehaviour
                 break;
             case 1: //미션 클리어
                 room.DropIngredient(6, 13);
+                room.DropRecipe();
                 break;
         }
-        room.DropRecipe();
 
         room.OpenDoor();
         room.ActiveStair();
