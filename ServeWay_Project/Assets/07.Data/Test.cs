@@ -124,7 +124,7 @@ public class Test : MonoBehaviour
             }
         }
 
-        Debug.Log("1성: " + star1 + " 2성: " + star2 + " 3성: " + star3 + " 4성: " + star4);
+        Debug.Log("1성: 50% 2성: 35% 3성:12% 4성: 3% \n" + "1성: " + star1 + " 2성: " + star2 + " 3성: " + star3 + " 4성: " + star4);
     }
 
     private void ClearSave()
