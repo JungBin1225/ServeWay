@@ -284,6 +284,16 @@ public class DexUI : MonoBehaviour
                     info_Food.transform.GetChild(3).GetChild(5).gameObject.SetActive(false);
                     info_Food.transform.GetChild(3).GetChild(6).gameObject.SetActive(false);
                 }
+                else
+                {
+                    info_Food.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = defultMaterial;
+                    info_Food.transform.GetChild(3).GetChild(1).gameObject.SetActive(true);
+                    info_Food.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
+                    info_Food.transform.GetChild(3).GetChild(3).gameObject.SetActive(true);
+                    info_Food.transform.GetChild(3).GetChild(4).gameObject.SetActive(true);
+                    info_Food.transform.GetChild(3).GetChild(5).gameObject.SetActive(true);
+                    info_Food.transform.GetChild(3).GetChild(6).gameObject.SetActive(true);
+                }
 
                 List<Ingred_Name> ingred = food.needIngredient.Keys.ToList();
                 for(int i = 0; i < 6; i++)
