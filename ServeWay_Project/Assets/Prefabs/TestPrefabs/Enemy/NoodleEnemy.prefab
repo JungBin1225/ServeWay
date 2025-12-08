@@ -822,7 +822,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2490266043329067457, guid: 3ddb7db3ee5ba71488c240fe1a97bba4, type: 3}
   laserPrefab: {fileID: 5084242752961716783, guid: b912b59bd23b6e941a49ed3c6f379a6c, type: 3}
   moveAble: 0
-  maxPos: {x: 0, y: 0}
   hpImage: {fileID: 5096761823972397772}
   damageEffect: {fileID: 2065792740054549629, guid: d95cb0eac244aa8419a24782d88d38b9, type: 3}
   eatSound: {fileID: 5318576464459290623, guid: 12ec8b301bd726046b7101be71f95b34, type: 3}
@@ -1022,7 +1021,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.7
     widthCurve:
       serializedVersion: 2
       m_Curve:

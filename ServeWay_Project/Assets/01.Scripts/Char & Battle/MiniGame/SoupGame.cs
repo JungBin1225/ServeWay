@@ -11,6 +11,7 @@ public class SoupGame : MonoBehaviour
     public GameObject pot;
     public GameObject spoon;
     public GameObject timer;
+    public GameObject start;
     public Texture2D cursorInvisible;
     public List<GameObject> wayPoint;
 
@@ -19,6 +20,7 @@ public class SoupGame : MonoBehaviour
     private float time;
     private float score;
     private bool isStart;
+    private bool isCursor;
     private Texture2D cursorImage;
 
     private void OnEnable()
@@ -26,6 +28,7 @@ public class SoupGame : MonoBehaviour
         score = 0;
         spoonDown = false;
         isStart = false;
+        isCursor = false;
         cursorImage = GameManager.gameManager.cursorImage;
         time = Time.realtimeSinceStartup;
 
@@ -42,7 +45,7 @@ public class SoupGame : MonoBehaviour
 
     void Update()
     {
-        if(spoonDown)
+        if(spoonDown && isCursor)
         {
             Vector3 mousePos = Input.mousePosition;
 
@@ -69,10 +72,13 @@ public class SoupGame : MonoBehaviour
     {
         explanePanel.SetActive(false);
         gamePanel.SetActive(true);
+        start.SetActive(true);
+        isCursor = true;
         yield return new WaitUntil(() => spoonDown);
 
         isStart = true;
         time = Time.realtimeSinceStartup;
+        start.SetActive(false);
 
         while (Time.realtimeSinceStartup - time < 15)
         {
@@ -107,6 +113,8 @@ public class SoupGame : MonoBehaviour
         {
             success = Create_Success.FAIL;
         }
+
+        isCursor = false;
         Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
         yield return new WaitForSecondsRealtime(1.0f);
 
@@ -117,13 +125,19 @@ public class SoupGame : MonoBehaviour
 
     public void OnPointerDown()
     {
-        Cursor.SetCursor(cursorInvisible, new Vector2(0.13f, 0.87f), CursorMode.Auto);
+        if(isCursor)
+        {
+            Cursor.SetCursor(cursorInvisible, new Vector2(0.13f, 0.87f), CursorMode.Auto);
+        }
         spoonDown = true;
     }
 
     public void OnPointerUp()
     {
-        Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
+        if (isCursor)
+        {
+            Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
+        }
         spoonDown = false;
     }
 

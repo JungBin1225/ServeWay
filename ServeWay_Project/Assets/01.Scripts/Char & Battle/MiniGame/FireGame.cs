@@ -116,8 +116,36 @@ public class FireGame : MonoBehaviour
                 barNow = Time.realtimeSinceStartup - time;
                 barTime = Random.Range(3.5f, 6.0f);
                 barLoc = Random.Range(0.0f, 500.0f);
-                targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
+                //targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
             }
+
+            if(Mathf.Abs(targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc) > 0.3f)
+            {
+                if(targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc < 0)
+                {
+                    if (targetBar.GetComponent<RectTransform>().anchoredPosition.x > 0)
+                    {
+                        targetBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(0.3f, 0);
+                    }
+                    else
+                    {
+                        targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+                    }
+                }
+                else
+                {
+                    if (targetBar.GetComponent<RectTransform>().anchoredPosition.x < 500.0f)
+                    {
+                        targetBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(0.3f, 0);
+                    }
+                    else
+                    {
+                        targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(500.0f, 0, 0);
+                    }
+                }
+            }
+
+
 
             audio.volume = spaceBar.GetComponent<RectTransform>().anchoredPosition.x / 600;
             if(audio.volume < 0.1f)

@@ -25,7 +25,7 @@ public class FireExplane : MonoBehaviour
         isMove = false;
         key.sprite = space;
         effect.SetActive(false);
-        targetBar.anchoredPosition = new Vector3(0, 0, 0);
+        targetBar.anchoredPosition = new Vector3(200, 0, 0);
         fire.anchoredPosition = new Vector3(0, -25, 0);
 
         StartCoroutine(explane());
@@ -41,7 +41,7 @@ public class FireExplane : MonoBehaviour
             }
             else
             {
-                fire.anchoredPosition = new Vector3(275.0f, 0, 0);
+                fire.anchoredPosition = new Vector3(275.0f, -25, 0);
             }
 
             key.sprite = spacePress;
@@ -55,7 +55,7 @@ public class FireExplane : MonoBehaviour
             }
             else
             {
-                fire.anchoredPosition = new Vector3(0, 0, 0);
+                fire.anchoredPosition = new Vector3(0, -25, 0);
             }
 
             key.sprite = space;
@@ -74,42 +74,64 @@ public class FireExplane : MonoBehaviour
     IEnumerator explane()
     {
         float time;
+        float spacetime;
 
         while(true)
         {
             time = 0;
+            spacetime = 0;
 
             while (time < 3)
             {
-                targetBar.anchoredPosition = new Vector3(200, 0, 0);
-                if(targetBar.anchoredPosition.x - fire.anchoredPosition.x > -40)
+                if(Mathf.Abs(targetBar.anchoredPosition.x - 200) > 0.15f)
                 {
-                    isMove = true;
-                }
-                else
-                {
-                    isMove = false;
+                    targetBar.anchoredPosition += new Vector2(0.15f, 0);
                 }
 
-                yield return new WaitForSecondsRealtime(0.2f);
-                time += 0.2f;
+                if(spacetime > 0.2f)
+                {
+                    spacetime = 0;
+                    if (targetBar.anchoredPosition.x - fire.anchoredPosition.x > -40)
+                    {
+                        isMove = true;
+                    }
+                    else
+                    {
+                        isMove = false;
+                    }
+                }
+
+                yield return null;
+                time += Time.unscaledDeltaTime;
+                spacetime += Time.unscaledDeltaTime;
             }
+
             time = 0;
+            spacetime = 0;
 
-            while(time < 3)
+            while (time < 3)
             {
-                targetBar.anchoredPosition = new Vector3(100, 0, 0);
-                if (targetBar.anchoredPosition.x - fire.anchoredPosition.x > -40)
+                if (Mathf.Abs(targetBar.anchoredPosition.x - 100) > 0.15f)
                 {
-                    isMove = true;
-                }
-                else
-                {
-                    isMove = false;
+                    targetBar.anchoredPosition -= new Vector2(0.15f, 0);
                 }
 
-                yield return new WaitForSecondsRealtime(0.2f);
-                time += 0.2f;
+                if (spacetime > 0.2f)
+                {
+                    spacetime = 0;
+                    if (targetBar.anchoredPosition.x - fire.anchoredPosition.x > -40)
+                    {
+                        isMove = true;
+                    }
+                    else
+                    {
+                        isMove = false;
+                    }
+                }
+
+                yield return null;
+                time += Time.unscaledDeltaTime;
+                spacetime += Time.unscaledDeltaTime;
             }
         }
     }
