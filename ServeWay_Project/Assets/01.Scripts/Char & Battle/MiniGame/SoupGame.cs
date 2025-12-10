@@ -33,6 +33,7 @@ public class SoupGame : MonoBehaviour
         time = Time.realtimeSinceStartup;
 
         spoon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-120, -50, 0);
+        timer.GetComponent<TMP_Text>().color = new Color(0, 1, 0);
 
         foreach (GameObject way in wayPoint)
         {
@@ -60,6 +61,10 @@ public class SoupGame : MonoBehaviour
             if (Time.realtimeSinceStartup - time <= 15)
             {
                 timer.GetComponent<TMP_Text>().text = (15 - (Time.realtimeSinceStartup - time)).ToString("F1");
+                if (15 - (Time.realtimeSinceStartup - time) < 6.0f)
+                {
+                    timer.GetComponent<TMP_Text>().color = new Color(1, 0, 0);
+                }
             }
             else
             {

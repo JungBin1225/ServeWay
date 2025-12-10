@@ -29,6 +29,7 @@ public class BreadGame : MonoBehaviour
         targetKey = KeyCode.RightWindows;
         time = Time.realtimeSinceStartup;
         isPlaying = false;
+        timer.color = new Color(0, 1, 0);
 
         explanePanel.SetActive(true);
         gamePanel.SetActive(false);
@@ -51,6 +52,10 @@ public class BreadGame : MonoBehaviour
             if ((Time.realtimeSinceStartup - time) - now <= 15)
             {
                 timer.text = (15 - ((Time.realtimeSinceStartup - time) - now)).ToString("F1");
+                if (15 - ((Time.realtimeSinceStartup - time) - now) < 6.0f)
+                {
+                    timer.color = new Color(1, 0, 0);
+                }
             }
             else
             {
