@@ -12,6 +12,7 @@ public class BreadGame : MonoBehaviour
     public List<Sprite> keyboardList;
     public List<Sprite> pressList;
     public Animator anim;
+    public Animator dough_anim;
     public AudioSource audio;
     public List<AudioClip> audioList;
     public TMP_Text timer;
@@ -40,6 +41,7 @@ public class BreadGame : MonoBehaviour
         if(isPlaying && Input.GetKeyDown(targetKey))
         {
             anim.SetTrigger(Random.Range(1, 4).ToString());
+            dough_anim.SetTrigger(Random.Range(1, 6).ToString());
             audio.clip = audioList[Random.Range(0, 4)];
             audio.Play();
 

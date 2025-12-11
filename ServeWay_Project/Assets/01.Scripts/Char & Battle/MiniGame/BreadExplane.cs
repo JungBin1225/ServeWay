@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BreadExplane : MonoBehaviour
 {
     public Animator anim;
+    public Animator dough_anim;
 
     public Image key;
     public Sprite a_n;
@@ -46,6 +47,7 @@ public class BreadExplane : MonoBehaviour
             while(time < 15)
             {
                 anim.SetTrigger(Random.Range(1, 4).ToString());
+                dough_anim.SetTrigger(Random.Range(1, 6).ToString());
 
                 if (time % 2 == 0)
                 {
@@ -63,6 +65,7 @@ public class BreadExplane : MonoBehaviour
             while (time < 15)
             {
                 anim.SetTrigger(Random.Range(1, 4).ToString());
+                dough_anim.SetTrigger(Random.Range(1, 6).ToString());
 
                 if (time % 2 == 0)
                 {
@@ -80,6 +83,7 @@ public class BreadExplane : MonoBehaviour
             while (time < 15)
             {
                 anim.SetTrigger(Random.Range(1, 4).ToString());
+                dough_anim.SetTrigger(Random.Range(1, 6).ToString());
 
                 if (time % 2 == 0)
                 {
