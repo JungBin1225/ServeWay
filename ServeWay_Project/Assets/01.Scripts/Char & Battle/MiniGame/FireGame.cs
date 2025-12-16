@@ -51,7 +51,7 @@ public class FireGame : MonoBehaviour
             if ((Time.realtimeSinceStartup - time) - now <= 15)
             {
                 timer.text = (15 - ((Time.realtimeSinceStartup - time) - now)).ToString("F1");
-                if(15 - ((Time.realtimeSinceStartup - time) - now) < 6.0f)
+                if(15 - ((Time.realtimeSinceStartup - time) - now) <= 5.0f)
                 {
                     timer.color = new Color(1, 0, 0);
                 }

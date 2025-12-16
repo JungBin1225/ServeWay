@@ -15,6 +15,11 @@ public class PanFlipGame : MonoBehaviour
     public GameObject click;
     public GameObject spaceBar;
     public AudioSource audio;
+    public Image meatImage;
+    public Image explaneMeat;
+
+    public Sprite rawMeat;
+    public Sprite steakMeat;
 
     private Create_Success success;
     private bool isStart;
@@ -28,6 +33,8 @@ public class PanFlipGame : MonoBehaviour
         isStart = false;
         isOver = false;
         isClicked = false;
+        meatImage.sprite = rawMeat;
+        explaneMeat.sprite = rawMeat;
         time = Time.realtimeSinceStartup;
 
         explanePanel.SetActive(true);
@@ -116,6 +123,7 @@ public class PanFlipGame : MonoBehaviour
 
         while (explanePanel.activeSelf)
         {
+            explaneMeat.sprite = rawMeat;
             yield return new WaitForSecondsRealtime(5f);
             warning.SetActive(true);
             yield return new WaitForSecondsRealtime(0.4f);
@@ -128,6 +136,7 @@ public class PanFlipGame : MonoBehaviour
             warning.SetActive(false);
             click.SetActive(false);
             spaceBar.GetComponent<Image>().color = new Color(1, 1, 1);
+            yield return new WaitForSecondsRealtime(1f);
         }
     }
 

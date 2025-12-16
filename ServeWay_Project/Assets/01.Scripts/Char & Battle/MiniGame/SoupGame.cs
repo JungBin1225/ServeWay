@@ -61,7 +61,7 @@ public class SoupGame : MonoBehaviour
             if (Time.realtimeSinceStartup - time <= 15)
             {
                 timer.GetComponent<TMP_Text>().text = (15 - (Time.realtimeSinceStartup - time)).ToString("F1");
-                if (15 - (Time.realtimeSinceStartup - time) < 6.0f)
+                if (15 - (Time.realtimeSinceStartup - time) <= 5.0f)
                 {
                     timer.GetComponent<TMP_Text>().color = new Color(1, 0, 0);
                 }
