@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BossRoom : MonoBehaviour
 {
@@ -107,11 +108,11 @@ public class BossRoom : MonoBehaviour
 
         intro.transform.GetChild(2).GetComponent<Image>().sprite = data.FindBoss(bossJob).GetComponent<SpriteRenderer>().sprite;
 
-        card.transform.GetChild(1).GetComponent<Text>().text = GameManager.gameManager.JobToString(bossJob);
-        card.transform.GetChild(2).GetComponent<Text>().text = BossName(bossJob); //name
-        card.transform.GetChild(4).GetComponent<Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
-        card.transform.GetChild(6).GetComponent<Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
-        card.transform.GetChild(8).GetComponent<Text>().text = email + "@space.com"; //email
+        card.transform.GetChild(1).GetComponent<TMP_Text>().text = GameManager.gameManager.JobToString(bossJob);
+        card.transform.GetChild(2).GetComponent<TMP_Text>().text = BossName(bossJob); //name
+        card.transform.GetChild(4).GetComponent<TMP_Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
+        card.transform.GetChild(6).GetComponent<TMP_Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
+        card.transform.GetChild(8).GetComponent<TMP_Text>().text = email + "@space.com"; //email
 
         Stage_Theme theme = GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1];
         wall.transform.GetChild(0).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top.sprite;
