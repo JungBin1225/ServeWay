@@ -13,12 +13,9 @@ public class EndingController : MonoBehaviour
     public GameObject fade_white;
 
     private List<double> signalTimeList;
-    private float clickCoolTime;
 
     void Start()
     {
-        clickCoolTime = 0;
-
         signalTimeList = new List<double>();
 
         TimelineAsset timeline = (TimelineAsset)director.playableAsset;
@@ -36,27 +33,29 @@ public class EndingController : MonoBehaviour
 
     void Update()
     {
-        if (clickCoolTime > 0)
+        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && (!fade_black.activeSelf && !fade_white.activeSelf))
         {
-            clickCoolTime -= Time.deltaTime;
-        }
-        else
-        {
-            clickCoolTime = 0;
-        }
-
-        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && (!fade_black.activeSelf && !fade_white.activeSelf) && clickCoolTime <= 0)
-        {
-            foreach (double signalTime in signalTimeList)
+            for (int i = 0; i < signalTimeList.Count; i++)
             {
-                if (director.time < signalTime && signalTime - director.time > 0.2f)
+                if(i == 0)
                 {
-                    director.time = signalTime - 0.2f;
-                    break;
+                    if ((director.time < signalTimeList[i]) && (director.time > 0.5f && signalTimeList[i] - director.time > 0.5f))
+                    {
+                        director.time = signalTimeList[i] - 0.5f;
+                        director.Evaluate();
+                        break;
+                    }
+                }
+                else
+                {
+                    if ((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] > 0.5f && signalTimeList[i] - director.time > 0.5f))
+                    {
+                        director.time = signalTimeList[i] - 0.5f;
+                        director.Evaluate();
+                        break;
+                    }
                 }
             }
-
-            clickCoolTime = 0.35f;
         }
     }
 

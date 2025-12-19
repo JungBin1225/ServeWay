@@ -18,8 +18,6 @@ public class OpeningSignal: MonoBehaviour
     private int AlienSonTalkIndex;
     private int MasterTalkIndex;
 
-    private float clickCoolTime;
-
     private PlayableDirector director;
     private List<double> signalTimeList;
 
@@ -53,8 +51,6 @@ public class OpeningSignal: MonoBehaviour
 
         OpeningATTalkIndex = 0;
 
-        clickCoolTime = 0;
-
         signalTimeList = new List<double>();
 
         director = GetComponent<PlayableDirector>();
@@ -73,27 +69,17 @@ public class OpeningSignal: MonoBehaviour
 
     private void Update()
     {
-        if(clickCoolTime > 0)
+        if((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && (!Fade_black.activeSelf && !Fade_white.activeSelf))
         {
-            clickCoolTime -= Time.deltaTime;
-        }
-        else
-        {
-            clickCoolTime = 0;
-        }
-
-        if((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) && (!Fade_black.activeSelf && !Fade_white.activeSelf) && clickCoolTime <= 0)
-        {
-            foreach(double signalTime in signalTimeList)
+            for(int i = 0; i < signalTimeList.Count; i++)
             {
-                if(director.time < signalTime && signalTime - director.time > 0.2f)
+                if ((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] > 0.5f && signalTimeList[i] - director.time > 0.5f))
                 {
-                    director.time = signalTime - 0.2f;
+                    director.time = signalTimeList[i] - 0.5f;
+                    director.Evaluate();
                     break;
                 }
             }
-
-            clickCoolTime = 0.35f;
         }
     }
 
