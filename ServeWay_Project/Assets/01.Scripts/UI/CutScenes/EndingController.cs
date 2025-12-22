@@ -13,10 +13,12 @@ public class EndingController : MonoBehaviour
     public GameObject fade_white;
 
     private List<double> signalTimeList;
+    private bool clickAble;
 
     void Start()
     {
         signalTimeList = new List<double>();
+        clickAble = false;
 
         TimelineAsset timeline = (TimelineAsset)director.playableAsset;
         Debug.Log(timeline.GetRootTrack(0).GetMarkerCount());
@@ -39,21 +41,51 @@ public class EndingController : MonoBehaviour
             {
                 if(i == 0)
                 {
-                    if ((director.time < signalTimeList[i]) && (director.time > 0.5f && signalTimeList[i] - director.time > 0.5f))
+                    if ((director.time < signalTimeList[i]) && (director.time > 3.75f && signalTimeList[i] - director.time > 0.75f))
                     {
-                        director.time = signalTimeList[i] - 0.5f;
+                        director.time = signalTimeList[i] - 0.75f;
                         director.Evaluate();
                         break;
                     }
                 }
                 else
                 {
-                    if ((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] > 0.5f && signalTimeList[i] - director.time > 0.5f))
+                    if ((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] > 0.75f && signalTimeList[i] - director.time > 0.75f))
                     {
-                        director.time = signalTimeList[i] - 0.5f;
+                        director.time = signalTimeList[i] - 0.75f;
                         director.Evaluate();
                         break;
                     }
+                }
+            }
+        }
+
+        for (int i = 0; i < signalTimeList.Count; i++)
+        {
+            if (i == 0)
+            {
+                if ((director.time < signalTimeList[i]) && (director.time > 3.75f && signalTimeList[i] - director.time > 0.75f))
+                {
+                    clickAble = true;
+                    break;
+                }
+                else if((director.time < signalTimeList[i]) && (director.time <= 3.75f || signalTimeList[i] - director.time <= 0.75f))
+                {
+                    clickAble = false;
+                    break;
+                }
+            }
+            else
+            {
+                if ((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] > 0.75f && signalTimeList[i] - director.time > 0.75f))
+                {
+                    clickAble = true;
+                    break;
+                }
+                else if((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] <= 0.75f || signalTimeList[i] - director.time <= 0.75f))
+                {
+                    clickAble = false;
+                    break;
                 }
             }
         }
@@ -98,5 +130,10 @@ public class EndingController : MonoBehaviour
     public void skip()
     {
 
+    }
+
+    public bool GetClickAble()
+    {
+        return clickAble;
     }
 }

@@ -17,6 +17,7 @@ public class OpeningSignal: MonoBehaviour
     private int AlienMomTalkIndex;
     private int AlienSonTalkIndex;
     private int MasterTalkIndex;
+    private bool clickAble;
 
     private PlayableDirector director;
     private List<double> signalTimeList;
@@ -38,6 +39,7 @@ public class OpeningSignal: MonoBehaviour
     public GameObject Fade_black;
     public GameObject Fade_white;
 
+
     void Start()
     {
         PlayerTalkIndex = 0;
@@ -53,6 +55,7 @@ public class OpeningSignal: MonoBehaviour
 
         signalTimeList = new List<double>();
 
+        clickAble = false;
         director = GetComponent<PlayableDirector>();
         TimelineAsset timeline = (TimelineAsset)director.playableAsset;
         Debug.Log(timeline.GetRootTrack(1).GetMarkerCount());
@@ -73,12 +76,26 @@ public class OpeningSignal: MonoBehaviour
         {
             for(int i = 0; i < signalTimeList.Count; i++)
             {
-                if ((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] > 0.5f && signalTimeList[i] - director.time > 0.5f))
+                if ((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] > 0.75f && signalTimeList[i] - director.time > 0.75f))
                 {
-                    director.time = signalTimeList[i] - 0.5f;
+                    director.time = signalTimeList[i] - 0.75f;
                     director.Evaluate();
                     break;
                 }
+            }
+        }
+
+        for (int i = 0; i < signalTimeList.Count; i++)
+        {
+            if ((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] > 0.75f && signalTimeList[i] - director.time > 0.75f))
+            {
+                clickAble = true;
+                break;
+            }
+            else if((director.time < signalTimeList[i]) && (director.time - signalTimeList[i - 1] <= 0.75f || signalTimeList[i] - director.time <= 0.75f))
+            {
+                clickAble = false;
+                break;
             }
         }
     }
@@ -261,5 +278,10 @@ public class OpeningSignal: MonoBehaviour
 
         GameManager.gameManager.SetNextStage("StartMap");
         SceneManager.LoadScene("Loading");
+    }
+
+    public bool GetClickAble()
+    {
+        return clickAble;
     }
 }
