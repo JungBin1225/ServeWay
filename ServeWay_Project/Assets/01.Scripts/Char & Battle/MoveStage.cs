@@ -37,7 +37,7 @@ public class MoveStage : MonoBehaviour
                         StartCoroutine(FadeOut(true));
                     }
                 }
-                else if (GameManager.gameManager.stage <= 7 && GameManager.gameManager.stage >= 1)
+                else if (GameManager.gameManager.stage <= 7 && GameManager.gameManager.stage >= 0)
                 {
                     if (!SceneManager.GetActiveScene().name.Contains("Start"))
                     {
