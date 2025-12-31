@@ -12,19 +12,25 @@ public enum BTNType
     New,
     Continue,
     Quit,
-
-    CloseStart
+    CloseStart,
+    Ending
 }
 
 public class MainUI : MonoBehaviour
 {
     public GameObject openingButton;
+    public GameObject endingButton;
 
     private void Start()
     {
         if(!GameManager.gameManager.charData.saveFile.isTuto)
         {
             openingButton.SetActive(false);
+        }
+
+        if(!GameManager.gameManager.charData.saveFile.isEnding)
+        {
+            endingButton.SetActive(false);
         }
     }
 }

@@ -36,6 +36,13 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
                 GameManager.gameManager.SetNextStage("1_OpeningCutScene");
                 SceneManager.LoadScene("Loading");
                 break;
+            case BTNType.Ending:
+                GameManager.gameManager.charData.DeleteAllWithoutTutoSound();
+
+                GameManager.gameManager.SetNextStage("EndingCutScene");
+                SceneManager.LoadScene("Loading");
+                break;
+
             case BTNType.Start:
                 if (GameManager.gameManager.charData.saveFile.weaponList.Count == 0)
                 {

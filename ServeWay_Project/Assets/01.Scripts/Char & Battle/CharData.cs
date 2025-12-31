@@ -292,6 +292,9 @@ public class CharData : MonoBehaviour
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
         PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
 
+        saveFile.isTuto = tuto;
+        saveFile.isEnding = ending;
+
         PlayerPrefs.Save();
     }
 

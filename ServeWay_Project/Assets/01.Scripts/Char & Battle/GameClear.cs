@@ -127,6 +127,9 @@ public class GameClear : MonoBehaviour
 
         PlayerPrefs.DeleteAll();
 
+        GameManager.gameManager.charData.saveFile.isTuto = tuto;
+        GameManager.gameManager.charData.saveFile.isEnding = ending;
+
         PlayerPrefs.SetString("isTuto", tuto.ToString());
         PlayerPrefs.SetString("isEnding", ending.ToString());
         PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
