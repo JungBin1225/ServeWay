@@ -96,14 +96,23 @@ public class ResearcherController : MonoBehaviour
             soupTime -= Time.deltaTime;
         }
 
-        if (rigidbody.velocity.x < 0)
+        if (!isAttack && rigidbody.velocity.x < 0)
         {
             isLeft = true;
         }
-        else if (rigidbody.velocity.x > 0)
+        else if (!isAttack && rigidbody.velocity.x > 0)
         {
             isLeft = false;
         }
+        else if (isAttack && transform.position.x - player.transform.position.x > 0)
+        {
+            isLeft = true;
+        }
+        else if (isAttack && transform.position.x - player.transform.position.x < 0)
+        {
+            isLeft = false;
+        }
+
         if (isLeft)
         {
             renderer.flipX = false;
@@ -300,6 +309,7 @@ public class ResearcherController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         anim.SetTrigger("dash");
         dashEffect.SetActive(true);
+        isAttack = false;
 
         for (int i = 0; i < platePos.Count; i++)
         {
@@ -322,7 +332,6 @@ public class ResearcherController : MonoBehaviour
 
         platePos.Clear();
         isCharge = false;
-        isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }

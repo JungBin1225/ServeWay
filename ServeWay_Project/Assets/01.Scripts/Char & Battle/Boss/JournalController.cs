@@ -102,15 +102,24 @@ public class JournalController : MonoBehaviour
         }*/
 
 
-        if(rigidbody.velocity.x < 0)
+        if (!isAttack && rigidbody.velocity.x < 0)
         {
             isLeft = true;
         }
-        else if(rigidbody.velocity.x > 0)
+        else if (!isAttack && rigidbody.velocity.x > 0)
         {
             isLeft = false;
         }
-        if(isLeft)
+        else if (isAttack && transform.position.x - player.transform.position.x > 0)
+        {
+            isLeft = true;
+        }
+        else if (isAttack && transform.position.x - player.transform.position.x < 0)
+        {
+            isLeft = false;
+        }
+
+        if (isLeft)
         {
             renderer.flipX = false;
             effectRenderer.flipX = false;
@@ -319,7 +328,7 @@ public class JournalController : MonoBehaviour
     private IEnumerator ChargePattern()
     {
         anim.SetTrigger("attackend");
-        isAttack = true;
+
         float posX = Random.Range(-(room.transform.localScale.x / 2) + 1, (room.transform.localScale.x / 2) - 1);
         float posY = Random.Range(-(room.transform.localScale.y / 2) + 1, (room.transform.localScale.y / 2) - 1);
         Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
@@ -379,7 +388,7 @@ public class JournalController : MonoBehaviour
 
         faintAudio.Stop();
         isCharge = false;
-        isAttack = false;
+
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }

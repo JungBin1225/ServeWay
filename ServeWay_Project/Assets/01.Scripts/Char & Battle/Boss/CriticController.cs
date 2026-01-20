@@ -8,6 +8,7 @@ public class CriticController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private SpriteRenderer renderer;
     private BossController bossCon;
+    private Animator anim;
     private GameObject player;
     private GameObject bulletParent;
     private GameObject effectParent;
@@ -46,6 +47,7 @@ public class CriticController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         renderer = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
@@ -77,14 +79,23 @@ public class CriticController : MonoBehaviour
             coolTime -= Time.deltaTime;
         }
 
-        if (rigidbody.velocity.x < 0)
+        if (!isAttack && rigidbody.velocity.x < 0)
         {
             isLeft = true;
         }
-        else if (rigidbody.velocity.x > 0)
+        else if (!isAttack && rigidbody.velocity.x > 0)
         {
             isLeft = false;
         }
+        else if (isAttack && transform.position.x - player.transform.position.x > 0)
+        {
+            isLeft = true;
+        }
+        else if (isAttack && transform.position.x - player.transform.position.x < 0)
+        {
+            isLeft = false;
+        }
+
         if (isLeft)
         {
             renderer.flipX = false;
@@ -104,6 +115,7 @@ public class CriticController : MonoBehaviour
 
     private IEnumerator EnemyMove()
     {
+        anim.SetTrigger("walk");
         while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
@@ -182,8 +194,12 @@ public class CriticController : MonoBehaviour
 
     private IEnumerator MachineGunPattern()
     {
+        anim.SetTrigger("attackend");
         isAttack = true;
         yield return new WaitForSeconds(0.3f);
+
+        anim.SetInteger("attacktype", 1);
+        anim.SetTrigger("attack");
 
         rigidbody.velocity = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized * (speed / 3);
         for (int i = 0; i < machineGunAmount; i++)
@@ -208,8 +224,12 @@ public class CriticController : MonoBehaviour
 
     private IEnumerator ShotGunPattern()
     {
+        anim.SetTrigger("attackend");
         isAttack = true;
         yield return new WaitForSeconds(0.35f);
+
+        anim.SetInteger("attacktype", 2);
+        anim.SetTrigger("attack");
 
         for (int j = 0; j < 5; j++)
         {
@@ -250,8 +270,11 @@ public class CriticController : MonoBehaviour
 
     private IEnumerator CutPattern()
     {
-        isAttack = true;
+        anim.SetTrigger("attackend");
         yield return new WaitForSeconds(0.35f);
+
+        anim.SetInteger("attacktype", 3);
+        anim.SetTrigger("attack");
 
         isCharge = true;
         Vector3 target = player.transform.position;
@@ -275,9 +298,9 @@ public class CriticController : MonoBehaviour
         pen.transform.GetChild(0).GetComponent<Pen>().damage = penDamage;
         pen.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, startRot.z - 25));
 
-        while(num < 65)
+        while(num < 130)
         {
-            pen.transform.localRotation = Quaternion.Euler(pen.transform.localRotation.eulerAngles + new Vector3(0, 0, 2));
+            pen.transform.localRotation = Quaternion.Euler(pen.transform.localRotation.eulerAngles + new Vector3(0, 0, 1));
             num++;
             yield return null;
         }
@@ -285,17 +308,18 @@ public class CriticController : MonoBehaviour
         pen.SetActive(false);
         yield return new WaitForSeconds(0.3f);
 
-        isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }
 
     private IEnumerator PenExplosionPattern()
     {
+        anim.SetInteger("attacktype", 4);
+        anim.SetTrigger("attack");
         isAttack = true;
         yield return new WaitForSeconds(0.5f);
 
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             float posX = Random.Range(-(room.transform.localScale.x / 2) + 2f, (room.transform.localScale.x / 2) - 2f);
             float posY = Random.Range(-(room.transform.localScale.y / 2) + 2f, (room.transform.localScale.y / 2) - 2f);
