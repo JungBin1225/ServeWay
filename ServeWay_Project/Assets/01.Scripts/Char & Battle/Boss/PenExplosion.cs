@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class PenExplosion : MonoBehaviour
 {
+    private GameObject effectList;
+
     public GameObject pen;
     public GameObject explosionEffect;
+    public GameObject sound;
     public CircleCollider2D collider;
     public float damage;
     public Sprite sprite;
 
     void Start()
     {
+        effectList = GameObject.Find("EffectList");
         pen.SetActive(false);
         collider.enabled = false;
 
@@ -39,6 +43,8 @@ public class PenExplosion : MonoBehaviour
         pen.SetActive(false);
         collider.enabled = true;
         Instantiate(explosionEffect, transform.position, Quaternion.Euler(0, 0, 0));
+
+        Instantiate(sound, transform.position, Quaternion.Euler(0, 0, 0), effectList.transform);
 
         yield return new WaitForSeconds(0.1f);
 

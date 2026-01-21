@@ -13,6 +13,7 @@ public class CriticController : MonoBehaviour
     private GameObject bulletParent;
     private GameObject effectParent;
     private GameObject summonObject;
+    private AudioSource audio;
     private Vector2 minPos;
     private Vector2 maxPos;
     private float coolTime;
@@ -30,6 +31,7 @@ public class CriticController : MonoBehaviour
     public GameObject pen;
     public GameObject explosionPenPrefab;
     public List<GameObject> bulletPrefab;
+    public List<AudioClip> attackSound;
     public float speed;
     public float attackCoolTime;
     public float chargeSpeed;
@@ -48,6 +50,7 @@ public class CriticController : MonoBehaviour
         bossCon = GetComponent<BossController>();
         renderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
@@ -201,6 +204,12 @@ public class CriticController : MonoBehaviour
         anim.SetInteger("attacktype", 1);
         anim.SetTrigger("attack");
 
+        audio.loop = false;
+        audio.clip = attackSound[2];
+        audio.volume = 1.0f;
+        audio.pitch = 1.2f;
+        audio.Play();
+
         rigidbody.velocity = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized * (speed / 3);
         for (int i = 0; i < machineGunAmount; i++)
         {
@@ -217,6 +226,7 @@ public class CriticController : MonoBehaviour
         }
 
         isAttack = false;
+        audio.Stop();
         rigidbody.velocity = Vector2.zero;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
@@ -230,6 +240,12 @@ public class CriticController : MonoBehaviour
 
         anim.SetInteger("attacktype", 2);
         anim.SetTrigger("attack");
+
+        audio.loop = false;
+        audio.clip = attackSound[1];
+        audio.volume = 1.0f;
+        audio.pitch = 1.2f;
+        audio.Play();
 
         for (int j = 0; j < 5; j++)
         {
@@ -264,6 +280,7 @@ public class CriticController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         isAttack = false;
+        audio.Stop();
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }
@@ -298,7 +315,13 @@ public class CriticController : MonoBehaviour
         pen.transform.GetChild(0).GetComponent<Pen>().damage = penDamage;
         pen.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, startRot.z - 25));
 
-        while(num < 130)
+        audio.loop = false;
+        audio.clip = attackSound[0];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
+        while (num < 130)
         {
             pen.transform.localRotation = Quaternion.Euler(pen.transform.localRotation.eulerAngles + new Vector3(0, 0, 1));
             num++;
@@ -308,6 +331,7 @@ public class CriticController : MonoBehaviour
         pen.SetActive(false);
         yield return new WaitForSeconds(0.3f);
 
+        audio.Stop();
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }
@@ -317,7 +341,16 @@ public class CriticController : MonoBehaviour
         anim.SetInteger("attacktype", 4);
         anim.SetTrigger("attack");
         isAttack = true;
+
+        audio.loop = false;
+        audio.clip = attackSound[3];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
         yield return new WaitForSeconds(0.5f);
+
+
 
         for (int i = 0; i < 3; i++)
         {
@@ -332,6 +365,7 @@ public class CriticController : MonoBehaviour
         }
 
         isAttack = false;
+        audio.Stop();
         coolTime = attackCoolTime / 4;
         StartCoroutine(EnemyMove());
     }
