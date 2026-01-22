@@ -27,14 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999255028937472209}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.38268343, w: 0.92387956}
   m_LocalPosition: {x: -0.7, y: -0.7, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1374317510269964623}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45}
 --- !u!212 &7067106636201933965
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: e45a4fe2f621dfa429af6378a1f2073e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2f68284b91e9a9b4890f60fc95933850, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 1
@@ -125,7 +125,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.32}
+    oldSize: {x: 0.96, y: 0.96}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -133,13 +133,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.11977638, y: -0.04997979}
-      - {x: -0.12002843, y: -0.11993674}
-      - {x: -0.05000053, y: -0.12001571}
-      - {x: 0.11007033, y: 0.040085852}
-      - {x: 0.11014838, y: 0.07998418}
-      - {x: 0.079862595, y: 0.109841265}
-      - {x: 0.04021138, y: 0.11004705}
+    - - {x: -0.040116828, y: -0.23005125}
+      - {x: -0.009989855, y: -0.29001185}
+      - {x: 0.00006257917, y: -0.2900234}
+      - {x: 0.010046607, y: -0.26993048}
+      - {x: 0.010647342, y: 0.074982956}
+      - {x: 0.01004952, y: 0.29003173}
+      - {x: -0.040255435, y: 0.29016292}
 --- !u!114 &400912876490872451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +343,7 @@ MonoBehaviour:
   damageEffect: {fileID: 0}
   pen: {fileID: 2441370529163220369}
   explosionPenPrefab: {fileID: 1333777605585165212, guid: f91b0c9f64477ad4b97620ef6d11d87d, type: 3}
+  dashDust: {fileID: 8974278516831408870, guid: cc233a519a2451c4dbd8b6a90716ca2a, type: 3}
   bulletPrefab:
   - {fileID: 2490266043329067457, guid: 1fce8294b70f62f4b977484e01262bb2, type: 3}
   - {fileID: 2490266043329067457, guid: df501fc4df7f10b4b85f79c494112e29, type: 3}

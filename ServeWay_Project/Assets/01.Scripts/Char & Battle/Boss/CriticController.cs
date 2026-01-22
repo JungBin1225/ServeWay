@@ -30,6 +30,7 @@ public class CriticController : MonoBehaviour
     public GameObject damageEffect;
     public GameObject pen;
     public GameObject explosionPenPrefab;
+    public GameObject dashDust;
     public List<GameObject> bulletPrefab;
     public List<AudioClip> attackSound;
     public float speed;
@@ -297,7 +298,17 @@ public class CriticController : MonoBehaviour
         Vector3 target = player.transform.position;
         Vector2 velo = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * chargeSpeed;
 
-        while(Vector3.Distance(target, transform.position) > 1)
+        if (target.x > transform.position.x)
+        {
+            GameObject dust = Instantiate(dashDust, new Vector3(transform.position.x - 0.62f, transform.position.y + 0.131f), Quaternion.Euler(0, 0, 0), effectParent.transform);
+            dust.GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else
+        {
+            Instantiate(dashDust, new Vector3(transform.position.x + 0.62f, transform.position.y + 0.131f), Quaternion.Euler(0, 0, 0), effectParent.transform);
+        }
+
+        while (Vector3.Distance(target, transform.position) > 1)
         {
             rigidbody.velocity = velo;
             yield return null;
