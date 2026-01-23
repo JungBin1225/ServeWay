@@ -42,7 +42,7 @@ public class Comment : MonoBehaviour
             Ray2D ray = new Ray2D(start, -transform.up);
             line.SetPosition(0, start);
             line.SetPosition(1, start);
-            int mask = 1 << LayerMask.NameToLayer("RayWall");
+            int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, length, mask);
 
             if(hit)

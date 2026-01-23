@@ -8,6 +8,7 @@ public class BloggerController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private SpriteRenderer renderer;
     private BossController bossCon;
+    private Animator anim;
     private GameObject player;
     private GameObject bulletParent;
     private GameObject effectParent;
@@ -55,6 +56,7 @@ public class BloggerController : MonoBehaviour
         bossCon = GetComponent<BossController>();
         renderer = GetComponent<SpriteRenderer>();
         line = GetComponent<LineRenderer>();
+        anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
@@ -100,14 +102,23 @@ public class BloggerController : MonoBehaviour
             }
         }
 
-        if (rigidbody.velocity.x < 0)
+        if (!isAttack && rigidbody.velocity.x < 0)
         {
             isLeft = true;
         }
-        else if (rigidbody.velocity.x > 0)
+        else if (!isAttack && rigidbody.velocity.x > 0)
         {
             isLeft = false;
         }
+        else if (isAttack && transform.position.x - player.transform.position.x > 0)
+        {
+            isLeft = true;
+        }
+        else if (isAttack && transform.position.x - player.transform.position.x < 0)
+        {
+            isLeft = false;
+        }
+
         if (isLeft)
         {
             renderer.flipX = false;
@@ -127,6 +138,7 @@ public class BloggerController : MonoBehaviour
 
     private IEnumerator EnemyMove()
     {
+        anim.SetTrigger("walk");
         while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
@@ -209,6 +221,9 @@ public class BloggerController : MonoBehaviour
         commentPos.Clear();
         RandomPos(3);
 
+        anim.SetInteger("attacktype", 3);
+        anim.SetTrigger("attack");
+
         yield return new WaitForSeconds(0.35f);
 
         foreach(Vector3 pos in commentPos)
@@ -250,16 +265,22 @@ public class BloggerController : MonoBehaviour
         Quaternion angleAxis = Quaternion.AngleAxis(angle - 45, Vector3.forward);
         pictureObject.GetComponent<RectTransform>().rotation = angleAxis;
 
+        anim.SetTrigger("walk");
+
         while (Vector3.Distance(target, transform.position) > 2)
         {
             rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * 10;
             yield return null;
         }
 
+        anim.SetInteger("attacktype", 1);
+        anim.SetTrigger("attack");
+
         rigidbody.velocity = new Vector2(0, 0);
         pictureCollider.enabled = true;
         pictureAnim.SetTrigger("picture");
         isPicture = true;
+
         yield return new WaitForSeconds(0.2f);
 
         pictureObject.transform.GetChild(0).gameObject.SetActive(false);
@@ -272,23 +293,16 @@ public class BloggerController : MonoBehaviour
 
     private IEnumerator LaserPattern()
     {
-        isAttack = true;
         isLaser = true;
-        yield return new WaitForSeconds(0.2f);
+        anim.SetTrigger("attackend");
 
         line.enabled = true;
-        laser = Instantiate(laserPrefab, this.transform);
-
-        laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
-        laser.GetComponent<EnemyLaser>().SetCoolTime(0.2f);
-        laser.GetComponent<EnemyLaser>().SetSprite(sprites);
-
         Vector3 target = player.transform.position;
         Ray2D ray = new Ray2D(transform.position, target - transform.position);
 
         line.SetPosition(0, transform.position);
 
-        int mask = 1 << LayerMask.NameToLayer("RayWall");
+        int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
         if (hit)
         {
@@ -302,33 +316,65 @@ public class BloggerController : MonoBehaviour
 
         Vector3 start = line.GetPosition(0);
         Vector3 end = line.GetPosition(1);
+        Vector3 end_temp = start + ((end - start).normalized * 0.25f);
+
+        yield return new WaitForSeconds(1f);
+
+        anim.SetInteger("attacktype", 2);
+        anim.SetTrigger("attack");
+
+        laser = Instantiate(laserPrefab, this.transform);
+
+        laser.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
+        laser.GetComponent<EnemyLaser>().SetCoolTime(0.2f);
+        laser.GetComponent<EnemyLaser>().SetSprite(sprites);
+
+        while(Vector3.Distance(start, end_temp) < Vector3.Distance(start, end))
+        {
+            laser.transform.localScale = new Vector3(Vector3.Distance(start, end_temp) * 0.5f, line.startWidth * 0.5f, 0);
+            laser.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta = laser.transform.localScale;
+            laser.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(1 / laser.transform.localScale.x, 1 / laser.transform.localScale.y, 1);
+            Vector3 pos = (start + end_temp) / 2;
+            Vector2 dir = new Vector2(pos.x - end_temp.x, pos.y - end_temp.y);
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
+            laser.transform.rotation = angleAxis;
+            laser.transform.position = pos;
+
+            end_temp += ((end - start).normalized * 0.25f);
+            yield return null;
+        }
 
         laser.transform.localScale = new Vector3(Vector3.Distance(start, end) * 0.5f, line.startWidth * 0.5f, 0);
         laser.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta = laser.transform.localScale;
         laser.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(1 / laser.transform.localScale.x, 1 / laser.transform.localScale.y, 1);
-        Vector3 pos = (start + end) / 2;
-        Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
-        laser.transform.rotation = angleAxis;
-        laser.transform.position = pos;
-
-        yield return new WaitForSeconds(laserTime / 4);
-        isAttack = false;
-        coolTime = attackCoolTime / 2;
-        StartCoroutine(EnemyMove());
+        Vector3 pos2 = (start + end) / 2;
+        Vector2 dir2 = new Vector2(pos2.x - end.x, pos2.y - end.y);
+        float angle2 = Mathf.Atan2(dir2.y, dir2.x) * Mathf.Rad2Deg;
+        Quaternion angleAxis2 = Quaternion.AngleAxis(angle2, Vector3.forward);
+        laser.transform.rotation = angleAxis2;
+        laser.transform.position = pos2;
 
         yield return new WaitForSeconds(laserTime);
         isLaser = false;
+        isAttack = false;
+        coolTime = attackCoolTime / 2;
+        
         line.SetPosition(1, transform.position);
         line.enabled = false;
         Destroy(laser);
+
+        StartCoroutine(EnemyMove());
     }
 
     private IEnumerator TeleportPattern()
     {
         isAttack = true;
         GameObject tel1 = Instantiate(teleportPrefab, transform.position, Quaternion.Euler(0, 0, 0), summonObject.transform);
+
+        anim.SetInteger("attacktype", 3);
+        anim.SetTrigger("attack");
+
         yield return new WaitForSeconds(1f);
 
         Vector3 target = player.transform.position;
