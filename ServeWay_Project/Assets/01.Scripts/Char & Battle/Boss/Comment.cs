@@ -7,6 +7,7 @@ public class Comment : MonoBehaviour
     private LineRenderer line;
     private Vector3 start;
     private bool isWall;
+    private AudioSource audio;
 
     public GameObject box;
     public BoxCollider2D collider;
@@ -15,6 +16,7 @@ public class Comment : MonoBehaviour
 
     void Start()
     {
+        audio = GetComponent<AudioSource>();
         line = GetComponent<LineRenderer>();
         start = transform.position;
         isWall = false;
@@ -34,6 +36,8 @@ public class Comment : MonoBehaviour
         collider.enabled = false;
 
         yield return new WaitForSeconds(0.5f);
+
+        audio.Play();
 
         collider.enabled = true;
         float length = 0.1f;

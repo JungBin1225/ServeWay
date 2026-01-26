@@ -20,6 +20,7 @@ public class BloggerController : MonoBehaviour
     private float coolTime;
     private LineRenderer line;
     private GameObject laser;
+    private AudioSource audio;
     private bool isAttack;
     private bool isPicture;
     private bool isLaser;
@@ -36,6 +37,8 @@ public class BloggerController : MonoBehaviour
     public GameObject pictureObject;
     public GameObject laserPrefab;
     public GameObject teleportPrefab;
+    public GameObject dashDust;
+    public List<AudioClip> attackSound;
     public PolygonCollider2D pictureCollider;
     public Animator pictureAnim;
     public float speed;
@@ -57,6 +60,7 @@ public class BloggerController : MonoBehaviour
         renderer = GetComponent<SpriteRenderer>();
         line = GetComponent<LineRenderer>();
         anim = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
@@ -224,6 +228,12 @@ public class BloggerController : MonoBehaviour
         anim.SetInteger("attacktype", 3);
         anim.SetTrigger("attack");
 
+        audio.loop = false;
+        audio.clip = attackSound[0];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
         yield return new WaitForSeconds(0.35f);
 
         foreach(Vector3 pos in commentPos)
@@ -232,7 +242,7 @@ public class BloggerController : MonoBehaviour
             GameObject comment = Instantiate(commentPrefab, pos, Quaternion.Euler(0, 0, rot), summonObject.transform);
             comment.GetComponent<Comment>().damage = commentDamage;
             comment.GetComponent<Comment>().sprite = GetComponent<SpriteRenderer>().sprite;
-            yield return null;
+            yield return new WaitForSeconds(0.2f);
         }
 
         isComment = true;
@@ -249,6 +259,7 @@ public class BloggerController : MonoBehaviour
 
         isAttack = false;
         coolTime = attackCoolTime;
+        audio.Stop();
         StartCoroutine(EnemyMove());
     }
 
@@ -267,9 +278,25 @@ public class BloggerController : MonoBehaviour
 
         anim.SetTrigger("walk");
 
+        audio.loop = false;
+        audio.clip = attackSound[4];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
+        if (target.x > transform.position.x)
+        {
+            GameObject dust = Instantiate(dashDust, new Vector3(transform.position.x - 0.74f, transform.position.y + 0.13f), Quaternion.Euler(0, 0, 0), effectParent.transform);
+            dust.GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else
+        {
+            Instantiate(dashDust, new Vector3(transform.position.x + 0.74f, transform.position.y + 0.13f), Quaternion.Euler(0, 0, 0), effectParent.transform);
+        }
+
         while (Vector3.Distance(target, transform.position) > 2)
         {
-            rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * 10;
+            rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * 7;
             yield return null;
         }
 
@@ -279,6 +306,13 @@ public class BloggerController : MonoBehaviour
         rigidbody.velocity = new Vector2(0, 0);
         pictureCollider.enabled = true;
         pictureAnim.SetTrigger("picture");
+
+        audio.loop = false;
+        audio.clip = attackSound[1];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
         isPicture = true;
 
         yield return new WaitForSeconds(0.2f);
@@ -295,6 +329,12 @@ public class BloggerController : MonoBehaviour
     {
         isLaser = true;
         anim.SetTrigger("attackend");
+
+        audio.loop = true;
+        audio.clip = attackSound[2];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
 
         line.enabled = true;
         Vector3 target = player.transform.position;
@@ -358,6 +398,7 @@ public class BloggerController : MonoBehaviour
         yield return new WaitForSeconds(laserTime);
         isLaser = false;
         isAttack = false;
+        audio.Stop();
         coolTime = attackCoolTime / 2;
         
         line.SetPosition(1, transform.position);
@@ -374,6 +415,12 @@ public class BloggerController : MonoBehaviour
 
         anim.SetInteger("attacktype", 3);
         anim.SetTrigger("attack");
+
+        audio.loop = false;
+        audio.clip = attackSound[3];
+        audio.volume = 0.5f;
+        audio.pitch = 0.7f;
+        audio.Play();
 
         yield return new WaitForSeconds(1f);
 
@@ -400,6 +447,8 @@ public class BloggerController : MonoBehaviour
 
         GameObject tel2 = Instantiate(teleportPrefab, new Vector3(posX, posY, 0), Quaternion.Euler(0, 0, 0), summonObject.transform);
         yield return new WaitForSeconds(0.5f);
+
+        audio.Play();
 
         transform.position = new Vector3(posX, posY, 0);
         isAttack = false;

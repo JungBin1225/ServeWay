@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 7350030630483983850}
   - component: {fileID: 3520957555904621618}
   - component: {fileID: 4740918622195736966}
+  - component: {fileID: 6691797207139720652}
   m_Layer: 6
   m_Name: BloggerBoss
   m_TagString: Boss
@@ -472,6 +473,13 @@ MonoBehaviour:
   pictureObject: {fileID: 6993822746594325974}
   laserPrefab: {fileID: 5084242752961716783, guid: b63feaaae130165468f64074a65df5c6, type: 3}
   teleportPrefab: {fileID: 6106702753105478814, guid: ca977bf4b9028ba44982264570bcdbf7, type: 3}
+  dashDust: {fileID: 8974278516831408870, guid: cc233a519a2451c4dbd8b6a90716ca2a, type: 3}
+  attackSound:
+  - {fileID: 8300000, guid: 125c3f680536ac1428c6d096bcbbc8f9, type: 3}
+  - {fileID: 8300000, guid: 89fec8e65504baa4f8c8f11edfbf006d, type: 3}
+  - {fileID: 8300000, guid: 7ad23d5d34780a442bbb546b653c2644, type: 3}
+  - {fileID: 8300000, guid: d23a576d144f2ff4b91eb58cccc1d0a0, type: 3}
+  - {fileID: 8300000, guid: 7413d0b0f7d662b4c886fd56843caf9b, type: 3}
   pictureCollider: {fileID: 6528783268276895543}
   pictureAnim: {fileID: 1635073812563696859}
   speed: 2.7
@@ -649,3 +657,99 @@ MonoBehaviour:
   m_CategoryHash: 5.449709e-22
   m_labelHash: 3.991422e-13
   m_SpriteKey: 3.649958e-39
+--- !u!82 &6691797207139720652
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8570218352979256462}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 1138023030925671211, guid: 6fb4c38b18e699945878c59b54cd107e, type: 2}
+  m_audioClip: {fileID: 8300000, guid: d23a576d144f2ff4b91eb58cccc1d0a0, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 2.884337
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
