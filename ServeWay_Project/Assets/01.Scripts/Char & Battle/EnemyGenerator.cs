@@ -26,6 +26,7 @@ public class EnemyGenerator : MonoBehaviour
     private List<GameObject> spawnList;
     private List<GameObject> followSpawnList;
     private GameObject enemyParent;
+    private GameObject effectParent;
     private BoxCollider2D boxCollider;
     private DataController data;
     private GameObject dropParent;
@@ -53,6 +54,7 @@ public class EnemyGenerator : MonoBehaviour
         isEntered = false;
         miniRoadList = new List<GameObject>();
         enemyParent = GameObject.Find("EnemyList");
+        effectParent = GameObject.Find("EffectList");
         dropParent = GameObject.Find("DropList");
 
         isVisited = false;
@@ -128,7 +130,7 @@ public class EnemyGenerator : MonoBehaviour
 
         Quaternion rot = Quaternion.Euler(0, 0, 0);
 
-        GameObject appear = Instantiate(enemyAppear, new Vector3(posX, posY, 0), rot);
+        GameObject appear = Instantiate(enemyAppear, new Vector3(posX, posY, 0), rot, effectParent.transform);
         yield return new WaitForSeconds(0.3f);
 
         /*UnityEngine.Debug.LogFormat("boxCollider.size.x : {0} boxCollider.size.y : {1}", transform.localScale.x, transform.localScale.y);

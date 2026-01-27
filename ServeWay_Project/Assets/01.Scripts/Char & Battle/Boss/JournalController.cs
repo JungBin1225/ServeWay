@@ -33,7 +33,6 @@ public class JournalController : MonoBehaviour
     public GameObject riceBulletPrefab;
     public GameObject soupBulletPrefab;
     public GameObject scoopPrefab;
-    public GameObject dashEffect;
     public GameObject dashDust;
     public CircleCollider2D collider;
     public Animator pictureAnim;
@@ -58,7 +57,6 @@ public class JournalController : MonoBehaviour
         bossCon = GetComponent<BossController>();
         anim = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
-        effectRenderer = dashEffect.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
@@ -133,7 +131,6 @@ public class JournalController : MonoBehaviour
         if(bossCon.GetHp() == 0)
         {
             rigidbody.velocity = Vector2.zero;
-            dashEffect.SetActive(false);
             Destroy(summonObject);
             StopAllCoroutines();
         }
@@ -339,7 +336,6 @@ public class JournalController : MonoBehaviour
 
         anim.SetInteger("attacktype", 4);
         anim.SetTrigger("attack");
-        dashEffect.SetActive(true);
 
         attackAudio.loop = false;
         attackAudio.clip = attackSound[3];
@@ -362,7 +358,6 @@ public class JournalController : MonoBehaviour
 
         yield return new WaitUntil(() => scoopCon.GetTouch());
 
-        dashEffect.GetComponent<Animator>().SetTrigger("end");
         rigidbody.velocity = new Vector2(0, 0);
 
         float faintTime = 0;

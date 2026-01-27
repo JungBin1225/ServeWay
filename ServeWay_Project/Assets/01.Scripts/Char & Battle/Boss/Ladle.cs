@@ -16,6 +16,7 @@ public class Ladle : MonoBehaviour
     public GameObject head;
     public List<BoxCollider2D> colliders;
     public List<LineRenderer> lines;
+    public GameObject sound;
 
     void Start()
     {
@@ -139,7 +140,7 @@ public class Ladle : MonoBehaviour
         lines[2].enabled = false;
 
         bool ishit = false;
-        int mask = 1 << LayerMask.NameToLayer("RayWall");
+        int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
 
         for (int i = 0; i < 3; i++)
         {
@@ -171,6 +172,7 @@ public class Ladle : MonoBehaviour
                 yield return null;
             }
 
+            Instantiate(sound, start, Quaternion.Euler(0, 0, 0));
             hitWall++;
         }
 
@@ -179,6 +181,7 @@ public class Ladle : MonoBehaviour
 
         for(int i = 2; i >= 0; i--)
         {
+            Instantiate(sound, lines[i].GetPosition(1), Quaternion.Euler(0, 0, 0));
             Vector3 dir = (lines[i].GetPosition(1) - lines[i].GetPosition(0)).normalized;
             bool isEnd = (lines[i].GetPosition(1).x - lines[i].GetPosition(0).x) > 0;
 

@@ -9,6 +9,7 @@ public class ResearcherController : MonoBehaviour
     private Animator anim;
     private SpriteRenderer renderer;
     private SpriteRenderer effectRenderer;
+    private AudioSource audio;
     private BossController bossCon;
     private GameObject player;
     private GameObject bulletParent;
@@ -35,7 +36,8 @@ public class ResearcherController : MonoBehaviour
     public GameObject ladelPrefab;
     public GameObject platePrefab;
     public GameObject soupPrefab;
-    public GameObject dashEffect;
+    public GameObject dashDust;
+    public List<AudioClip> attackSound;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
@@ -55,7 +57,7 @@ public class ResearcherController : MonoBehaviour
         bossCon = GetComponent<BossController>();
         renderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        effectRenderer = dashEffect.GetComponent<SpriteRenderer>();
+        audio = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
@@ -231,10 +233,17 @@ public class ResearcherController : MonoBehaviour
         anim.SetInteger("attacktype", 1);
         anim.SetTrigger("attack");
 
+        
+
         for (int j = 0; j < 4; j++)
         {
             float startAngle = (shotGunRadius * 10) / 2;
             float differAngle = (shotGunRadius * 10) / (shotGunAmount - 1);
+
+            audio.clip = attackSound[1];
+            audio.volume = 1.0f;
+            audio.pitch = 1.0f;
+            audio.Play();
 
             for (int i = 0; i < shotGunAmount; i++)
             {
@@ -244,7 +253,7 @@ public class ResearcherController : MonoBehaviour
                 bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
                 bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
             }
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.5f);
         }
         yield return new WaitForSeconds(0.3f);
         anim.SetTrigger("attackend");
@@ -262,6 +271,11 @@ public class ResearcherController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         anim.SetInteger("attacktype", 2);
         anim.SetTrigger("attack");
+
+        audio.clip = attackSound[2];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
 
         int left = 1;
         if(renderer.flipX)
@@ -281,6 +295,7 @@ public class ResearcherController : MonoBehaviour
         anim.SetTrigger("attackend");
         isAttack = false;
         coolTime = attackCoolTime;
+        audio.Stop();
         StartCoroutine(EnemyMove());
     }
 
@@ -298,6 +313,11 @@ public class ResearcherController : MonoBehaviour
         plateIndex = 100;
         for (int i = 0; i < platePos.Count; i++)
         {
+            audio.clip = attackSound[0];
+            audio.volume = 1.0f;
+            audio.pitch = 1.0f;
+            audio.Play();
+
             GameObject plate = Instantiate(platePrefab, transform.position, Quaternion.Euler(0, 0, 0), summonObject.transform);
             plate.GetComponent<Plate>().index = i;
             plate.GetComponent<Plate>().target = platePos[i];
@@ -308,7 +328,6 @@ public class ResearcherController : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
         anim.SetTrigger("dash");
-        dashEffect.SetActive(true);
         isAttack = false;
 
         for (int i = 0; i < platePos.Count; i++)
@@ -316,6 +335,21 @@ public class ResearcherController : MonoBehaviour
             isCharge = true;
             plateIndex = i;
             rigidbody.velocity = new Vector2(platePos[i].x - transform.position.x, platePos[i].y - transform.position.y).normalized * chargeSpeed;
+
+            audio.clip = attackSound[4];
+            audio.volume = 1.0f;
+            audio.pitch = 1.0f;
+            audio.Play();
+
+            if (platePos[i].x > transform.position.x)
+            {
+                GameObject dust = Instantiate(dashDust, new Vector3(transform.position.x - 1.85f, transform.position.y), Quaternion.Euler(0, 0, 0), effectParent.transform);
+                dust.GetComponent<SpriteRenderer>().flipX = true;
+            }
+            else
+            {
+                Instantiate(dashDust, new Vector3(transform.position.x + 1.85f, transform.position.y), Quaternion.Euler(0, 0, 0), effectParent.transform);
+            }
 
             yield return new WaitUntil(() => plateTouch);
             yield return new WaitForSeconds(0.1f);
@@ -326,13 +360,13 @@ public class ResearcherController : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        dashEffect.GetComponent<Animator>().SetTrigger("end");
         anim.SetTrigger("attackend");
         yield return new WaitForSeconds(1);
 
         platePos.Clear();
         isCharge = false;
         coolTime = attackCoolTime;
+        audio.Stop();
         StartCoroutine(EnemyMove());
     }
 
@@ -349,6 +383,11 @@ public class ResearcherController : MonoBehaviour
         anim.SetInteger("attacktype", 4);
         anim.SetTrigger("attack");
 
+        audio.clip = attackSound[3];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
         GameObject soup = Instantiate(soupPrefab, target, Quaternion.Euler(0, 0, 0), summonObject.transform);
         soup.GetComponent<FloorSoup>().damage = soupDamage;
         soup.GetComponent<FloorSoup>().durationTime = soupCoolTime;
@@ -359,6 +398,7 @@ public class ResearcherController : MonoBehaviour
         isAttack = false;
         coolTime = attackCoolTime;
         soupTime = soupCoolTime;
+        audio.Stop();
         StartCoroutine(EnemyMove());
 
     }
@@ -409,7 +449,7 @@ public class ResearcherController : MonoBehaviour
         bossCon.SetMaxHp(500 + (stage * 400));
         bossCon.SetHp(500 + (stage * 400));
 
-        shotGunRadius = 10 + (stage * 1);
+        shotGunRadius = 15 + (stage * 1);
         shotGunAmount = 7 + (stage * 1);
     }
 

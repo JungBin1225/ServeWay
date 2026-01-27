@@ -241,6 +241,7 @@ public class BloggerController : MonoBehaviour
             float rot = Random.Range(0, 360);
             GameObject comment = Instantiate(commentPrefab, pos, Quaternion.Euler(0, 0, rot), summonObject.transform);
             comment.GetComponent<Comment>().damage = commentDamage;
+            comment.GetComponent<Comment>().speed = bulletSpeed;
             comment.GetComponent<Comment>().sprite = GetComponent<SpriteRenderer>().sprite;
             yield return new WaitForSeconds(0.2f);
         }

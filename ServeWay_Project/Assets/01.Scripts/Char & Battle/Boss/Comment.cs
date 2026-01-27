@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class Comment : MonoBehaviour
 {
-    private LineRenderer line;
-    private Vector3 start;
-    private bool isWall;
     private AudioSource audio;
+    private List<Sprite> sprites;
+    private int bulletAmount;
+    private GameObject bulletParent;
 
-    public GameObject box;
-    public BoxCollider2D collider;
+    public List<GameObject> bulletPrefab;
+    public float speed;
     public float damage;
     public Sprite sprite;
 
     void Start()
     {
         audio = GetComponent<AudioSource>();
-        line = GetComponent<LineRenderer>();
-        start = transform.position;
-        isWall = false;
-        line.SetPosition(0, new Vector3(0, 0, 0));
-        line.SetPosition(1, new Vector3(0, 0, 0));
+        bulletParent = GameObject.Find("BulletList");
+        sprites = new List<Sprite>();
+        sprites.Add(sprite);
+        bulletAmount = 5;
 
         StartCoroutine(FireComment());
     }
@@ -33,61 +32,41 @@ public class Comment : MonoBehaviour
 
     private IEnumerator FireComment()
     {
-        collider.enabled = false;
 
         yield return new WaitForSeconds(0.5f);
 
-        audio.Play();
-
-        collider.enabled = true;
-        float length = 0.1f;
-        while (!isWall || Vector3.Distance(line.GetPosition(0), line.GetPosition(1)) > 0.5f)
+        for (int n = 0; n < 3; n++)
         {
-            Ray2D ray = new Ray2D(start, -transform.up);
-            line.SetPosition(0, start);
-            line.SetPosition(1, start);
-            int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, length, mask);
+            audio.Play();
+            bulletAmount = Random.Range(6, 11);
 
-            if(hit)
-            {
-                isWall = true;
-                line.SetPosition(1, hit.point);
-                start += new Vector3(ray.direction.x, ray.direction.y, 0) * Time.deltaTime * 15;
-            }
-            else
-            {
-                Vector3 pos = line.GetPosition(0) + (new Vector3(ray.direction.x, ray.direction.y, 0) * length);
-                line.SetPosition(1, pos);
+            float startAngle = 0;
+            float differAngle = 360 / (bulletAmount);
 
-                length += Time.deltaTime * 15;
+            for (int i = 0; i < bulletAmount; i++)
+            {
+                int index = Random.Range(0, bulletPrefab.Count);
+
+                GameObject bullet = Instantiate(bulletPrefab[index], transform.position, Quaternion.Euler(new Vector3(0, 0, startAngle - (differAngle * i))), bulletParent.transform);
+                bullet.GetComponent<EnemyBullet>().SetTarget(-bullet.transform.up);
+                bullet.GetComponent<EnemyBullet>().SetSpeed(speed);
+                bullet.GetComponent<EnemyBullet>().SetDamage(damage);
+                bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
             }
 
-            collider.size = new Vector2(Vector3.Distance(line.GetPosition(0), line.GetPosition(1)), line.startWidth);
-            Vector3 boxPos = (line.GetPosition(0) + line.GetPosition(1)) / 2;
-            Vector2 dir = new Vector2(boxPos.x - line.GetPosition(1).x, boxPos.y - line.GetPosition(1).y);
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
-            box.transform.rotation = angleAxis;
-            box.transform.position = boxPos;
-
-            yield return null;
+            yield return new WaitForSeconds(2);
         }
 
-        line.enabled = false;
-
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        /*if(collision.gameObject.tag == "Player")
         {
-            List<Sprite> sprites = new List<Sprite>();
-            sprites.Add(sprite);
             collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprites);
             FindObjectOfType<BloggerController>().PlayerCommentDamage();
-        }
+        }*/
     }
 }
