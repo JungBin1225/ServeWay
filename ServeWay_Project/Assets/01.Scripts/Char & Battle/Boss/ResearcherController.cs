@@ -8,7 +8,6 @@ public class ResearcherController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private Animator anim;
     private SpriteRenderer renderer;
-    private SpriteRenderer effectRenderer;
     private AudioSource audio;
     private BossController bossCon;
     private GameObject player;
@@ -37,6 +36,7 @@ public class ResearcherController : MonoBehaviour
     public GameObject platePrefab;
     public GameObject soupPrefab;
     public GameObject dashDust;
+    public GameObject dashSound;
     public List<AudioClip> attackSound;
     public float speed;
     public float chargeSpeed;
@@ -118,14 +118,10 @@ public class ResearcherController : MonoBehaviour
         if (isLeft)
         {
             renderer.flipX = false;
-            effectRenderer.gameObject.transform.localPosition = new Vector3(-1.64f, 0.18f, 0);
-            effectRenderer.flipX = false;
         }
         else
         {
             renderer.flipX = true;
-            effectRenderer.gameObject.transform.localPosition = new Vector3(1.64f, 0.18f, 0);
-            effectRenderer.flipX = true;
         }
 
         if (bossCon.GetHp() == 0)
@@ -336,11 +332,6 @@ public class ResearcherController : MonoBehaviour
             plateIndex = i;
             rigidbody.velocity = new Vector2(platePos[i].x - transform.position.x, platePos[i].y - transform.position.y).normalized * chargeSpeed;
 
-            audio.clip = attackSound[4];
-            audio.volume = 1.0f;
-            audio.pitch = 1.0f;
-            audio.Play();
-
             if (platePos[i].x > transform.position.x)
             {
                 GameObject dust = Instantiate(dashDust, new Vector3(transform.position.x - 1.85f, transform.position.y), Quaternion.Euler(0, 0, 0), effectParent.transform);
@@ -350,6 +341,7 @@ public class ResearcherController : MonoBehaviour
             {
                 Instantiate(dashDust, new Vector3(transform.position.x + 1.85f, transform.position.y), Quaternion.Euler(0, 0, 0), effectParent.transform);
             }
+            Instantiate(dashSound, transform.position, Quaternion.Euler(0, 0, 0), effectParent.transform);
 
             yield return new WaitUntil(() => plateTouch);
             yield return new WaitForSeconds(0.1f);

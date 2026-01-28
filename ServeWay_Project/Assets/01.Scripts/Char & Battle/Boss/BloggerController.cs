@@ -461,7 +461,7 @@ public class BloggerController : MonoBehaviour
 
     private void RandomPos(int amount)
     {
-        if (commentPos.Count <= amount)
+        if (commentPos.Count < amount)
         {
             float posX = Random.Range(-(room.transform.localScale.x / 2) + 1, (room.transform.localScale.x / 2) - 1);
             float posY = Random.Range(-(room.transform.localScale.y / 2) + 1, (room.transform.localScale.y / 2) - 1);

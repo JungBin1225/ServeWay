@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FloorSoup : MonoBehaviour
 {
-    private CircleCollider2D collider2D;
+    private BoxCollider2D collider2D;
 
     public float damage;
     public float durationTime;
@@ -12,7 +12,7 @@ public class FloorSoup : MonoBehaviour
 
     void Start()
     {
-        collider2D = GetComponent<CircleCollider2D>();
+        collider2D = GetComponent<BoxCollider2D>();
         StartCoroutine(SoupFire());
     }
 

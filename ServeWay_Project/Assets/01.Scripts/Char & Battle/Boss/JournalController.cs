@@ -10,7 +10,6 @@ public class JournalController : MonoBehaviour
     private BossController bossCon;
     private Animator anim;
     private SpriteRenderer renderer;
-    private SpriteRenderer effectRenderer;
     private GameObject player;
     private GameObject bulletParent;
     private GameObject effectParent;
@@ -120,12 +119,10 @@ public class JournalController : MonoBehaviour
         if (isLeft)
         {
             renderer.flipX = false;
-            effectRenderer.flipX = false;
         }
         else
         {
             renderer.flipX = true;
-            effectRenderer.flipX = true;
         }
 
         if(bossCon.GetHp() == 0)
