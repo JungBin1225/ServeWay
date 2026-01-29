@@ -367,8 +367,8 @@ public class ResearcherController : MonoBehaviour
         isAttack = true;
         rigidbody.velocity = Vector2.zero;
 
-        float posX = Random.Range(-(room.transform.localScale.x / 2) + 3f, (room.transform.localScale.x / 2) - 3f);
-        float posY = Random.Range(-(room.transform.localScale.y / 2) + 3f, (room.transform.localScale.y / 2) - 3f);
+        float posX = Random.Range(-(room.transform.localScale.x / 2) + 3.5f, (room.transform.localScale.x / 2) - 3.5f);
+        float posY = Random.Range(-(room.transform.localScale.y / 2) + 3.5f, (room.transform.localScale.y / 2) - 3.5f);
         Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
 
         yield return new WaitForSeconds(0.3f);
