@@ -6,4 +6,5 @@ using UnityEngine;
 public class BossList : ScriptableObject
 {
     public List<GameObject> bossPrefab;
+    public List<Sprite> bossCardSprite;
 }

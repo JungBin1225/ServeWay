@@ -323,12 +323,12 @@ public class ResearcherController : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.2f);
-        anim.SetTrigger("dash");
         isAttack = false;
 
         for (int i = 0; i < platePos.Count; i++)
         {
             isCharge = true;
+            anim.SetTrigger("dash");
             plateIndex = i;
             rigidbody.velocity = new Vector2(platePos[i].x - transform.position.x, platePos[i].y - transform.position.y).normalized * chargeSpeed;
 
@@ -345,6 +345,8 @@ public class ResearcherController : MonoBehaviour
 
             yield return new WaitUntil(() => plateTouch);
             yield return new WaitForSeconds(0.1f);
+
+            anim.SetTrigger("attackend");
 
             plateTouch = false;
             isCharge = false;
@@ -441,7 +443,7 @@ public class ResearcherController : MonoBehaviour
         bossCon.SetMaxHp(500 + (stage * 400));
         bossCon.SetHp(500 + (stage * 400));
 
-        shotGunRadius = 15 + (stage * 1);
+        shotGunRadius = 20 + (stage * 1);
         shotGunAmount = 7 + (stage * 1);
     }
 

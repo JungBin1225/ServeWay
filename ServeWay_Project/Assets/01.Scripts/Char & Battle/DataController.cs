@@ -153,6 +153,27 @@ public class DataController : MonoBehaviour
         }
     }
 
+    public Sprite FindBossSprite(Boss_Job job)
+    {
+        switch (job)
+        {
+            case Boss_Job.JOURNAL:
+                return bossList.bossCardSprite[0];
+            case Boss_Job.COOKRESEARCH:
+                return bossList.bossCardSprite[1];
+            case Boss_Job.CRITIC:
+                return bossList.bossCardSprite[2];
+            case Boss_Job.BLOGGER:
+                return bossList.bossCardSprite[3];
+            case Boss_Job.YOUTUBER:
+                return bossList.bossCardSprite[4];
+            case Boss_Job.TEACHER:
+                return bossList.bossCardSprite[5];
+            default:
+                return bossList.bossCardSprite[0];
+        }
+    }
+
     public List<FoodData> GetNationFoodList(Food_Nation nation)
     {
         List<FoodData> result = new List<FoodData>();

@@ -108,6 +108,7 @@ public class BossRoom : MonoBehaviour
 
         intro.transform.GetChild(2).GetComponent<Image>().sprite = data.FindBoss(bossJob).GetComponent<SpriteRenderer>().sprite;
 
+        card.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = data.FindBossSprite(bossJob);
         card.transform.GetChild(1).GetComponent<TMP_Text>().text = GameManager.gameManager.JobToString(bossJob);
         card.transform.GetChild(2).GetComponent<TMP_Text>().text = BossName(bossJob); //name
         card.transform.GetChild(4).GetComponent<TMP_Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
