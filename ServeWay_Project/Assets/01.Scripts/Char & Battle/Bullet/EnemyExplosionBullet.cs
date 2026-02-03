@@ -38,9 +38,11 @@ public class EnemyExplosionBullet : EnemyBullet
         GameObject effect1 = Instantiate(destroyEffect, transform.position, transform.rotation, effectParent.transform);
         effect1.transform.localScale = new Vector3(radius * transform.localScale.x * 3, radius * transform.localScale.y * 3, 0);
 
-        GameObject effect2 = Instantiate(explosionEffect, transform.position, transform.rotation, effectParent.transform);
-        effect2.transform.localScale = new Vector3(radius * transform.localScale.x * 4, radius * transform.localScale.y * 4, 0);
-
+        if(explosionEffect != null)
+        {
+            GameObject effect2 = Instantiate(explosionEffect, transform.position, transform.rotation, effectParent.transform);
+            effect2.transform.localScale = new Vector3(radius * transform.localScale.x * 4, radius * transform.localScale.y * 4, 0);
+        }
         gameObject.GetComponent<CircleCollider2D>().radius = radius;
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
         gameObject.GetComponent<SpriteRenderer>().enabled = false;

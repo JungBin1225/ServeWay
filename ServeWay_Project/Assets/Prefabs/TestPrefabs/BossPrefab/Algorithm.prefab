@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 771728114809404320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5674369090443214763}
@@ -133,7 +133,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.78, y: 0.77}
+  m_Size: {x: 0.62, y: 0.61}
   m_EdgeRadius: 0
 --- !u!114 &-9186785916918638282
 MonoBehaviour:
@@ -150,7 +150,9 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   speed: 0
   damage: 0
+  sprite: {fileID: 0}
   food: {fileID: 0}
+  boss: {fileID: 0}
 --- !u!1 &2770670342604649585
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +179,7 @@ Transform:
   m_GameObject: {fileID: 2770670342604649585}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.05, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1487039979368102010}
@@ -224,7 +226,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: d7b48d35e44310e47b6cd14fbeb28b50, type: 3}
+  m_Sprite: {fileID: -2046287351, guid: d27aba84e7544a7459c2100c2b01d4e3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -207,7 +207,7 @@ public class YoutuberController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         GameObject explosionBullet = Instantiate(explosionPrefab, transform.position, transform.rotation, bulletParent.transform);
-        var breadBullet = explosionBullet.GetComponent<EnemyExplosionBullet>();
+        var breadBullet = explosionBullet.GetComponent<YoutuderExplosion>();
         breadBullet.SetTarget(transform.position - player.transform.position);
         breadBullet.SetSpeed(explosionSpeed);
         breadBullet.SetDamage(explosionDamage);
@@ -224,14 +224,13 @@ public class YoutuberController : MonoBehaviour
     private IEnumerator AlgorithmPattern()
     {
         isAttack = true;
-        List<FoodData> playerFood = new List<FoodData>();
-        List<string> foodList = player.GetComponent<PlayerController>().weaponSlot.ReturnWeaponList();
-        foreach (string food in foodList)
+        FoodData playerFood = new FoodData();
+        string food = player.GetComponent<PlayerController>().weaponSlot.GetHoldWeapon();
+        if (food != null)
         {
-            playerFood.Add(dataController.FindFood(food));
+            playerFood = dataController.FindFood(food);
         }
-        int index = Random.Range(0, playerFood.Count);
-        algorithmFood = playerFood[index];
+        algorithmFood = playerFood;
 
         yield return new WaitForSeconds(0.1f);
 
@@ -245,7 +244,7 @@ public class YoutuberController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         isAlgorithm = true;
-        for(int i = 0; i < 40; i++)
+        for(int i = 0; i < 60; i++)
         {
             GameObject algorithm = Instantiate(algorithmPrefab, AlgorithmPos(), Quaternion.Euler(0, 0, 0), summonObject.transform);
 
@@ -288,7 +287,7 @@ public class YoutuberController : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
             bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
             bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.4f);
         }
 
         isAttack = false;
@@ -310,7 +309,7 @@ public class YoutuberController : MonoBehaviour
 
             line.SetPosition(0, transform.position);
 
-            int mask = 1 << LayerMask.NameToLayer("RayWall");
+            int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
             if (hit)
             {
@@ -384,7 +383,7 @@ public class YoutuberController : MonoBehaviour
         bossCon.SetHp(500 + (stage * 400));
 
         explosionRadius += (stage / 2) * 0.5f;
-        algorithmCoolTime = 0.55f - (stage * 0.05f);
+        algorithmCoolTime = 0.35f - (stage * 0.05f);
         machineGunAmount = 20 + (stage * 2);
     }
 
