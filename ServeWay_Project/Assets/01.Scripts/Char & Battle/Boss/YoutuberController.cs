@@ -33,6 +33,7 @@ public class YoutuberController : MonoBehaviour
     public GameObject riceBulletPrefab;
     public GameObject explosionPrefab;
     public GameObject algorithmPrefab;
+    public GameObject scanEffect;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
@@ -232,7 +233,9 @@ public class YoutuberController : MonoBehaviour
         }
         algorithmFood = playerFood;
 
-        yield return new WaitForSeconds(0.1f);
+        GameObject scan = Instantiate(scanEffect, player.transform.position + new Vector3(0, 0.2f, 0), Quaternion.Euler(0, 0, 0), player.transform);
+
+        yield return new WaitForSeconds(0.5f);
 
         Vector3 target = room.transform.position;
         while (Vector3.Distance(target, transform.position) > 0.5f)
@@ -241,8 +244,9 @@ public class YoutuberController : MonoBehaviour
             yield return null;
         }
         rigidbody.velocity = new Vector2(0, 0);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
 
+        Destroy(scan);
         isAlgorithm = true;
         for(int i = 0; i < 60; i++)
         {

@@ -12,61 +12,78 @@ using UnityEngine.UIElements;
 using Debug = UnityEngine.Debug;
 
 
-
 public class MapGenerator : MonoBehaviour
 {
+    #region InspectorFields
+
+    [Header("Map Settings")]
     [SerializeField] Vector2Int mapSize;
+
+    [Header("Debug Line Objects (Optional)")]
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject node;
     [SerializeField] private GameObject room;
     [SerializeField] private GameObject road;
-
+    
+    [Header("Tilemaps")]
     [SerializeField] Tilemap tileMap;
     [SerializeField] Tilemap tileMap_Wall;
-    Tile roomTile; //방 내부를 구성하는 타일
-    //[SerializeField] Tile wallTile; // 벽 타일
-    //[SerializeField] Tile wallTopTile; //상단 벽 천장 부분, 현재 사용 X
-    Tile topWallTile; //상단 벽 타일
-    //[SerializeField] Tile wallLeftEdgeTile; //벽 왼쪽 모서리 부분
-    //[SerializeField] Tile wallRightEdgeTile; //벽 오른쪽 모서리 부분
-    Tile outTile; //방 외부의 타일
-    Tile leftWallTile; //왼쪽 벽 타일
-    Tile rightWallTile; //오른쪽 벽 타일
-    Tile bottomWallTile; //아래쪽 벽 타일
-    Tile bottomRightEdgeTile; //아래쪽 왼편 모서리 타일
-    Tile topRightEdgeTile; //위쪽 오른편 모서리 타일
-    Tile topLeftEdgeTile; //위쪽 왼편 모서리 타일
-    Tile bottomLeftEdgeTile; //아래쪽 왼편 모서리 타일
-    //[SerializeField] Tile topRightInternalEdgeTile; //위쪽 오른편 내각 모서리 타일, 내각 타일은 방과 통로 연결 부분 모서리에 사용
-    //[SerializeField] Tile bottomRightInternalEdgeTile; //아래쪽 오른편 내각 모서리 타일
-    //[SerializeField] Tile topLeftInternalEdgeTile; //위쪽 왼편 내각 모서리 타일
-    //[SerializeField] Tile bottomLeftInternalEdgeTile; //아래쪽 왼편 내각 모서리 타일
 
-    Tile roadTile; //통로 타일
-    Tile leftRoadEdgeTile; //통로 왼편 시작지점 타일
-    Tile rightRoadEdgeTile; //통로 오른편 시작지점 타일
-    Tile topRoadEdgeTile; //통로 윗편 시작지점 타일
-    Tile bottomRoadEdgeTile; //통로 아래편 시작지점 타일
-
-    Tile kitchenTile; //주방 타일
-
+    [Header("Characters & Room Objects")]
     [SerializeField] GameObject Player;
     [SerializeField] GameObject EnemyGenerator;
     [SerializeField] GameObject BossGenerator;
     [SerializeField] GameObject createTablePrefab;
     [SerializeField] GameObject refrigeratorPrefab;
-    [SerializeField] List<GameObject> doorPrefab; //up:0 down:1 right:2 left:3
+    [SerializeField] List<GameObject> doorPrefab; // up:0 down:1 right:2 left:3, parent:4
     [SerializeField] GameObject roomParent;
     [SerializeField] GameObject roomObjectParent;
-    private DataController data;
 
-    // 미니맵
+    [Header("Minimap")]
     [SerializeField] Tilemap miniTileMap;
     [SerializeField] Tile miniRoomTile;
     [SerializeField] Tile miniWallTile;
     [SerializeField] Tile miniOutTile;
 
+    [Header("NavMesh")]
     [SerializeField] NavMeshPlus.Components.NavMeshSurface nav;
+
+    #endregion
+
+    #region TileCache
+
+    Tile roomTile; // 방 내부를 구성하는 타일
+    //[SerializeField] Tile wallTile; // 벽 타일
+    //[SerializeField] Tile wallTopTile; //상단 벽 천장 부분, 현재 사용 X
+    Tile topWallTile; // 상단 벽 타일
+    //[SerializeField] Tile wallLeftEdgeTile; //벽 왼쪽 모서리 부분
+    //[SerializeField] Tile wallRightEdgeTile; //벽 오른쪽 모서리 부분
+    Tile outTile; // 방 외부의 타일
+    Tile leftWallTile; // 왼쪽 벽 타일
+    Tile rightWallTile; // 오른쪽 벽 타일
+    Tile bottomWallTile; // 아래쪽 벽 타일
+    Tile bottomRightEdgeTile; // 아래쪽 왼편 모서리 타일
+    Tile topRightEdgeTile; // 위쪽 오른편 모서리 타일
+    Tile topLeftEdgeTile; // 위쪽 왼편 모서리 타일
+    Tile bottomLeftEdgeTile; // 아래쪽 왼편 모서리 타일
+    //[SerializeField] Tile topRightInternalEdgeTile; //위쪽 오른편 내각 모서리 타일, 내각 타일은 방과 통로 연결 부분 모서리에 사용
+    //[SerializeField] Tile bottomRightInternalEdgeTile; //아래쪽 오른편 내각 모서리 타일
+    //[SerializeField] Tile topLeftInternalEdgeTile; //위쪽 왼편 내각 모서리 타일
+    //[SerializeField] Tile bottomLeftInternalEdgeTile; //아래쪽 왼편 내각 모서리 타일
+
+    Tile roadTile; // 통로 타일
+    Tile leftRoadEdgeTile; // 통로 왼편 시작지점 타일
+    Tile rightRoadEdgeTile; // 통로 오른편 시작지점 타일
+    Tile topRoadEdgeTile; // 통로 윗편 시작지점 타일
+    Tile bottomRoadEdgeTile; // 통로 아래편 시작지점 타일
+
+    Tile kitchenTile; // 주방 타일
+
+    #endregion
+
+    #region OtherFields
+
+    private DataController data;
     // 주방 콜라이더
     GameObject KitchenCollider;
     // 시작방 콜라이더
@@ -74,23 +91,32 @@ public class MapGenerator : MonoBehaviour
 
     const int NUM_ROOM = 5; 
     Room[ , ] roomList = new Room[NUM_ROOM,NUM_ROOM];
-
-    //시작점 좌표. 일단 좌측상단으로 고정
+    
+    // 시작점 좌표. (0,0), (4,0), (0,4), (4,4) 중 하나
     int startX = 0;
     int startY = 0;
-    //추후 주방 좌표, 보스방 좌표도 추가 예정...
+    // 추후 주방 좌표, 보스방 좌표도 추가 예정...
+    
+    // 맵 만드는데 필요한 변수들
+    int roomCnt;      // 전체 방 개수
+    int tempCnt;      // 앞으로 더 만들어야 하는 방 개수
+    int lastDepth = 1; // 시작 방에서 가장 멀리 떨어진 깊이 (보스/주방 배치에 사용)
 
-    //맵 만드는데 필요한 변수들
-    int roomCnt, tempCnt;
-    int lastDepth = 1;
-    int[] dx = new int[4] { -1, 1, 0, 0 }; //좌 우 하 상 
+    // 4방향 탐색용 오프셋 (좌, 우, 하, 상)
+    // index: 0 = Left, 1 = Right, 2 = Down, 3 = Up
+    int[] dx = new int[4] { -1, 1, 0, 0 }; 
     int[] dy = new int[4] { 0, 0, 1, -1 };
 
+    #endregion
 
-    // Start is called before the first frame update
+    #region UnityLifeCycle
+
+    /// <summary>
+    /// 맵 생성의 시작점. 세이브가 있으면 로드, 없으면 신규 맵을 생성한다.
+    /// </summary>
     void Start()
     {
-        if (GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 실행
+        if (GameManager.gameManager.charData.saveFile.isMapSave) // 로드될 맵이 있으면 실행
         {
             LoadMap();
         }
@@ -102,22 +128,28 @@ public class MapGenerator : MonoBehaviour
         data = FindObjectOfType<DataController>();
         SetTile();
 
-        DrawBackGround(); // 전체 맵 사각형 그리기
-        CreateMap(); // 방이랑 길 그리기
-        DisplayRoomType(); // 시작방, 주방, 보스방 표시
+        DrawBackGround();      // 전체 맵 사각형 그리기
+        CreateMap();           // 방이랑 길 그리기
+        DisplayRoomType();     // 시작방, 주방, 보스방 표시
         SetDoor();
         // 플레이어 위치 초기화
         Player.transform.position = roomList[startY, startX].enemyGenerator.transform.position;
         GameObject.Find("miniPlayer").transform.position = roomList[startY, startX].enemyGenerator.transform.position;
 
         GameManager.gameManager.charData.SaveMapData(roomList, startX, startY);
-
         StartCoroutine(SetNavMesh());
     }
 
+    #endregion
+
+    #region InitAndGenerationFlow
+
+    /// <summary>
+    /// 신규 맵 생성 시 방 리스트 및 시작 방, 전체 방 개수 등을 초기화한다.
+    /// </summary>
     void Init()
     {
-        //방 리스트 초기화
+        // 방 리스트 초기화
         for (int i = 0; i < NUM_ROOM; i++)
         {
             for (int j = 0; j < NUM_ROOM; j++)
@@ -126,7 +158,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        //시작점 위치 정하기
+        // 시작점 위치 정하기 (네 귀퉁이 중 랜덤)
         switch (UnityEngine.Random.Range(0, 4))
         {
             case 0:
@@ -142,16 +174,19 @@ public class MapGenerator : MonoBehaviour
         }
         Debug.LogFormat("startX = {0} startY = {1}", startX, startY);
         roomList[startY, startX].isCreated = 1;
-
-        //만들 방의 전체 개수 설정
+        
+        // 만들 방의 전체 개수 설정
         roomCnt = UnityEngine.Random.Range(10, 21);
-        //앞으로 만들어야할 방 개수 설정
+        // 앞으로 만들어야할 방 개수 설정
         tempCnt = roomCnt;
     }
 
+    /// <summary>
+    /// 맵 전체를 외부(outTile)로 먼저 채워서 기본 바탕을 만든다.
+    /// </summary>
     void DrawBackGround()
     {
-        //타일 그리기 전 백그라운드 타일로 다 채우기
+        // 타일 그리기 전 백그라운드 타일로 다 채우기
         for (int i = -10; i < mapSize.x + 10; i++)
         {
             for (int j = -10; j < mapSize.y + 10; j++)
@@ -162,39 +197,48 @@ public class MapGenerator : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// DFS로 방 구조를 만들고, BFS로 거리를 계산하며 길/벽을 그리는 전체 생성 파이프라인.
+    /// </summary>
     void CreateMap()
     {
-
-        if(!GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 실행하지 않음
+        if(!GameManager.gameManager.charData.saveFile.isMapSave) // 로드될 맵이 있으면 실행하지 않음
         {
-            //그래프 생성
+            // 그래프(방 연결 구조) 생성
             DFS(startX, startY, 1);
         }
-        //구조에 따라 맵 생성
+        // 구조에 따라 실제 방/길 생성
         Divide();
 
-        //각 방마다 시작 방까지의 거리 계산하기 + 길 생성
+        // 각 방마다 시작 방까지의 거리 계산하기 + 길 생성
         BFS(startX, startY, 1);
 
-        //방을 둘러싸는 벽 타일 그리기
+        // 방을 둘러싸는 벽 타일 그리기
         DrawWall();
     }
 
+    #endregion
+
+    #region GraphSearch_DFS_BFS
+
+    /// <summary>
+    /// DFS로 방 그래프를 생성한다. tempCnt가 0이 될 때까지 인접한 칸에 새 방을 만든다.
+    /// </summary>
     void DFS(int x,int y,int depth)
     {
-        //이미 방이 다 만들어졌다면 더 로직을 진행할 필요가 없다.
+        // 이미 방이 다 만들어졌다면 더 로직을 진행할 필요가 없다.
         if (tempCnt == 0) return;
 
-        //만들 수 있는 방 개수
+        // 현재 위치에서 새로 만들 수 있는 방 개수
         int curCnt = 0;
-        //갈 수 있는 방향
+        // 갈 수 있는 방향 (0/1 플래그)
         int[] isDir = new int[4];
         for (int i = 0; i < isDir.Length; i++)
         {
             isDir[i] = 0;
         }
 
-        //4방향에서 갈 수 있는 방향을 파악한 후, 그 중에 한 방향을 골라 이동한다.
+        // 4방향에서 갈 수 있는 방향을 파악한 후, 그 중에 한 방향을 골라 이동한다.
         for (int i = 0; i < 4; i++)
         {
             int tx = x + dx[i]; int ty = y + dy[i];
@@ -204,26 +248,26 @@ public class MapGenerator : MonoBehaviour
                 isDir[i] = 1;
             }
         }
-        if (curCnt == 0) return; //더 나아갈 수 없다면 리턴
-
-        //현재 방에서 만들 방의 개수를 1~만들수 있는 방향 개수 중 랜덤으로 정한다
+        if (curCnt == 0) return; // 더 나아갈 수 없다면 리턴
+        
+        // 현재 방에서 만들 방의 개수를 1~만들수 있는 방향 개수 중 랜덤으로 정한다
         int temp = UnityEngine.Random.Range(1, curCnt + 1);
         curCnt = temp;
 
         for (int i = 0; i < 4; i++)
         {
-            if (curCnt == 0) return; //방 다 만들었다면 리턴
+            if (curCnt == 0) return; // 방 다 만들었다면 리턴
             if (tempCnt == 0) return;
 
-            //어디방향으로 갈지 택
+            // 어디방향으로 갈지 선택
             int dir = UnityEngine.Random.Range(0,4);
 
-            //한쪽 방향 쏠림 방지
+            // 한쪽 방향 쏠림 방지
             while (isDir[dir] != 1)
             {
                 dir = UnityEngine.Random.Range(0, 4);
 
-                //무한루프 이슈 방지용 임시 땜빵..추후 수정예정
+                // 무한루프 이슈 방지용 임시 땜빵..추후 수정예정
                 int sum = 0;
                 for (int j = 0; j < 4; j++)
                 {
@@ -231,7 +275,7 @@ public class MapGenerator : MonoBehaviour
                 }
                 if (sum == 0) return;
             }
-            //한번 택한 방향은 선택할 수 없게 처리
+            // 한번 택한 방향은 선택할 수 없게 처리
             isDir[dir] = 0;
             int tx = x + dx[dir];
             int ty = y + dy[dir];
@@ -250,6 +294,9 @@ public class MapGenerator : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// BFS로 각 방이 시작 방으로부터 떨어진 거리를 계산하고, 그 경로에 맞춰 길(통로)을 그린다.
+    /// </summary>
     void BFS(int startX, int startY, int depth)
     {
         int[,] isVisited = new int[NUM_ROOM, NUM_ROOM];
@@ -258,7 +305,7 @@ public class MapGenerator : MonoBehaviour
             for(int j=0;j < NUM_ROOM; j++) isVisited[i,j] = 0;
         }
         
-        //시작 방은 길이 1로 초기화.
+        // 시작 방은 길이 1로 초기화.
         Queue<KeyValuePair<int, int>> q = new Queue<KeyValuePair<int, int>>();
         q.Enqueue(new KeyValuePair<int, int>(startX, startY));
         isVisited[startY,startX] = 1;
@@ -288,8 +335,8 @@ public class MapGenerator : MonoBehaviour
 
                     }else if (isVisited[y,x]+1 == isVisited[ty,tx] && roomList[ty, tx].isCreated != 0)
                     {
-                        //같은 길이의 다른 노드가 도착 방을 먼저 방문한 경우에도 
-                        //현재 노드 - 도착 방 길을 그릴 수 있도록 한다.
+                        // 같은 길이의 다른 노드가 도착 방을 먼저 방문한 경우에도 
+                        // 현재 노드 - 도착 방 길을 그릴 수 있도록 한다.
                         isVisited[ty, tx] = isVisited[y, x] + 1;
                         roomList[ty, tx].isCreated = isVisited[ty, tx];
                         DrawRoad(x, y, tx, ty);
@@ -303,11 +350,19 @@ public class MapGenerator : MonoBehaviour
        
     }
 
+    #endregion
+
+    #region RoomAndRoadDrawing
+
+    /// <summary>
+    /// 하나의 방을 실제 타일로 그린 뒤, 해당 방의 EnemyGenerator를 생성/세팅한다.
+    /// horz, vert는 노드(그리드 상 방 위치)의 좌측 상단 기준 좌표.
+    /// </summary>
     void DrawRoom(float horz,float vert,int ROW,int COL, int index)
     {
-        /**여기 좌표는 모두 좌측 상단 기준**/
+        /** 여기 좌표는 모두 좌측 상단 기준 **/
         
-        //노드 생성(디버그용)
+        // 노드 생성(디버그용)
         /*
         LineRenderer nodeRenderer = Instantiate(node).GetComponent<LineRenderer>();
         nodeRenderer.SetPosition(0, new Vector2(horz, vert - (float)mapSize.y / 5)); //좌측 하단
@@ -320,7 +375,7 @@ public class MapGenerator : MonoBehaviour
 
         Rect nodeRect = roomList[ROW, COL].nodeRect;
 
-        //width 범위의 최대값을  nodeRect.width-2까지 잡아야 방끼리 겹침 문제가 안생김
+        // width 범위의 최대값을  nodeRect.width-2까지 잡아야 방끼리 겹침 문제가 안생김
         float width = UnityEngine.Random.Range(nodeRect.width / 2, nodeRect.width - 2);
         float height = UnityEngine.Random.Range(nodeRect.height/2, nodeRect.height - 1);
         float x = nodeRect.x + UnityEngine.Random.Range(1,nodeRect.width-width-1);
@@ -346,15 +401,15 @@ public class MapGenerator : MonoBehaviour
         Rect roomRect = roomList[ROW, COL].roomRect;
 
 
-        //** 방 크기에 에너미 제너레이터 크기를 맞추기 위한 변수 **
-        //room의 맨 왼쪽 위 사각형 좌표
+        // ** 방 크기에 에너미 제너레이터 크기를 맞추기 위한 변수 **
+        // room의 맨 왼쪽 위 사각형 좌표
         Vector3 temp = new Vector3(0, 0, 0);
-        //room의 맨 오른쪽 아래 사각형 좌표
+        // room의 맨 오른쪽 아래 사각형 좌표
         Vector3 temp2 = new Vector3(0, 0, 0);
         
      
 
-        //룸타일 그리기
+        // 룸타일 그리기
         for (float i= roomRect.x; i<roomRect.x + roomRect.width;i++)
         {
             for(float j=roomRect.y;j>roomRect.y-roomRect.height;j--)
@@ -385,8 +440,8 @@ public class MapGenerator : MonoBehaviour
 
                 }else if(tileMap.GetTile(tilePosition) == roomTile)
                 {
-                    //만약 같은 위치에 여러번 룸타일이 겹친다면
-                    //벽이 생기지 않을 수 있으므로 바깥타일로 교체
+                    // 만약 같은 위치에 여러번 룸타일이 겹친다면
+                    // 벽이 생기지 않을 수 있으므로 바깥타일로 교체
                     tileMap.SetTile(tilePosition, null);
                     tileMap_Wall.SetTile(tilePosition, outTile);
                     //miniTileMap.SetTile(tilePosition, miniOutTile);
@@ -394,20 +449,20 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        //position 피벗이 중앙임
-        //룸 하나당 에너미 제너레이터도 하나씩 생성
+        // position 피벗이 중앙임
+        // 룸 하나당 에너미 제너레이터도 하나씩 생성
         roomList[ROW, COL].enemyGenerator = Instantiate(EnemyGenerator, roomParent.transform);
         // 미니맵 - collider에 룸 위치 전달
         roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myRow = ROW;
         roomList[ROW, COL].enemyGenerator.GetComponent<EnemyGenerator>().myCol = COL;
 
         temp2 = new Vector3(temp.x + (int)roomList[ROW, COL].roomRect.width, temp.y - (int)roomList[ROW, COL].roomRect.height);
-        //room의 맨 왼쪽 위 사각형 표시
+        // room의 맨 왼쪽 위 사각형 표시
         //Instantiate(EnemyGenerator).transform.position = new Vector3(temp.x, temp.y);
-        //room의 맨 오른쪽 아래 사각형 표시
+        // room의 맨 오른쪽 아래 사각형 표시
         //Instantiate(EnemyGenerator).transform.position = new Vector3(temp2.x, temp2.y); 
 
-        //EnemyGenerator 크기 room 크기에 맞추기 조정
+        // EnemyGenerator 크기 room 크기에 맞추기 조정
         roomList[ROW, COL].enemyGenerator.transform.position = new Vector3( (temp.x+temp2.x)/2,(temp.y+temp2.y)/2 );
         
         //+1 안해주면 양쪽 반 칸이 모자름
@@ -427,8 +482,8 @@ public class MapGenerator : MonoBehaviour
         Vector2 fromCenter = new Vector2(fromRect.x + fromRect.width/2 , fromRect.y - fromRect.height/2);
         Vector2 toCenter = new Vector2(toRect.x + toRect.width/2 , toRect.y - toRect.height/2);
 
-        //가로 길
-        //바로 오른쪽, 왼쪽 방에만 길을 그릴 수 있도록 설정하기
+        // 가로 길
+        // 바로 오른쪽, 왼쪽 방에만 길을 그릴 수 있도록 설정하기
         if (x == nextX+1 || x == nextX-1)
         {
 
@@ -437,17 +492,17 @@ public class MapGenerator : MonoBehaviour
                 float distanceY = (Mathf.Max(fromRect.y, toRect.y) - Mathf.Min(fromRect.y - fromRect.height, toRect.y - toRect.height)) / 2;
                 float pointY = Mathf.Max(fromRect.y, toRect.y) - distanceY;
 
-                for(int k= -1 ; k <= 1 ; k++) //타일 배치 로직 부분, 최적화 필요할듯
+                for(int k= -1 ; k <= 1 ; k++) // 타일 배치 로직 부분, 최적화 필요할듯
                 {
                     Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(i, pointY + k, 0));
-                    if(tileMap.GetTile(tilePosition) != roomTile) //생성할 타일이 외부 타일이면 통로 타일 설치
+                    if(tileMap.GetTile(tilePosition) != roomTile) // 생성할 타일이 외부 타일이면 통로 타일 설치
                     {
-                        if(tileMap.GetTile(tileMap.WorldToCell(new Vector3(i - 1, pointY + k, 0))) == roomTile) //왼쪽에 룸타일이 있으면 길 왼쪽 시작부 타일 설치
+                        if(tileMap.GetTile(tileMap.WorldToCell(new Vector3(i - 1, pointY + k, 0))) == roomTile) // 왼쪽에 룸타일이 있으면 길 왼쪽 시작부 타일 설치
                         {
                             tileMap_Wall.SetTile(tilePosition, null);
                             tileMap.SetTile(tilePosition, leftRoadEdgeTile);
                         }
-                        else if(tileMap.GetTile(tileMap.WorldToCell(new Vector3(i + 1, pointY + k, 0))) == roomTile) //오른쪽에 룸타일이 있으면 길 오른쪽 시작부 타일 설치
+                        else if(tileMap.GetTile(tileMap.WorldToCell(new Vector3(i + 1, pointY + k, 0))) == roomTile) // 오른쪽에 룸타일이 있으면 길 오른쪽 시작부 타일 설치
                         {
                             tileMap_Wall.SetTile(tilePosition, null);
                             tileMap.SetTile(tilePosition, rightRoadEdgeTile);
@@ -490,8 +545,8 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        //세로 길
-        //바로 위쪽, 아래쪽 방에만 길을 그릴 수 있도록 설정하기
+        // 세로 길
+        // 바로 위쪽, 아래쪽 방에만 길을 그릴 수 있도록 설정하기
         if (y == nextY+1 || y == nextY-1)
         {
             for (float i = Mathf.Min(fromCenter.y, toCenter.y); i <= Mathf.Max(fromCenter.y, toCenter.y); i++)
@@ -499,19 +554,17 @@ public class MapGenerator : MonoBehaviour
                 float distanceX = (Mathf.Max(fromRect.x + fromRect.width, toRect.x + toRect.width) - Mathf.Min(fromRect.x, toRect.x)) / 2;
                 float pointX = Mathf.Min(fromRect.x, toRect.x) + distanceX;
 
-                //GameObject door;
-
-                for (int k = -1; k <= 1; k++) //타일 배치 로직 부분, 최적화 필요할듯
+                for (int k = -1; k <= 1; k++) // 타일 배치 로직 부분, 최적화 필요할듯
                 {
                     Vector3Int tilePosition = tileMap.WorldToCell(new Vector3(pointX + k, i, 0));
-                    if (tileMap.GetTile(tilePosition) != roomTile) //생성할 타일이 외부 타일이면 통로 타일 설치
+                    if (tileMap.GetTile(tilePosition) != roomTile) // 생성할 타일이 외부 타일이면 통로 타일 설치
                     {
-                        if (tileMap.GetTile(tileMap.WorldToCell(new Vector3(pointX + k, i + 1, 0))) == roomTile) //위쪽에 룸타일이 있으면 길 위쪽 시작부 타일 설치
+                        if (tileMap.GetTile(tileMap.WorldToCell(new Vector3(pointX + k, i + 1, 0))) == roomTile) // 위쪽에 룸타일이 있으면 길 위쪽 시작부 타일 설치
                         {
                             tileMap_Wall.SetTile(tilePosition, null);
                             tileMap.SetTile(tilePosition, topRoadEdgeTile);
                         }
-                        else if (tileMap.GetTile(tileMap.WorldToCell(new Vector3(pointX + k, i - 1, 0))) == roomTile) //아래쪽에 룸타일이 있으면 길 아래쪽 시작부 타일 설치
+                        else if (tileMap.GetTile(tileMap.WorldToCell(new Vector3(pointX + k, i - 1, 0))) == roomTile) // 아래쪽에 룸타일이 있으면 길 아래쪽 시작부 타일 설치
                         {
                             tileMap_Wall.SetTile(tilePosition, null);
                             tileMap.SetTile(tilePosition, bottomRoadEdgeTile);
@@ -558,23 +611,26 @@ public class MapGenerator : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 전체 맵을 5x5 격자로 나누고, 방이 존재하는 노드에 대해 실제 방을 배치한다.
+    /// </summary>
     void Divide()
     {
-        //정수끼리의 나눗셈은 무조건 정수로 나와서 분모or 분자를 float 형변환 필요
+        // 정수끼리의 나눗셈은 무조건 정수로 나와서 분모 or 분자를 float 형변환 필요
         float horzPoint = 0-(float)mapSize.x/2, vertPoint = (0+mapSize.y) - (float)mapSize.y/2;
         float horzSize = (float)mapSize.x/5, vertSize = (float)mapSize.y/5;
 
         int index = 0;
-        //세로
+        // 세로
         for (int i = 0; i < NUM_ROOM; i++)
         {
             horzPoint = 0 - mapSize.x/2;
-            //가로
+            // 가로
             for(int j = 0; j < NUM_ROOM; j++)
             {
                 if (roomList[i, j].isCreated > 0)
                 {
-                    //방 타일 그리기 
+                    // 방 타일 그리기 
                     DrawRoom(horzPoint, vertPoint, i, j, index);
                 }
                 horzPoint += horzSize;
@@ -589,18 +645,21 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    void DrawWall() //알고리즘과 조건문 대폭 수정함
+    /// <summary>
+    /// 방과 통로를 기준으로 외곽에 벽 타일을 배치한다.
+    /// </summary>
+    void DrawWall() // 알고리즘과 조건문 대폭 수정함
     {
-        //범위가 0~mapSize.x가 아니라 -1~mapSize.x+1인 이유는 전자로 하면 벽 타일이 방을 휘감지 못하는 사태가 생기기 때문
-        for (int i = -1; i < mapSize.x + 1; i++) //타일 전체를 순회
+        // 범위가 0~mapSize.x가 아니라 -1~mapSize.x+1인 이유는 전자로 하면 벽 타일이 방을 휘감지 못하는 사태가 생기기 때문
+        for (int i = -1; i < mapSize.x + 1; i++) // 타일 전체를 순회
         {
             for (int j = -1; j < mapSize.y + 1; j++)
             {
                 if (tileMap_Wall.GetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0)) == outTile)
                 {
-                    var tempTile = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 0, 0)); //-1
-                    var tempTile2 = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 0, 0)); //+1
-                    if ((tempTile == roomTile)/* || (tempTile == roadTile) || (tempTile == topRoadEdgeTile) || (tempTile == bottomRoadEdgeTile)*/) //(-1, 0) 왼쪽에 룸타일, rightWall 배치
+                    var tempTile = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 0, 0)); // -1
+                    var tempTile2 = tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 0, 0)); // +1
+                    if ((tempTile == roomTile)/* || (tempTile == roadTile) || (tempTile == topRoadEdgeTile) || (tempTile == bottomRoadEdgeTile)*/) // (-1, 0) 왼쪽에 룸타일, rightWall 배치
                     {
                         /*
                         if ((tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == roomTile) || (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == leftRoadEdgeTile)) // 상단에도 룸타일이면 내각 모서리 타일 배치
@@ -618,7 +677,7 @@ public class MapGenerator : MonoBehaviour
                         tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), null);
                         tileMap_Wall.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), rightWallTile);
                     }
-                    else if ((tempTile2 == roomTile)/* || (tempTile2 == roadTile) || (tempTile2 == topRoadEdgeTile) || (tempTile2 == bottomRoadEdgeTile)*/) //(1, 0) 오른쪽에 룸타일, leftWall 배치
+                    else if ((tempTile2 == roomTile)/* || (tempTile2 == roadTile) || (tempTile2 == topRoadEdgeTile) || (tempTile2 == bottomRoadEdgeTile)*/) // (1, 0) 오른쪽에 룸타일, leftWall 배치
                     {
                         /*
                         if ((tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == roomTile) || (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == rightRoadEdgeTile)) // 상단에도 룸타일이면 내각 모서리 타일 배치
@@ -636,33 +695,33 @@ public class MapGenerator : MonoBehaviour
                         tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), null);
                         tileMap_Wall.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), leftWallTile);
                     }
-                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == roomTile) //(0, -1) 아래에 룸타일, 상단 벽 배치
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 - 1, 0)) == roomTile) // (0, -1) 아래에 룸타일, 상단 벽 배치
                     {
                         tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), null);
                         tileMap_Wall.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), topWallTile); //상단 벽면 세로면 타일로 변경
                         //tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2 + 1, 0), wallTopTile); //벽면 타일 윗부분을 상단 타일로 변경
                     }
-                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == roomTile) //(0, 1) 위에 룸타일, 하단 벽 배치
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 0, j - mapSize.y / 2 + 1, 0)) == roomTile) // (0, 1) 위에 룸타일, 하단 벽 배치
                     {
                         tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), null);
                         tileMap_Wall.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), bottomWallTile);
                     }
-                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 1, 0)) == roomTile) //(-1, 1) 상단좌측에 룸타일,  하단우측모서리 배치
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 + 1, 0)) == roomTile) // (-1, 1) 상단좌측에 룸타일,  하단우측모서리 배치
                     {
                         tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), null);
                         tileMap_Wall.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), bottomRightEdgeTile);
                     }
-                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 - 1, 0)) == roomTile) //(-1, -1) 하단좌측에 룸타일,  상단우측모서리 배치
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 - 1, j - mapSize.y / 2 - 1, 0)) == roomTile) // (-1, -1) 하단좌측에 룸타일,  상단우측모서리 배치
                     {
                         tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), null);
                         tileMap_Wall.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), topRightEdgeTile);
                     }
-                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 - 1, 0)) == roomTile) //(1, -1) 하단우측에 룸타일,  상단좌측모서리 배치
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 - 1, 0)) == roomTile) // (1, -1) 하단우측에 룸타일,  상단좌측모서리 배치
                     {
                         tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), null);
                         tileMap_Wall.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), topLeftEdgeTile);
                     }
-                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 1, 0)) == roomTile) //(1, 1) 상단우측에 룸타일,  하단좌측모서리 배치
+                    else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + 1, j - mapSize.y / 2 + 1, 0)) == roomTile) // (1, 1) 상단우측에 룸타일,  하단좌측모서리 배치
                     {
                         tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), null);
                         tileMap_Wall.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), bottomLeftEdgeTile);
@@ -672,33 +731,36 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// 각 방의 타입(시작, 주방, 보스)을 결정하고 타일/오브젝트/미니맵 아이콘을 적용한다.
+    /// </summary>
     void DisplayRoomType()
     {
         List<KeyValuePair <int, int>> bossIdxList = new List <KeyValuePair<int, int>>();
         List<KeyValuePair <int, int>> kitchenIdxList = new List <KeyValuePair<int, int>>();
 
-        int bossNum = lastDepth; int kitchenNum = 0;
+        int bossNum = lastDepth;
+        int kitchenNum = 0;
 
         var kitchenPos = new KeyValuePair<int, int>();
         var bossPos = new KeyValuePair<int, int>();
 
-        if (!GameManager.gameManager.charData.saveFile.isMapSave) //로드될 맵이 있으면 이미 보스방, 주방이 결정되어 있으므로 실행X
+        if (!GameManager.gameManager.charData.saveFile.isMapSave) // 로드될 맵이 있으면 이미 보스방, 주방이 결정되어 있으므로 실행X
         {
             if (bossNum > 4)
             {
-                //주방은 4~lastDepth-1 사이에
+                // 주방은 4~lastDepth-1 사이에
                 kitchenNum = (UnityEngine.Random.Range(4, bossNum));
             }
             else
             {
-                //lastDepth가 4이면
-                //주방은 3에 (4가 되면 겹침)
+                // lastDepth가 4이면
+                // 주방은 3에 (4가 되면 겹침)
                 kitchenNum = 3;
             }
 
-            //주방 깊이랑 보스방 깊이가 같은 방이 여러개 일 수 있음.
-            //그 중 방 하나를 랜덤으로 뽑아야함.
+            // 주방 깊이랑 보스방 깊이가 같은 방이 여러개 일 수 있음.
+            // 그 중 방 하나를 랜덤으로 뽑아야함.
             for (int i = 0; i < NUM_ROOM; i++)
             {
                 for (int j = 0; j < NUM_ROOM; j++)
@@ -711,7 +773,7 @@ public class MapGenerator : MonoBehaviour
                         }
                         else if (roomList[i, j].isCreated == kitchenNum)
                         {
-                            //x,y 형태로 집어 넣기
+                            // x,y 형태로 집어 넣기
                             kitchenIdxList.Add(new KeyValuePair<int, int>(j, i));
                         }
                         else if (roomList[i, j].isCreated == bossNum)
@@ -728,7 +790,7 @@ public class MapGenerator : MonoBehaviour
             roomList[kitchenPos.Value, kitchenPos.Key].roomType = RoomType.ROOM_KITCHEN;
             roomList[bossPos.Value, bossPos.Key].roomType = RoomType.ROOM_BOSS;
         }
-        else //로드될 맵이 있으면 주방과 보스방의 인덱스를 반환
+        else // 로드될 맵이 있으면 주방과 보스방의 인덱스를 반환
         {
             for (int i = 0; i < NUM_ROOM; i++)
             {
@@ -817,7 +879,10 @@ public class MapGenerator : MonoBehaviour
         miniBoss.SetActive(false);
     }
 
-
+    /// <summary>
+    /// 인접한 방을 기준으로 문 프리팹을 배치한다.
+    /// 일반 방은 EnemyGenerator, 보스 방은 BossRoom 컴포넌트에 문 리스트를 저장한다.
+    /// </summary>
     void SetDoor()
     {
         for(int i = 0; i < NUM_ROOM; i++)
@@ -963,3 +1028,4 @@ public class MapGenerator : MonoBehaviour
         nav.BuildNavMesh();
     }
 }
+#endregion

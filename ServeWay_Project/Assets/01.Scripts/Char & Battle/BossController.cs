@@ -11,6 +11,8 @@ public class BossController : MonoBehaviour
     private Animator anim;
     private SpriteRenderer renderer;
     private GameObject effectParent;
+    private YoutuberController youtuberController;
+    private TeacherController teacherController;
 
     public BossRoom room;
     public Food_Nation nation;
@@ -24,26 +26,26 @@ public class BossController : MonoBehaviour
         anim = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
         effectParent = GameObject.Find("EffectList");
+        youtuberController = GetComponent<YoutuberController>();
+        teacherController = GetComponent<TeacherController>();
         //StartCoroutine(EnemyMove());
     }
 
     void Update()
     {
+        if (dying)
+        {
+            return;
+        }
+
         if (hp <= 0)
         {
-            if(!dying)
-            {
-                StartCoroutine(BossDie(0));
-            }
-            
+            StartCoroutine(BossDie(0));
         }
 
         if(misson.isClear())
         {
-            if (!dying)
-            {
-                StartCoroutine(BossDie(1));
-            }
+            StartCoroutine(BossDie(1));
         }
 
     }
@@ -87,19 +89,19 @@ public class BossController : MonoBehaviour
             GameObject sound = Instantiate(eatSound, transform.position, transform.rotation, effectParent.transform);
         }
 
-        if (job == Boss_Job.YOUTUBER && gameObject.GetComponent<YoutuberController>().isAlgorithm)
+        if (job == Boss_Job.YOUTUBER && youtuberController.isAlgorithm)
         {
-            if(food != gameObject.GetComponent<YoutuberController>().GetAlgorithmFood())
+            if(food == youtuberController.GetAlgorithmFood())
             {
                 Debug.Log("Critical");
-                damage *= 1.2f;
+                damage /= 0.8f;
             }
             misson.OccurreEvent(13, damage);
         }
 
-        if(job == Boss_Job.TEACHER && gameObject.GetComponent<TeacherController>().isCounter)
+        if(job == Boss_Job.TEACHER && teacherController.isCounter)
         {
-            gameObject.GetComponent<TeacherController>().AddAmount();
+            teacherController.AddAmount();
             damage = 0;
         }
 
