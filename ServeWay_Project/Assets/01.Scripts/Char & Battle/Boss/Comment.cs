@@ -8,6 +8,7 @@ public class Comment : MonoBehaviour
     private List<Sprite> sprites;
     private int bulletAmount;
     private GameObject bulletParent;
+    private Animator anim;
 
     public List<GameObject> bulletPrefab;
     public float speed;
@@ -17,6 +18,7 @@ public class Comment : MonoBehaviour
     void Start()
     {
         audio = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
         bulletParent = GameObject.Find("BulletList");
         sprites = new List<Sprite>();
         sprites.Add(sprite);
@@ -38,6 +40,7 @@ public class Comment : MonoBehaviour
         for (int n = 0; n < 3; n++)
         {
             audio.Play();
+            anim.SetTrigger("On");
             bulletAmount = Random.Range(6, 11);
 
             float startAngle = 0;
@@ -53,20 +56,13 @@ public class Comment : MonoBehaviour
                 bullet.GetComponent<EnemyBullet>().SetDamage(damage);
                 bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
             }
-
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
+            
+            anim.SetTrigger("Off");
+            yield return new WaitForSeconds(1);
         }
 
         yield return new WaitForSeconds(0.5f);
         Destroy(this.gameObject);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        /*if(collision.gameObject.tag == "Player")
-        {
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprites);
-            FindObjectOfType<BloggerController>().PlayerCommentDamage();
-        }*/
     }
 }

@@ -8,6 +8,7 @@ public class YoutuberController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private SpriteRenderer renderer;
     private BossController bossCon;
+    private Animator anim;
     private DataController dataController;
     private GameObject player;
     private GameObject bulletParent;
@@ -53,6 +54,7 @@ public class YoutuberController : MonoBehaviour
         dataController = FindObjectOfType<DataController>();
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
+        anim = GetComponent<Animator>();
         line = GetComponent<LineRenderer>();
         renderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -99,14 +101,23 @@ public class YoutuberController : MonoBehaviour
             }
         }
 
-        if (rigidbody.velocity.x < 0)
+        if (!isAttack && rigidbody.velocity.x < 0)
         {
             isLeft = true;
         }
-        else if (rigidbody.velocity.x > 0)
+        else if (!isAttack && rigidbody.velocity.x > 0)
         {
             isLeft = false;
         }
+        else if (isAttack && transform.position.x - player.transform.position.x > 0)
+        {
+            isLeft = true;
+        }
+        else if (isAttack && transform.position.x - player.transform.position.x < 0)
+        {
+            isLeft = false;
+        }
+
         if (isLeft)
         {
             renderer.flipX = false;
@@ -126,6 +137,7 @@ public class YoutuberController : MonoBehaviour
 
     private IEnumerator EnemyMove()
     {
+        anim.SetTrigger("walk");
         while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
@@ -205,6 +217,9 @@ public class YoutuberController : MonoBehaviour
     private IEnumerator ExplosionPattern()
     {
         isAttack = true;
+        anim.SetInteger("attacktype", 1);
+        anim.SetTrigger("attack");
+
         yield return new WaitForSeconds(0.3f);
 
         GameObject explosionBullet = Instantiate(explosionPrefab, transform.position, transform.rotation, bulletParent.transform);
@@ -215,16 +230,16 @@ public class YoutuberController : MonoBehaviour
         breadBullet.SetRadius(explosionRadius);
         breadBullet.SetSprite(sprites);
 
+        isAttack = false;
         yield return new WaitForSeconds(0.3f);
 
-        isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
     }
 
     private IEnumerator AlgorithmPattern()
     {
-        isAttack = true;
+        anim.SetTrigger("attackend");
         FoodData playerFood = new FoodData();
         string food = player.GetComponent<PlayerController>().weaponSlot.GetHoldWeapon();
         if (food != null)
@@ -237,6 +252,9 @@ public class YoutuberController : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        anim.SetInteger("attacktype", 4);
+        anim.SetTrigger("attack");
+
         Vector3 target = room.transform.position;
         while (Vector3.Distance(target, transform.position) > 0.5f)
         {
@@ -244,11 +262,14 @@ public class YoutuberController : MonoBehaviour
             yield return null;
         }
         rigidbody.velocity = new Vector2(0, 0);
+
+        anim.SetInteger("attacktype", 2);
+        anim.SetTrigger("attack");
         yield return new WaitForSeconds(0.5f);
 
         Destroy(scan);
         isAlgorithm = true;
-        for(int i = 0; i < 60; i++)
+        for (int i = 0; i < 60; i++)
         {
             GameObject algorithm = Instantiate(algorithmPrefab, AlgorithmPos(), Quaternion.Euler(0, 0, 0), summonObject.transform);
 
@@ -278,9 +299,11 @@ public class YoutuberController : MonoBehaviour
     private IEnumerator MachineGunPattern()
     {
         isAttack = true;
+        anim.SetInteger("attacktype", 3);
+        anim.SetTrigger("attack");
         yield return new WaitForSeconds(0.3f);
 
-        rigidbody.velocity = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized * (speed / 3);
+        rigidbody.velocity = Vector2.zero;
         for (int i = 0; i < machineGunAmount; i++)
         {
             Vector2 direction = player.transform.position - transform.position;
@@ -304,6 +327,7 @@ public class YoutuberController : MonoBehaviour
     {
         isAttack = true;
         line.enabled = true;
+        anim.SetTrigger("attackend");
         Vector3 target = new Vector3(0, 0, 0);
 
         float time = 0;
@@ -328,6 +352,10 @@ public class YoutuberController : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
+
+        isAttack = false;
+        anim.SetInteger("attacktype", 4);
+        anim.SetTrigger("attack");
 
         line.SetPosition(1, transform.position);
         line.enabled = false;
