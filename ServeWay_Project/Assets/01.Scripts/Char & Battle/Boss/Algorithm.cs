@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class Algorithm : MonoBehaviour
 {
+    private GameObject effectParent;
+
     public Vector3 target;
     public float speed;
     public float damage;
     public Sprite sprite;
     public Sprite food;
     public GameObject boss;
+    public GameObject sound;
 
     void Start()
     {
         transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = food;
+        effectParent = GameObject.Find("EffectList");
     }
 
     void Update()
@@ -46,6 +50,7 @@ public class Algorithm : MonoBehaviour
 
         if(collision.gameObject.tag == "Boss")
         {
+            Instantiate(sound, transform.position, Quaternion.Euler(0, 0, 0), effectParent.transform);
             Destroy(this.gameObject);
         }
     }

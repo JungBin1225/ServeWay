@@ -18,6 +18,7 @@ public class YoutuberController : MonoBehaviour
     private Vector2 maxPos;
     private List<Sprite> sprites;
     private LineRenderer line;
+    private AudioSource audio;
     private float coolTime;
     private bool isAttack;
     private bool isCharge;
@@ -35,6 +36,8 @@ public class YoutuberController : MonoBehaviour
     public GameObject explosionPrefab;
     public GameObject algorithmPrefab;
     public GameObject scanEffect;
+    public GameObject dashDust;
+    public List<AudioClip> attackSound;
     public float speed;
     public float chargeSpeed;
     public float attackCoolTime;
@@ -55,6 +58,7 @@ public class YoutuberController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         anim = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
         line = GetComponent<LineRenderer>();
         renderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -220,6 +224,12 @@ public class YoutuberController : MonoBehaviour
         anim.SetInteger("attacktype", 1);
         anim.SetTrigger("attack");
 
+        audio.loop = false;
+        audio.clip = attackSound[0];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
         yield return new WaitForSeconds(0.3f);
 
         GameObject explosionBullet = Instantiate(explosionPrefab, transform.position, transform.rotation, bulletParent.transform);
@@ -255,6 +265,12 @@ public class YoutuberController : MonoBehaviour
         anim.SetInteger("attacktype", 4);
         anim.SetTrigger("attack");
 
+        audio.loop = false;
+        audio.clip = attackSound[3];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
         Vector3 target = room.transform.position;
         while (Vector3.Distance(target, transform.position) > 0.5f)
         {
@@ -269,6 +285,13 @@ public class YoutuberController : MonoBehaviour
 
         Destroy(scan);
         isAlgorithm = true;
+
+        audio.loop = true;
+        audio.clip = attackSound[1];
+        audio.volume = 0.4f;
+        audio.pitch = 0.8f;
+        audio.Play();
+
         for (int i = 0; i < 60; i++)
         {
             GameObject algorithm = Instantiate(algorithmPrefab, AlgorithmPos(), Quaternion.Euler(0, 0, 0), summonObject.transform);
@@ -289,6 +312,7 @@ public class YoutuberController : MonoBehaviour
         }
         yield return new WaitForSeconds(1.5f);
 
+        audio.Stop();
         isAlgorithm = false;
         playerDamaged = false;
         isAttack = false;
@@ -302,6 +326,12 @@ public class YoutuberController : MonoBehaviour
         anim.SetInteger("attacktype", 3);
         anim.SetTrigger("attack");
         yield return new WaitForSeconds(0.3f);
+
+        audio.loop = true;
+        audio.clip = attackSound[2];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
 
         rigidbody.velocity = Vector2.zero;
         for (int i = 0; i < machineGunAmount; i++)
@@ -317,6 +347,7 @@ public class YoutuberController : MonoBehaviour
             yield return new WaitForSeconds(0.4f);
         }
 
+        audio.Stop();
         isAttack = false;
         rigidbody.velocity = Vector2.zero;
         coolTime = attackCoolTime;
@@ -359,6 +390,25 @@ public class YoutuberController : MonoBehaviour
 
         line.SetPosition(1, transform.position);
         line.enabled = false;
+
+        audio.loop = false;
+        audio.clip = attackSound[3];
+        audio.volume = 1.0f;
+        audio.pitch = 1.0f;
+        audio.Play();
+
+        if (target.x > transform.position.x)
+        {
+            GameObject dust1 = Instantiate(dashDust, new Vector3(transform.position.x - 0.27f, transform.position.y - 0.025f), Quaternion.Euler(0, 0, 0), effectParent.transform);
+            GameObject dust2 = Instantiate(dashDust, new Vector3(transform.position.x - 0.58f, transform.position.y - 0.025f), Quaternion.Euler(0, 0, 0), effectParent.transform);
+            dust1.GetComponent<SpriteRenderer>().flipX = true;
+            dust2.GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else
+        {
+            Instantiate(dashDust, new Vector3(transform.position.x + 0.27f, transform.position.y - 0.025f), Quaternion.Euler(0, 0, 0), effectParent.transform);
+            Instantiate(dashDust, new Vector3(transform.position.x + 0.58f, transform.position.y - 0.025f), Quaternion.Euler(0, 0, 0), effectParent.transform);
+        }
 
         rigidbody.velocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * chargeSpeed;
         isCharge = true;
