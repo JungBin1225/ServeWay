@@ -83,8 +83,8 @@ public class YoutuberController : MonoBehaviour
         playerDamaged = false;
         isLeft = true;
 
-        minPos = new Vector2(room.transform.position.x - (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y - (room.GetComponent<BoxCollider2D>().size.y / 2));
-        maxPos = new Vector2(room.transform.position.x + (room.GetComponent<BoxCollider2D>().size.x / 2), room.transform.position.y + (room.GetComponent<BoxCollider2D>().size.y / 2));
+        minPos = new Vector2(room.transform.position.x - (room.transform.localScale.x / 2), room.transform.position.y - (room.transform.localScale.y / 2));
+        maxPos = new Vector2(room.transform.position.x + (room.transform.localScale.x / 2), room.transform.position.y + (room.transform.localScale.y / 2));
 
         StartCoroutine(EnemyMove());
     }
@@ -334,18 +334,40 @@ public class YoutuberController : MonoBehaviour
         audio.Play();
 
         rigidbody.velocity = Vector2.zero;
-        for (int i = 0; i < machineGunAmount; i++)
+
+        for(int n = 0; n < 2; n++)
         {
-            Vector2 direction = player.transform.position - transform.position;
-            Vector3 spawnPos = direction.normalized * 2.6f;
-            Quaternion rot = Quaternion.FromToRotation(-Vector3.up, direction);
-            GameObject bullet = Instantiate(riceBulletPrefab, transform.position + spawnPos, rot, bulletParent.transform);
-            bullet.GetComponent<EnemyBullet>().SetTarget(bullet.transform.up);
-            bullet.GetComponent<EnemyBullet>().SetSpeed(bulletSpeed * 2);
-            bullet.GetComponent<EnemyBullet>().SetDamage(bulletDamage);
-            bullet.GetComponent<EnemyBullet>().SetSprite(sprites);
-            yield return new WaitForSeconds(0.4f);
+            for (int i = 0; i < 4; i++)
+            {
+                int type = Random.Range(1, 5);
+                float posX = Random.Range(minPos.x + 0.5f, maxPos.x - 0.5f);
+                float posY = Random.Range(minPos.y + 0.5f, maxPos.y - 0.5f);
+                Vector3 pos = Vector3.zero;
+                Vector3 size = Vector3.zero;
+
+                if (type == 1 || type == 2)
+                {
+                    pos = new Vector3(room.transform.position.x, posY, 0);
+                    size = new Vector3(room.transform.localScale.x, 0.95f, 1);
+                }
+                else
+                {
+                    pos = new Vector3(posX, room.transform.position.y, 0);
+                    size = new Vector3(0.95f, room.transform.localScale.y, 1);
+                }
+
+
+                GameObject bullet = Instantiate(riceBulletPrefab, pos, Quaternion.Euler(0, 0, 0), bulletParent.transform);
+                bullet.transform.localScale = size;
+                bullet.GetComponent<YoutuberComment>().type = type;
+                bullet.GetComponent<YoutuberComment>().SetDamage(bulletDamage);
+                bullet.GetComponent<YoutuberComment>().SetSprite(sprites);
+            }
+
+            yield return new WaitUntil(() => FindObjectOfType<YoutuberComment>() == null);
         }
+        
+        yield return new WaitForSeconds(0.3f);
 
         audio.Stop();
         isAttack = false;

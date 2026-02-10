@@ -18,6 +18,7 @@ public class BossController : MonoBehaviour
     public Food_Nation nation;
     public Boss_Job job;
     public GameObject eatSound;
+    public GameObject reduceDamage;
 
     void Start()
     {
@@ -93,7 +94,8 @@ public class BossController : MonoBehaviour
         {
             if(food == youtuberController.GetAlgorithmFood())
             {
-                Debug.Log("Critical");
+                Vector3 pos = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
+                Instantiate(reduceDamage, transform.position + pos, Quaternion.Euler(0, 0, 0));
                 damage /= 0.8f;
             }
             misson.OccurreEvent(13, damage);
