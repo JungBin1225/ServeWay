@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2e77f4d3f04d11f498dd2c1bdea2517a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c64b782e5d24eb4c91e5cd68fb0025a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,18 +122,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.045, y: -0.045}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.78, y: 0.77}
+    oldSize: {x: 1.92, y: 1.92}
     newSize: {x: 0.78, y: 0.77}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.62, y: 0.61}
+  m_Size: {x: 0.63, y: 0.67}
   m_EdgeRadius: 0
 --- !u!114 &-9186785916918638282
 MonoBehaviour:
@@ -154,6 +154,12 @@ MonoBehaviour:
   food: {fileID: 0}
   boss: {fileID: 0}
   sound: {fileID: 5508937668721963479, guid: ae5bc76b0d426c54ab7cdf4ca1ed239a, type: 3}
+  sprites:
+  - {fileID: 21300000, guid: 2c64b782e5d24eb4c91e5cd68fb0025a, type: 3}
+  - {fileID: 21300000, guid: 5f9b76970d7cb6f4bb90bb5f633f4669, type: 3}
+  - {fileID: 21300000, guid: f1e4e96847fb431448d00caa420e7cbd, type: 3}
+  - {fileID: 21300000, guid: 7488dd188f31efe47970063434f1a35d, type: 3}
+  - {fileID: 21300000, guid: b67593542f44a4a4b8c1eb88f64dc989, type: 3}
 --- !u!1 &2770670342604649585
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,8 +185,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2770670342604649585}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.05, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
+  m_LocalPosition: {x: -0.045, y: -0.02, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1487039979368102010}

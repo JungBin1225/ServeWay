@@ -9,7 +9,7 @@ public class YoutuberComment : MonoBehaviour
     private GameObject bulletParent;
 
     public int type;
-    public GameObject bulletPrefab;
+    public List<GameObject> bulletPrefab;
 
     void Start()
     {
@@ -60,23 +60,23 @@ public class YoutuberComment : MonoBehaviour
                 break;
         }
 
-        GameObject bullet = Instantiate(bulletPrefab, pos, rot, bulletParent.transform);
+        GameObject bullet = Instantiate(bulletPrefab[Random.Range(0, bulletPrefab.Count)], pos, rot, bulletParent.transform  );
         bullet.GetComponent<YoutuberCommentBullet>().SetDamage(damage);
         bullet.GetComponent<YoutuberCommentBullet>().SetSprite(sprites);
 
         SpriteRenderer sprite = bullet.GetComponent<SpriteRenderer>();
         BoxCollider2D collider = bullet.GetComponent<BoxCollider2D>();
-        sprite.size = new Vector2(0.1f, 0.95f);
-        collider.size = new Vector2(0.1f, 0.95f);
+        sprite.size = new Vector2(0.01f, 0.17f);
+        collider.size = new Vector2(0.01f, 0.17f);
         
-        while(sprite.size.x < 2.57f)
+        while(sprite.size.x < 0.63f)
         {
-            sprite.size = new Vector2(sprite.size.x + (Time.deltaTime * 15), 0.95f);
-            collider.size = new Vector2(collider.size.x + (Time.deltaTime * 15), 0.95f);
+            sprite.size = new Vector2(sprite.size.x + (Time.deltaTime * 3), 0.17f);
+            collider.size = new Vector2(collider.size.x + (Time.deltaTime * 3), 0.17f);
             yield return null;
         }
-        sprite.size = new Vector2(2.57f, 0.95f);
-        collider.size = new Vector2(2.57f, 0.95f);
+        sprite.size = new Vector2(0.63f, 0.17f);
+        collider.size = new Vector2(0.63f, 0.17f);
 
         while(targetDir > 0)
         {

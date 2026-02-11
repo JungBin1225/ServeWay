@@ -310,7 +310,8 @@ public class YoutuberController : MonoBehaviour
 
             yield return new WaitForSeconds(algorithmCoolTime);
         }
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitUntil(() => FindObjectOfType<Algorithm>() == null);
+        yield return new WaitForSeconds(0.2f);
 
         audio.Stop();
         isAlgorithm = false;
@@ -348,12 +349,12 @@ public class YoutuberController : MonoBehaviour
                 if (type == 1 || type == 2)
                 {
                     pos = new Vector3(room.transform.position.x, posY, 0);
-                    size = new Vector3(room.transform.localScale.x, 0.95f, 1);
+                    size = new Vector3(room.transform.localScale.x, 0.85f, 1);
                 }
                 else
                 {
                     pos = new Vector3(posX, room.transform.position.y, 0);
-                    size = new Vector3(0.95f, room.transform.localScale.y, 1);
+                    size = new Vector3(0.85f, room.transform.localScale.y, 1);
                 }
 
 

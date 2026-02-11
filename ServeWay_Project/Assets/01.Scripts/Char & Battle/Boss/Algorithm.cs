@@ -5,6 +5,7 @@ using UnityEngine;
 public class Algorithm : MonoBehaviour
 {
     private GameObject effectParent;
+    private SpriteRenderer spriteRenderer;
 
     public Vector3 target;
     public float speed;
@@ -13,11 +14,15 @@ public class Algorithm : MonoBehaviour
     public Sprite food;
     public GameObject boss;
     public GameObject sound;
+    public List<Sprite> sprites;
 
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = food;
         effectParent = GameObject.Find("EffectList");
+
+        spriteRenderer.sprite = sprites[Random.Range(0, sprites.Count)];
     }
 
     void Update()
