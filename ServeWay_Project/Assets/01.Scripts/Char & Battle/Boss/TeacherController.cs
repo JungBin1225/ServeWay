@@ -34,6 +34,9 @@ public class TeacherController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject laserPrefab;
     public GameObject explosionPrefab;
+    public GameObject counterEffect;
+    public GameObject testPaper;
+    public GameObject scoreEffect;
     public float speed;
     public float attackCoolTime;
     public float bulletSpeed;
@@ -222,7 +225,7 @@ public class TeacherController : MonoBehaviour
 
         line.SetPosition(0, transform.position);
 
-        int mask = 1 << LayerMask.NameToLayer("RayWall");
+        int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
         if (hit)
         {
@@ -325,6 +328,9 @@ public class TeacherController : MonoBehaviour
     private IEnumerator CounterPattern()
     {
         isAttack = true;
+        testPaper.SetActive(true);
+        weaponObject.gameObject.SetActive(false);
+
         yield return new WaitForSeconds(0.2f);
 
         float time = 0;
@@ -335,8 +341,12 @@ public class TeacherController : MonoBehaviour
             if(counterAmount >= 4)
             {
                 //effect
+                Instantiate(scoreEffect, player.transform);
+                yield return new WaitForSeconds(0.33f);
+
                 player.GetComponent<PlayerHealth>().PlayerDamaged(counterDamage, sprites);
                 playerDamaged = true;
+                
                 break;
             }
 
@@ -363,7 +373,15 @@ public class TeacherController : MonoBehaviour
             mission.OccurreEvent(14, 1);
         }
         playerDamaged = false;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
+
+        testPaper.transform.GetChild(0).gameObject.SetActive(false);
+        testPaper.transform.GetChild(1).gameObject.SetActive(false);
+        testPaper.transform.GetChild(2).gameObject.SetActive(false);
+        testPaper.transform.GetChild(3).gameObject.SetActive(false);
+        testPaper.SetActive(false);
+        weaponObject.gameObject.SetActive(true);
+
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
@@ -371,7 +389,12 @@ public class TeacherController : MonoBehaviour
 
     public void AddAmount()
     {
-        counterAmount++;
+        Instantiate(counterEffect, transform.position, transform.rotation, effectParent.transform);
+        if(counterAmount < 4)
+        {
+            testPaper.transform.GetChild(counterAmount).gameObject.SetActive(true);
+            counterAmount++;
+        }
     }
 
     private void SetSprite(Food_MainIngred ingred)
