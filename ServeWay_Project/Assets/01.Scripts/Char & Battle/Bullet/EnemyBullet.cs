@@ -50,6 +50,11 @@ public class EnemyBullet : MonoBehaviour
         GetComponent<SpriteRenderer>().color = color;
     }
 
+    public List<Sprite> GetSprite()
+    {
+        return sprite;
+    }
+
     public void Fire()
     {
         Vector3 dir = new Vector3(target.x, target.y, 0);
