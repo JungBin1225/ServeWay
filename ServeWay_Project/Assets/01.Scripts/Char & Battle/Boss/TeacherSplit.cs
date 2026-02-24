@@ -5,12 +5,15 @@ using UnityEngine;
 public class TeacherSplit : MonoBehaviour
 {
     private GameObject bulletParent;
+    private GameObject effectParent;
 
     public GameObject split;
+    public GameObject sound;
 
     void Start()
     {
         bulletParent = GameObject.Find("BulletList");
+        effectParent = GameObject.Find("EffectList");
     }
 
     void Update()
@@ -33,5 +36,7 @@ public class TeacherSplit : MonoBehaviour
             bullet.GetComponent<EnemyBullet>().SetSprite(GetComponent<EnemyExplosionBullet>().GetSprite());
             bullet.GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
         }
+
+        Instantiate(sound, transform.position, transform.rotation, effectParent.transform);
     }
 }

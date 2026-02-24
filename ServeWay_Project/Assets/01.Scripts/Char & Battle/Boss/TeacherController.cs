@@ -14,6 +14,7 @@ public class TeacherController : MonoBehaviour
     private GameObject summonObject;
     private SpriteRenderer charSprite;
     private List<FoodData> playerFood;
+    private AudioSource audio;
     private Vector2 minPos;
     private Vector2 maxPos;
     private List<Sprite> sprites;
@@ -39,7 +40,9 @@ public class TeacherController : MonoBehaviour
     public GameObject counterEffect;
     public GameObject testPaper;
     public GameObject scoreEffect;
+    public GameObject wrongSound;
     public List<LineRenderer> lines;
+    public List<AudioClip> attackSound;
     public float speed;
     public float attackCoolTime;
     public float bulletSpeed;
@@ -60,6 +63,7 @@ public class TeacherController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         charSprite = GetComponent<SpriteRenderer>();
+        audio = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
@@ -236,17 +240,16 @@ public class TeacherController : MonoBehaviour
         Vector2 inDirection = (hit.point - (Vector2)transform.position).normalized;
         Vector2 reflectionDir = Vector2.Reflect(inDirection, hit.normal);
 
-        hit = Physics2D.Raycast(hit.point + (reflectionDir * 0.001f), reflectionDir, 1000f, mask);
+        RaycastHit2D hit2 = Physics2D.Raycast(hit.point + (reflectionDir * 0.001f), reflectionDir, 1000f, mask);
 
-        lines[1].SetPosition(1, hit.point);
-        lines[2].SetPosition(0, hit.point);
+        lines[1].SetPosition(1, hit2.point);
+        lines[2].SetPosition(0, hit2.point);
 
-        inDirection = (hit.point - (Vector2)transform.position).normalized;
-        reflectionDir = Vector2.Reflect(inDirection, hit.normal);
+        Ray2D ray2 = new Ray2D(hit2.point, target - (Vector3)hit2.point);
 
-        hit = Physics2D.Raycast(hit.point + (reflectionDir * 0.001f), reflectionDir, 1000f, mask);
+        RaycastHit2D hit3 = Physics2D.Raycast(ray2.origin + (ray2.direction * 0.001f), ray2.direction, 1000f, mask);
 
-        lines[2].SetPosition(1, hit.point);
+        lines[2].SetPosition(1, hit3.point);
 
         yield return new WaitForSeconds(0.75f);
 
@@ -307,7 +310,20 @@ public class TeacherController : MonoBehaviour
         laser_3.transform.rotation = angleAxis;
         laser_3.transform.position = pos;
 
-        yield return new WaitForSeconds(1.5f);
+        float time = 0;
+        while(time < 1.5f)
+        {
+            audio.loop = false;
+            audio.clip = attackSound[0];
+            audio.volume = 0.4f;
+            audio.pitch = 1.0f;
+            audio.Play();
+
+            time += 0.15f;
+            yield return new WaitForSeconds(0.15f);
+        }
+
+        yield return new WaitForSeconds(0.2f);
 
         isLaser = false;
         for (int i = 0; i < 3; i++)
@@ -335,6 +351,12 @@ public class TeacherController : MonoBehaviour
 
         for (int j = 0; j < 6; j++)
         {
+            audio.loop = false;
+            audio.clip = attackSound[1];
+            audio.volume = 1.0f;
+            audio.pitch = 1.5f;
+            audio.Play();
+
             List<Vector3> randomPos = new List<Vector3>();
             randomPos.Add((player.transform.position - transform.position).normalized);
             for(int i = 1; i < bulletAmount; i++)
@@ -370,6 +392,12 @@ public class TeacherController : MonoBehaviour
         
         for(int i = 0; i < 6; i++)
         {
+            audio.loop = false;
+            audio.clip = attackSound[2];
+            audio.volume = 1.0f;
+            audio.pitch = 1.0f;
+            audio.Play();
+
             float posX = Random.Range(-(room.transform.localScale.x / 2), (room.transform.localScale.x / 2));
             float posY = Random.Range(-(room.transform.localScale.y / 2), (room.transform.localScale.y / 2));
             Vector3 target = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
@@ -402,6 +430,12 @@ public class TeacherController : MonoBehaviour
         isAttack = true;
         testPaper.SetActive(true);
         weaponObject.gameObject.SetActive(false);
+
+        audio.loop = false;
+        audio.clip = attackSound[3];
+        audio.volume = 1.0f;
+        audio.pitch = 1.2f;
+        audio.Play();
 
         yield return new WaitForSeconds(0.2f);
 
@@ -465,6 +499,7 @@ public class TeacherController : MonoBehaviour
         if(counterAmount < 4)
         {
             testPaper.transform.GetChild(counterAmount).gameObject.SetActive(true);
+            Instantiate(wrongSound, transform.position, transform.rotation, effectParent.transform);
             counterAmount++;
         }
     }
