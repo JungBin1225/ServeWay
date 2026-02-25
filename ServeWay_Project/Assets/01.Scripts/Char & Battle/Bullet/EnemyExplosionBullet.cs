@@ -46,6 +46,12 @@ public class EnemyExplosionBullet : EnemyBullet
         gameObject.GetComponent<CircleCollider2D>().radius = radius;
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
+
+        if(GetComponent<AudioSource>() != null)
+        {
+            GetComponent<AudioSource>().Play();
+        }
+
         //폭발 애니메이션 실행
         yield return new WaitForSeconds(0.2f);
 
