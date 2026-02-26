@@ -20,8 +20,6 @@ public class TeacherController : MonoBehaviour
     private List<Sprite> sprites;
     private float coolTime;
     private GameObject laser_1;
-    private GameObject laser_2;
-    private GameObject laser_3;
     private bool isAttack;
     private bool isLaser;
     private int counterAmount;
@@ -41,7 +39,8 @@ public class TeacherController : MonoBehaviour
     public GameObject testPaper;
     public GameObject scoreEffect;
     public GameObject wrongSound;
-    public List<LineRenderer> lines;
+    public GameObject clonePrefab;
+    public LineRenderer line;
     public List<AudioClip> attackSound;
     public float speed;
     public float attackCoolTime;
@@ -216,99 +215,72 @@ public class TeacherController : MonoBehaviour
         isLaser = true;
         SetSprite(Food_MainIngred.NOODLE);
 
-        for(int i = 0; i < 3; i++)
-        {
-            lines[i].enabled = true;
-            lines[i].gameObject.GetComponent<Animator>().SetBool("red", true);
-            lines[i].startColor = new Color(1, 0, 0);
-            lines[i].endColor = new Color(1, 0, 0);
-        }
+        GameObject clone_1 = Instantiate(clonePrefab, transform.position, transform.rotation, bulletParent.transform);
+        GameObject clone_2 = Instantiate(clonePrefab, transform.position, transform.rotation, bulletParent.transform);
+
+        TeacherLaser L1 = clone_1.GetComponent<TeacherLaser>();
+        TeacherLaser L2 = clone_2.GetComponent<TeacherLaser>();
+
+        float posX = Random.Range(-(room.transform.localScale.x / 2) + 1, (room.transform.localScale.x / 2) - 1);
+        float posY = Random.Range(-(room.transform.localScale.y / 2) + 1, (room.transform.localScale.y / 2) - 1);
+        Vector3 ranPos_1 = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
+
+        posX = Random.Range(-(room.transform.localScale.x / 2) + 1, (room.transform.localScale.x / 2) - 1);
+        posY = Random.Range(-(room.transform.localScale.y / 2) + 1, (room.transform.localScale.y / 2) - 1);
+        Vector3 ranPos_2 = new Vector3(room.transform.position.x + posX, room.transform.position.y + posY, 0);
+
+        L1.SetPos(ranPos_1);
+        L2.SetPos(ranPos_2);
+
+        L1.SetSprite(GetSprite(Food_MainIngred.NOODLE));
+        L2.SetSprite(GetSprite(Food_MainIngred.NOODLE));
+
+        yield return null;
+        yield return new WaitUntil(() => (!L1.GetMoving() && !L2.GetMoving()));
+
+        L1.FireStart(bulletColor, player.transform.position, bulletDamage, sprites);
+        L2.FireStart(bulletColor, player.transform.position, bulletDamage, sprites);
+
+        line.enabled = true;
+        line.gameObject.GetComponent<Animator>().SetBool("red", true);
+        line.startColor = new Color(1, 0, 0);
+        line.endColor = new Color(1, 0, 0);
 
         Vector3 target = player.transform.position;
         Ray2D ray = new Ray2D(transform.position, target - transform.position);
 
-        lines[0].SetPosition(0, transform.position);
+        line.SetPosition(0, transform.position);
 
         int mask = 1 << LayerMask.NameToLayer("RayWall") | 1 << LayerMask.NameToLayer("TileMap");
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 1000f, mask);
         if (hit)
         {
-            lines[0].SetPosition(1, hit.point);
-            lines[1].SetPosition(0, hit.point);
+            line.SetPosition(1, hit.point);
         }
-
-        Vector2 inDirection = (hit.point - (Vector2)transform.position).normalized;
-        Vector2 reflectionDir = Vector2.Reflect(inDirection, hit.normal);
-
-        RaycastHit2D hit2 = Physics2D.Raycast(hit.point + (reflectionDir * 0.001f), reflectionDir, 1000f, mask);
-
-        lines[1].SetPosition(1, hit2.point);
-        lines[2].SetPosition(0, hit2.point);
-
-        Ray2D ray2 = new Ray2D(hit2.point, target - (Vector3)hit2.point);
-
-        RaycastHit2D hit3 = Physics2D.Raycast(ray2.origin + (ray2.direction * 0.001f), ray2.direction, 1000f, mask);
-
-        lines[2].SetPosition(1, hit3.point);
 
         yield return new WaitForSeconds(0.75f);
 
-        for (int i = 0; i < 3; i++)
-        {
-            lines[i].gameObject.GetComponent<Animator>().SetBool("red", false);
-            lines[i].startColor = bulletColor;
-            lines[i].endColor = bulletColor;
-        }
+        line.gameObject.GetComponent<Animator>().SetBool("red", false);
+        line.startColor = bulletColor;
+        line.endColor = bulletColor;
 
         laser_1 = Instantiate(laserPrefab, this.transform);
-        laser_2 = Instantiate(laserPrefab, this.transform);
-        laser_3 = Instantiate(laserPrefab, this.transform);
 
         laser_1.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
         laser_1.GetComponent<EnemyLaser>().SetCoolTime(0.2f);
         laser_1.GetComponent<EnemyLaser>().SetSprite(sprites);
 
-        laser_2.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
-        laser_2.GetComponent<EnemyLaser>().SetCoolTime(0.2f);
-        laser_2.GetComponent<EnemyLaser>().SetSprite(sprites);
 
-        laser_3.GetComponent<EnemyLaser>().SetDamage(bulletDamage);
-        laser_3.GetComponent<EnemyLaser>().SetCoolTime(0.2f);
-        laser_3.GetComponent<EnemyLaser>().SetSprite(sprites);
+        Vector3 start = line.GetPosition(0);
+        Vector3 end = line.GetPosition(1);
 
-
-        Vector3 start = lines[0].GetPosition(0);
-        Vector3 end = lines[0].GetPosition(1);
-
-        laser_1.transform.localScale = new Vector3(Vector3.Distance(start, end), lines[0].startWidth, 0);
+        laser_1.transform.localScale = new Vector3(Vector3.Distance(start, end), line.startWidth, 0);
         Vector3 pos = (start + end) / 2;
         Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
         laser_1.transform.rotation = angleAxis;
         laser_1.transform.position = pos;
-
-        start = lines[1].GetPosition(0);
-        end = lines[1].GetPosition(1);
-
-        laser_2.transform.localScale = new Vector3(Vector3.Distance(start, end), lines[1].startWidth, 0);
-        pos = (start + end) / 2;
-        dir = new Vector2(pos.x - end.x, pos.y - end.y);
-        angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
-        laser_2.transform.rotation = angleAxis;
-        laser_2.transform.position = pos;
-
-        start = lines[2].GetPosition(0);
-        end = lines[2].GetPosition(1);
-
-        laser_3.transform.localScale = new Vector3(Vector3.Distance(start, end), lines[2].startWidth, 0);
-        pos = (start + end) / 2;
-        dir = new Vector2(pos.x - end.x, pos.y - end.y);
-        angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
-        laser_3.transform.rotation = angleAxis;
-        laser_3.transform.position = pos;
 
         float time = 0;
         while(time < 1.5f)
@@ -326,16 +298,11 @@ public class TeacherController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         isLaser = false;
-        for (int i = 0; i < 3; i++)
-        {
-            lines[i].SetPosition(1, transform.position);
-            lines[i].enabled = false;
-        }
+        line.SetPosition(1, transform.position);
+        line.enabled = false;
         isAttack = false;
         coolTime = attackCoolTime;
         Destroy(laser_1);
-        Destroy(laser_2);
-        Destroy(laser_3);
         StartCoroutine(EnemyMove());
     }
 
@@ -527,6 +494,27 @@ public class TeacherController : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private Sprite GetSprite(Food_MainIngred ingred)
+    {
+        foreach (FoodData food in playerFood)
+        {
+            if (food.mainIngred == ingred)
+            {
+                return food.foodSprite;
+            }
+        }
+
+        foreach (FoodData food in data.foodData.FoodDatas)
+        {
+            if (food.mainIngred == ingred)
+            {
+                return food.foodSprite;
+            }
+        }
+
+        return null;
     }
 
     private void SetIncreaseByStage()
