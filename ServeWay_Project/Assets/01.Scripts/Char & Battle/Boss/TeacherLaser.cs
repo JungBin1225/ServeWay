@@ -59,7 +59,7 @@ public class TeacherLaser : MonoBehaviour
         Vector3 start = line.GetPosition(0);
         Vector3 end = line.GetPosition(1);
 
-        laser.transform.localScale = new Vector3(Vector3.Distance(start, end), line.startWidth, 0);
+        laser.transform.localScale = new Vector3(Vector3.Distance(start, end) / 3.5f, line.startWidth / 3.5f, 0);
         Vector3 pos = (start + end) / 2;
         Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;

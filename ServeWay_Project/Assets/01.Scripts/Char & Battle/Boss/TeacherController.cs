@@ -8,6 +8,7 @@ public class TeacherController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private BossController bossCon;
     private DataController data;
+    private Animator anim;
     private GameObject player;
     private GameObject bulletParent;
     private GameObject effectParent;
@@ -20,6 +21,7 @@ public class TeacherController : MonoBehaviour
     private List<Sprite> sprites;
     private float coolTime;
     private GameObject laser_1;
+    private int counterCount;
     private bool isAttack;
     private bool isLaser;
     private int counterAmount;
@@ -41,6 +43,7 @@ public class TeacherController : MonoBehaviour
     public GameObject wrongSound;
     public GameObject clonePrefab;
     public LineRenderer line;
+    public Material defaultMat;
     public List<AudioClip> attackSound;
     public float speed;
     public float attackCoolTime;
@@ -62,6 +65,7 @@ public class TeacherController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         bossCon = GetComponent<BossController>();
         charSprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
@@ -85,6 +89,7 @@ public class TeacherController : MonoBehaviour
 
         coolTime = attackCoolTime;
         counterAmount = 0;
+        counterCount = 2;
         isCounter = false;
         isAttack = false;
         isLaser = false;
@@ -122,21 +127,30 @@ public class TeacherController : MonoBehaviour
             weaponObject.sortingOrder = charSprite.sortingOrder + 1;
         }
 
-        if (rigidbody.velocity.x < 0)
+        if (!isAttack && rigidbody.velocity.x < 0)
         {
             isLeft = true;
         }
-        else if (rigidbody.velocity.x > 0)
+        else if (!isAttack && rigidbody.velocity.x > 0)
         {
             isLeft = false;
         }
+        else if (isAttack && transform.position.x - player.transform.position.x > 0)
+        {
+            isLeft = true;
+        }
+        else if (isAttack && transform.position.x - player.transform.position.x < 0)
+        {
+            isLeft = false;
+        }
+
         if (isLeft)
         {
-            charSprite.flipX = false;
+            charSprite.flipX = true;
         }
         else
         {
-            charSprite.flipX = true;
+            charSprite.flipX = false;
         }
 
         if (bossCon.GetHp() == 0)
@@ -149,6 +163,7 @@ public class TeacherController : MonoBehaviour
 
     private IEnumerator EnemyMove()
     {
+        anim.SetTrigger("walk");
         while (bossCon.GetHp() != 0 && coolTime > 0)
         {
             float posX = Random.Range(minPos.x, maxPos.x);
@@ -182,6 +197,11 @@ public class TeacherController : MonoBehaviour
     {
         int index = Random.Range(0, 4);
 
+        if(counterCount < 2)
+        {
+            index = Random.Range(0, 3);
+        }
+
         if (test > 0 && test < 5)
         {
             index = test - 1;
@@ -214,6 +234,10 @@ public class TeacherController : MonoBehaviour
         isAttack = true;
         isLaser = true;
         SetSprite(Food_MainIngred.NOODLE);
+
+        anim.SetInteger("attacktype", 1);
+        anim.SetTrigger("attack");
+        yield return new WaitForSeconds(0.1f);
 
         GameObject clone_1 = Instantiate(clonePrefab, transform.position, transform.rotation, bulletParent.transform);
         GameObject clone_2 = Instantiate(clonePrefab, transform.position, transform.rotation, bulletParent.transform);
@@ -258,6 +282,7 @@ public class TeacherController : MonoBehaviour
             line.SetPosition(1, hit.point);
         }
 
+        isAttack = false;
         yield return new WaitForSeconds(0.75f);
 
         line.gameObject.GetComponent<Animator>().SetBool("red", false);
@@ -274,7 +299,7 @@ public class TeacherController : MonoBehaviour
         Vector3 start = line.GetPosition(0);
         Vector3 end = line.GetPosition(1);
 
-        laser_1.transform.localScale = new Vector3(Vector3.Distance(start, end), line.startWidth, 0);
+        laser_1.transform.localScale = new Vector3(Vector3.Distance(start, end) / 3.5f, line.startWidth / 3.5f, 0);
         Vector3 pos = (start + end) / 2;
         Vector2 dir = new Vector2(pos.x - end.x, pos.y - end.y);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -297,6 +322,7 @@ public class TeacherController : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
 
+        counterCount++;
         isLaser = false;
         line.SetPosition(1, transform.position);
         line.enabled = false;
@@ -310,6 +336,9 @@ public class TeacherController : MonoBehaviour
     {
         isAttack = true;
         SetSprite(Food_MainIngred.SOUP);
+
+        anim.SetInteger("attacktype", 2);
+        anim.SetTrigger("attack");
         yield return new WaitForSeconds(0.35f);
 
         float radius = 15;
@@ -346,6 +375,7 @@ public class TeacherController : MonoBehaviour
         }
         yield return new WaitForSeconds(0.3f);
 
+        counterCount++;
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
@@ -355,6 +385,9 @@ public class TeacherController : MonoBehaviour
     {
         isAttack = true;
         SetSprite(Food_MainIngred.BREAD);
+
+        anim.SetInteger("attacktype", 3);
+        anim.SetTrigger("attack");
         yield return new WaitForSeconds(0.3f);
         
         for(int i = 0; i < 6; i++)
@@ -387,6 +420,7 @@ public class TeacherController : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.4f);
+        counterCount++;
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
@@ -394,9 +428,11 @@ public class TeacherController : MonoBehaviour
 
     private IEnumerator CounterPattern()
     {
-        isAttack = true;
         testPaper.SetActive(true);
         weaponObject.gameObject.SetActive(false);
+
+        anim.SetInteger("attacktype", 4);
+        anim.SetTrigger("attack");
 
         audio.loop = false;
         audio.clip = attackSound[3];
@@ -415,6 +451,8 @@ public class TeacherController : MonoBehaviour
             {
                 //effect
                 Instantiate(scoreEffect, player.transform);
+                anim.SetTrigger("counter");
+                charSprite.material = defaultMat;
                 yield return new WaitForSeconds(0.33f);
 
                 player.GetComponent<PlayerHealth>().PlayerDamaged(counterDamage, sprites);
@@ -455,6 +493,7 @@ public class TeacherController : MonoBehaviour
         testPaper.SetActive(false);
         weaponObject.gameObject.SetActive(true);
 
+        counterCount = 0;
         isAttack = false;
         coolTime = attackCoolTime;
         StartCoroutine(EnemyMove());
