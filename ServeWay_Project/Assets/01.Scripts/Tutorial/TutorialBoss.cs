@@ -14,6 +14,8 @@ public class TutorialBoss : MonoBehaviour
     public BossTutorial room;
     public Food_Nation nation;
     public GameObject stair;
+    public Material defaltMat;
+    public Material redMat;
 
     void Start()
     {
@@ -61,6 +63,15 @@ public class TutorialBoss : MonoBehaviour
             misson.OccurreEvent(0, damage);
         }
         misson.OccurreEvent(3, damage);
+
+        StartCoroutine(red());
+    }
+
+    IEnumerator red()
+    {
+        spriteRenderer.material = redMat;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.material = defaltMat;
     }
 
     public void SetHp(float hp)

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8570218352979256458}
   - component: {fileID: 8570218352979256457}
   - component: {fileID: 7763778197687621344}
+  - component: {fileID: 441842232638549051}
   m_Layer: 6
   m_Name: TutorialBoss
   m_TagString: Boss
@@ -149,3 +150,26 @@ MonoBehaviour:
   room: {fileID: 0}
   nation: 0
   stair: {fileID: 0}
+  defaltMat: {fileID: 2100000, guid: 2ab0decec65dabe43b5f5a1b540ebd1c, type: 2}
+  redMat: {fileID: 2100000, guid: eb0fbc6772bc8e1409ac22f982ae19ca, type: 2}
+--- !u!95 &441842232638549051
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8570218352979256462}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a3f613bb48b714f40bb7a5045ebeabd3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

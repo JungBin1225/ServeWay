@@ -94,7 +94,6 @@ public class ChargingTutorial : MonoBehaviour
             }
             else
             {
-                Destroy(enemy.gameObject);
                 isClear = true;
                 for (int i = 0; i < door.transform.childCount; i++)
                 {
@@ -187,6 +186,14 @@ public class ChargingTutorial : MonoBehaviour
             minimapPlayer.transform.position = transform.position;
             minimapTile.SetActive(false);
             minimapRoad.SetActive(false);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Player" && isClear)
+        {
+            Destroy(enemy.gameObject);
         }
     }
 }
