@@ -102,6 +102,9 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
                 mainGroup.interactable = true;
                 mainGroup.blocksRaycasts = true;
                 break;
+            case BTNType.Credit:
+                SceneManager.LoadScene("CreditScene");
+                break;
         }
     }
 
@@ -183,6 +186,22 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
     public void SetOffFork()
     {
         gameObject.transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    public void OpenPot()
+    {
+        RectTransform top = gameObject.transform.GetChild(1).gameObject.GetComponent<RectTransform>();
+        top.anchoredPosition = new Vector3(-16.0f, 70.0f, 0);
+        top.rotation = Quaternion.Euler(0, 0, 25);
+
+        potSound.Play();
+    }
+
+    public void ClosePot()
+    {
+        RectTransform top = gameObject.transform.GetChild(1).gameObject.GetComponent<RectTransform>();
+        top.anchoredPosition = new Vector3(0.0f, 51.0f, 0);
+        top.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     public void Check(GameObject check)

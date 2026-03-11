@@ -13,7 +13,8 @@ public enum BTNType
     Continue,
     Quit,
     CloseStart,
-    Ending
+    Ending,
+    Credit
 }
 
 public class MainUI : MonoBehaviour
