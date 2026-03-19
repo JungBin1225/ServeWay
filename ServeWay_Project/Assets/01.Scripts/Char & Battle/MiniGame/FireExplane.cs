@@ -13,6 +13,7 @@ public class FireExplane : MonoBehaviour
     public Sprite space;
     public Sprite spacePress;
     public GameObject effect;
+    public List<GameObject> bubbles;
 
     private bool isMove;
     void Start()
@@ -29,6 +30,10 @@ public class FireExplane : MonoBehaviour
         fire.anchoredPosition = new Vector3(0, -25, 0);
 
         StartCoroutine(explane());
+        foreach (GameObject bubble in bubbles)
+        {
+            StartCoroutine(bubbleAppear(bubble));
+        }
     }
 
     void Update()
@@ -133,6 +138,23 @@ public class FireExplane : MonoBehaviour
                 time += Time.unscaledDeltaTime;
                 spacetime += Time.unscaledDeltaTime;
             }
+        }
+    }
+
+    private IEnumerator bubbleAppear(GameObject bubble)
+    {
+        bubble.SetActive(false);
+        float time = Random.Range(0.5f, 2.0f);
+        yield return new WaitForSecondsRealtime(time);
+
+        while (true)
+        {
+            bubble.SetActive(true);
+            yield return new WaitForSecondsRealtime(1.5f);
+
+            bubble.SetActive(false);
+            time = Random.Range(0.5f, 2.0f);
+            yield return new WaitForSecondsRealtime(time);
         }
     }
 }
