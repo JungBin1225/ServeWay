@@ -9,15 +9,20 @@ public class PotBubble : MonoBehaviour
 
     void Start()
     {
-        foreach(GameObject bubble in bubbles)
-        {
-            StartCoroutine(bubbleAppear(bubble));
-        }
+        
     }
 
     void Update()
     {
         
+    }
+
+    private void OnEnable()
+    {
+        foreach (GameObject bubble in bubbles)
+        {
+            StartCoroutine(bubbleAppear(bubble));
+        }
     }
 
     private IEnumerator bubbleAppear(GameObject bubble)

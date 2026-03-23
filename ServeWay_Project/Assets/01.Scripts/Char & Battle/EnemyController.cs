@@ -128,11 +128,6 @@ public class EnemyController : MonoBehaviour
         {
             agent.avoidancePriority = 51;
         }
-
-        if(transform.parent.GetChild(0).gameObject == this.gameObject)
-        {
-            Debug.Log(agent.velocity.magnitude);
-        }
     }
 
     public void GetDamage(float damage)

@@ -55,7 +55,6 @@ public class BossController : MonoBehaviour
     {
         dying = true;
         anim.SetTrigger("dead");
-        Debug.Log("dead");
         while(renderer.color.a > 0)
         {
             yield return null;

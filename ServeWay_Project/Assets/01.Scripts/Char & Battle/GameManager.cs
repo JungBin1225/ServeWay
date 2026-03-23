@@ -105,10 +105,6 @@ public class GameManager : MonoBehaviour
         for(int i = 0; i < 7; i++)
         {
             int index = Random.Range(0, list.Count);
-            if (i == 0)
-            {
-                index = 0;
-            }
 
             nationList.Add((Food_Nation)list[index]);
             list.RemoveAt(index);
@@ -125,10 +121,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 7; i++)
         {
             int index = Random.Range(0, list.Count);
-            if (i == 0)
-            {
-                index = 3;
-            }
 
             themeList.Add((Stage_Theme)list[index]);
             list.RemoveAt(index);
@@ -145,10 +137,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             int index = Random.Range(0, list.Count);
-            if (i == 0)
-            {
-                index = 0;
-            }
 
             jobList.Add((Boss_Job)list[index]);
             list.RemoveAt(index);

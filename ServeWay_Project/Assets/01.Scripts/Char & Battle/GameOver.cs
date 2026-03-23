@@ -155,6 +155,7 @@ public class GameOver : MonoBehaviour
         bool ending = GameManager.gameManager.charData.saveFile.isEnding;
 
         GameManager.gameManager.charData.saveFile = new SaveFile();
+        GameManager.gameManager.stage = 0;
 
         bool bgmMute = false;
         bool sfxMute = false;
@@ -179,6 +180,10 @@ public class GameOver : MonoBehaviour
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
         PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
         PlayerPrefs.Save();
+
+        GameManager.gameManager.charData.saveFile.isTuto = tuto;
+        GameManager.gameManager.charData.saveFile.isEnding = ending;
+        GameManager.gameManager.InitList();
 
         GameManager.gameManager.SetNextStage("StartMap");
         SceneManager.LoadScene("Loading");

@@ -106,7 +106,6 @@ public class EnemyGenerator : MonoBehaviour
     {
         isSpawn = true;
         bellSound.Play();
-        Debug.Log(enemyAmount);
         yield return new WaitForSeconds(0.3f);
 
         foreach(GameObject enemy in spawnList)
@@ -133,8 +132,6 @@ public class EnemyGenerator : MonoBehaviour
         GameObject appear = Instantiate(enemyAppear, new Vector3(posX, posY, 0), rot, effectParent.transform);
         yield return new WaitForSeconds(0.3f);
 
-        /*UnityEngine.Debug.LogFormat("boxCollider.size.x : {0} boxCollider.size.y : {1}", transform.localScale.x, transform.localScale.y);
-        UnityEngine.Debug.LogFormat("minX : {0} maxX : {1} posX : {2} posY : {3}", minX, maxX, posX,posY);*/
         Destroy(appear);
 
         GameObject enemy = Instantiate(enemyPrefab, new Vector3(posX, posY, 0), rot, enemyParent.transform);

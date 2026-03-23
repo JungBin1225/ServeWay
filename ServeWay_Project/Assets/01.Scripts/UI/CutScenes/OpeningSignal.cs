@@ -58,7 +58,6 @@ public class OpeningSignal: MonoBehaviour
         clickAble = false;
         director = GetComponent<PlayableDirector>();
         TimelineAsset timeline = (TimelineAsset)director.playableAsset;
-        Debug.Log(timeline.GetRootTrack(1).GetMarkerCount());
 
         TrackAsset track = timeline.GetRootTrack(1);
         for (int i = 0; i < track.GetMarkerCount(); i++)

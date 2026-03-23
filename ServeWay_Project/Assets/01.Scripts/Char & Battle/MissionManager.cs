@@ -448,12 +448,10 @@ public class MissionManager : MonoBehaviour
                 if(threeFoodScore.ContainsKey(damagedFoodName))
                 {
                     threeFoodScore[damagedFoodName] += increase;
-                    Debug.Log(damagedFoodName + " " +threeFoodScore[damagedFoodName]);
                 }
                 else
                 {
                     threeFoodScore.Add(damagedFoodName, increase);
-                    Debug.Log(damagedFoodName + " " + threeFoodScore[damagedFoodName]);
                 }
             }
 

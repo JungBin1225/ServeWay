@@ -172,7 +172,6 @@ public class MapGenerator : MonoBehaviour
             default:
                 startX = 0; startY = 0; break;
         }
-        Debug.LogFormat("startX = {0} startY = {1}", startX, startY);
         roomList[startY, startX].isCreated = 1;
         
         // 만들 방의 전체 개수 설정
@@ -960,7 +959,6 @@ public class MapGenerator : MonoBehaviour
     private void SetTile()
     {
         TileSprite tile = data.tileSpriteData.GetNowStageSprite(GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1]);
-        Debug.Log(GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1]);
 
         roomTile = tile.floor;
         outTile = data.tileSpriteData.outTile;

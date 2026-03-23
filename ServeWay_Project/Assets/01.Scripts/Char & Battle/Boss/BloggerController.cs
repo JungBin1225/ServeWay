@@ -348,7 +348,6 @@ public class BloggerController : MonoBehaviour
         if (hit)
         {
             line.SetPosition(1, hit.point);
-            Debug.Log(hit.point);
         }
         else
         {

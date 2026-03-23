@@ -21,7 +21,6 @@ public class EndingController : MonoBehaviour
         clickAble = false;
 
         TimelineAsset timeline = (TimelineAsset)director.playableAsset;
-        Debug.Log(timeline.GetRootTrack(0).GetMarkerCount());
 
         TrackAsset track = timeline.GetRootTrack(0);
         for (int i = 0; i < track.GetMarkerCount(); i++)
@@ -93,10 +92,9 @@ public class EndingController : MonoBehaviour
 
     public void GoToTitle()
     {
-        /*GameManager.gameManager.charData.saveFile = new SaveFile();
+        GameManager.gameManager.charData.saveFile = new SaveFile();
 
         bool tuto = true;
-        bool ending = true;
         bool bgmMute = false;
         bool sfxMute = false;
         float bgmValue = 1;
@@ -121,7 +119,7 @@ public class EndingController : MonoBehaviour
         PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
         PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
-        PlayerPrefs.Save();*/
+        PlayerPrefs.Save();
 
         GameManager.gameManager.SetNextStage("TitleScene");
         SceneManager.LoadScene("Loading");

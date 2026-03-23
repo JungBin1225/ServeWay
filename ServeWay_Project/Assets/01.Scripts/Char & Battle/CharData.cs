@@ -135,8 +135,9 @@ public class CharData : MonoBehaviour
 
         saveFile.inventory = FindIngredInSave();
 
-        //saveFile.stage = PlayerPrefs.GetInt("stage");
-        saveFile.stage = 1;//test
+        saveFile.stage = 0;
+        saveFile.stage = PlayerPrefs.GetInt("stage");
+        //saveFile.stage = 1;//test
 
         for (int i = 0; i < 7; i++)
         {
@@ -294,6 +295,11 @@ public class CharData : MonoBehaviour
 
         saveFile.isTuto = tuto;
         saveFile.isEnding = ending;
+
+        GameManager.gameManager.charData.saveFile.isTuto = tuto;
+        GameManager.gameManager.charData.saveFile.isEnding = ending;
+        GameManager.gameManager.stage = 0;
+        GameManager.gameManager.InitList();
 
         PlayerPrefs.Save();
     }

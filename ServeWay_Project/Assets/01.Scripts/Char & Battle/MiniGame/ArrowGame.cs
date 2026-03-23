@@ -139,8 +139,6 @@ public class ArrowGame : MonoBehaviour
         {
             success = Create_Success.FAIL;
         }
-
-        Debug.Log(success);
         yield return new WaitForSecondsRealtime(1.0f);
 
         isStart = false;

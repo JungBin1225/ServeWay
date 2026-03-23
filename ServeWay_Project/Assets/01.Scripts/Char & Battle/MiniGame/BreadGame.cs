@@ -46,7 +46,6 @@ public class BreadGame : MonoBehaviour
             audio.Play();
 
             score++;
-            Debug.Log(score);
         }
 
         if (isPlaying)
@@ -127,8 +126,6 @@ public class BreadGame : MonoBehaviour
         {
             success = Create_Success.FAIL;
         }
-
-        Debug.Log(success);
         yield return new WaitForSecondsRealtime(1.0f);
 
         createUI.success = success;

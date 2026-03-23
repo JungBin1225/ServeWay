@@ -90,7 +90,6 @@ public class TeacherLaser : MonoBehaviour
         {
             transform.position += dir * Time.deltaTime * 20.0f;
             dis = (pos - transform.position).normalized;
-            Debug.Log(dis);
             yield return null;
         }
 

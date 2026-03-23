@@ -72,7 +72,6 @@ public class FireExplane : MonoBehaviour
 
     private void OnDisable()
     {
-        Debug.Log("Disable");
         StopCoroutine(explane());
     }
 

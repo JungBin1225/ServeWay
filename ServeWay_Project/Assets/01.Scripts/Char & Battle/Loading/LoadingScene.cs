@@ -14,6 +14,7 @@ public class LoadingScene : MonoBehaviour
     {
         sceneName = GameManager.gameManager.GetNextStage();
         bar.fillAmount = 0;
+        Time.timeScale = 1;
 
         StartCoroutine(LoadScene());
     }

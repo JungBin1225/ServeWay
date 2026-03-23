@@ -90,8 +90,6 @@ public class CreateUI : MonoBehaviour
 
     public void SetList(List<string> nameList)
     {
-        Debug.Log(buttonList.Count);
-
         for(int i = 0; i < buttonList.Count; i++)
         {
             if(i < nameList.Count)

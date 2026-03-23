@@ -82,7 +82,7 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
 
                 if (GameManager.gameManager.charData.saveFile.isTuto)
                 {
-                    GameManager.gameManager.SetNextStage("Tutorial");
+                    GameManager.gameManager.SetNextStage("StartMap");
                 }
                 else
                 {
