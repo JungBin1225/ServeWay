@@ -84,7 +84,7 @@ public class Kitchen : MonoBehaviour
         {
             foreach (FoodData food in foodInfo.FoodDatas)
             {
-                if (CheckIngredient(food.needIngredient, Inventory.inventory) && dex.foodDex[food.foodName] != FoodDex_Status.LOCKED)
+                if (CheckIngredient(food.needIngredient, Inventory.inventory) && GameManager.gameManager.charData.saveFile.foodDex[food.foodName] != FoodDex_Status.LOCKED)
                 {
                     list.Add(food.foodName);
                 }

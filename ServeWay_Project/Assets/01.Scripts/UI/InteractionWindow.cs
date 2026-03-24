@@ -11,6 +11,7 @@ public class InteractionWindow : MonoBehaviour
     public GameObject time;
     public GameObject moveStage;
     public GameObject startMaked;
+    public GameObject moveWarn;
 
     private bool foodGetAble;
     private GameObject foodObject;
@@ -19,6 +20,7 @@ public class InteractionWindow : MonoBehaviour
     private bool refrigeAble;
     private bool moveStageAble;
     private bool alreadyMaked;
+    private bool moveAble;
 
     void Start()
     {
@@ -28,6 +30,7 @@ public class InteractionWindow : MonoBehaviour
         refrigeAble = false;
         moveStageAble = false;
         alreadyMaked = false;
+        moveAble = true;
 
         foodGet.SetActive(false);
         ingredGet.SetActive(false);
@@ -35,6 +38,7 @@ public class InteractionWindow : MonoBehaviour
         refrigeratorOpen.SetActive(false);
         moveStage.SetActive(false);
         startMaked.SetActive(false);
+        moveWarn.SetActive(false);
     }
 
     void Update()
@@ -103,12 +107,26 @@ public class InteractionWindow : MonoBehaviour
         {
             if(!foodGetAble && !ingredGetAble && !cookAble && !refrigeAble && !alreadyMaked)
             {
-                moveStage.SetActive(true);
+                if(moveAble)
+                {
+                    moveStage.SetActive(true);
+                }
+                else
+                {
+                    moveWarn.SetActive(true);
+                }
             }
         }
         else
         {
-            moveStage.SetActive(false);
+            if (moveAble)
+            {
+                moveStage.SetActive(false);
+            }
+            else
+            {
+                moveWarn.SetActive(false);
+            }
         }
     }
 
@@ -142,9 +160,10 @@ public class InteractionWindow : MonoBehaviour
         refrigeAble = able;
     }
 
-    public void SetMoveStageAble(bool able)
+    public void SetMoveStageAble(bool able, bool moveAble)
     {
         moveStageAble = able;
+        this.moveAble = moveAble;
     }
 
     public void AlreadyMaked(bool able)

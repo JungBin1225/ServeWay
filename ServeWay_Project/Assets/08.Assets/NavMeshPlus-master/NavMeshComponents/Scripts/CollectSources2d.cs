@@ -1,4 +1,4 @@
-﻿using NavMeshPlus.Components;
+using NavMeshPlus.Components;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -46,11 +46,11 @@ namespace NavMeshPlus.Extensions
             {
                 var lbounds = NavMeshSurface.GetWorldBounds(worldToLocal * tilemap.transform.localToWorldMatrix, tilemap.localBounds);
                 bounds.Encapsulate(lbounds);
-                if (!surface.hideEditorLogs)
+                /*if (!surface.hideEditorLogs)
                 {
                     Debug.Log($"From Local Bounds [{tilemap.name}]: {tilemap.localBounds}");
                     Debug.Log($"To World Bounds: {bounds}");
-                }
+                }*/
             }
             return bounds;
         }

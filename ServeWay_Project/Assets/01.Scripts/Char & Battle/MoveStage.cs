@@ -57,8 +57,9 @@ public class MoveStage : MonoBehaviour
         GameManager.gameManager.charData.SaveData();
         GameManager.gameManager.charData.DeleteMapData();
         GameManager.gameManager.charData.SetData();
-        
-        if(GameManager.gameManager.stage == 8)
+        GameManager.gameManager.charData.SetDex();
+
+        if (GameManager.gameManager.stage == 8)
         {
             GameManager.gameManager.SetNextStage("EndingMap");//Ending Scene
         }
@@ -82,7 +83,16 @@ public class MoveStage : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             isTouch = true;
-            interaction.SetMoveStageAble(true);
+            if(SceneManager.GetActiveScene().name.Contains("Start") && player.weaponSlot.WeaponCount() == 0)
+            {
+                isTouch = false;
+                interaction.SetMoveStageAble(true, false);
+            }
+            else
+            {
+                isTouch = true;
+                interaction.SetMoveStageAble(true, true);
+            }
         }
     }
 
@@ -91,7 +101,14 @@ public class MoveStage : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             isTouch = false;
-            interaction.SetMoveStageAble(false);
+            if (SceneManager.GetActiveScene().name.Contains("Start") && player.weaponSlot.WeaponCount() == 0)
+            {
+                interaction.SetMoveStageAble(false, false);
+            }
+            else
+            {
+                interaction.SetMoveStageAble(false, true);
+            }
         }
     }
 
@@ -99,8 +116,16 @@ public class MoveStage : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            isTouch = true;
-            interaction.SetMoveStageAble(true);
+            if (SceneManager.GetActiveScene().name.Contains("Start") && player.weaponSlot.WeaponCount() == 0)
+            {
+                isTouch = false;
+                interaction.SetMoveStageAble(true, false);
+            }
+            else
+            {
+                isTouch = true;
+                interaction.SetMoveStageAble(true, true);
+            }
         }
     }
 
@@ -109,7 +134,14 @@ public class MoveStage : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             isTouch = false;
-            interaction.SetMoveStageAble(false);
+            if (SceneManager.GetActiveScene().name.Contains("Start") && player.weaponSlot.WeaponCount() == 0)
+            {
+                interaction.SetMoveStageAble(false, false);
+            }
+            else
+            {
+                interaction.SetMoveStageAble(false, true);
+            }
         }
     }
 

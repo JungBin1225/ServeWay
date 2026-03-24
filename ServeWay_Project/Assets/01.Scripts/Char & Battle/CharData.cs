@@ -15,6 +15,7 @@ public class CharData : MonoBehaviour
         {
             SetData();
         }
+        SetDex();
         SetTuto();
         SetEnding();
     }
@@ -79,6 +80,11 @@ public class CharData : MonoBehaviour
         {
             PlayerPrefs.SetInt(name.ToString(), inventory.inventory[name]);
         }
+
+        List<string> s = FoodDexToString(saveFile.foodDex);
+        PlayerPrefs.SetString("foodDex_Created", s[0]);
+        PlayerPrefs.SetString("foodDex_Recipe", s[1]);
+        PlayerPrefs.SetString("foodDex_Locked", s[2]);
 
         PlayerPrefs.SetInt("stage", GameManager.gameManager.stage);
         for(int i = 0; i < 7; i++)
@@ -272,6 +278,8 @@ public class CharData : MonoBehaviour
         bool sfxMute = false;
         float bgmValue = 1;
         float sfxValue = 1;
+        FoodDex foodDex = saveFile.foodDex;
+        IngredDex ingredDex = saveFile.ingredDex;
 
         if (PlayerPrefs.HasKey("BGM_Sound"))
         {
@@ -293,12 +301,17 @@ public class CharData : MonoBehaviour
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
         PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
 
+        List<string> s = FoodDexToString(foodDex);
+        PlayerPrefs.SetString("foodDex_Created", s[0]);
+        PlayerPrefs.SetString("foodDex_Recipe", s[1]);
+        PlayerPrefs.SetString("foodDex_Locked", s[2]);
+
         saveFile.isTuto = tuto;
         saveFile.isEnding = ending;
 
-        GameManager.gameManager.charData.saveFile.isTuto = tuto;
-        GameManager.gameManager.charData.saveFile.isEnding = ending;
         GameManager.gameManager.stage = 0;
+        GameManager.gameManager.charData.saveFile.foodDex = foodDex;
+        GameManager.gameManager.charData.saveFile.ingredDex = ingredDex;
         GameManager.gameManager.InitList();
 
         PlayerPrefs.Save();
@@ -315,6 +328,136 @@ public class CharData : MonoBehaviour
     public void SetTuto()
     {
         saveFile.isTuto = bool.Parse(PlayerPrefs.GetString("isTuto"));
+    }
+
+    public List<string> FoodDexToString()
+    {
+        List<string> result = new List<string>();
+        result.Add("");//created
+        result.Add("");//recipe
+        result.Add("");//locked
+
+        DataController data = FindObjectOfType<DataController>();
+
+        int index = 0;
+        foreach(string name in data.FoodIngredDex.foodDex.Keys)
+        {
+            string temp = string.Format("{0:D2}", index);
+            switch(data.FoodIngredDex.foodDex[name])
+            {
+                case FoodDex_Status.CREATED:
+                    result[0] += temp;
+                    break;
+
+                case FoodDex_Status.RECIPE:
+                    result[1] += temp;
+                    break;
+
+                case FoodDex_Status.LOCKED:
+                    result[2] += temp;
+                    break;
+            }
+
+            index++;
+        }
+
+        return result;
+    }
+
+    public List<string> FoodDexToString(FoodDex dex)
+    {
+        List<string> result = new List<string>();
+        result.Add("");//created
+        result.Add("");//recipe
+        result.Add("");//locked
+
+        int index = 0;
+        foreach (string name in dex.Keys)
+        {
+            string temp = string.Format("{0:D2}", index);
+            switch (dex[name])
+            {
+                case FoodDex_Status.CREATED:
+                    result[0] += temp;
+                    break;
+
+                case FoodDex_Status.RECIPE:
+                    result[1] += temp;
+                    break;
+
+                case FoodDex_Status.LOCKED:
+                    result[2] += temp;
+                    break;
+            }
+
+            index++;
+        }
+
+        return result;
+    }
+
+    public FoodDex StringToFoodDex()
+    {
+        FoodDex result = new FoodDex();
+        DataController data = FindObjectOfType<DataController>();
+
+        if (!PlayerPrefs.HasKey("foodDex_Created"))
+        {
+            foreach(string name in data.FoodIngredDex.foodDex.Keys)
+            {
+                result.Add(name, data.FoodIngredDex.foodDex[name]);
+            }
+            Debug.Log("aaaa");
+        }
+        else
+        {
+            List<int> created = IndexToList(PlayerPrefs.GetString("foodDex_Created"));
+            List<int> recipe = IndexToList(PlayerPrefs.GetString("foodDex_Recipe"));
+            List<int> locked = IndexToList(PlayerPrefs.GetString("foodDex_Locked"));
+
+            int i = 0;
+            foreach(string name in data.FoodIngredDex.foodDex.Keys)
+            {
+                if (created.Contains(i))
+                {
+                    result.Add(name, FoodDex_Status.CREATED);
+                }
+                else if (recipe.Contains(i))
+                {
+                    result.Add(name, FoodDex_Status.RECIPE);
+                }
+                else if (locked.Contains(i))
+                {
+                    result.Add(name, FoodDex_Status.LOCKED);
+                }
+                else
+                {
+                    result.Add(name, data.FoodIngredDex.foodDex[name]);
+                }
+
+                i++;
+            }
+        }
+
+        return result;
+    }
+
+    private List<int> IndexToList(string s)
+    {
+        List<int> result = new List<int>();
+        int num = s.Length;
+        for(int i = 0; i < s.Length; i += 2)
+        {
+            int temp = int.Parse(s.Substring(i, 2));
+            result.Add(temp);
+        }
+
+        return result;
+    }
+
+    public void SetDex()
+    {
+        saveFile.foodDex = StringToFoodDex();
     }
 
     public void SetEnding()

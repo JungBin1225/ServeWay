@@ -20,6 +20,9 @@ public class SaveFile
     public List<Boss_Job> bossJobs;
     public List<Stage_Theme> themes;
 
+    public FoodDex foodDex;
+    public IngredDex ingredDex;
+
     public bool isMapSave;
     public List<Room> roomList;
     public int startX;
@@ -49,6 +52,9 @@ public class SaveFile
         bossNations = new List<Food_Nation>();
         bossJobs = new List<Boss_Job>();
         themes = new List<Stage_Theme>();
+
+        foodDex = new FoodDex();
+        ingredDex = new IngredDex();
 
         isMapSave = false;
         roomList = new List<Room>();

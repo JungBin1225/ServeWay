@@ -144,7 +144,7 @@ public class WeaponSlot : MonoBehaviour
             holdWeapon.UpdateHoldWeapon(dataController.FindFood(ReturnWeaponList()[index]));
         }
 
-        dataController.FoodIngredDex.UpdateFoodDex(name, FoodDex_Status.CREATED);
+        GameManager.gameManager.charData.saveFile.foodDex[name] =  FoodDex_Status.CREATED;
         updateIndex();
     }
 

@@ -17,6 +17,8 @@ public class DexUI : MonoBehaviour
     private TabMenu tabMenu;
     private AudioSource clickAudio;
 
+    private FoodDex foodDex;
+
     public Sprite lockSprite;
     public GameObject buttonGruop;
     public GameObject info_Food;
@@ -44,6 +46,8 @@ public class DexUI : MonoBehaviour
             buttonList.Add(buttonGruop.transform.GetChild(i).gameObject);
         }
 
+        foodDex = GameManager.gameManager.charData.saveFile.foodDex;
+
         foodList = new List<string>();
         ingredientList = new List<Ingred_Name>();
         dexMod = 0;
@@ -69,9 +73,9 @@ public class DexUI : MonoBehaviour
         {
             foodList = new List<string>();
 
-            foreach (string food in dataController.FoodIngredDex.foodDex.Keys)
+            foreach (string food in foodDex.Keys)
             {
-                    foodList.Add(food);
+                foodList.Add(food);
             }
 
             foreach(GameObject button in buttonList)
@@ -87,7 +91,7 @@ public class DexUI : MonoBehaviour
                     break;
                 }
 
-                switch (dataController.FoodIngredDex.foodDex[foodList[i]])
+                switch (foodDex[foodList[i]])
                 {
                     case FoodDex_Status.CREATED:
                         buttonList[i % buttonList.Count].transform.GetChild(0).GetComponent<Image>().sprite = dataController.FindFood(foodList[i]).foodSprite;
@@ -274,7 +278,7 @@ public class DexUI : MonoBehaviour
                 info_Food.transform.GetChild(3).GetChild(5).GetComponent<TMP_Text>().text = food.speed.ToString();
                 info_Food.transform.GetChild(3).GetChild(6).GetComponent<TMP_Text>().text = food.coolTime.ToString();
 
-                if (dataController.FoodIngredDex.foodDex[food.foodName] == FoodDex_Status.RECIPE)
+                if (foodDex[food.foodName] == FoodDex_Status.RECIPE)
                 {
                     info_Food.transform.GetChild(2).GetChild(0).GetComponent<Image>().material = grayScale;
                     info_Food.transform.GetChild(3).GetChild(1).gameObject.SetActive(false);
