@@ -110,10 +110,9 @@ public class BossRoom : MonoBehaviour
 
         card.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = data.FindBossSprite(bossJob);
         card.transform.GetChild(1).GetComponent<TMP_Text>().text = GameManager.gameManager.JobToString(bossJob);
-        card.transform.GetChild(2).GetComponent<TMP_Text>().text = BossName(bossJob); //name
-        card.transform.GetChild(4).GetComponent<TMP_Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
-        card.transform.GetChild(6).GetComponent<TMP_Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
-        card.transform.GetChild(8).GetComponent<TMP_Text>().text = email + "@space.com"; //email
+        card.transform.GetChild(3).GetComponent<TMP_Text>().text = data.foodData.FoodDatas[0].EunmToString(bossNation);
+        card.transform.GetChild(5).GetComponent<TMP_Text>().text = "A-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16) + "-" + Convert.ToString(UnityEngine.Random.Range(0, 10000), 16); //tel
+        card.transform.GetChild(7).GetComponent<TMP_Text>().text = email + "@space.com"; //email
 
         Stage_Theme theme = GameManager.gameManager.stageThemes[GameManager.gameManager.stage - 1];
         wall.transform.GetChild(0).GetComponent<Image>().sprite = data.tileSpriteData.GetNowStageSprite(theme).wall_Top.sprite;
@@ -345,19 +344,6 @@ public class BossRoom : MonoBehaviour
         int index = UnityEngine.Random.Range(0, list.Length);
 
         return list[index].ToString();
-    }
-
-    private string BossName(Boss_Job job)
-    {
-        switch(job)
-        {
-            case Boss_Job.JOURNAL:
-                return "문어";
-            case Boss_Job.COOKRESEARCH:
-                return "슬라임";
-            default:
-                return "OOO";
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

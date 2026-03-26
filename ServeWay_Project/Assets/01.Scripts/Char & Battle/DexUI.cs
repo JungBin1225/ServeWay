@@ -18,6 +18,7 @@ public class DexUI : MonoBehaviour
     private AudioSource clickAudio;
 
     private FoodDex foodDex;
+    private IngredDex ingredDex;
 
     public Sprite lockSprite;
     public GameObject buttonGruop;
@@ -47,6 +48,7 @@ public class DexUI : MonoBehaviour
         }
 
         foodDex = GameManager.gameManager.charData.saveFile.foodDex;
+        ingredDex = GameManager.gameManager.charData.saveFile.ingredDex;
 
         foodList = new List<string>();
         ingredientList = new List<Ingred_Name>();
@@ -115,9 +117,9 @@ public class DexUI : MonoBehaviour
         {
             ingredientList = new List<Ingred_Name>();
 
-            foreach (Ingred_Name ingred in dataController.FoodIngredDex.ingredDex.Keys)
+            foreach (Ingred_Name ingred in ingredDex.Keys)
             {
-                if(dataController.FoodIngredDex.ingredDex[ingred])
+                if(ingredDex[ingred])
                 {
                     ingredientList.Add(ingred);
                 }

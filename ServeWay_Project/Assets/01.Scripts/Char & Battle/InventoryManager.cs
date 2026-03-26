@@ -67,7 +67,7 @@ public class InventoryManager : MonoBehaviour
             inventory.Add(itemName, amount);
             GetPassive(itemName, true);
 
-            dataController.FoodIngredDex.UpdateIngredDex(itemName);
+            GameManager.gameManager.charData.saveFile.ingredDex[itemName] = true;
         }
 
         /*foreach(IngredientList.IngredientsName name in inventory.Keys)

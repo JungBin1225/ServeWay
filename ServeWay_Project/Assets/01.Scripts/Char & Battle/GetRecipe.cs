@@ -30,7 +30,11 @@ public class GetRecipe : MonoBehaviour
 
     private void GetItem()
     {
-        dex.UpdateFoodDex(foodName, FoodDex_Status.RECIPE);
+        if(GameManager.gameManager.charData.saveFile.foodDex[foodName] == FoodDex_Status.LOCKED)
+        {
+            GameManager.gameManager.charData.saveFile.foodDex[foodName] = FoodDex_Status.RECIPE;
+        }
+
         Destroy(this.gameObject);
     }
 

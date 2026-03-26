@@ -105,40 +105,9 @@ public class GameClear : MonoBehaviour
     public void OnConfirm()
     {
         Time.timeScale = 1;
-        bool tuto = GameManager.gameManager.charData.saveFile.isTuto;
-        bool ending = GameManager.gameManager.charData.saveFile.isEnding;
+        GameManager.gameManager.charData.DeleteAllWithoutTutoSound();
 
-        GameManager.gameManager.charData.saveFile = new SaveFile();
-
-        bool bgmMute = false;
-        bool sfxMute = false;
-        
-        float bgmValue = 1;
-        float sfxValue = 1;
-
-        if (PlayerPrefs.HasKey("BGM_Sound"))
-        {
-            bgmMute = bool.Parse(PlayerPrefs.GetString("BGM_Mute"));
-            sfxMute = bool.Parse(PlayerPrefs.GetString("SFX_Mute"));
-
-            bgmValue = PlayerPrefs.GetFloat("BGM_Sound");
-            sfxValue = PlayerPrefs.GetFloat("SFX_Sound");
-        }
-
-        PlayerPrefs.DeleteAll();
-
-        GameManager.gameManager.charData.saveFile.isTuto = tuto;
-        GameManager.gameManager.charData.saveFile.isEnding = ending;
-
-        PlayerPrefs.SetString("isTuto", tuto.ToString());
-        PlayerPrefs.SetString("isEnding", ending.ToString());
-        PlayerPrefs.SetString("BGM_Mute", bgmMute.ToString());
-        PlayerPrefs.SetString("SFX_Mute", sfxMute.ToString());
-        PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
-        PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
-        PlayerPrefs.Save();
-
-        if(ending)
+        if(GameManager.gameManager.charData.saveFile.isEnding)
         {
             GameManager.gameManager.SetNextStage("TitleScene");
         }

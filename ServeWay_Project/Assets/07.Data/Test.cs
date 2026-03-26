@@ -42,7 +42,6 @@ public class Test : MonoBehaviour
     {
         if(dexRefresh)
         {
-            RefreshDex();
             dexRefresh = false;
         }
 
@@ -62,28 +61,6 @@ public class Test : MonoBehaviour
         {
             clearSave = false;
         }
-    }
-
-    private void RefreshDex()
-    {
-        dex.ClearFoodDex();
-        dex.ClearIngredDex();
-
-        foreach(FoodData food in foodData.FoodDatas)
-        {
-            dex.AddFoodDex(food.foodName, FoodDex_Status.CREATED);
-        }
-        foreach (FoodData food in startFoodData.StartFoodDatas)
-        {
-            dex.AddFoodDex(food.foodName, FoodDex_Status.CREATED);
-        }
-
-        foreach(Ingredient ingred in ingredientData.IngredientList)
-        {
-            dex.AddIngredDex(ingred.name);
-        }
-
-        Debug.Log("Refresh Success");
     }
 
     private void AddAllInven()

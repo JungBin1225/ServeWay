@@ -81,10 +81,13 @@ public class CharData : MonoBehaviour
             PlayerPrefs.SetInt(name.ToString(), inventory.inventory[name]);
         }
 
-        List<string> s = FoodDexToString(saveFile.foodDex);
-        PlayerPrefs.SetString("foodDex_Created", s[0]);
-        PlayerPrefs.SetString("foodDex_Recipe", s[1]);
-        PlayerPrefs.SetString("foodDex_Locked", s[2]);
+        List<string> foodDex = FoodDexToString(saveFile.foodDex);
+        PlayerPrefs.SetString("foodDex_Created", foodDex[0]);
+        PlayerPrefs.SetString("foodDex_Recipe", foodDex[1]);
+        PlayerPrefs.SetString("foodDex_Locked", foodDex[2]);
+
+        string ingredDex = IngredDexToString(saveFile.ingredDex);
+        PlayerPrefs.SetString("ingredDex", ingredDex);
 
         PlayerPrefs.SetInt("stage", GameManager.gameManager.stage);
         for(int i = 0; i < 7; i++)
@@ -301,10 +304,13 @@ public class CharData : MonoBehaviour
         PlayerPrefs.SetFloat("BGM_Sound", bgmValue);
         PlayerPrefs.SetFloat("SFX_Sound", sfxValue);
 
-        List<string> s = FoodDexToString(foodDex);
-        PlayerPrefs.SetString("foodDex_Created", s[0]);
-        PlayerPrefs.SetString("foodDex_Recipe", s[1]);
-        PlayerPrefs.SetString("foodDex_Locked", s[2]);
+        List<string> food = FoodDexToString(foodDex);
+        PlayerPrefs.SetString("foodDex_Created", food[0]);
+        PlayerPrefs.SetString("foodDex_Recipe", food[1]);
+        PlayerPrefs.SetString("foodDex_Locked", food[2]);
+
+        string ingred = IngredDexToString(ingredDex);
+        PlayerPrefs.SetString("ingredDex", ingred);
 
         saveFile.isTuto = tuto;
         saveFile.isEnding = ending;
@@ -325,9 +331,20 @@ public class CharData : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void EndingClear()
+    {
+        saveFile.isEnding = true;
+        PlayerPrefs.SetString("isEnding", true.ToString());
+
+        PlayerPrefs.Save();
+    }
+
     public void SetTuto()
     {
-        saveFile.isTuto = bool.Parse(PlayerPrefs.GetString("isTuto"));
+        if (PlayerPrefs.HasKey("isTuto"))
+        {
+            saveFile.isTuto = bool.Parse(PlayerPrefs.GetString("isTuto"));
+        }
     }
 
     public List<string> FoodDexToString()
@@ -407,7 +424,6 @@ public class CharData : MonoBehaviour
             {
                 result.Add(name, data.FoodIngredDex.foodDex[name]);
             }
-            Debug.Log("aaaa");
         }
         else
         {
@@ -455,9 +471,64 @@ public class CharData : MonoBehaviour
         return result;
     }
 
+    public string IngredDexToString(IngredDex dex)
+    {
+        string result = "";
+
+        int index = 0;
+        foreach (Ingred_Name name in dex.Keys)
+        {
+            string temp = string.Format("{0:D2}", index);
+            if(dex[name])
+            {
+                result += temp;
+            }
+
+            index++;
+        }
+
+        return result;
+    }
+
+    public IngredDex StringToIngredDex()
+    {
+        IngredDex result = new IngredDex();
+        DataController data = FindObjectOfType<DataController>();
+
+        if (!PlayerPrefs.HasKey("ingredDex"))
+        {
+            foreach (Ingred_Name name in data.FoodIngredDex.ingredDex.Keys)
+            {
+                result.Add(name, data.FoodIngredDex.ingredDex[name]);
+            }
+        }
+        else
+        {
+            List<int> created = IndexToList(PlayerPrefs.GetString("ingredDex"));
+
+            int i = 0;
+            foreach (Ingred_Name name in data.FoodIngredDex.ingredDex.Keys)
+            {
+                if(created.Contains(i))
+                {
+                    result.Add(name, true);
+                }
+                else
+                {
+                    result.Add(name, false);
+                }
+
+                i++;
+            }
+        }
+
+        return result;
+    }
+
     public void SetDex()
     {
         saveFile.foodDex = StringToFoodDex();
+        saveFile.ingredDex = StringToIngredDex();
     }
 
     public void SetEnding()
