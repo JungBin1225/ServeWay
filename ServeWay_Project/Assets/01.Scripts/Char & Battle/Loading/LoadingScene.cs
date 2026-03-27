@@ -13,6 +13,7 @@ public class LoadingScene : MonoBehaviour
     void Start()
     {
         sceneName = GameManager.gameManager.GetNextStage();
+        GameManager.gameManager.gameover = false;
         bar.fillAmount = 0;
         Time.timeScale = 1;
 

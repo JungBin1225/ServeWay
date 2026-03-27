@@ -104,6 +104,8 @@ public class EnemySprite : MonoBehaviour
 
     public List<SpriteRenderer> layerOrder;
 
+    private Sprite defaultEyeSprite;
+
     void Start()
     {
         enemyAnim = GetComponent<Animator>();
@@ -113,6 +115,7 @@ public class EnemySprite : MonoBehaviour
         enemyEyeColorCategory = "eye1_red"; //변수 값 초기화 (필요없을 것 같긴 함)
 
         RandomAppear();
+        defaultEyeSprite = eyesSpriteLib.gameObject.GetComponent<SpriteRenderer>().sprite;
 
         StartCoroutine(BlinkEyes()); //눈 깜빡임 코루틴 실행
     }
@@ -449,6 +452,7 @@ public class EnemySprite : MonoBehaviour
             blinkCycle = Random.Range(0.1f, 3.8f); //깜빡이는 속도 랜덤하게
             eyeSpriteResolver.SetCategoryAndLabel(enemyEyeColorCategory, "eye1");
             eyeSpriteResolver.ResolveSpriteToSpriteRenderer();
+            defaultEyeSprite = eyesSpriteLib.gameObject.GetComponent<SpriteRenderer>().sprite;
 
             yield return new WaitForSeconds(blinkCycle);
 
@@ -465,7 +469,7 @@ public class EnemySprite : MonoBehaviour
 
         result.Add(headSkinSpriteLib.gameObject.GetComponent<SpriteRenderer>().sprite);
         result.Add(hairSpriteLib.gameObject.GetComponent<SpriteRenderer>().sprite);
-        result.Add(eyesSpriteLib.gameObject.GetComponent<SpriteRenderer>().sprite);
+        result.Add(defaultEyeSprite);
         result.Add(bodySpriteLib.gameObject.GetComponent<SpriteRenderer>().sprite);
 
         return result;

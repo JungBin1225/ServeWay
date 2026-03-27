@@ -64,7 +64,11 @@ public class PlayerHealth : MonoBehaviour
         {
             nowHp -= damage;
             damagedObject = sprite;
-            damagedSound.Play();
+
+            if(nowHp >= 0)
+            {
+                damagedSound.Play();
+            }
 
             if (GameManager.gameManager.isBossStage)
             {
@@ -133,7 +137,7 @@ public class PlayerHealth : MonoBehaviour
 
     private IEnumerator GameOver()
     {
-        
+        GameManager.gameManager.gameover = true;
         playerController.weaponSlot.GetWeaponInfo(playerController.weaponSlot.GetHoldWeapon()).FoodInvisible();
         playerController.controllAble = false;
         float time = 0;

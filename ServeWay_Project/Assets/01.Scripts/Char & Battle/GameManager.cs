@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     public List<Boss_Job> bossJobList;
     public bool menuAble;
     public float playTime;
+    public bool gameover;
 
     private string nextStage;
 
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
         inventory = gameObject.GetComponent<InventoryManager>();
         isBossStage = false;
         menuAble = true;
+        gameover = false;
         Cursor.SetCursor(cursorImage, new Vector2(0.13f, 0.87f), CursorMode.Auto);
         nextStage = "";
 

@@ -16,6 +16,11 @@ public class EnemyExplosionBullet : EnemyBullet
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
         effectParent = GameObject.Find("EffectList");
+
+        if (GameManager.gameManager.gameover)
+        {
+            GetComponent<AudioSource>().mute = true;
+        }
     }
 
     private void Update()

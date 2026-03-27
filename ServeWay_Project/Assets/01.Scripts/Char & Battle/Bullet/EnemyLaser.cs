@@ -10,6 +10,7 @@ public class EnemyLaser : MonoBehaviour
     private List<Sprite> sprite;
     private float nowCoolTime;
     private BoxCollider2D collider;
+
     private bool isClicked;
 
     void Start()
@@ -19,12 +20,20 @@ public class EnemyLaser : MonoBehaviour
         nowCoolTime = coolTime / 2;
 
         StartCoroutine(FireLaser());
+
+        if(GameManager.gameManager.gameover)
+        {
+            GetComponent<AudioSource>().mute = true;
+        }
     }
 
 
     void Update()
     {
-        
+        if (GameManager.gameManager.gameover)
+        {
+            GetComponent<AudioSource>().mute = true;
+        }
     }
 
     public void SetDamage(float damage)

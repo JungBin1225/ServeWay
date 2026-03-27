@@ -18,11 +18,31 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
     public AudioSource menuClick;
     public AudioSource potSound;
 
+    public BtnType cutSceneWarn;
+
     bool isSound;
 
     private void Start()
     {
 
+    }
+
+    public void OnBtnClick(bool opening)
+    {
+        menuClick.Play();
+        if(opening)
+        {
+            cutSceneWarn.currentType = BTNType.Opening;
+        }
+        else
+        {
+            cutSceneWarn.currentType = BTNType.Ending;
+        }
+
+        CanvasGroupOn(startGroup);
+        menuOpen.Play();
+        mainGroup.interactable = false;
+        mainGroup.blocksRaycasts = false;
     }
 
     public void OnBtnClick()
