@@ -51,7 +51,7 @@ public class Ingredient
     {
         get
         {
-            GameObject prefab = (GameObject)AssetDatabase.LoadAssetAtPath(_PrefabPath, typeof(GameObject));
+            GameObject prefab = Resources.Load<GameObject>(_PrefabPath);
 
             return prefab;
         }

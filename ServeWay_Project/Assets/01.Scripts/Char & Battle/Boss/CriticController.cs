@@ -8,6 +8,7 @@ public class CriticController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private SpriteRenderer renderer;
     private BossController bossCon;
+    private DataController data;
     private Animator anim;
     private GameObject player;
     private GameObject bulletParent;
@@ -53,11 +54,12 @@ public class CriticController : MonoBehaviour
         anim = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
+        data = FindObjectOfType<DataController>();
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
         summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
-        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
+        sprites.Add(data.FindBossSprite(Boss_Job.CRITIC));
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;
@@ -324,6 +326,7 @@ public class CriticController : MonoBehaviour
 
         pen.SetActive(true);
         pen.transform.GetChild(0).GetComponent<Pen>().damage = penDamage;
+        pen.transform.GetChild(0).GetComponent<Pen>().sprite = sprites;
         pen.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, startRot.z - 25));
 
         audio.loop = false;
@@ -332,9 +335,9 @@ public class CriticController : MonoBehaviour
         audio.pitch = 1.0f;
         audio.Play();
 
-        while (num < 130)
+        while (num < 65)
         {
-            pen.transform.localRotation = Quaternion.Euler(pen.transform.localRotation.eulerAngles + new Vector3(0, 0, 1));
+            pen.transform.localRotation = Quaternion.Euler(pen.transform.localRotation.eulerAngles + new Vector3(0, 0, 2));
             num++;
             yield return null;
         }

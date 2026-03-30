@@ -14,6 +14,7 @@ public class JournalController : MonoBehaviour
     private GameObject bulletParent;
     private GameObject effectParent;
     private GameObject summonObject;
+    private DataController data;
     private Vector2 minPos;
     private Vector2 maxPos;
     private List<Sprite> sprites;
@@ -56,12 +57,13 @@ public class JournalController : MonoBehaviour
         bossCon = GetComponent<BossController>();
         anim = GetComponent<Animator>();
         renderer = GetComponent<SpriteRenderer>();
+        data = FindObjectOfType<DataController>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
         summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
-        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
+        sprites.Add(data.FindBossSprite(Boss_Job.JOURNAL));
         soupMents = new List<string>();
         soupMents.Add("단독보도");
         soupMents.Add("긴급속보");

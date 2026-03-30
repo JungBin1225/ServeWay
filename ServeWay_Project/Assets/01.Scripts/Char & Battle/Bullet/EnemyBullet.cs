@@ -19,7 +19,7 @@ public class EnemyBullet : MonoBehaviour
         effectParent = GameObject.Find("EffectList");
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
 
-        if (GameManager.gameManager.gameover)
+        if (GameManager.gameManager.gameover && GetComponent<AudioSource>() != null)
         {
             GetComponent<AudioSource>().mute = true;
         }

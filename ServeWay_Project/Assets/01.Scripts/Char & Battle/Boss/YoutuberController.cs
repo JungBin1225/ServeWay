@@ -66,7 +66,7 @@ public class YoutuberController : MonoBehaviour
         effectParent = GameObject.Find("EffectList");
         summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
-        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
+        sprites.Add(dataController.FindBossSprite(Boss_Job.YOUTUBER));
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;

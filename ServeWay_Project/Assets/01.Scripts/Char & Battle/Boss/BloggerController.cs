@@ -13,6 +13,7 @@ public class BloggerController : MonoBehaviour
     private GameObject bulletParent;
     private GameObject effectParent;
     private GameObject summonObject;
+    private DataController data;
     private Vector2 minPos;
     private Vector2 maxPos;
     private List<Sprite> sprites;
@@ -61,13 +62,14 @@ public class BloggerController : MonoBehaviour
         line = GetComponent<LineRenderer>();
         anim = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+        data = FindObjectOfType<DataController>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
         summonObject = GameObject.Find("SummonList");
         commentPos = new List<Vector3>();
         sprites = new List<Sprite>();
-        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
+        sprites.Add(data.FindBossSprite(Boss_Job.BLOGGER));
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;

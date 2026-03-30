@@ -14,6 +14,7 @@ public class ResearcherController : MonoBehaviour
     private GameObject bulletParent;
     private GameObject effectParent;
     private GameObject summonObject;
+    private DataController data;
     private List<Vector3> platePos;
     private Vector2 minPos;
     private Vector2 maxPos;
@@ -58,12 +59,13 @@ public class ResearcherController : MonoBehaviour
         renderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+        data = FindObjectOfType<DataController>();
         player = GameObject.FindGameObjectWithTag("Player");
         bulletParent = GameObject.Find("BulletList");
         effectParent = GameObject.Find("EffectList");
         summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
-        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
+        sprites.Add(data.FindBossSprite(Boss_Job.COOKRESEARCH));
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;

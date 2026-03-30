@@ -72,7 +72,7 @@ public class TeacherController : MonoBehaviour
         effectParent = GameObject.Find("EffectList");
         summonObject = GameObject.Find("SummonList");
         sprites = new List<Sprite>();
-        sprites.Add(gameObject.GetComponent<SpriteRenderer>().sprite);
+        sprites.Add(data.FindBossSprite(Boss_Job.TEACHER));
 
         bossCon.nation = this.nation;
         bossCon.room = this.room;

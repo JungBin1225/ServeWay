@@ -66,6 +66,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuBtns.SetActive(false);
         pausePanel.SetActive(false);
         pauseBG.SetActive(false);
+        warningGroup.SetActive(false);
 
         Time.timeScale = 1;
     }

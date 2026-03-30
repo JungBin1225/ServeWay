@@ -5,7 +5,7 @@ using UnityEngine;
 public class Pen : MonoBehaviour
 {
     public float damage;
-    public Sprite sprite;
+    public List<Sprite> sprite;
 
     void Start()
     {
@@ -21,9 +21,7 @@ public class Pen : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            List<Sprite> sprites = new List<Sprite>();
-            sprites.Add(sprite);
-            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprites);
+            collision.gameObject.GetComponent<PlayerHealth>().PlayerDamaged(damage, sprite);
         }
     }
 }

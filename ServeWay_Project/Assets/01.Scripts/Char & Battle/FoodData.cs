@@ -114,7 +114,7 @@ public class FoodData
     {
         get
         {
-            _FoodPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(_FoodPrefabPath, typeof(GameObject));
+            _FoodPrefab = Resources.Load<GameObject>(_FoodPrefabPath);
 
             return _FoodPrefab;
         }
@@ -123,7 +123,7 @@ public class FoodData
     {
         get
         {
-            _BulletPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(_BulletPrefabPath, typeof(GameObject));
+            _BulletPrefab = Resources.Load<GameObject>(_BulletPrefabPath);
 
             return _BulletPrefab;
         }
@@ -133,7 +133,7 @@ public class FoodData
     {
         get
         {
-            _EffectPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(_EffectPrefabPath, typeof(GameObject));
+            _EffectPrefab = Resources.Load<GameObject>(_EffectPrefabPath);
 
             return _EffectPrefab;
         }

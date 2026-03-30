@@ -62642,6 +62642,7 @@ MonoBehaviour:
   bossJobList: 
   menuAble: 0
   playTime: 0
+  gameover: 0
 --- !u!4 &1493189979
 Transform:
   m_ObjectHideFlags: 0
@@ -77806,7 +77807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1871050656
 RectTransform:
   m_ObjectHideFlags: 0
@@ -77823,8 +77824,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 490, y: -122.5}
-  m_SizeDelta: {x: 75, y: 75}
+  m_AnchoredPosition: {x: 490, y: -100}
+  m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1871050657
 MonoBehaviour:
@@ -77846,7 +77847,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1055710098, guid: aadf53418b0c8e34ea441ddf55da9272, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
