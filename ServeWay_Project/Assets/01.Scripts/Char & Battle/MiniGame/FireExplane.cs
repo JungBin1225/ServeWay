@@ -16,9 +16,10 @@ public class FireExplane : MonoBehaviour
     public List<GameObject> bubbles;
 
     private bool isMove;
+
     void Start()
     {
-        
+
     }
 
     private void OnEnable()
@@ -42,7 +43,7 @@ public class FireExplane : MonoBehaviour
         {
             if (fire.anchoredPosition.x < 275.0f)
             {
-                fire.anchoredPosition += new Vector2(0.25f, 0);
+                fire.anchoredPosition += new Vector2(Screen.width * Time.unscaledDeltaTime * 0.125f, 0);
             }
             else
             {
@@ -56,7 +57,7 @@ public class FireExplane : MonoBehaviour
         {
             if(fire.anchoredPosition.x > 0)
             {
-                fire.anchoredPosition -= new Vector2(0.4f, 0);
+                fire.anchoredPosition -= new Vector2(Screen.width * Time.unscaledDeltaTime * 0.2f, 0);
             }
             else
             {
@@ -89,7 +90,7 @@ public class FireExplane : MonoBehaviour
             {
                 if(Mathf.Abs(targetBar.anchoredPosition.x - 200) > 0.15f)
                 {
-                    targetBar.anchoredPosition += new Vector2(0.15f, 0);
+                    targetBar.anchoredPosition += new Vector2(Screen.width * Time.unscaledDeltaTime * 0.075f, 0);
                 }
 
                 if(spacetime > 0.2f)
@@ -117,7 +118,7 @@ public class FireExplane : MonoBehaviour
             {
                 if (Mathf.Abs(targetBar.anchoredPosition.x - 100) > 0.15f)
                 {
-                    targetBar.anchoredPosition -= new Vector2(0.15f, 0);
+                    targetBar.anchoredPosition -= new Vector2(Screen.width * Time.unscaledDeltaTime * 0.075f, 0);
                 }
 
                 if (spacetime > 0.2f)

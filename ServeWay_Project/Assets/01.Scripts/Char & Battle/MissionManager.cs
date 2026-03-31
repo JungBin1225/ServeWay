@@ -687,7 +687,7 @@ public class MissionManager : MonoBehaviour
     {
         while(missionUI.GetComponent<RectTransform>().localPosition.x < -735)
         {
-            missionUI.GetComponent<RectTransform>().localPosition += new Vector3(5, 0, 0);
+            missionUI.GetComponent<RectTransform>().localPosition += new Vector3(Screen.width * Time.unscaledDeltaTime * 2.5f, 0, 0);
             yield return null;
         }
 

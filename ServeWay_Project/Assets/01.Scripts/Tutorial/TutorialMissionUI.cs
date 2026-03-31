@@ -13,6 +13,7 @@ public class TutorialMissionUI : MonoBehaviour
 
     public bool isAppear;
 
+
     void Start()
     {
         MissonDisappear();
@@ -57,7 +58,7 @@ public class TutorialMissionUI : MonoBehaviour
         isAppear = true;
         while (GetComponent<RectTransform>().localPosition.x < -735)
         {
-            GetComponent<RectTransform>().localPosition += new Vector3(5, 0, 0);
+            GetComponent<RectTransform>().localPosition += new Vector3(Screen.width * Time.unscaledDeltaTime * 2.5f, 0, 0);
             yield return null;
         }
 

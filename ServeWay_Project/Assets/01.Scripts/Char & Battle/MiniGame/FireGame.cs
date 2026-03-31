@@ -88,7 +88,7 @@ public class FireGame : MonoBehaviour
             {
                 if (spaceBar.GetComponent<RectTransform>().anchoredPosition.x < 575.0f)
                 {
-                    spaceBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(0.5f, 0);
+                    spaceBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(Screen.width * Time.unscaledDeltaTime * 0.2f, 0);
                 }
                 else
                 {
@@ -99,7 +99,7 @@ public class FireGame : MonoBehaviour
             {
                 if(spaceBar.GetComponent<RectTransform>().anchoredPosition.x > 0)
                 {
-                    spaceBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(0.8f, 0);
+                    spaceBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(Screen.width * Time.unscaledDeltaTime * 0.3f, 0);
                 }
                 else
                 {
@@ -119,18 +119,18 @@ public class FireGame : MonoBehaviour
             if((Time.realtimeSinceStartup - time) - barNow > barTime)
             {
                 barNow = Time.realtimeSinceStartup - time;
-                barTime = Random.Range(3.5f, 6.0f);
+                barTime = Random.Range(3.5f, 5.0f);
                 barLoc = Random.Range(0.0f, 500.0f);
                 //targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
             }
 
-            if(Mathf.Abs(targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc) > 0.3f)
+            if(Mathf.Abs(targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc) > 0.5f)
             {
                 if(targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc < 0)
                 {
                     if (targetBar.GetComponent<RectTransform>().anchoredPosition.x > 0)
                     {
-                        targetBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(0.3f, 0);
+                        targetBar.GetComponent<RectTransform>().anchoredPosition += new Vector2(Screen.width * Time.unscaledDeltaTime * 0.15f, 0);
                     }
                     else
                     {
@@ -141,13 +141,17 @@ public class FireGame : MonoBehaviour
                 {
                     if (targetBar.GetComponent<RectTransform>().anchoredPosition.x < 500.0f)
                     {
-                        targetBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(0.3f, 0);
+                        targetBar.GetComponent<RectTransform>().anchoredPosition -= new Vector2(Screen.width * Time.unscaledDeltaTime * 0.15f, 0);
                     }
                     else
                     {
                         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(500.0f, 0, 0);
                     }
                 }
+            }
+            else
+            {
+                targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
             }
 
 
