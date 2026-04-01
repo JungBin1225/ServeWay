@@ -87,14 +87,14 @@ public class BtnType : MonoBehaviour//, IPointerEnterHandler//, IPointerExitHand
                 }
                 break;
             case BTNType.Option:
-                CanvasGroupOn(optionGroup);
+                optionGroup.gameObject.SetActive(true);
                 menuOpen.Play();
                 break;
             case BTNType.Sound:
                 break;
             case BTNType.OptionBack:
                 optionGroup.GetComponent<OptionMenu>().GoBack();
-                CanvasGroupOff(optionGroup);
+                optionGroup.gameObject.SetActive(false);
 
                 break;
             case BTNType.New:
