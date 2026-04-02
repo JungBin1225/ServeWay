@@ -88,7 +88,7 @@ public class FireExplane : MonoBehaviour
 
             while (time < 3)
             {
-                if(Mathf.Abs(targetBar.anchoredPosition.x - 200) > 0.15f)
+                if(targetBar.anchoredPosition.x < 200)
                 {
                     targetBar.anchoredPosition += new Vector2(Screen.width * Time.unscaledDeltaTime * 0.075f, 0);
                 }
@@ -116,7 +116,7 @@ public class FireExplane : MonoBehaviour
 
             while (time < 3)
             {
-                if (Mathf.Abs(targetBar.anchoredPosition.x - 100) > 0.15f)
+                if (targetBar.anchoredPosition.x > 100)
                 {
                     targetBar.anchoredPosition -= new Vector2(Screen.width * Time.unscaledDeltaTime * 0.075f, 0);
                 }

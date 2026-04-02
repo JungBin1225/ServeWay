@@ -79,6 +79,7 @@ public class FireGame : MonoBehaviour
         float barTime = Random.Range(3.5f, 6.0f);
         float barLoc = Random.Range(0.0f, 500.0f);
         float barSize = targetBar.GetComponent<RectTransform>().sizeDelta.x * targetBar.GetComponent<Image>().fillAmount * 2;
+        bool dir = (targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc < 0);
 
         targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
 
@@ -121,10 +122,11 @@ public class FireGame : MonoBehaviour
                 barNow = Time.realtimeSinceStartup - time;
                 barTime = Random.Range(3.5f, 5.0f);
                 barLoc = Random.Range(0.0f, 500.0f);
+                dir = (targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc < 0);
                 //targetBar.GetComponent<RectTransform>().anchoredPosition = new Vector3(barLoc, 0, 0);
             }
 
-            if(Mathf.Abs(targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc) > 0.5f)
+            if(dir == (targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc < 0) && targetBar.GetComponent<RectTransform>().anchoredPosition.x != barLoc)
             {
                 if(targetBar.GetComponent<RectTransform>().anchoredPosition.x - barLoc < 0)
                 {
