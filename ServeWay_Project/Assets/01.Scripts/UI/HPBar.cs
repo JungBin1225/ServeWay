@@ -8,6 +8,7 @@ public class HPBar : MonoBehaviour
     private PlayerHealth playerHealth;
     private List<Image> hpImages;
     private List<Animator> hpAnim;
+    private float time;
 
     [SerializeField] Sprite empty;
     [SerializeField] Sprite full;
@@ -20,6 +21,7 @@ public class HPBar : MonoBehaviour
 
         hpImages = new List<Image>();
         hpAnim = new List<Animator>();
+        time = 0;
 
         for(int i = 0; i < transform.childCount; i++)
         {
@@ -43,6 +45,11 @@ public class HPBar : MonoBehaviour
     public void PlayerHPBar()
     {
         int hp = (int)playerHealth.nowHp;
+
+        if(time < 3)
+        {
+            time += Time.deltaTime;
+        }
 
         if(hp % 2 == 0)
         {
@@ -112,6 +119,13 @@ public class HPBar : MonoBehaviour
     private void PlayHpAnim(int index, int state)
     {
         hpAnim[index].SetInteger("state", state);
-        hpAnim[index].SetTrigger("change");
+        if(time >= 3)
+        {
+            hpAnim[index].SetTrigger("change");
+        }
+        else
+        {
+            hpAnim[index].SetTrigger("instant");
+        }
     }
 }

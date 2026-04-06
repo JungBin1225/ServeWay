@@ -113,6 +113,8 @@ public class CharData : MonoBehaviour
         saveFile = new SaveFile();
         saveFile.Reset();
 
+        InventoryManager inventory = GameManager.gameManager.inventory;
+
         saveFile.inventory = FindIngredInSave();
         for (int i = 0; i < 3; i++)
         {

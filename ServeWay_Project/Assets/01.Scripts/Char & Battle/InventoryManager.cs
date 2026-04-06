@@ -35,7 +35,7 @@ public class InventoryManager : MonoBehaviour
 
         InitIncrease();
 
-        if (inventory.Count == 0 && GameManager.gameManager.charData.saveFile.inventory != null)
+        if (GameManager.gameManager.charData.saveFile.inventory != null)
         {
             if(!SceneManager.GetActiveScene().name.Contains("Tutorial") && !SceneManager.GetActiveScene().name.Contains("Title"))
             {
@@ -44,7 +44,24 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    
+    private void OnLevelWasLoaded(int level)
+    {
+        inventory = new NameAmount();
+        player = FindObjectOfType<PlayerController>();
+        dataController = FindObjectOfType<DataController>();
+        SceneManager.activeSceneChanged += setData;
+
+        InitIncrease();
+
+        if (GameManager.gameManager.charData.saveFile.inventory != null)
+        {
+            if (!SceneManager.GetActiveScene().name.Contains("Tutorial") && !SceneManager.GetActiveScene().name.Contains("Title"))
+            {
+                LoadInventory();
+            }
+        }
+    }
+
     void Update()
     {
         
