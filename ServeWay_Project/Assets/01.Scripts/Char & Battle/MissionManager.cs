@@ -158,7 +158,7 @@ public class MissionManager : MonoBehaviour
                 break;
             case 2:
                 missionEvent += NoHitInTime;
-                targetAmount[index] = Random.Range(20, 60);
+                targetAmount[index] = Random.Range(20, 40);
 
                 matchedUI.Add(index, missionText[textIndex]);
                 missionText[textIndex].GetComponent<TMP_Text>().text = string.Format(missionName[index], targetAmount[index].ToString(), nowAmount[index].ToString("F1"));

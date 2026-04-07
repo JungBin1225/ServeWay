@@ -15,8 +15,8 @@ public class ResolutionOption : MonoBehaviour
 
     void Start()
     {
-        screenMode = (int)Screen.fullScreenMode;
-        toggles[screenMode].isOn = true;
+        /*screenMode = (int)Screen.fullScreenMode;
+        toggles[screenMode].isOn = true;*/
     }
 
     private void OnEnable()
@@ -25,7 +25,7 @@ public class ResolutionOption : MonoBehaviour
         resolutionIndex = dropdown.value;
 
         screenMode = (int)Screen.fullScreenMode;
-        toggles[screenMode].isOn = true;
+        toggles[screenMode].isOn = true;        
     }
 
     void Update()
@@ -51,7 +51,7 @@ public class ResolutionOption : MonoBehaviour
         resolutionIndex = x;
         if(resolutions[resolutionIndex].x != 960 || screenMode != 0)
         {
-            Screen.SetResolution((int)resolutions[resolutionIndex].x, (int)resolutions[resolutionIndex].y, (FullScreenMode)screenMode);
+            Screen.SetResolution((int)resolutions[resolutionIndex].x, (int)resolutions[resolutionIndex].y, Screen.fullScreenMode);
         }
     }
 
@@ -60,9 +60,10 @@ public class ResolutionOption : MonoBehaviour
         if(isOn && screenMode != 0)
         {
             screenMode = 0;
-            if(resolutions[resolutionIndex].x != 960)
+            if (resolutions[resolutionIndex].x != 960)
             {
                 Screen.SetResolution((int)resolutions[resolutionIndex].x, (int)resolutions[resolutionIndex].y, (FullScreenMode)screenMode);
+                Debug.Log((FullScreenMode)0);
             }
         }
     }
@@ -72,6 +73,7 @@ public class ResolutionOption : MonoBehaviour
         {
             screenMode = 1;
             Screen.SetResolution((int)resolutions[resolutionIndex].x, (int)resolutions[resolutionIndex].y, (FullScreenMode)screenMode);
+            Debug.Log((FullScreenMode)1);
         }
     }
 
@@ -81,6 +83,7 @@ public class ResolutionOption : MonoBehaviour
         {
             screenMode = 3;
             Screen.SetResolution((int)resolutions[resolutionIndex].x, (int)resolutions[resolutionIndex].y, (FullScreenMode)screenMode);
+            Debug.Log((FullScreenMode)3);
         }
     }
 }
