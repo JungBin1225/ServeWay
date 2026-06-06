@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Refrigerator : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class Refrigerator : MonoBehaviour
         for(int i = 0; i < refrigeUI.transform.GetChild(0).childCount; i++)
         {
             int index = i;
-            if(i < 5)
+            if(i < 6)
             {
                 imageList.Add(refrigeUI.transform.GetChild(0).GetChild(i).gameObject);
                 imageList[i].GetComponent<Button>().onClick.RemoveAllListeners();
@@ -48,7 +49,7 @@ public class Refrigerator : MonoBehaviour
         ingredList.AddRange(ingredData.GetGradeList(2));
 
         refrigeList = new Dictionary<Ingredient, bool>();
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             int num = Random.Range(0, 2);
             bool exist = false;
@@ -62,14 +63,12 @@ public class Refrigerator : MonoBehaviour
                     break;
             }
 
-            if(i == 0)
+            if (i == 0)
             {
                 exist = true;
             }
             refrigeList.Add(RandomIngred(), exist);
         }
-
-
     }
 
     void Update()

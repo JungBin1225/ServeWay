@@ -504,6 +504,10 @@ public class EnemyGenerator : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             GameObject.Find("miniPlayer").transform.position = gameObject.transform.position;
+            if(minimapIcon != null)
+            {
+                minimapIcon.SetActive(true);
+            }
         }
 
         if (collision.gameObject.tag == "Player" && !isClear && isStarted)

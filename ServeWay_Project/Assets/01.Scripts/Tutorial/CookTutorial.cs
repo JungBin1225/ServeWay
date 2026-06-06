@@ -143,10 +143,6 @@ public class CookTutorial : MonoBehaviour
             {
                 door.transform.GetChild(i).GetComponent<DoorAnimation>().CloseDoor();
             }
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Kimchi, 1);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Rice, 3);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Oil, 1);
-            GameManager.gameManager.inventory.GetItem(Ingred_Name.Egg, 1);
         }
 
         if (collision.gameObject.tag == "Player")

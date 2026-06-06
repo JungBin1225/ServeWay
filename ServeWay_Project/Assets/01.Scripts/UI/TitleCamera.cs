@@ -12,6 +12,8 @@ public class TitleCamera : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
+
         anim = GetComponent<Animator>();
         index = 1;
 
